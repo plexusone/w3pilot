@@ -19,11 +19,11 @@ type BiDiCommand struct {
 
 // BiDiResponse represents a WebDriver BiDi response.
 type BiDiResponse struct {
-	ID     int64           `json:"id"`
-	Type   string          `json:"type"`
-	Result json.RawMessage `json:"result,omitempty"`
-	Error  string          `json:"error,omitempty"`
-	Message string         `json:"message,omitempty"`
+	ID      int64           `json:"id"`
+	Type    string          `json:"type"`
+	Result  json.RawMessage `json:"result,omitempty"`
+	Error   string          `json:"error,omitempty"`
+	Message string          `json:"message,omitempty"`
 }
 
 // BiDiClient manages WebSocket communication with the clicker server.

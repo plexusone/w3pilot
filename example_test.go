@@ -64,7 +64,7 @@ func Example_headless() {
 	}
 
 	// Save to file
-	if err := os.WriteFile("screenshot.png", data, 0644); err != nil {
+	if err := os.WriteFile("screenshot.png", data, 0600); err != nil {
 		log.Fatal(err)
 	}
 }

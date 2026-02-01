@@ -1,4 +1,10 @@
-# vibium-go
+# Vibium Go Client SDK
+
+[![Build Status][build-status-svg]][build-status-url]
+[![Lint Status][lint-status-svg]][lint-status-url]
+[![Go Report Card][goreport-svg]][goreport-url]
+[![Docs][docs-godoc-svg]][docs-godoc-url]
+[![License][license-svg]][license-url]
 
 A Go client for the [Vibium](https://github.com/VibiumDev/vibium) browser automation platform.
 
@@ -310,4 +316,17 @@ go test -tags=integration -v ./integration/... -run TestTheInternet
 
 ## License
 
-Apache-2.0
+MIT
+
+ [build-status-svg]: https://github.com/grokify/vibium-dev/actions/workflows/ci.yaml/badge.svg?branch=main
+ [build-status-url]: https://github.com/grokify/vibium-dev/actions/workflows/ci.yaml
+ [lint-status-svg]: https://github.com/grokify/vibium-dev/actions/workflows/lint.yaml/badge.svg?branch=main
+ [lint-status-url]: https://github.com/grokify/vibium-dev/actions/workflows/lint.yaml
+ [goreport-svg]: https://goreportcard.com/badge/github.com/grokify/vibium-dev
+ [goreport-url]: https://goreportcard.com/report/github.com/grokify/vibium-dev
+ [docs-godoc-svg]: https://pkg.go.dev/badge/github.com/grokify/vibium-dev
+ [docs-godoc-url]: https://pkg.go.dev/github.com/grokify/vibium-dev
+ [license-svg]: https://img.shields.io/badge/license-MIT-blue.svg
+ [license-url]: https://github.com/grokify/vibium-dev/blob/master/LICENSE
+ [used-by-svg]: https://sourcegraph.com/github.com/grokify/vibium-dev/-/badge.svg
+ [used-by-url]: https://sourcegraph.com/github.com/grokify/vibium-dev?badge

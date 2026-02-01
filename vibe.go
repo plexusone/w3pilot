@@ -266,10 +266,11 @@ func (v *Vibe) FindAll(ctx context.Context, selector string) ([]*Element, error)
 		return nil, err
 	}
 
-	// Use JavaScript to find all matching elements and get their info
+	// Use JavaScript to find all matching elements and return JSON string
+	// (BiDi serializes arrays in a complex format, so we JSON.stringify ourselves)
 	script := `(selector) => {
 		const elements = document.querySelectorAll(selector);
-		return Array.from(elements).map((el, index) => {
+		const result = Array.from(elements).map((el, index) => {
 			const rect = el.getBoundingClientRect();
 			return {
 				index: index,
@@ -278,6 +279,7 @@ func (v *Vibe) FindAll(ctx context.Context, selector string) ([]*Element, error)
 				box: { x: rect.x, y: rect.y, width: rect.width, height: rect.height }
 			};
 		});
+		return JSON.stringify(result);
 	}`
 
 	params := map[string]interface{}{
@@ -298,22 +300,30 @@ func (v *Vibe) FindAll(ctx context.Context, selector string) ([]*Element, error)
 		return nil, err
 	}
 
+	// Parse the outer BiDi response to get the JSON string
 	var resp struct {
 		Result struct {
-			Value []struct {
-				Index int         `json:"index"`
-				Tag   string      `json:"tag"`
-				Text  string      `json:"text"`
-				Box   BoundingBox `json:"box"`
-			} `json:"value"`
+			Type  string `json:"type"`
+			Value string `json:"value"`
 		} `json:"result"`
 	}
 	if err := json.Unmarshal(result, &resp); err != nil {
+		return nil, fmt.Errorf("failed to parse response: %w", err)
+	}
+
+	// Parse the JSON string containing element data
+	var items []struct {
+		Index int         `json:"index"`
+		Tag   string      `json:"tag"`
+		Text  string      `json:"text"`
+		Box   BoundingBox `json:"box"`
+	}
+	if err := json.Unmarshal([]byte(resp.Result.Value), &items); err != nil {
 		return nil, fmt.Errorf("failed to parse elements: %w", err)
 	}
 
-	elements := make([]*Element, len(resp.Result.Value))
-	for i, item := range resp.Result.Value {
+	elements := make([]*Element, len(items))
+	for i, item := range items {
 		// Create indexed selector for each element
 		indexedSelector := fmt.Sprintf("%s:nth-of-type(%d)", selector, item.Index+1)
 		info := ElementInfo{

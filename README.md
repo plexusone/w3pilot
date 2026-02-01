@@ -318,15 +318,15 @@ go test -tags=integration -v ./integration/... -run TestTheInternet
 
 MIT
 
- [build-status-svg]: https://github.com/grokify/vibium-dev/actions/workflows/ci.yaml/badge.svg?branch=main
- [build-status-url]: https://github.com/grokify/vibium-dev/actions/workflows/ci.yaml
- [lint-status-svg]: https://github.com/grokify/vibium-dev/actions/workflows/lint.yaml/badge.svg?branch=main
- [lint-status-url]: https://github.com/grokify/vibium-dev/actions/workflows/lint.yaml
- [goreport-svg]: https://goreportcard.com/badge/github.com/grokify/vibium-dev
- [goreport-url]: https://goreportcard.com/report/github.com/grokify/vibium-dev
- [docs-godoc-svg]: https://pkg.go.dev/badge/github.com/grokify/vibium-dev
- [docs-godoc-url]: https://pkg.go.dev/github.com/grokify/vibium-dev
+ [build-status-svg]: https://github.com/grokify/vibium-go/actions/workflows/ci.yaml/badge.svg?branch=main
+ [build-status-url]: https://github.com/grokify/vibium-go/actions/workflows/ci.yaml
+ [lint-status-svg]: https://github.com/grokify/vibium-go/actions/workflows/lint.yaml/badge.svg?branch=main
+ [lint-status-url]: https://github.com/grokify/vibium-go/actions/workflows/lint.yaml
+ [goreport-svg]: https://goreportcard.com/badge/github.com/grokify/vibium-go
+ [goreport-url]: https://goreportcard.com/report/github.com/grokify/vibium-go
+ [docs-godoc-svg]: https://pkg.go.dev/badge/github.com/grokify/vibium-go
+ [docs-godoc-url]: https://pkg.go.dev/github.com/grokify/vibium-go
  [license-svg]: https://img.shields.io/badge/license-MIT-blue.svg
- [license-url]: https://github.com/grokify/vibium-dev/blob/master/LICENSE
- [used-by-svg]: https://sourcegraph.com/github.com/grokify/vibium-dev/-/badge.svg
- [used-by-url]: https://sourcegraph.com/github.com/grokify/vibium-dev?badge
+ [license-url]: https://github.com/grokify/vibium-go/blob/master/LICENSE
+ [used-by-svg]: https://sourcegraph.com/github.com/grokify/vibium-go/-/badge.svg
+ [used-by-url]: https://sourcegraph.com/github.com/grokify/vibium-go?badge

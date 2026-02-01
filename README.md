@@ -14,7 +14,10 @@ This Go client has full feature parity with the official JavaScript and Python c
 | `vibe.Go(url)` | ✅ | ✅ | ✅ |
 | `vibe.Screenshot()` | ✅ | ✅ | ✅ |
 | `vibe.Find(selector)` | ✅ | ✅ | ✅ |
+| `vibe.FindAll(selector)` | ❌ | ❌ | ✅ |
 | `vibe.Evaluate(script)` | ✅ | ✅ | ✅ |
+| `vibe.Reload()` | ❌ | ❌ | ✅ |
+| `vibe.Back()` / `vibe.Forward()` | ❌ | ❌ | ✅ |
 | `vibe.Quit()` | ✅ | ✅ | ✅ |
 | `element.Click()` | ✅ | ✅ | ✅ |
 | `element.Type(text)` | ✅ | ✅ | ✅ |
@@ -23,6 +26,7 @@ This Go client has full feature parity with the official JavaScript and Python c
 | `element.BoundingBox()` | ✅ | ✅ | ✅ |
 | Browsing context management | ✅ | ✅ | ✅ |
 | Actionability waits | ✅ | ✅ | ✅ |
+| Debug logging | ✅ | ❌ | ✅ |
 
 ## Installation
 
@@ -110,6 +114,15 @@ url, err := vibe.URL(ctx)
 // Get page title
 title, err := vibe.Title(ctx)
 
+// Reload current page
+err := vibe.Reload(ctx)
+
+// Navigate back in history
+err := vibe.Back(ctx)
+
+// Navigate forward in history
+err := vibe.Forward(ctx)
+
 // Wait for navigation to complete
 err := vibe.WaitForNavigation(ctx, 30*time.Second)
 ```
@@ -124,6 +137,13 @@ elem, err := vibe.Find(ctx, "button.submit", nil)
 elem, err := vibe.Find(ctx, "button.submit", &vibium.FindOptions{
     Timeout: 10 * time.Second,
 })
+
+// Find all matching elements
+elements, err := vibe.FindAll(ctx, "li.item")
+for _, elem := range elements {
+    text, _ := elem.Text(ctx)
+    fmt.Println(text)
+}
 
 // Must find (panics if not found)
 elem := vibe.MustFind(ctx, "button.submit")
@@ -225,6 +245,34 @@ vibium.ErrConnectionClosed
 
 // BiDi protocol error
 vibium.BiDiError{ErrorType, Message}
+```
+
+## Debug Logging
+
+Enable debug logging by setting the `VIBIUM_DEBUG` environment variable:
+
+```bash
+VIBIUM_DEBUG=1 go run main.go
+```
+
+Debug output is written to stderr in JSON format using Go's `slog` package.
+
+You can also use the logger programmatically:
+
+```go
+// Check if debug mode is enabled
+if vibium.Debug() {
+    // ...
+}
+
+// Create a debug logger
+logger := vibium.NewDebugLogger()
+
+// Add logger to context
+ctx = vibium.ContextWithLogger(ctx, logger)
+
+// Retrieve logger from context
+logger = vibium.LoggerFromContext(ctx)
 ```
 
 ## License

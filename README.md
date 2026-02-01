@@ -275,6 +275,39 @@ ctx = vibium.ContextWithLogger(ctx, logger)
 logger = vibium.LoggerFromContext(ctx)
 ```
 
+## Testing
+
+### Unit Tests
+
+Run unit tests (no browser required):
+
+```bash
+go test -v ./...
+```
+
+### Integration Tests
+
+Integration tests run against live websites and require the clicker binary.
+
+```bash
+# Run all integration tests (visible browser)
+go test -tags=integration -v ./integration/...
+
+# Run in headless mode (for CI)
+HEADLESS=1 go test -tags=integration -v ./integration/...
+
+# Run specific site tests
+go test -tags=integration -v ./integration/... -run TestExampleCom
+go test -tags=integration -v ./integration/... -run TestTheInternet
+```
+
+**Test sites:**
+
+| Site | Description |
+|------|-------------|
+| `example.com` | Simple smoke tests |
+| `the-internet.herokuapp.com` | Interactive UI patterns |
+
 ## License
 
 Apache-2.0

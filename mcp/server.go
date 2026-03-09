@@ -436,6 +436,18 @@ func (s *Server) registerTools() {
 		Description: "Get cookies and localStorage as JSON.",
 	}, s.handleGetStorageState)
 
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "set_storage_state",
+		Description: "Restore cookies and localStorage from JSON (output of get_storage_state). Use this to restore a saved session.",
+	}, s.handleSetStorageState)
+
+	// === Human-in-the-Loop ===
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "pause_for_human",
+		Description: "Pause automation and wait for human to complete an action (e.g., SSO login, CAPTCHA). Shows a visual overlay that the human dismisses when done.",
+	}, s.handlePauseForHuman)
+
 	// === Assertions ===
 
 	mcp.AddTool(s.mcpServer, &mcp.Tool{

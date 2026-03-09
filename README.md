@@ -283,7 +283,7 @@ MIT
  [docs-godoc-svg]: https://pkg.go.dev/badge/github.com/plexusone/vibium-go
  [docs-godoc-url]: https://pkg.go.dev/github.com/plexusone/vibium-go
  [viz-svg]: https://img.shields.io/badge/visualizaton-Go-blue.svg
- [viz-url]: https://mango-dune-07a8b7110.1.azurestaticapps.net/?repo=grokify%2Fcoreforge
+ [viz-url]: https://mango-dune-07a8b7110.1.azurestaticapps.net/?repo=plexusone%2Fvibium-go
  [loc-svg]: https://tokei.rs/b1/github/plexusone/vibium-go
  [repo-url]: https://github.com/plexusone/vibium-go
  [license-svg]: https://img.shields.io/badge/license-MIT-blue.svg

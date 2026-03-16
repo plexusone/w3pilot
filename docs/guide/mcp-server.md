@@ -108,6 +108,14 @@ Edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) o
 | `wait_for_url` | Wait for URL pattern |
 | `wait_for_load` | Wait for load state |
 
+### Human-in-the-Loop
+
+| Tool | Description |
+|------|-------------|
+| `pause_for_human` | Pause for human action (SSO, CAPTCHA) |
+| `get_storage_state` | Export session (cookies + localStorage) |
+| `set_storage_state` | Restore saved session |
+
 ### Input Controllers
 
 | Tool | Description |

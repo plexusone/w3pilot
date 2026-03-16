@@ -47,6 +47,7 @@ nav:
   - User Guide:
     - Go Client SDK: guide/sdk.md
     - MCP Server: guide/mcp-server.md
+    - Human-in-the-Loop: guide/hitl.md
     - CLI Reference: guide/cli.md
     - Script Runner: guide/scripts.md
     - Session Recording: guide/recording.md

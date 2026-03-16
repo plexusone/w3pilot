@@ -187,6 +187,7 @@ The MCP server provides 75+ tools organized by category:
 | Element State | `get_text`, `get_value`, `is_visible`, `is_enabled` |
 | Page State | `get_title`, `get_url`, `get_content`, `screenshot` |
 | Waiting | `wait_until`, `wait_for_url`, `wait_for_load` |
+| HITL | `pause_for_human`, `set_storage_state`, `get_storage_state` |
 | Input | `keyboard_*`, `mouse_*`, `touch_*` |
 | Recording | `start_recording`, `stop_recording`, `export_script` |
 | Assertions | `assert_text`, `assert_element`, `assert_url` |

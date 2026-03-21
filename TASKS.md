@@ -27,7 +27,7 @@ Missing tests for implemented features:
 - [x] Network requests MCP tools tests (`NetworkRequests`, `ClearNetworkRequests`) - `integration/network_tools_test.go`
 - [x] Form tools tests (`Fill`) - `integration/page_methods_test.go`
 - [x] Mouse tools tests (`Mouse.Move`, `Mouse.Down`, `Mouse.Up`) - `integration/page_methods_test.go`
-- [ ] Testing tools tests (`verify_value`, `verify_list_visible`, `generate_locator`)
+- [x] Testing tools tests (`verify_value`, `verify_list_visible`, `generate_locator`) - `integration/verify_test.go`
 - [x] Page methods tests (`Scroll`, `SetExtraHTTPHeaders`) - `integration/page_methods_test.go`
 
 ### Event Listeners - High Priority

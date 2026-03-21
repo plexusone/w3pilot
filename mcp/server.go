@@ -21,6 +21,7 @@ func NewServer(config Config) *Server {
 			Headless:       config.Headless,
 			DefaultTimeout: config.DefaultTimeout,
 			Project:        config.Project,
+			InitScripts:    config.InitScripts,
 		}),
 	}
 
@@ -72,6 +73,11 @@ func (s *Server) registerTools() {
 		Description: "Reload the current page.",
 	}, s.handleReload)
 
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "scroll",
+		Description: "Scroll the page or a specific element in a direction (up, down, left, right).",
+	}, s.handleScroll)
+
 	// === Basic Interactions ===
 
 	mcp.AddTool(s.mcpServer, &mcp.Tool{
@@ -93,6 +99,11 @@ func (s *Server) registerTools() {
 		Name:        "fill",
 		Description: "Clear an input and fill it with text (replaces existing content).",
 	}, s.handleFill)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "fill_form",
+		Description: "Fill multiple form fields at once. Provide an array of {selector, value} pairs.",
+	}, s.handleFillForm)
 
 	mcp.AddTool(s.mcpServer, &mcp.Tool{
 		Name:        "clear",
@@ -174,6 +185,11 @@ func (s *Server) registerTools() {
 		Name:        "get_inner_html",
 		Description: "Get the innerHTML of an element.",
 	}, s.handleGetInnerHTML)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "get_outer_html",
+		Description: "Get the outerHTML of an element (including the element itself).",
+	}, s.handleGetOuterHTML)
 
 	mcp.AddTool(s.mcpServer, &mcp.Tool{
 		Name:        "get_inner_text",
@@ -380,6 +396,11 @@ func (s *Server) registerTools() {
 		Description: "Swipe from one point to another (touch).",
 	}, s.handleTouchSwipe)
 
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "mouse_drag",
+		Description: "Drag from one point to another using the mouse.",
+	}, s.handleMouseDrag)
+
 	// === Page Management ===
 
 	mcp.AddTool(s.mcpServer, &mcp.Tool{
@@ -402,11 +423,28 @@ func (s *Server) registerTools() {
 		Description: "Bring the page to the front.",
 	}, s.handleBringToFront)
 
+	// === Tab Management ===
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "list_tabs",
+		Description: "List all open browser tabs with their index, ID, URL, and title.",
+	}, s.handleListTabs)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "select_tab",
+		Description: "Switch to a specific tab by index (0-based) or tab ID.",
+	}, s.handleSelectTab)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "close_tab",
+		Description: "Close a specific tab by index or ID. Defaults to current tab if not specified.",
+	}, s.handleCloseTab)
+
 	// === Emulation ===
 
 	mcp.AddTool(s.mcpServer, &mcp.Tool{
 		Name:        "emulate_media",
-		Description: "Emulate media features (print, color scheme, etc).",
+		Description: "Emulate CSS media features for accessibility testing: color scheme (dark/light mode), reduced motion (disable animations), forced colors (high contrast mode), and contrast preferences.",
 	}, s.handleEmulateMedia)
 
 	mcp.AddTool(s.mcpServer, &mcp.Tool{
@@ -433,13 +471,130 @@ func (s *Server) registerTools() {
 
 	mcp.AddTool(s.mcpServer, &mcp.Tool{
 		Name:        "get_storage_state",
-		Description: "Get cookies and localStorage as JSON.",
+		Description: "Get complete browser storage state (cookies, localStorage, and sessionStorage) as JSON.",
 	}, s.handleGetStorageState)
 
 	mcp.AddTool(s.mcpServer, &mcp.Tool{
 		Name:        "set_storage_state",
-		Description: "Restore cookies and localStorage from JSON (output of get_storage_state). Use this to restore a saved session.",
+		Description: "Restore browser storage from JSON (output of get_storage_state). Restores cookies, localStorage, and sessionStorage.",
 	}, s.handleSetStorageState)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "clear_storage",
+		Description: "Clear all browser storage (cookies, localStorage, and sessionStorage).",
+	}, s.handleClearStorage)
+
+	// === LocalStorage ===
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "localstorage_get",
+		Description: "Get a value from localStorage by key.",
+	}, s.handleLocalStorageGet)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "localstorage_set",
+		Description: "Set a value in localStorage.",
+	}, s.handleLocalStorageSet)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "localstorage_delete",
+		Description: "Delete a key from localStorage.",
+	}, s.handleLocalStorageDelete)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "localstorage_clear",
+		Description: "Clear all localStorage data for the current origin.",
+	}, s.handleLocalStorageClear)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "localstorage_list",
+		Description: "List all keys and values in localStorage.",
+	}, s.handleLocalStorageList)
+
+	// === SessionStorage ===
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "sessionstorage_get",
+		Description: "Get a value from sessionStorage by key.",
+	}, s.handleSessionStorageGet)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "sessionstorage_set",
+		Description: "Set a value in sessionStorage.",
+	}, s.handleSessionStorageSet)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "sessionstorage_delete",
+		Description: "Delete a key from sessionStorage.",
+	}, s.handleSessionStorageDelete)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "sessionstorage_clear",
+		Description: "Clear all sessionStorage data for the current origin.",
+	}, s.handleSessionStorageClear)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "sessionstorage_list",
+		Description: "List all keys and values in sessionStorage.",
+	}, s.handleSessionStorageList)
+
+	// === Dialog Handling ===
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "handle_dialog",
+		Description: "Handle a browser dialog (alert, confirm, prompt, beforeunload) by accepting or dismissing it.",
+	}, s.handleHandleDialog)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "get_dialog",
+		Description: "Get information about the current dialog, if any is open.",
+	}, s.handleGetDialog)
+
+	// === Console Messages ===
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "get_console_messages",
+		Description: "Get console messages from the page. Optionally filter by level (log, info, warn, error, debug).",
+	}, s.handleGetConsoleMessages)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "clear_console_messages",
+		Description: "Clear the buffered console messages.",
+	}, s.handleClearConsoleMessages)
+
+	// === Network Requests ===
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "get_network_requests",
+		Description: "Get captured network requests. Optionally filter by URL pattern, HTTP method, or resource type.",
+	}, s.handleGetNetworkRequests)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "clear_network_requests",
+		Description: "Clear the buffered network requests.",
+	}, s.handleClearNetworkRequests)
+
+	// === Network Mocking ===
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "route",
+		Description: "Register a mock response for requests matching a URL pattern. Use glob patterns (e.g., **/api/*) or regex (e.g., /api/.*).",
+	}, s.handleRoute)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "route_list",
+		Description: "List all active route handlers.",
+	}, s.handleRouteList)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "unroute",
+		Description: "Remove a previously registered route handler.",
+	}, s.handleUnroute)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "network_state_set",
+		Description: "Set the browser's network state. Use offline=true to simulate offline mode for testing.",
+	}, s.handleNetworkStateSet)
 
 	// === Human-in-the-Loop ===
 
@@ -459,6 +614,23 @@ func (s *Server) registerTools() {
 		Name:        "assert_element",
 		Description: "Assert that an element exists on the page.",
 	}, s.handleAssertElement)
+
+	// === Testing Tools ===
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "verify_value",
+		Description: "Verify that an input element has the expected value.",
+	}, s.handleVerifyValue)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "verify_list_visible",
+		Description: "Verify that a list of text items are all visible on the page.",
+	}, s.handleVerifyListVisible)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "generate_locator",
+		Description: "Generate a locator string for a given element using a specific strategy (css, xpath, testid, role, text).",
+	}, s.handleGenerateLocator)
 
 	// === Test Reporting ===
 
@@ -503,6 +675,52 @@ func (s *Server) registerTools() {
 		Name:        "clear_recording",
 		Description: "Clear all recorded steps without stopping recording.",
 	}, s.handleClearRecording)
+
+	// === Tracing ===
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "start_trace",
+		Description: "Start trace recording with screenshots and DOM snapshots for debugging. The trace can be viewed with 'npx playwright show-trace <trace.zip>'.",
+	}, s.handleStartTrace)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "stop_trace",
+		Description: "Stop trace recording and save or return the trace data as a ZIP file.",
+	}, s.handleStopTrace)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "start_trace_chunk",
+		Description: "Start a new trace chunk within an active trace. Useful for segmenting traces into logical sections.",
+	}, s.handleStartTraceChunk)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "stop_trace_chunk",
+		Description: "Stop the current trace chunk and optionally save it to a file.",
+	}, s.handleStopTraceChunk)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "start_trace_group",
+		Description: "Start a trace group for logical grouping of actions in the trace viewer.",
+	}, s.handleStartTraceGroup)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "stop_trace_group",
+		Description: "Stop the current trace group.",
+	}, s.handleStopTraceGroup)
+
+	// === Init Scripts ===
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "add_init_script",
+		Description: "Add JavaScript that runs before page scripts on every navigation. Useful for mocking APIs, injecting test helpers, or setting up authentication.",
+	}, s.handleAddInitScript)
+
+	// === Configuration ===
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "get_config",
+		Description: "Get the resolved MCP server configuration including headless mode, project name, and timeouts.",
+	}, s.handleGetConfig)
 }
 
 // Run starts the MCP server.

@@ -1333,6 +1333,9 @@ type DialogHandler func(*Dialog)
 // DownloadHandler is called when a download starts.
 type DownloadHandler func(*Download)
 
+// PageErrorHandler is called when a JavaScript error occurs on the page.
+type PageErrorHandler func(*PageError)
+
 // OnRequest registers a handler for network requests.
 // Note: This is a convenience method; for full control use Route().
 func (v *Vibe) OnRequest(ctx context.Context, handler RequestHandler) error {
@@ -1344,6 +1347,16 @@ func (v *Vibe) OnRequest(ctx context.Context, handler RequestHandler) error {
 	if err != nil {
 		return err
 	}
+
+	// Register event handler with BiDi client
+	v.client.OnEvent("vibium:network.request", func(event *BiDiEvent) {
+		var req Request
+		if err := json.Unmarshal(event.Params, &req); err != nil {
+			debugLog(ctx, "failed to unmarshal request event", "error", err)
+			return
+		}
+		handler(&req)
+	})
 
 	params := map[string]interface{}{
 		"context": browsingCtx,
@@ -1364,6 +1377,16 @@ func (v *Vibe) OnResponse(ctx context.Context, handler ResponseHandler) error {
 		return err
 	}
 
+	// Register event handler with BiDi client
+	v.client.OnEvent("vibium:network.response", func(event *BiDiEvent) {
+		var resp Response
+		if err := json.Unmarshal(event.Params, &resp); err != nil {
+			debugLog(ctx, "failed to unmarshal response event", "error", err)
+			return
+		}
+		handler(&resp)
+	})
+
 	params := map[string]interface{}{
 		"context": browsingCtx,
 	}
@@ -1382,6 +1405,16 @@ func (v *Vibe) OnConsole(ctx context.Context, handler ConsoleHandler) error {
 	if err != nil {
 		return err
 	}
+
+	// Register event handler with BiDi client
+	v.client.OnEvent("vibium:console.entry", func(event *BiDiEvent) {
+		var msg ConsoleMessage
+		if err := json.Unmarshal(event.Params, &msg); err != nil {
+			debugLog(ctx, "failed to unmarshal console event", "error", err)
+			return
+		}
+		handler(&msg)
+	})
 
 	params := map[string]interface{}{
 		"context": browsingCtx,
@@ -1402,6 +1435,16 @@ func (v *Vibe) OnDialog(ctx context.Context, handler DialogHandler) error {
 		return err
 	}
 
+	// Register event handler with BiDi client
+	v.client.OnEvent("vibium:dialog.opened", func(event *BiDiEvent) {
+		var dialog Dialog
+		if err := json.Unmarshal(event.Params, &dialog); err != nil {
+			debugLog(ctx, "failed to unmarshal dialog event", "error", err)
+			return
+		}
+		handler(&dialog)
+	})
+
 	params := map[string]interface{}{
 		"context": browsingCtx,
 	}
@@ -1421,11 +1464,140 @@ func (v *Vibe) OnDownload(ctx context.Context, handler DownloadHandler) error {
 		return err
 	}
 
+	// Register event handler with BiDi client
+	v.client.OnEvent("vibium:download.started", func(event *BiDiEvent) {
+		var download Download
+		if err := json.Unmarshal(event.Params, &download); err != nil {
+			debugLog(ctx, "failed to unmarshal download event", "error", err)
+			return
+		}
+		handler(&download)
+	})
+
 	params := map[string]interface{}{
 		"context": browsingCtx,
 	}
 
 	_, err = v.client.Send(ctx, "vibium:download.on", params)
+	return err
+}
+
+// OnError registers a handler for JavaScript errors on the page.
+func (v *Vibe) OnError(ctx context.Context, handler PageErrorHandler) error {
+	if v.closed {
+		return ErrConnectionClosed
+	}
+
+	browsingCtx, err := v.getContext(ctx)
+	if err != nil {
+		return err
+	}
+
+	// Register event handler with BiDi client
+	v.client.OnEvent("vibium:page.error", func(event *BiDiEvent) {
+		var pageErr PageError
+		if err := json.Unmarshal(event.Params, &pageErr); err != nil {
+			debugLog(ctx, "failed to unmarshal page error event", "error", err)
+			return
+		}
+		handler(&pageErr)
+	})
+
+	params := map[string]interface{}{
+		"context": browsingCtx,
+	}
+
+	_, err = v.client.Send(ctx, "vibium:page.onError", params)
+	return err
+}
+
+// CollectConsole enables buffered console message collection.
+// Messages can be retrieved with ConsoleMessages() and cleared with ClearConsoleMessages().
+func (v *Vibe) CollectConsole(ctx context.Context) error {
+	if v.closed {
+		return ErrConnectionClosed
+	}
+
+	browsingCtx, err := v.getContext(ctx)
+	if err != nil {
+		return err
+	}
+
+	params := map[string]interface{}{
+		"context": browsingCtx,
+	}
+
+	_, err = v.client.Send(ctx, "vibium:console.collect", params)
+	return err
+}
+
+// CollectErrors enables buffered page error collection.
+// Errors can be retrieved with Errors() and cleared with ClearErrors().
+func (v *Vibe) CollectErrors(ctx context.Context) error {
+	if v.closed {
+		return ErrConnectionClosed
+	}
+
+	browsingCtx, err := v.getContext(ctx)
+	if err != nil {
+		return err
+	}
+
+	params := map[string]interface{}{
+		"context": browsingCtx,
+	}
+
+	_, err = v.client.Send(ctx, "vibium:page.collectErrors", params)
+	return err
+}
+
+// Errors retrieves buffered page errors.
+// Call CollectErrors() first to enable error collection.
+func (v *Vibe) Errors(ctx context.Context) ([]PageError, error) {
+	if v.closed {
+		return nil, ErrConnectionClosed
+	}
+
+	browsingCtx, err := v.getContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	params := map[string]interface{}{
+		"context": browsingCtx,
+	}
+
+	result, err := v.client.Send(ctx, "vibium:page.errors", params)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp struct {
+		Errors []PageError `json:"errors"`
+	}
+	if err := json.Unmarshal(result, &resp); err != nil {
+		return nil, fmt.Errorf("failed to parse errors: %w", err)
+	}
+
+	return resp.Errors, nil
+}
+
+// ClearErrors clears the buffered page errors.
+func (v *Vibe) ClearErrors(ctx context.Context) error {
+	if v.closed {
+		return ErrConnectionClosed
+	}
+
+	browsingCtx, err := v.getContext(ctx)
+	if err != nil {
+		return err
+	}
+
+	params := map[string]interface{}{
+		"context": browsingCtx,
+	}
+
+	_, err = v.client.Send(ctx, "vibium:page.clearErrors", params)
 	return err
 }
 

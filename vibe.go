@@ -1336,6 +1336,12 @@ type DownloadHandler func(*Download)
 // PageErrorHandler is called when a JavaScript error occurs on the page.
 type PageErrorHandler func(*PageError)
 
+// PageHandler is called when a new page is created.
+type PageHandler func(*Vibe)
+
+// PopupHandler is called when a popup window opens.
+type PopupHandler func(*Vibe)
+
 // OnRequest registers a handler for network requests.
 // Note: This is a convenience method; for full control use Route().
 func (v *Vibe) OnRequest(ctx context.Context, handler RequestHandler) error {
@@ -1599,6 +1605,93 @@ func (v *Vibe) ClearErrors(ctx context.Context) error {
 
 	_, err = v.client.Send(ctx, "vibium:page.clearErrors", params)
 	return err
+}
+
+// OnPage registers a handler that is called when a new page is created in the browser.
+// This includes pages created via NewPage(), window.open(), or clicking links with target="_blank".
+func (v *Vibe) OnPage(ctx context.Context, handler PageHandler) error {
+	if v.closed {
+		return ErrConnectionClosed
+	}
+
+	// Register event handler with BiDi client
+	v.client.OnEvent("browsingContext.contextCreated", func(event *BiDiEvent) {
+		var params struct {
+			Context string `json:"context"`
+			URL     string `json:"url"`
+			Parent  string `json:"parent,omitempty"`
+		}
+		if err := json.Unmarshal(event.Params, &params); err != nil {
+			debugLog(ctx, "failed to unmarshal page created event", "error", err)
+			return
+		}
+
+		// Create a new Vibe instance for the new page
+		newPage := &Vibe{
+			client:          v.client,
+			clicker:         v.clicker,
+			browsingContext: params.Context,
+		}
+		handler(newPage)
+	})
+
+	// Subscribe to context created events
+	_, err := v.client.Send(ctx, "session.subscribe", map[string]interface{}{
+		"events": []string{"browsingContext.contextCreated"},
+	})
+	return err
+}
+
+// OnPopup registers a handler that is called when a popup window is opened.
+// Popups are typically created via window.open() with specific features.
+func (v *Vibe) OnPopup(ctx context.Context, handler PopupHandler) error {
+	if v.closed {
+		return ErrConnectionClosed
+	}
+
+	// Register event handler with BiDi client
+	v.client.OnEvent("browsingContext.contextCreated", func(event *BiDiEvent) {
+		var params struct {
+			Context  string `json:"context"`
+			URL      string `json:"url"`
+			Parent   string `json:"parent,omitempty"`
+			Original string `json:"originalOpener,omitempty"`
+		}
+		if err := json.Unmarshal(event.Params, &params); err != nil {
+			debugLog(ctx, "failed to unmarshal popup event", "error", err)
+			return
+		}
+
+		// Only call handler for popups (contexts with an opener)
+		if params.Original == "" && params.Parent == "" {
+			return
+		}
+
+		// Create a new Vibe instance for the popup
+		popup := &Vibe{
+			client:          v.client,
+			clicker:         v.clicker,
+			browsingContext: params.Context,
+		}
+		handler(popup)
+	})
+
+	// Subscribe to context created events
+	_, err := v.client.Send(ctx, "session.subscribe", map[string]interface{}{
+		"events": []string{"browsingContext.contextCreated"},
+	})
+	return err
+}
+
+// RemoveAllListeners removes all registered event listeners.
+// This is useful for cleanup when you no longer need to receive events.
+func (v *Vibe) RemoveAllListeners() {
+	if v.client != nil {
+		// Remove all handlers from the BiDi client
+		v.client.handlerMu.Lock()
+		v.client.handlers = make(map[string][]EventHandler)
+		v.client.handlerMu.Unlock()
+	}
 }
 
 // NewPage creates a new page in the default browser context.

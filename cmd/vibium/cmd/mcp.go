@@ -16,6 +16,7 @@ var (
 	mcpHeadless       bool
 	mcpDefaultTimeout time.Duration
 	mcpProject        string
+	mcpInitScripts    []string
 )
 
 var mcpCmd = &cobra.Command{
@@ -29,7 +30,8 @@ It communicates via stdio using the MCP protocol.
 Examples:
   vibium mcp
   vibium mcp --headless
-  vibium mcp --timeout 60s`,
+  vibium mcp --timeout 60s
+  vibium mcp --init-script ./mock-api.js`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
@@ -44,10 +46,24 @@ Examples:
 			cancel()
 		}()
 
+		// Load init scripts from files
+		var initScripts []string
+		for _, scriptPath := range mcpInitScripts {
+			content, err := os.ReadFile(scriptPath)
+			if err != nil {
+				return fmt.Errorf("failed to read init script %s: %w", scriptPath, err)
+			}
+			initScripts = append(initScripts, string(content))
+			if verbose {
+				fmt.Fprintf(os.Stderr, "Loaded init script: %s\n", scriptPath)
+			}
+		}
+
 		config := mcp.Config{
 			Headless:       mcpHeadless,
 			DefaultTimeout: mcpDefaultTimeout,
 			Project:        mcpProject,
+			InitScripts:    initScripts,
 		}
 
 		server := mcp.NewServer(config)
@@ -62,6 +78,9 @@ Examples:
 			if mcpHeadless {
 				fmt.Fprintln(os.Stderr, "Mode: headless")
 			}
+			if len(initScripts) > 0 {
+				fmt.Fprintf(os.Stderr, "Init scripts: %d\n", len(initScripts))
+			}
 		}
 
 		return server.Run(ctx)
@@ -73,4 +92,5 @@ func init() {
 	mcpCmd.Flags().BoolVar(&mcpHeadless, "headless", false, "Run browser in headless mode")
 	mcpCmd.Flags().DurationVar(&mcpDefaultTimeout, "timeout", 30*time.Second, "Default timeout for operations")
 	mcpCmd.Flags().StringVar(&mcpProject, "project", "", "Project name for test reports")
+	mcpCmd.Flags().StringArrayVar(&mcpInitScripts, "init-script", nil, "JavaScript file to inject before page scripts (can be repeated)")
 }

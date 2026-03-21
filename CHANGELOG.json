@@ -7,6 +7,55 @@
   "maintainers": ["plexusone"],
   "releases": [
     {
+      "version": "v0.4.0",
+      "date": "2026-03-21",
+      "highlights": [
+        { "description": "Semantic selectors for AI-native element finding by accessibility attributes" },
+        { "description": "Full storage state management with sessionStorage support" },
+        { "description": "Init scripts for pre-page JavaScript injection" },
+        { "description": "25+ new MCP tools for dialogs, network, storage, tabs, and tracing" }
+      ],
+      "added": [
+        { "description": "Semantic selectors: find elements by `role`, `text`, `label`, `placeholder`, `testid`, `alt`, `title`, `xpath`, and `near`", "commit": "131bef9" },
+        { "description": "`Vibe.Find()` and `Vibe.FindAll()` now accept `FindOptions` for semantic filtering", "commit": "131bef9" },
+        { "description": "`Element.Find()` and `Element.FindAll()` for scoped semantic search within parent elements", "commit": "131bef9" },
+        { "description": "MCP tools (`click`, `type`, `fill`, `press`) support semantic selector parameters", "commit": "131bef9" },
+        { "description": "`Vibe.AddInitScript()` to inject JavaScript before page scripts on every navigation", "commit": "b7bb6df" },
+        { "description": "`add_init_script` MCP tool for runtime script injection", "commit": "b7bb6df" },
+        { "description": "`--init-script` CLI flag for `vibium launch` and `vibium mcp` commands", "commit": "b7bb6df" },
+        { "description": "`Vibe.StorageState()` now captures sessionStorage in addition to cookies and localStorage", "commit": "d24d54c" },
+        { "description": "`Vibe.SetStorageState()` restores complete browser state including sessionStorage", "commit": "d24d54c" },
+        { "description": "`Vibe.ClearStorage()` clears all storage types (cookies, localStorage, sessionStorage)", "commit": "d24d54c" },
+        { "description": "`clear_storage` MCP tool to clear all browser storage", "commit": "d24d54c" },
+        { "description": "MCP tracing tools: `start_trace`, `stop_trace`, `start_trace_chunk`, `stop_trace_chunk`, `start_trace_group`, `stop_trace_group`", "commit": "abf0ed8" },
+        { "description": "MCP dialog tools: `handle_dialog`, `get_dialog`", "commit": "f2ffad9" },
+        { "description": "MCP network tools: `get_network_requests`, `clear_network_requests`, `route`, `unroute`, `route_list`, `network_state_set`", "commit": "f2ffad9" },
+        { "description": "MCP localStorage tools: `localstorage_get`, `localstorage_set`, `localstorage_list`, `localstorage_delete`, `localstorage_clear`", "commit": "f2ffad9" },
+        { "description": "MCP sessionStorage tools: `sessionstorage_get`, `sessionstorage_set`, `sessionstorage_list`, `sessionstorage_delete`, `sessionstorage_clear`", "commit": "f2ffad9" },
+        { "description": "MCP tab tools: `list_tabs`, `select_tab`, `close_tab`", "commit": "f2ffad9" },
+        { "description": "MCP testing tools: `verify_value`, `verify_list_visible`, `generate_locator`, `fill_form`", "commit": "f2ffad9" }
+      ],
+      "fixed": [
+        { "description": "Browser connection drops in MCP server by using `exec.Command` instead of `exec.CommandContext` for clicker process lifetime", "commit": "78f3e4a" }
+      ],
+      "tests": [
+        { "description": "Integration tests for semantic selectors covering all selector types and scoped search", "commit": "4c1b714" },
+        { "description": "Integration tests for tracing with chunks and groups", "commit": "4c1b714" },
+        { "description": "Integration tests for storage state round-trip and sessionStorage", "commit": "4c1b714" },
+        { "description": "Integration tests for init scripts with API mocking", "commit": "4c1b714" }
+      ],
+      "documentation": [
+        { "description": "Semantic selectors section in README and SDK guide with examples", "commit": "7bb3f09" },
+        { "description": "Init scripts, storage state, and tracing sections in README", "commit": "8847012" },
+        { "description": "MCP tools reference with all new tools documented", "commit": "7bb3f09" },
+        { "description": "Feature comparison table with JS/Python clients", "commit": "7bb3f09" }
+      ],
+      "infrastructure": [
+        { "description": "TASKS.md for tracking feature parity with JS/Python clients", "commit": "24d5cdf" },
+        { "description": "Update Go module dependencies", "commit": "124cca1" }
+      ]
+    },
+    {
       "version": "v0.3.0",
       "date": "2026-03-16",
       "highlights": [

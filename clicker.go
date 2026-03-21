@@ -105,7 +105,9 @@ func StartClicker(ctx context.Context, opts LaunchOptions) (*ClickerProcess, err
 		args = append(args, "--headless")
 	}
 
-	cmd := exec.CommandContext(ctx, binaryPath, args...)
+	// Use background context for the process - it should outlive individual requests.
+	// The ctx parameter is only used for startup timeout, not process lifetime.
+	cmd := exec.Command(binaryPath, args...)
 	cmd.Stderr = os.Stderr
 
 	stdout, err := cmd.StdoutPipe()

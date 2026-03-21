@@ -8,271 +8,204 @@ Reference: [Feature Comparison](docs/reference/comparison.md)
 
 - [ ] Not started
 - [x] Completed
-- [~] In progress
 
 ---
 
-## High Priority - SDK Features
+## Open Tasks
+
+### Tests - High Priority
+
+Missing tests for implemented features:
+
+- [ ] Media emulation tests
+- [ ] LocalStorage MCP tools tests
+- [ ] SessionStorage MCP tools tests
+- [ ] Network mocking MCP tools tests (`route`, `unroute`, `route_list`, `network_state_set`)
+- [ ] Tab management MCP tools tests (`list_tabs`, `select_tab`, `close_tab`)
+- [ ] Dialog handling MCP tools tests (`handle_dialog`, `get_dialog`)
+- [ ] Console messages MCP tools tests (`get_console_messages`, `clear_console_messages`)
+- [ ] Network requests MCP tools tests (`get_network_requests`, `clear_network_requests`)
+- [ ] Form tools tests (`fill_form`)
+- [ ] Mouse tools tests (`mouse_drag`)
+- [ ] Testing tools tests (`verify_value`, `verify_list_visible`, `generate_locator`)
+- [ ] Page methods tests (`Scroll`, `SetExtraHTTPHeaders`)
+
+### Event Listeners - High Priority
+
+Real-time event callbacks for SDK users:
+
+- [ ] `Page.OnConsole()` - console message listener
+- [ ] `Page.CollectConsole()` - enable buffered console collection
+- [ ] `Page.OnError()` - page error listener
+- [ ] `Page.CollectErrors()` - enable buffered error collection
+- [ ] `Page.Errors()` - retrieve buffered errors
+- [ ] `Page.OnRequest()` - network request listener
+- [ ] `Page.OnResponse()` - network response listener
+
+### Page Events - Medium Priority
+
+Browser-level event listeners:
+
+- [ ] `Browser.OnPage()` - new page created listener
+- [ ] `Browser.OnPopup()` - popup window listener
+- [ ] `Browser.RemoveAllListeners()` - cleanup all listeners
+
+### WebSocket Monitoring - Medium Priority
+
+WebSocket connection observation:
+
+- [ ] `WebSocketInfo` type (url, isClosed)
+- [ ] `Page.OnWebSocket()` - WebSocket connection listener
+- [ ] `WebSocketInfo.OnMessage()` - message listener
+- [ ] `WebSocketInfo.OnClose()` - close listener
+
+### Video Recording - Medium Priority
+
+Screen recording for debugging:
+
+- [ ] `start_video` MCP tool (size options)
+- [ ] `stop_video` MCP tool () -> file path
+- [ ] SDK `Vibe.StartVideo()` / `Vibe.StopVideo()` methods
+
+### SDK Methods - Low Priority
+
+- [ ] `Page.MainFrame()` - returns page itself (for API compatibility)
+- [ ] `Element.Highlight()` - visual debugging overlay (Java-only feature)
+- [ ] Accessibility tree options (interestingOnly, root)
+
+---
+
+## Completed - v0.4.0 (2026-03-21)
 
 ### Semantic Selectors
 
-Find elements by accessibility attributes instead of just CSS selectors.
+Find elements by accessibility attributes instead of CSS selectors.
 
-- [x] Add `FindOptions` struct with semantic fields (role, text, label, placeholder, alt, title, testid, xpath, near)
-- [x] Update `Vibe.Find()` to accept semantic options via FindOptions
-- [x] Update `Vibe.FindAll()` to accept semantic options (uses vibium:findAll BiDi method)
-- [x] Add `Element.Find()` for scoped semantic search
-- [x] Add `Element.FindAll()` for scoped semantic search
-- [x] Add MCP tool parameters for semantic selectors (click, type, fill, press tools)
-- [x] Add tests for semantic selectors
-- [x] Update documentation (README, SDK guide)
+- [x] `FindOptions` struct with semantic fields (role, text, label, placeholder, alt, title, testid, xpath, near)
+- [x] `Vibe.Find()` accepts semantic options via FindOptions
+- [x] `Vibe.FindAll()` accepts semantic options
+- [x] `Element.Find()` for scoped semantic search
+- [x] `Element.FindAll()` for scoped semantic search
+- [x] MCP tool parameters for semantic selectors (click, type, fill, press)
+- [x] Integration tests
+- [x] Documentation (README, SDK guide)
 
 ### Recording/Tracing
 
 Full trace recording for debugging and test creation.
 
-- [x] Add `Tracing` type to SDK - already existed in tracing.go
-- [x] Implement `Tracing.Start()` with options (name, screenshots, snapshots, sources, title) - already existed
-- [x] Implement `Tracing.Stop()` returning zip data - already existed
-- [x] Implement `Tracing.StartChunk()` / `Tracing.StopChunk()` - already existed
-- [x] Implement `Tracing.StartGroup()` / `Tracing.StopGroup()` - already existed
-- [x] Add `BrowserContext.Tracing()` accessor - already existed
-- [x] Add `Vibe.Tracing()` accessor for default context
-- [x] Add MCP tools: `start_trace`, `stop_trace`, `start_trace_chunk`, `stop_trace_chunk`, `start_trace_group`, `stop_trace_group`
-- [x] Add tests
-- [x] Update documentation
-
-### Media Emulation
-
-CSS media feature emulation for accessibility testing.
-
-- [x] Extend `EmulateMedia()` to support colorScheme - already existed
-- [x] Add reducedMotion support - already existed
-- [x] Add forcedColors support - already existed
-- [x] Add contrast support
-- [x] Add MCP tool: `emulate_media` with all options
-- [ ] Add tests
-- [x] Update documentation
-
-### Console/Error Collection
-
-Capture and buffer console messages and page errors.
-
-- [x] Add `ConsoleMessage` type (type, text, args, location) - exists in route.go
-- [ ] Implement `Page.OnConsole()` listener
-- [ ] Implement `Page.CollectConsole()` for buffered mode
-- [x] Implement `Page.ConsoleMessages()` to retrieve buffer
-- [x] Implement `Page.ClearConsoleMessages()` to clear buffer
-- [ ] Implement `Page.OnError()` listener
-- [ ] Implement `Page.CollectErrors()` for buffered mode
-- [ ] Implement `Page.Errors()` to retrieve buffer
-- [x] Add MCP tool: `get_console_messages` with filtering
-- [x] Add MCP tool: `clear_console_messages`
-- [ ] Add tests
-- [x] Update documentation
-
-### Request/Response Listeners
-
-Network observation events.
-
-- [x] Add `Request` type with full metadata - exists in route.go
-- [x] Add `Response` type with body/json methods - exists in route.go
-- [x] Add `NetworkRequest` type for captured requests
-- [ ] Implement `Page.OnRequest()` listener
-- [ ] Implement `Page.OnResponse()` listener
-- [x] Implement `Page.NetworkRequests()` to retrieve buffer
-- [x] Implement `Page.ClearNetworkRequests()` to clear buffer
-- [x] Add MCP tool: `get_network_requests` with filtering
-- [x] Add MCP tool: `clear_network_requests`
-- [ ] Add tests
-- [x] Update documentation
+- [x] `Tracing` type with `Start()`, `Stop()`, `StartChunk()`, `StopChunk()`, `StartGroup()`, `StopGroup()`
+- [x] `BrowserContext.Tracing()` accessor
+- [x] `Vibe.Tracing()` accessor for default context
+- [x] MCP tools: `start_trace`, `stop_trace`, `start_trace_chunk`, `stop_trace_chunk`, `start_trace_group`, `stop_trace_group`
+- [x] Integration tests
+- [x] Documentation
 
 ### Full Storage State
 
-Complete browser storage management.
+Complete browser storage management including sessionStorage.
 
-- [x] Add `StorageState` type (cookies, origins with localStorage/sessionStorage)
-- [x] Add `StorageStateOrigin` type (origin, localStorage, sessionStorage)
-- [x] Implement `Vibe.StorageState()` to get full state (cookies + localStorage + sessionStorage)
-- [x] Implement `Vibe.SetStorageState()` to restore state
-- [x] Implement `Vibe.ClearStorage()` to clear all
-- [x] Update MCP `get_storage_state` to include sessionStorage
-- [x] Update MCP `set_storage_state` to restore sessionStorage
-- [x] Add MCP `clear_storage` tool
-- [x] Add tests
-- [x] Update documentation
+- [x] `StorageState` type (cookies, origins with localStorage/sessionStorage)
+- [x] `StorageStateOrigin` type (origin, localStorage, sessionStorage)
+- [x] `Vibe.StorageState()` - get full state
+- [x] `Vibe.SetStorageState()` - restore state
+- [x] `Vibe.ClearStorage()` - clear all
+- [x] MCP tools: `get_storage_state`, `set_storage_state`, `clear_storage`
+- [x] Integration tests
+- [x] Documentation
 
 ### Init Scripts
 
-Per-context initialization scripts.
+Per-context initialization scripts that run before page scripts.
 
-- [x] Implement `BrowserContext.AddInitScript()` - already existed
-- [x] Implement `Vibe.AddInitScript()` for default context
-- [x] Scripts run before page scripts on every navigation
-- [x] Add MCP tool: `add_init_script`
-- [x] Add `--init-script` CLI flag to `vibium launch` and `vibium mcp`
-- [x] Add tests
-- [x] Update documentation
+- [x] `BrowserContext.AddInitScript()`
+- [x] `Vibe.AddInitScript()` for default context
+- [x] MCP tool: `add_init_script`
+- [x] `--init-script` CLI flag for `vibium launch` and `vibium mcp`
+- [x] Integration tests
+- [x] Documentation
 
----
+### MCP Tools - Dialog Handling
 
-## High Priority - MCP Tools
+- [x] `handle_dialog` tool (action: accept/dismiss, promptText)
+- [x] `get_dialog` tool
 
-### LocalStorage Tools
+### MCP Tools - Network
 
-- [x] Add `localstorage_get` tool (key) -> value
-- [x] Add `localstorage_set` tool (key, value)
-- [x] Add `localstorage_list` tool () -> all items
-- [x] Add `localstorage_delete` tool (key)
-- [x] Add `localstorage_clear` tool ()
-- [ ] Add tests
-- [x] Update mcp-tools.md documentation
+- [x] `get_network_requests` tool (filter options)
+- [x] `clear_network_requests` tool
+- [x] `route` tool (pattern, response options)
+- [x] `route_list` tool
+- [x] `unroute` tool (pattern)
+- [x] `network_state_set` tool (offline: bool)
 
-### SessionStorage Tools
+### MCP Tools - Storage
 
-- [x] Add `sessionstorage_get` tool (key) -> value
-- [x] Add `sessionstorage_set` tool (key, value)
-- [x] Add `sessionstorage_list` tool () -> all items
-- [x] Add `sessionstorage_delete` tool (key)
-- [x] Add `sessionstorage_clear` tool ()
-- [ ] Add tests
-- [x] Update mcp-tools.md documentation
+- [x] `localstorage_get`, `localstorage_set`, `localstorage_list`, `localstorage_delete`, `localstorage_clear`
+- [x] `sessionstorage_get`, `sessionstorage_set`, `sessionstorage_list`, `sessionstorage_delete`, `sessionstorage_clear`
 
-### Network Mocking
+### MCP Tools - Tabs
 
-- [x] Add `route` tool (pattern, response options)
-- [x] Add `route_list` tool () -> active routes
-- [x] Add `unroute` tool (pattern)
-- [x] Add `network_state_set` tool (offline: bool)
-- [ ] Add tests
-- [x] Update mcp-tools.md documentation
+- [x] `list_tabs`, `select_tab`, `close_tab`
 
-### Tab Management
+### MCP Tools - Console
 
-- [x] Add `list_tabs` tool () -> tab info array
-- [x] Add `select_tab` tool (index or id)
-- [x] Add `close_tab` tool (index or id)
-- [ ] Add tests
-- [x] Update mcp-tools.md documentation
+- [x] `get_console_messages` (level filter)
+- [x] `clear_console_messages`
 
-### Dialog Handling
+### MCP Tools - Testing
 
-- [x] Add `handle_dialog` tool (action: accept/dismiss, promptText?)
-- [x] Add `get_dialog` tool () -> dialog info
-- [ ] Add tests
-- [x] Update mcp-tools.md documentation
-
-### Console Messages Tool
-
-- [x] Add `get_console_messages` tool (level filter?)
-- [x] Add `clear_console_messages` tool
-- [ ] Add tests
-- [x] Update mcp-tools.md documentation
-
-### Network Requests Listing
-
-- [x] Add `get_network_requests` tool (filter options?)
-- [x] Add `clear_network_requests` tool
-- [ ] Add tests
-- [x] Update mcp-tools.md documentation
+- [x] `fill_form` (fields array)
+- [x] `verify_value` (selector, expected)
+- [x] `verify_list_visible` (items array)
+- [x] `generate_locator` (selector)
+- [x] `mouse_drag` (startX, startY, endX, endY)
 
 ---
 
-## Medium Priority - SDK Features
+## Completed - v0.3.0 (2026-03-16)
+
+### Human-in-the-Loop
+
+- [x] `pause_for_human` MCP tool
+- [x] `set_storage_state` MCP tool (initial version)
+
+---
+
+## Completed - Pre-v0.3.0
+
+### Media Emulation
+
+- [x] `EmulateMedia()` with colorScheme, reducedMotion, forcedColors, contrast
+- [x] `emulate_media` MCP tool
 
 ### Element Methods
 
-- [x] `Element.InnerText()` - rendered text only (already implemented)
-- [x] `Element.InnerHTML()` - inner HTML (already implemented)
-- [x] `Element.DispatchEvent(eventType, eventInit)` - already implemented
-- [x] Add `Element.HTML()` - outer HTML (outerHTML, not innerHTML)
-- [x] Add MCP tool: `get_outer_html`
+- [x] `Element.InnerText()`, `Element.InnerHTML()`, `Element.HTML()` (outerHTML)
+- [x] `Element.DispatchEvent()`
+- [x] `get_outer_html` MCP tool
 
 ### Page Methods
 
-- [x] Add `Page.Scroll(direction, amount, selector)` - general page scrolling
-- [x] Add `Page.BringToFront()` - already implemented
-- [ ] Add `Page.MainFrame()` - returns page itself
-- [x] Add `Page.SetExtraHTTPHeaders()` - already implemented as SetExtraHTTPHeaders
-- [ ] Add tests
+- [x] `Page.Scroll()` (direction, amount, selector)
+- [x] `Page.BringToFront()`
+- [x] `Page.SetExtraHTTPHeaders()`
 
-### Page Events
+### Console/Network Buffering
 
-- [ ] Implement `Browser.OnPage()` listener
-- [ ] Implement `Browser.OnPopup()` listener
-- [ ] Implement `Browser.RemoveAllListeners()`
-- [ ] Add tests
-
-### WebSocket Monitoring
-
-- [ ] Add `WebSocketInfo` type (url, isClosed)
-- [ ] Implement `Page.OnWebSocket()` listener
-- [ ] Implement `WebSocketInfo.OnMessage()` listener
-- [ ] Implement `WebSocketInfo.OnClose()` listener
-- [ ] Add tests
-
----
-
-## Medium Priority - MCP Tools
-
-### Tracing Tools
-
-- [ ] Add `start_tracing` tool (options)
-- [ ] Add `stop_tracing` tool (path?) -> file path
-- [ ] Add tests
-- [ ] Update mcp-tools.md documentation
-
-### Video Recording
-
-- [ ] Add `start_video` tool (size options)
-- [ ] Add `stop_video` tool () -> file path
-- [ ] Add tests
-- [ ] Update mcp-tools.md documentation
-
-### Form Tools
-
-- [x] Add `fill_form` tool (fields: array of {selector, value})
-- [ ] Add tests
-- [x] Update mcp-tools.md documentation
-
-### Mouse Tools
-
-- [x] Add `mouse_drag` tool (startX, startY, endX, endY)
-- [ ] Add tests
-- [x] Update mcp-tools.md documentation
-
-### Testing Tools
-
-- [x] Add `verify_value` tool (selector, expected)
-- [x] Add `verify_list_visible` tool (items array)
-- [x] Add `generate_locator` tool (selector) -> locator string
-- [ ] Add tests
-- [x] Update mcp-tools.md documentation
-
----
-
-## Low Priority
-
-### Miscellaneous SDK
-
-- [ ] Add `Element.Highlight()` - visual debugging (Java only feature)
-- [ ] Add accessibility tree options (interestingOnly, root)
+- [x] `ConsoleMessage` type
+- [x] `Page.ConsoleMessages()`, `Page.ClearConsoleMessages()`
+- [x] `Request`, `Response`, `NetworkRequest` types
+- [x] `Page.NetworkRequests()`, `Page.ClearNetworkRequests()`
 
 ### Miscellaneous MCP
 
-- [x] Add `get_config` tool - return resolved configuration
-
----
-
-## Completed
-
-_Move completed tasks here with completion date._
+- [x] `get_config` tool
 
 ---
 
 ## Notes
 
-- Semantic selectors are the highest priority as they enable AI-native element finding
-- Storage tools (localStorage/sessionStorage) unblock many authentication workflows
-- Recording/tracing helps with debugging and test creation
-- All new features should have corresponding MCP tools where applicable
+- Tests are the highest priority for v0.5.0 - many features lack test coverage
+- Event listeners would complete the SDK for real-time monitoring use cases
+- Video recording is useful for debugging but lower priority than tests

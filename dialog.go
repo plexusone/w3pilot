@@ -42,3 +42,11 @@ func (d *Dialog) Dismiss(ctx context.Context) error {
 	_, err := d.client.Send(ctx, "vibium:dialog.handle", params)
 	return err
 }
+
+// DialogInfo contains information about the current dialog.
+type DialogInfo struct {
+	HasDialog    bool   `json:"has_dialog"`
+	Type         string `json:"type,omitempty"`
+	Message      string `json:"message,omitempty"`
+	DefaultValue string `json:"default_value,omitempty"`
+}

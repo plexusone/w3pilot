@@ -243,9 +243,9 @@ vibe.Back(ctx)
 vibe.Forward(ctx)
 vibe.Reload(ctx)
 
-// Finding elements
-elem, err := vibe.Find(ctx, selector, &vibium.FindOptions{})
-elems, err := vibe.FindAll(ctx, selector)
+// Finding elements by CSS selector
+elem, err := vibe.Find(ctx, selector, nil)
+elems, err := vibe.FindAll(ctx, selector, nil)
 
 // Element interactions
 elem.Click(ctx, nil)
@@ -259,6 +259,82 @@ vibe.Mouse().Click(ctx, x, y)
 // Capture
 data, err := vibe.Screenshot(ctx)
 ```
+
+## Semantic Selectors
+
+Find elements by accessibility attributes instead of brittle CSS selectors. This is especially useful for AI-assisted automation where element structure may change but semantics remain stable.
+
+### SDK Usage
+
+```go
+// Find by ARIA role and text content
+elem, err := vibe.Find(ctx, "", &vibium.FindOptions{
+    Role: "button",
+    Text: "Submit",
+})
+
+// Find by label (for form inputs)
+elem, err := vibe.Find(ctx, "", &vibium.FindOptions{
+    Label: "Email address",
+})
+
+// Find by placeholder
+elem, err := vibe.Find(ctx, "", &vibium.FindOptions{
+    Placeholder: "Enter your email",
+})
+
+// Find by data-testid (recommended for testing)
+elem, err := vibe.Find(ctx, "", &vibium.FindOptions{
+    TestID: "login-button",
+})
+
+// Combine CSS selector with semantic filtering
+elem, err := vibe.Find(ctx, "form", &vibium.FindOptions{
+    Role: "textbox",
+    Label: "Password",
+})
+
+// Find all buttons
+buttons, err := vibe.FindAll(ctx, "", &vibium.FindOptions{Role: "button"})
+
+// Find element near another element
+elem, err := vibe.Find(ctx, "", &vibium.FindOptions{
+    Role: "button",
+    Near: "#username-input",
+})
+```
+
+### MCP Tool Usage
+
+Semantic selectors work with `click`, `type`, `fill`, and `press` tools:
+
+```json
+// Click a button by role and text
+{"name": "click", "arguments": {"role": "button", "text": "Sign In"}}
+
+// Fill input by label
+{"name": "fill", "arguments": {"label": "Email", "value": "user@example.com"}}
+
+// Type in input by placeholder
+{"name": "type", "arguments": {"placeholder": "Search...", "text": "query"}}
+
+// Click by data-testid
+{"name": "click", "arguments": {"testid": "submit-btn"}}
+```
+
+### Available Selectors
+
+| Selector | Description | Example |
+|----------|-------------|---------|
+| `role` | ARIA role | `button`, `textbox`, `link`, `checkbox` |
+| `text` | Visible text content | `"Submit"`, `"Learn more"` |
+| `label` | Associated label text | `"Email address"`, `"Password"` |
+| `placeholder` | Input placeholder | `"Enter email"` |
+| `testid` | `data-testid` attribute | `"login-btn"` |
+| `alt` | Image alt text | `"Company logo"` |
+| `title` | Element title attribute | `"Close dialog"` |
+| `xpath` | XPath expression | `"//button[@type='submit']"` |
+| `near` | CSS selector of nearby element | `"#username"` |
 
 ## Testing
 

@@ -97,6 +97,8 @@ err := vibe.WaitForLoad(ctx, "networkidle", nil)
 
 ## Finding Elements
 
+### By CSS Selector
+
 ```go
 // Find single element
 elem, err := vibe.Find(ctx, "button.submit", nil)
@@ -106,15 +108,8 @@ elem, err := vibe.Find(ctx, "button.submit", &vibium.FindOptions{
     Timeout: 10 * time.Second,
 })
 
-// Find with semantic selectors
-elem, err := vibe.Find(ctx, "button", &vibium.FindOptions{
-    Role:   "button",
-    Text:   "Submit",
-    TestID: "submit-btn",
-})
-
 // Find all matching elements
-elements, err := vibe.FindAll(ctx, "li.item")
+elements, err := vibe.FindAll(ctx, "li.item", nil)
 for _, elem := range elements {
     text, _ := elem.Text(ctx)
     fmt.Println(text)
@@ -122,6 +117,108 @@ for _, elem := range elements {
 
 // Must find (panics if not found)
 elem := vibe.MustFind(ctx, "button.submit")
+```
+
+### By Semantic Selectors
+
+Semantic selectors find elements by accessibility attributes instead of brittle CSS selectors. This is especially useful when:
+
+- Page structure may change but semantics remain stable
+- Working with AI assistants that describe elements by their purpose
+- Writing more maintainable tests
+
+```go
+// Find by ARIA role and text
+elem, err := vibe.Find(ctx, "", &vibium.FindOptions{
+    Role: "button",
+    Text: "Submit",
+})
+
+// Find by associated label (great for form inputs)
+elem, err := vibe.Find(ctx, "", &vibium.FindOptions{
+    Label: "Email address",
+})
+
+// Find by placeholder text
+elem, err := vibe.Find(ctx, "", &vibium.FindOptions{
+    Placeholder: "Enter your email",
+})
+
+// Find by data-testid (recommended for testing)
+elem, err := vibe.Find(ctx, "", &vibium.FindOptions{
+    TestID: "login-button",
+})
+
+// Find by image alt text
+elem, err := vibe.Find(ctx, "", &vibium.FindOptions{
+    Alt: "Company logo",
+})
+
+// Find by title attribute
+elem, err := vibe.Find(ctx, "", &vibium.FindOptions{
+    Title: "Close dialog",
+})
+
+// Find by XPath
+elem, err := vibe.Find(ctx, "", &vibium.FindOptions{
+    XPath: "//button[@type='submit']",
+})
+
+// Find element near another element
+elem, err := vibe.Find(ctx, "", &vibium.FindOptions{
+    Role: "button",
+    Near: "#username-input",
+})
+```
+
+### Combining Selectors
+
+You can combine CSS selectors with semantic filtering:
+
+```go
+// Find within a form, then filter by role and label
+elem, err := vibe.Find(ctx, "form.login", &vibium.FindOptions{
+    Role:  "textbox",
+    Label: "Password",
+})
+
+// Find all buttons within a specific container
+buttons, err := vibe.FindAll(ctx, ".dialog-footer", &vibium.FindOptions{
+    Role: "button",
+})
+```
+
+### Semantic Selector Reference
+
+| Selector | Description | Example Values |
+|----------|-------------|----------------|
+| `Role` | ARIA role | `"button"`, `"textbox"`, `"link"`, `"checkbox"`, `"menuitem"` |
+| `Text` | Visible text content | `"Submit"`, `"Learn more"`, `"Cancel"` |
+| `Label` | Associated label text | `"Email address"`, `"Password"`, `"Remember me"` |
+| `Placeholder` | Input placeholder | `"Enter email"`, `"Search..."` |
+| `TestID` | `data-testid` attribute | `"login-btn"`, `"user-avatar"` |
+| `Alt` | Image alt text | `"Company logo"`, `"Profile picture"` |
+| `Title` | Element title attribute | `"Close"`, `"More options"` |
+| `XPath` | XPath expression | `"//button[@type='submit']"` |
+| `Near` | CSS selector of nearby element | `"#username"`, `".form-group"` |
+
+### Scoped Element Search
+
+Find elements within a parent element:
+
+```go
+// Find a container first
+form, err := vibe.Find(ctx, "form.signup", nil)
+
+// Then find within it
+emailInput, err := form.Find(ctx, "", &vibium.FindOptions{
+    Label: "Email",
+})
+
+// Find all checkboxes within the form
+checkboxes, err := form.FindAll(ctx, "", &vibium.FindOptions{
+    Role: "checkbox",
+})
 ```
 
 ## Element Interactions
@@ -335,8 +432,44 @@ cookies, err := browserCtx.Cookies(ctx)
 err := browserCtx.SetCookies(ctx, cookies)
 err := browserCtx.ClearCookies(ctx)
 
-// Storage state
+// Storage state (cookies + localStorage only)
 state, err := browserCtx.StorageState(ctx)
+```
+
+## Storage State
+
+Full storage state management including cookies, localStorage, and sessionStorage:
+
+```go
+// Get complete storage state (cookies + localStorage + sessionStorage)
+state, err := vibe.StorageState(ctx)
+
+// Save to file for later restoration
+jsonBytes, _ := json.Marshal(state)
+os.WriteFile("storage.json", jsonBytes, 0600)
+
+// Restore storage state from JSON
+var savedState vibium.StorageState
+json.Unmarshal(jsonBytes, &savedState)
+err := vibe.SetStorageState(ctx, &savedState)
+
+// Clear all storage (cookies, localStorage, sessionStorage)
+err := vibe.ClearStorage(ctx)
+```
+
+The `StorageState` type contains:
+
+```go
+type StorageState struct {
+    Cookies []Cookie             `json:"cookies"`
+    Origins []StorageStateOrigin `json:"origins"`
+}
+
+type StorageStateOrigin struct {
+    Origin         string            `json:"origin"`
+    LocalStorage   map[string]string `json:"localStorage"`
+    SessionStorage map[string]string `json:"sessionStorage,omitempty"`
+}
 ```
 
 ## Emulation

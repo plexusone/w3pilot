@@ -57,6 +57,7 @@ nav:
     - MCP Tools: reference/mcp-tools.md
     - Script Schema: reference/script-schema.md
     - Error Types: reference/errors.md
+    - Feature Comparison: reference/comparison.md
   - Architecture:
     - Overview: architecture/overview.md
     - Product Requirements: architecture/prd.md

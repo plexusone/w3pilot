@@ -1,8 +1,39 @@
 # MCP Server
 
-The MCP (Model Context Protocol) server provides 75+ browser automation tools for AI assistants like Claude.
+The MCP (Model Context Protocol) server provides 80+ browser automation tools for AI assistants like Claude.
+
+## Installation
+
+The MCP server can be run two ways:
+
+1. **Standalone binary** (recommended for MCP clients):
+
+   ```bash
+   go install github.com/plexusone/vibium-go/cmd/vibium-mcp@latest
+   ```
+
+2. **Via the vibium CLI**:
+
+   ```bash
+   go install github.com/plexusone/vibium-go/cmd/vibium@latest
+   ```
 
 ## Starting the Server
+
+### Standalone Binary
+
+```bash
+# Default (headless browser)
+vibium-mcp
+
+# Visible browser (for debugging)
+vibium-mcp -headless=false
+
+# Custom timeout
+vibium-mcp -timeout=60s
+```
+
+### Via CLI
 
 ```bash
 # Default (visible browser)
@@ -15,24 +46,115 @@ vibium mcp --headless
 vibium mcp --timeout 60s
 ```
 
-## Configuration
+## Client Configuration
 
 ### Claude Desktop
 
-Edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) or `%APPDATA%\Claude\claude_desktop_config.json` (Windows):
+Edit the config file:
+
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 
 ```json
 {
   "mcpServers": {
     "vibium": {
-      "command": "vibium",
-      "args": ["mcp", "--headless"]
+      "command": "vibium-mcp",
+      "args": ["-headless=false"]
     }
   }
 }
 ```
 
-### Environment Variables
+### Claude Code (CLI)
+
+Add to your Claude Code MCP settings:
+
+```json
+{
+  "mcpServers": {
+    "vibium": {
+      "command": "vibium-mcp",
+      "args": ["-headless=false"]
+    }
+  }
+}
+```
+
+Or use the CLI command:
+
+```bash
+claude mcp add vibium vibium-mcp -- -headless=false
+```
+
+### Kiro CLI
+
+```bash
+kiro-cli mcp add --name vibium --command vibium-mcp --args "-headless=false"
+```
+
+### Cursor
+
+Edit `.cursor/mcp.json` in your project or home directory:
+
+```json
+{
+  "mcpServers": {
+    "vibium": {
+      "command": "vibium-mcp",
+      "args": ["-headless=false"]
+    }
+  }
+}
+```
+
+### Windsurf
+
+Edit the MCP configuration in Windsurf settings:
+
+```json
+{
+  "mcpServers": {
+    "vibium": {
+      "command": "vibium-mcp",
+      "args": ["-headless=false"]
+    }
+  }
+}
+```
+
+### Generic MCP Client
+
+For any MCP-compatible client, use:
+
+- **Command**: `vibium-mcp`
+- **Args**: `["-headless=false"]` (visible browser) or `[]` (headless)
+
+## Command-Line Options
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `-headless` | `true` | Run browser without GUI |
+| `-project` | `"vibium-tests"` | Project name for reports |
+| `-timeout` | `30s` | Default timeout for operations |
+| `-init-script` | | JavaScript file to inject before page scripts (repeatable) |
+
+### Init Scripts
+
+Inject JavaScript that runs before any page scripts on every navigation:
+
+```bash
+vibium-mcp -init-script=./mock-api.js -init-script=./test-helpers.js
+```
+
+Use cases:
+
+- Mock APIs before page loads
+- Disable analytics/tracking
+- Inject test utilities
+- Set up authentication tokens
+
+## Environment Variables
 
 | Variable | Description |
 |----------|-------------|
@@ -133,6 +255,23 @@ Edit `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) o
 | `stop_recording` | End recording |
 | `export_script` | Export as JSON |
 | `recording_status` | Check status |
+
+### Tracing
+
+| Tool | Description |
+|------|-------------|
+| `start_trace` | Start trace with screenshots/snapshots |
+| `stop_trace` | Stop and save/return trace ZIP |
+| `start_trace_chunk` | Start a trace segment |
+| `stop_trace_chunk` | Stop trace segment |
+| `start_trace_group` | Group actions logically |
+| `stop_trace_group` | End action group |
+
+### Init Scripts
+
+| Tool | Description |
+|------|-------------|
+| `add_init_script` | Inject JS before page scripts |
 
 ### Assertions
 

@@ -708,6 +708,18 @@ func (s *Server) registerTools() {
 		Description: "Stop the current trace group.",
 	}, s.handleStopTraceGroup)
 
+	// === Video Recording ===
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "start_video",
+		Description: "Start recording video of the browser page. Video is saved when stop_video is called.",
+	}, s.handleStartVideo)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "stop_video",
+		Description: "Stop video recording and return the path to the video file.",
+	}, s.handleStopVideo)
+
 	// === Init Scripts ===
 
 	mcp.AddTool(s.mcpServer, &mcp.Tool{

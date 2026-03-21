@@ -13,9 +13,19 @@ Reference: [Feature Comparison](docs/reference/comparison.md)
 
 ## Open Tasks
 
-### Tests - High Priority
+### SDK Methods - Low Priority
 
-Missing tests for implemented features:
+- [ ] `Page.MainFrame()` - returns page itself (for API compatibility)
+- [ ] `Element.Highlight()` - visual debugging overlay (Java-only feature)
+- [ ] Accessibility tree options (interestingOnly, root)
+
+---
+
+## Completed - v0.5.0 (2026-03-21)
+
+### Tests
+
+Integration tests for implemented features:
 
 - [x] Media emulation tests - `integration/media_emulation_test.go`
 - [x] LocalStorage MCP tools tests - `integration/storage_tools_test.go`
@@ -30,7 +40,7 @@ Missing tests for implemented features:
 - [x] Testing tools tests (`verify_value`, `verify_list_visible`, `generate_locator`) - `integration/verify_test.go`
 - [x] Page methods tests (`Scroll`, `SetExtraHTTPHeaders`) - `integration/page_methods_test.go`
 
-### Event Listeners - High Priority
+### Event Listeners
 
 Real-time event callbacks for SDK users:
 
@@ -46,7 +56,7 @@ Real-time event callbacks for SDK users:
 - [x] `Vibe.OnDownload()` - download event listener
 - [x] BiDi client event dispatch infrastructure (`bidi.go`)
 
-### Page Events - Medium Priority
+### Page Events
 
 Browser-level event listeners:
 
@@ -54,7 +64,7 @@ Browser-level event listeners:
 - [x] `Vibe.OnPopup()` - popup window listener
 - [x] `Vibe.RemoveAllListeners()` - cleanup all listeners
 
-### WebSocket Monitoring - Medium Priority
+### WebSocket Monitoring
 
 WebSocket connection observation:
 
@@ -64,19 +74,14 @@ WebSocket connection observation:
 - [x] `WebSocketInfo.OnMessage()` - message listener
 - [x] `WebSocketInfo.OnClose()` - close listener
 
-### Video Recording - Medium Priority
+### Video Recording
 
 Screen recording for debugging:
 
-- [ ] `start_video` MCP tool (size options)
-- [ ] `stop_video` MCP tool () -> file path
-- [ ] SDK `Vibe.StartVideo()` / `Vibe.StopVideo()` methods
-
-### SDK Methods - Low Priority
-
-- [ ] `Page.MainFrame()` - returns page itself (for API compatibility)
-- [ ] `Element.Highlight()` - visual debugging overlay (Java-only feature)
-- [ ] Accessibility tree options (interestingOnly, root)
+- [x] `start_video` MCP tool (size options)
+- [x] `stop_video` MCP tool () -> file path
+- [x] SDK `Vibe.StartVideo()` / `Vibe.StopVideo()` methods
+- [x] `Video.Path()` / `Video.Delete()` methods
 
 ---
 
@@ -211,6 +216,5 @@ Per-context initialization scripts that run before page scripts.
 
 ## Notes
 
-- Tests are the highest priority for v0.5.0 - many features lack test coverage
-- Event listeners would complete the SDK for real-time monitoring use cases
-- Video recording is useful for debugging but lower priority than tests
+- Only low-priority SDK methods remain (MainFrame, Highlight, accessibility options)
+- These are primarily for API compatibility with other Vibium clients

@@ -133,12 +133,13 @@ type FrameInfo struct {
 	Name string `json:"name"`
 }
 
-// EmulateMediaOptions configures media emulation.
+// EmulateMediaOptions configures media emulation for accessibility testing.
 type EmulateMediaOptions struct {
 	Media         string // "screen", "print", or ""
 	ColorScheme   string // "light", "dark", "no-preference", or ""
 	ReducedMotion string // "reduce", "no-preference", or ""
 	ForcedColors  string // "active", "none", or ""
+	Contrast      string // "more", "less", "no-preference", or ""
 }
 
 // Geolocation represents geographic coordinates.
@@ -175,16 +176,17 @@ type SetCookieParam struct {
 	PartitionKey string  `json:"partitionKey,omitempty"`
 }
 
-// StorageState represents browser storage state including cookies and localStorage.
+// StorageState represents browser storage state including cookies, localStorage, and sessionStorage.
 type StorageState struct {
 	Cookies []Cookie             `json:"cookies"`
 	Origins []StorageStateOrigin `json:"origins"`
 }
 
-// StorageStateOrigin represents localStorage for an origin.
+// StorageStateOrigin represents storage for an origin.
 type StorageStateOrigin struct {
-	Origin       string            `json:"origin"`
-	LocalStorage map[string]string `json:"localStorage"`
+	Origin         string            `json:"origin"`
+	LocalStorage   map[string]string `json:"localStorage"`
+	SessionStorage map[string]string `json:"sessionStorage,omitempty"`
 }
 
 // ActionOptions configures action behavior (click, type).

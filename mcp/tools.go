@@ -15,8 +15,38 @@ import (
 
 // Tool input/output types
 
+// SemanticSelector contains optional semantic selector fields for finding elements
+// by accessibility attributes instead of just CSS selectors.
+type SemanticSelector struct {
+	Role        string `json:"role,omitempty" jsonschema:"ARIA role (e.g. button, textbox, link)"`
+	Text        string `json:"text,omitempty" jsonschema:"Element text content"`
+	Label       string `json:"label,omitempty" jsonschema:"Associated label text"`
+	Placeholder string `json:"placeholder,omitempty" jsonschema:"Input placeholder text"`
+	TestID      string `json:"testid,omitempty" jsonschema:"data-testid attribute value"`
+	Alt         string `json:"alt,omitempty" jsonschema:"Image alt text"`
+	Title       string `json:"title,omitempty" jsonschema:"Element title attribute"`
+	XPath       string `json:"xpath,omitempty" jsonschema:"XPath expression"`
+	Near        string `json:"near,omitempty" jsonschema:"CSS selector of nearby element"`
+}
+
+// toFindOptions converts semantic selector fields to vibium.FindOptions.
+func (s *SemanticSelector) toFindOptions(timeout time.Duration) *vibium.FindOptions {
+	return &vibium.FindOptions{
+		Timeout:     timeout,
+		Role:        s.Role,
+		Text:        s.Text,
+		Label:       s.Label,
+		Placeholder: s.Placeholder,
+		TestID:      s.TestID,
+		Alt:         s.Alt,
+		Title:       s.Title,
+		XPath:       s.XPath,
+		Near:        s.Near,
+	}
+}
+
 type BrowserLaunchInput struct {
-	Headless bool `json:"headless" jsonschema:"description=Run browser without GUI (default: true)"`
+	Headless bool `json:"headless" jsonschema:"Run browser without GUI (default: true)"`
 }
 
 type BrowserLaunchOutput struct {
@@ -100,7 +130,7 @@ func (s *Server) handleBrowserQuit(
 }
 
 type NavigateInput struct {
-	URL string `json:"url" jsonschema:"description=The URL to navigate to,required"`
+	URL string `json:"url" jsonschema:"The URL to navigate to,required"`
 }
 
 type NavigateOutput struct {
@@ -162,8 +192,9 @@ func (s *Server) handleNavigate(
 }
 
 type ClickInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element to click,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element to click (can be empty if using semantic selectors)"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
+	SemanticSelector
 }
 
 type ClickOutput struct {
@@ -186,7 +217,8 @@ func (s *Server) handleClick(
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
 	start := time.Now()
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	findOpts := input.SemanticSelector.toFindOptions(timeout)
+	elem, err := vibe.Find(ctx, input.Selector, findOpts)
 
 	result := report.StepResult{
 		ID:     s.session.NextStepID("click"),
@@ -238,9 +270,10 @@ func (s *Server) handleClick(
 }
 
 type TypeInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the input element,required"`
-	Text      string `json:"text" jsonschema:"description=Text to type,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the input element (can be empty if using semantic selectors)"`
+	Text      string `json:"text" jsonschema:"Text to type,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
+	SemanticSelector
 }
 
 type TypeOutput struct {
@@ -263,7 +296,8 @@ func (s *Server) handleType(
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
 	start := time.Now()
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	findOpts := input.SemanticSelector.toFindOptions(timeout)
+	elem, err := vibe.Find(ctx, input.Selector, findOpts)
 
 	result := report.StepResult{
 		ID:     s.session.NextStepID("type"),
@@ -315,8 +349,8 @@ func (s *Server) handleType(
 }
 
 type GetTextInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type GetTextOutput struct {
@@ -386,8 +420,8 @@ func (s *Server) handleGetText(
 }
 
 type ScreenshotInput struct {
-	Format string `json:"format" jsonschema:"description=Output format: base64 (default) or file,enum=base64,enum=file"`
-	Path   string `json:"path" jsonschema:"description=File path (required if format is file)"`
+	Format string `json:"format" jsonschema:"Output format: base64 (default) or file,enum=base64,enum=file"`
+	Path   string `json:"path" jsonschema:"File path (required if format is file)"`
 }
 
 type ScreenshotOutput struct {
@@ -495,7 +529,7 @@ func (s *Server) handleGetURL(
 }
 
 type EvaluateInput struct {
-	Script string `json:"script" jsonschema:"description=JavaScript to execute,required"`
+	Script string `json:"script" jsonschema:"JavaScript to execute,required"`
 }
 
 type EvaluateOutput struct {
@@ -545,8 +579,8 @@ func (s *Server) handleEvaluate(
 }
 
 type AssertTextInput struct {
-	Text     string `json:"text" jsonschema:"description=Text to search for,required"`
-	Selector string `json:"selector" jsonschema:"description=Optional: limit search to element matching selector"`
+	Text     string `json:"text" jsonschema:"Text to search for,required"`
+	Selector string `json:"selector" jsonschema:"Optional: limit search to element matching selector"`
 }
 
 type AssertTextOutput struct {
@@ -622,8 +656,8 @@ func (s *Server) handleAssertText(
 }
 
 type AssertElementInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type AssertElementOutput struct {
@@ -681,7 +715,7 @@ func (s *Server) handleAssertElement(
 }
 
 type GetTestReportInput struct {
-	Format string `json:"format" jsonschema:"description=Report format: box (terminal) or diagnostic (full JSON) or json (multi-agent-spec),enum=box,enum=diagnostic,enum=json"`
+	Format string `json:"format" jsonschema:"Report format: box (terminal) or diagnostic (full JSON) or json (multi-agent-spec),enum=box,enum=diagnostic,enum=json"`
 }
 
 type GetTestReportOutput struct {
@@ -745,7 +779,7 @@ func (s *Server) handleResetSession(
 }
 
 type SetTargetInput struct {
-	Target string `json:"target" jsonschema:"description=Test target description,required"`
+	Target string `json:"target" jsonschema:"Test target description,required"`
 }
 
 type SetTargetOutput struct {

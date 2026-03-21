@@ -12,7 +12,7 @@ import (
 // KeyboardPress tool
 
 type KeyboardPressInput struct {
-	Key string `json:"key" jsonschema:"description=Key to press (e.g. Enter Tab ArrowDown),required"`
+	Key string `json:"key" jsonschema:"Key to press (e.g. Enter Tab ArrowDown),required"`
 }
 
 type KeyboardPressOutput struct {
@@ -45,7 +45,7 @@ func (s *Server) handleKeyboardPress(
 // KeyboardDown tool
 
 type KeyboardDownInput struct {
-	Key string `json:"key" jsonschema:"description=Key to hold down,required"`
+	Key string `json:"key" jsonschema:"Key to hold down,required"`
 }
 
 type KeyboardDownOutput struct {
@@ -78,7 +78,7 @@ func (s *Server) handleKeyboardDown(
 // KeyboardUp tool
 
 type KeyboardUpInput struct {
-	Key string `json:"key" jsonschema:"description=Key to release,required"`
+	Key string `json:"key" jsonschema:"Key to release,required"`
 }
 
 type KeyboardUpOutput struct {
@@ -111,7 +111,7 @@ func (s *Server) handleKeyboardUp(
 // KeyboardType tool
 
 type KeyboardTypeInput struct {
-	Text string `json:"text" jsonschema:"description=Text to type,required"`
+	Text string `json:"text" jsonschema:"Text to type,required"`
 }
 
 type KeyboardTypeOutput struct {
@@ -144,10 +144,10 @@ func (s *Server) handleKeyboardType(
 // MouseClick tool
 
 type MouseClickInput struct {
-	X          float64 `json:"x" jsonschema:"description=X coordinate,required"`
-	Y          float64 `json:"y" jsonschema:"description=Y coordinate,required"`
-	Button     string  `json:"button" jsonschema:"description=Mouse button: left right middle"`
-	ClickCount int     `json:"click_count" jsonschema:"description=Number of clicks (default: 1)"`
+	X          float64 `json:"x" jsonschema:"X coordinate,required"`
+	Y          float64 `json:"y" jsonschema:"Y coordinate,required"`
+	Button     string  `json:"button" jsonschema:"Mouse button: left right middle"`
+	ClickCount int     `json:"click_count" jsonschema:"Number of clicks (default: 1)"`
 }
 
 type MouseClickOutput struct {
@@ -188,8 +188,8 @@ func (s *Server) handleMouseClick(
 // MouseMove tool
 
 type MouseMoveInput struct {
-	X float64 `json:"x" jsonschema:"description=X coordinate,required"`
-	Y float64 `json:"y" jsonschema:"description=Y coordinate,required"`
+	X float64 `json:"x" jsonschema:"X coordinate,required"`
+	Y float64 `json:"y" jsonschema:"Y coordinate,required"`
 }
 
 type MouseMoveOutput struct {
@@ -222,7 +222,7 @@ func (s *Server) handleMouseMove(
 // MouseDown tool
 
 type MouseDownInput struct {
-	Button string `json:"button" jsonschema:"description=Mouse button: left right middle"`
+	Button string `json:"button" jsonschema:"Mouse button: left right middle"`
 }
 
 type MouseDownOutput struct {
@@ -256,7 +256,7 @@ func (s *Server) handleMouseDown(
 // MouseUp tool
 
 type MouseUpInput struct {
-	Button string `json:"button" jsonschema:"description=Mouse button: left right middle"`
+	Button string `json:"button" jsonschema:"Mouse button: left right middle"`
 }
 
 type MouseUpOutput struct {
@@ -290,8 +290,8 @@ func (s *Server) handleMouseUp(
 // MouseWheel tool
 
 type MouseWheelInput struct {
-	DeltaX float64 `json:"delta_x" jsonschema:"description=Horizontal scroll amount"`
-	DeltaY float64 `json:"delta_y" jsonschema:"description=Vertical scroll amount"`
+	DeltaX float64 `json:"delta_x" jsonschema:"Horizontal scroll amount"`
+	DeltaY float64 `json:"delta_y" jsonschema:"Vertical scroll amount"`
 }
 
 type MouseWheelOutput struct {
@@ -324,8 +324,8 @@ func (s *Server) handleMouseWheel(
 // TouchTap tool
 
 type TouchTapInput struct {
-	X float64 `json:"x" jsonschema:"description=X coordinate,required"`
-	Y float64 `json:"y" jsonschema:"description=Y coordinate,required"`
+	X float64 `json:"x" jsonschema:"X coordinate,required"`
+	Y float64 `json:"y" jsonschema:"Y coordinate,required"`
 }
 
 type TouchTapOutput struct {
@@ -358,10 +358,10 @@ func (s *Server) handleTouchTap(
 // TouchSwipe tool
 
 type TouchSwipeInput struct {
-	StartX float64 `json:"start_x" jsonschema:"description=Starting X coordinate,required"`
-	StartY float64 `json:"start_y" jsonschema:"description=Starting Y coordinate,required"`
-	EndX   float64 `json:"end_x" jsonschema:"description=Ending X coordinate,required"`
-	EndY   float64 `json:"end_y" jsonschema:"description=Ending Y coordinate,required"`
+	StartX float64 `json:"start_x" jsonschema:"Starting X coordinate,required"`
+	StartY float64 `json:"start_y" jsonschema:"Starting Y coordinate,required"`
+	EndX   float64 `json:"end_x" jsonschema:"Ending X coordinate,required"`
+	EndY   float64 `json:"end_y" jsonschema:"Ending Y coordinate,required"`
 }
 
 type TouchSwipeOutput struct {
@@ -389,4 +389,76 @@ func (s *Server) handleTouchSwipe(
 	}
 
 	return nil, TouchSwipeOutput{Message: fmt.Sprintf("Swiped from (%f, %f) to (%f, %f)", input.StartX, input.StartY, input.EndX, input.EndY)}, nil
+}
+
+// MouseDrag tool
+
+type MouseDragInput struct {
+	StartX float64 `json:"start_x" jsonschema:"Starting X coordinate,required"`
+	StartY float64 `json:"start_y" jsonschema:"Starting Y coordinate,required"`
+	EndX   float64 `json:"end_x" jsonschema:"Ending X coordinate,required"`
+	EndY   float64 `json:"end_y" jsonschema:"Ending Y coordinate,required"`
+	Steps  int     `json:"steps,omitempty" jsonschema:"Number of intermediate steps (default: 10)"`
+}
+
+type MouseDragOutput struct {
+	Message string `json:"message"`
+}
+
+func (s *Server) handleMouseDrag(
+	ctx context.Context,
+	req *mcp.CallToolRequest,
+	input MouseDragInput,
+) (*mcp.CallToolResult, MouseDragOutput, error) {
+	vibe, err := s.session.Vibe(ctx)
+	if err != nil {
+		return nil, MouseDragOutput{}, fmt.Errorf("browser not available: %w", err)
+	}
+
+	mouse, err := vibe.Mouse(ctx)
+	if err != nil {
+		return nil, MouseDragOutput{}, fmt.Errorf("mouse not available: %w", err)
+	}
+
+	steps := input.Steps
+	if steps == 0 {
+		steps = 10
+	}
+
+	// Move to start position
+	err = mouse.Move(ctx, input.StartX, input.StartY)
+	if err != nil {
+		return nil, MouseDragOutput{}, fmt.Errorf("mouse move failed: %w", err)
+	}
+
+	// Press mouse button
+	err = mouse.Down(ctx, "left")
+	if err != nil {
+		return nil, MouseDragOutput{}, fmt.Errorf("mouse down failed: %w", err)
+	}
+
+	// Move to end position in steps
+	deltaX := (input.EndX - input.StartX) / float64(steps)
+	deltaY := (input.EndY - input.StartY) / float64(steps)
+
+	for i := 1; i <= steps; i++ {
+		x := input.StartX + deltaX*float64(i)
+		y := input.StartY + deltaY*float64(i)
+		err = mouse.Move(ctx, x, y)
+		if err != nil {
+			// Release button on error
+			_ = mouse.Up(ctx, "left")
+			return nil, MouseDragOutput{}, fmt.Errorf("mouse move failed: %w", err)
+		}
+	}
+
+	// Release mouse button
+	err = mouse.Up(ctx, "left")
+	if err != nil {
+		return nil, MouseDragOutput{}, fmt.Errorf("mouse up failed: %w", err)
+	}
+
+	return nil, MouseDragOutput{
+		Message: fmt.Sprintf("Dragged from (%.0f, %.0f) to (%.0f, %.0f)", input.StartX, input.StartY, input.EndX, input.EndY),
+	}, nil
 }

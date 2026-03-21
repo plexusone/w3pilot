@@ -468,6 +468,28 @@ func (e *Element) InnerHTML(ctx context.Context) (string, error) {
 	return resp.HTML, nil
 }
 
+// HTML returns the outerHTML of the element (including the element itself).
+func (e *Element) HTML(ctx context.Context) (string, error) {
+	params := map[string]interface{}{
+		"context":  e.context,
+		"selector": e.selector,
+	}
+
+	result, err := e.client.Send(ctx, "vibium:el.outerHTML", params)
+	if err != nil {
+		return "", err
+	}
+
+	var resp struct {
+		HTML string `json:"html"`
+	}
+	if err := json.Unmarshal(result, &resp); err != nil {
+		return "", err
+	}
+
+	return resp.HTML, nil
+}
+
 // InnerText returns the rendered text content of the element.
 func (e *Element) InnerText(ctx context.Context) (string, error) {
 	params := map[string]interface{}{
@@ -792,6 +814,146 @@ func (e *Element) Eval(ctx context.Context, fn string, args ...interface{}) (int
 	}
 
 	return resp.Value, nil
+}
+
+// Find finds a child element within this element by CSS selector or semantic options.
+func (e *Element) Find(ctx context.Context, selector string, opts *FindOptions) (*Element, error) {
+	timeout := DefaultTimeout
+	if opts != nil && opts.Timeout > 0 {
+		timeout = opts.Timeout
+	}
+
+	ctx, cancel := context.WithTimeout(ctx, timeout)
+	defer cancel()
+
+	params := map[string]interface{}{
+		"context":  e.context,
+		"selector": selector,
+		"root":     e.selector, // Scope to this element
+		"timeout":  timeout.Milliseconds(),
+	}
+
+	// Add semantic selector options if present
+	if opts != nil {
+		if opts.Role != "" {
+			params["role"] = opts.Role
+		}
+		if opts.Text != "" {
+			params["text"] = opts.Text
+		}
+		if opts.Label != "" {
+			params["label"] = opts.Label
+		}
+		if opts.Placeholder != "" {
+			params["placeholder"] = opts.Placeholder
+		}
+		if opts.TestID != "" {
+			params["testid"] = opts.TestID
+		}
+		if opts.Alt != "" {
+			params["alt"] = opts.Alt
+		}
+		if opts.Title != "" {
+			params["title"] = opts.Title
+		}
+		if opts.XPath != "" {
+			params["xpath"] = opts.XPath
+		}
+		if opts.Near != "" {
+			params["near"] = opts.Near
+		}
+	}
+
+	result, err := e.client.Send(ctx, "vibium:find", params)
+	if err != nil {
+		return nil, err
+	}
+
+	var info ElementInfo
+	if err := json.Unmarshal(result, &info); err != nil {
+		return nil, err
+	}
+
+	return NewElement(e.client, e.context, selector, info), nil
+}
+
+// FindAll finds all child elements within this element by CSS selector or semantic options.
+func (e *Element) FindAll(ctx context.Context, selector string, opts *FindOptions) ([]*Element, error) {
+	timeout := DefaultTimeout
+	if opts != nil && opts.Timeout > 0 {
+		timeout = opts.Timeout
+	}
+
+	params := map[string]interface{}{
+		"context":  e.context,
+		"selector": selector,
+		"root":     e.selector, // Scope to this element
+		"timeout":  timeout.Milliseconds(),
+	}
+
+	// Add semantic selector options if present
+	if opts != nil {
+		if opts.Role != "" {
+			params["role"] = opts.Role
+		}
+		if opts.Text != "" {
+			params["text"] = opts.Text
+		}
+		if opts.Label != "" {
+			params["label"] = opts.Label
+		}
+		if opts.Placeholder != "" {
+			params["placeholder"] = opts.Placeholder
+		}
+		if opts.TestID != "" {
+			params["testid"] = opts.TestID
+		}
+		if opts.Alt != "" {
+			params["alt"] = opts.Alt
+		}
+		if opts.Title != "" {
+			params["title"] = opts.Title
+		}
+		if opts.XPath != "" {
+			params["xpath"] = opts.XPath
+		}
+		if opts.Near != "" {
+			params["near"] = opts.Near
+		}
+	}
+
+	result, err := e.client.Send(ctx, "vibium:findAll", params)
+	if err != nil {
+		return nil, err
+	}
+
+	// Parse the response containing element data
+	var items []struct {
+		Index    int         `json:"index"`
+		Selector string      `json:"selector"`
+		Tag      string      `json:"tag"`
+		Text     string      `json:"text"`
+		Box      BoundingBox `json:"box"`
+	}
+	if err := json.Unmarshal(result, &items); err != nil {
+		return nil, err
+	}
+
+	elements := make([]*Element, len(items))
+	for i, item := range items {
+		elemSelector := item.Selector
+		if elemSelector == "" {
+			elemSelector = selector
+		}
+		info := ElementInfo{
+			Tag:  item.Tag,
+			Text: item.Text,
+			Box:  item.Box,
+		}
+		elements[i] = NewElement(e.client, e.context, elemSelector, info)
+	}
+
+	return elements, nil
 }
 
 // decodeBase64 decodes a base64 string to bytes.

@@ -10,9 +10,9 @@ import (
 // StartRecording tool
 
 type StartRecordingInput struct {
-	Name        string `json:"name,omitempty" jsonschema:"description=Name for the recorded script"`
-	Description string `json:"description,omitempty" jsonschema:"description=Description of what the script tests"`
-	BaseURL     string `json:"baseUrl,omitempty" jsonschema:"description=Base URL for relative URLs in the script"`
+	Name        string `json:"name,omitempty" jsonschema:"Name for the recorded script"`
+	Description string `json:"description,omitempty" jsonschema:"Description of what the script tests"`
+	BaseURL     string `json:"baseUrl,omitempty" jsonschema:"Base URL for relative URLs in the script"`
 }
 
 type StartRecordingOutput struct {
@@ -76,7 +76,7 @@ func (s *Server) handleStopRecording(
 // ExportScript tool
 
 type ExportScriptInput struct {
-	Format string `json:"format,omitempty" jsonschema:"description=Output format: json or yaml (default: json),enum=json,enum=yaml"`
+	Format string `json:"format,omitempty" jsonschema:"Output format: json or yaml (default: json),enum=json,enum=yaml"`
 }
 
 type ExportScriptOutput struct {

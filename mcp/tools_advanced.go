@@ -15,9 +15,9 @@ import (
 // DragTo tool
 
 type DragToInput struct {
-	SourceSelector string `json:"source_selector" jsonschema:"description=CSS selector for the element to drag,required"`
-	TargetSelector string `json:"target_selector" jsonschema:"description=CSS selector for the drop target,required"`
-	TimeoutMS      int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	SourceSelector string `json:"source_selector" jsonschema:"CSS selector for the element to drag,required"`
+	TargetSelector string `json:"target_selector" jsonschema:"CSS selector for the drop target,required"`
+	TimeoutMS      int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type DragToOutput struct {
@@ -80,8 +80,8 @@ func (s *Server) handleDragTo(
 // Tap tool
 
 type TapInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type TapOutput struct {
@@ -119,10 +119,10 @@ func (s *Server) handleTap(
 // DispatchEvent tool
 
 type DispatchEventInput struct {
-	Selector  string         `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	EventType string         `json:"event_type" jsonschema:"description=Event type (e.g. click focus blur),required"`
-	EventInit map[string]any `json:"event_init" jsonschema:"description=Event initialization options"`
-	TimeoutMS int            `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string         `json:"selector" jsonschema:"CSS selector for the element,required"`
+	EventType string         `json:"event_type" jsonschema:"Event type (e.g. click focus blur),required"`
+	EventInit map[string]any `json:"event_init" jsonschema:"Event initialization options"`
+	TimeoutMS int            `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type DispatchEventOutput struct {
@@ -160,9 +160,9 @@ func (s *Server) handleDispatchEvent(
 // SetFiles tool
 
 type SetFilesInput struct {
-	Selector  string   `json:"selector" jsonschema:"description=CSS selector for the file input,required"`
-	Files     []string `json:"files" jsonschema:"description=File paths to set,required"`
-	TimeoutMS int      `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string   `json:"selector" jsonschema:"CSS selector for the file input,required"`
+	Files     []string `json:"files" jsonschema:"File paths to set,required"`
+	TimeoutMS int      `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type SetFilesOutput struct {
@@ -200,8 +200,8 @@ func (s *Server) handleSetFiles(
 // ElementScreenshot tool
 
 type ElementScreenshotInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type ElementScreenshotOutput struct {
@@ -239,9 +239,9 @@ func (s *Server) handleElementScreenshot(
 // ElementEval tool
 
 type ElementEvalInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	Function  string `json:"function" jsonschema:"description=JavaScript function (receives element as first arg),required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	Function  string `json:"function" jsonschema:"JavaScript function (receives element as first arg),required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type ElementEvalOutput struct {

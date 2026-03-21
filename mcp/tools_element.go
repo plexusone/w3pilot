@@ -36,8 +36,8 @@ func (s *Server) elementOp(ctx context.Context, selector string, timeoutMS int, 
 // GetValue tool
 
 type GetValueInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the input element,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the input element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type GetValueOutput struct {
@@ -61,8 +61,8 @@ func (s *Server) handleGetValue(
 // GetInnerHTML tool
 
 type GetInnerHTMLInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type GetInnerHTMLOutput struct {
@@ -83,11 +83,36 @@ func (s *Server) handleGetInnerHTML(
 	return nil, GetInnerHTMLOutput{HTML: result.(string)}, nil
 }
 
+// GetOuterHTML tool
+
+type GetOuterHTMLInput struct {
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
+}
+
+type GetOuterHTMLOutput struct {
+	HTML string `json:"html"`
+}
+
+func (s *Server) handleGetOuterHTML(
+	ctx context.Context,
+	req *mcp.CallToolRequest,
+	input GetOuterHTMLInput,
+) (*mcp.CallToolResult, GetOuterHTMLOutput, error) {
+	result, err := s.elementOp(ctx, input.Selector, input.TimeoutMS, func(elem *vibium.Element) (any, error) {
+		return elem.HTML(ctx)
+	})
+	if err != nil {
+		return nil, GetOuterHTMLOutput{}, err
+	}
+	return nil, GetOuterHTMLOutput{HTML: result.(string)}, nil
+}
+
 // GetInnerText tool
 
 type GetInnerTextInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type GetInnerTextOutput struct {
@@ -111,9 +136,9 @@ func (s *Server) handleGetInnerText(
 // GetAttribute tool
 
 type GetAttributeInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	Name      string `json:"name" jsonschema:"description=Attribute name,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	Name      string `json:"name" jsonschema:"Attribute name,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type GetAttributeOutput struct {
@@ -137,8 +162,8 @@ func (s *Server) handleGetAttribute(
 // IsVisible tool
 
 type IsVisibleInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type IsVisibleOutput struct {
@@ -176,8 +201,8 @@ func (s *Server) handleIsVisible(
 // IsHidden tool
 
 type IsHiddenInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type IsHiddenOutput struct {
@@ -215,8 +240,8 @@ func (s *Server) handleIsHidden(
 // IsEnabled tool
 
 type IsEnabledInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type IsEnabledOutput struct {
@@ -240,8 +265,8 @@ func (s *Server) handleIsEnabled(
 // IsChecked tool
 
 type IsCheckedInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the checkbox/radio,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the checkbox/radio,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type IsCheckedOutput struct {
@@ -265,8 +290,8 @@ func (s *Server) handleIsChecked(
 // IsEditable tool
 
 type IsEditableInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type IsEditableOutput struct {
@@ -290,8 +315,8 @@ func (s *Server) handleIsEditable(
 // GetRole tool
 
 type GetRoleInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type GetRoleOutput struct {
@@ -315,8 +340,8 @@ func (s *Server) handleGetRole(
 // GetLabel tool
 
 type GetLabelInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type GetLabelOutput struct {
@@ -340,9 +365,9 @@ func (s *Server) handleGetLabel(
 // WaitUntil tool
 
 type WaitUntilInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	State     string `json:"state" jsonschema:"description=State to wait for: attached detached visible hidden,required,enum=attached,enum=detached,enum=visible,enum=hidden"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 30000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	State     string `json:"state" jsonschema:"State to wait for: attached detached visible hidden,required,enum=attached,enum=detached,enum=visible,enum=hidden"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 30000)"`
 }
 
 type WaitUntilOutput struct {
@@ -385,8 +410,8 @@ func (s *Server) handleWaitUntil(
 // GetBoundingBox tool
 
 type GetBoundingBoxInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type GetBoundingBoxOutput struct {

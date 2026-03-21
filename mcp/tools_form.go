@@ -15,9 +15,10 @@ import (
 // Fill tool
 
 type FillInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the input element,required"`
-	Value     string `json:"value" jsonschema:"description=Value to fill,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the input element (can be empty if using semantic selectors)"`
+	Value     string `json:"value" jsonschema:"Value to fill,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
+	SemanticSelector
 }
 
 type FillOutput struct {
@@ -40,7 +41,8 @@ func (s *Server) handleFill(
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
 	start := time.Now()
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	findOpts := input.SemanticSelector.toFindOptions(timeout)
+	elem, err := vibe.Find(ctx, input.Selector, findOpts)
 
 	result := report.StepResult{
 		ID:     s.session.NextStepID("fill"),
@@ -93,9 +95,10 @@ func (s *Server) handleFill(
 // Press tool
 
 type PressInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	Key       string `json:"key" jsonschema:"description=Key to press (e.g. Enter Tab ArrowDown),required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element (can be empty if using semantic selectors)"`
+	Key       string `json:"key" jsonschema:"Key to press (e.g. Enter Tab ArrowDown),required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
+	SemanticSelector
 }
 
 type PressOutput struct {
@@ -118,7 +121,8 @@ func (s *Server) handlePress(
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
 	start := time.Now()
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	findOpts := input.SemanticSelector.toFindOptions(timeout)
+	elem, err := vibe.Find(ctx, input.Selector, findOpts)
 
 	result := report.StepResult{
 		ID:     s.session.NextStepID("press"),
@@ -167,8 +171,8 @@ func (s *Server) handlePress(
 // Clear tool
 
 type ClearInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the input element,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the input element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type ClearOutput struct {
@@ -240,8 +244,8 @@ func (s *Server) handleClear(
 // Check tool
 
 type CheckInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the checkbox,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the checkbox,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type CheckOutput struct {
@@ -313,8 +317,8 @@ func (s *Server) handleCheck(
 // Uncheck tool
 
 type UncheckInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the checkbox,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the checkbox,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type UncheckOutput struct {
@@ -386,11 +390,11 @@ func (s *Server) handleUncheck(
 // SelectOption tool
 
 type SelectOptionInput struct {
-	Selector  string   `json:"selector" jsonschema:"description=CSS selector for the select element,required"`
-	Values    []string `json:"values" jsonschema:"description=Option values to select"`
-	Labels    []string `json:"labels" jsonschema:"description=Option labels to select"`
-	Indexes   []int    `json:"indexes" jsonschema:"description=Option indexes to select (0-based)"`
-	TimeoutMS int      `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string   `json:"selector" jsonschema:"CSS selector for the select element,required"`
+	Values    []string `json:"values" jsonschema:"Option values to select"`
+	Labels    []string `json:"labels" jsonschema:"Option labels to select"`
+	Indexes   []int    `json:"indexes" jsonschema:"Option indexes to select (0-based)"`
+	TimeoutMS int      `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type SelectOptionOutput struct {
@@ -473,8 +477,8 @@ func (s *Server) handleSelectOption(
 // Focus tool
 
 type FocusInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type FocusOutput struct {
@@ -546,8 +550,8 @@ func (s *Server) handleFocus(
 // Hover tool
 
 type HoverInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type HoverOutput struct {
@@ -619,8 +623,8 @@ func (s *Server) handleHover(
 // ScrollIntoView tool
 
 type ScrollIntoViewInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type ScrollIntoViewOutput struct {
@@ -692,8 +696,8 @@ func (s *Server) handleScrollIntoView(
 // DblClick tool
 
 type DblClickInput struct {
-	Selector  string `json:"selector" jsonschema:"description=CSS selector for the element,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 5000)"`
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
 }
 
 type DblClickOutput struct {
@@ -760,4 +764,79 @@ func (s *Server) handleDblClick(
 	s.session.Recorder().RecordDblClick(input.Selector)
 
 	return nil, DblClickOutput{Message: fmt.Sprintf("Double-clicked %s", input.Selector)}, nil
+}
+
+// FillForm tool - batch fill multiple form fields
+
+// FormField represents a single field to fill.
+type FormField struct {
+	Selector string `json:"selector" jsonschema:"CSS selector for the input element,required"`
+	Value    string `json:"value" jsonschema:"Value to fill,required"`
+}
+
+type FillFormInput struct {
+	Fields    []FormField `json:"fields" jsonschema:"Array of fields to fill (each with selector and value),required"`
+	TimeoutMS int         `json:"timeout_ms" jsonschema:"Timeout in milliseconds per field (default: 5000)"`
+}
+
+type FillFormOutput struct {
+	Message string   `json:"message"`
+	Filled  int      `json:"filled"`
+	Errors  []string `json:"errors,omitempty"`
+}
+
+func (s *Server) handleFillForm(
+	ctx context.Context,
+	req *mcp.CallToolRequest,
+	input FillFormInput,
+) (*mcp.CallToolResult, FillFormOutput, error) {
+	vibe, err := s.session.Vibe(ctx)
+	if err != nil {
+		return nil, FillFormOutput{}, fmt.Errorf("browser not available: %w", err)
+	}
+
+	if len(input.Fields) == 0 {
+		return nil, FillFormOutput{}, fmt.Errorf("no fields provided")
+	}
+
+	if input.TimeoutMS == 0 {
+		input.TimeoutMS = 5000
+	}
+	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
+
+	var filled int
+	var errors []string
+
+	for _, field := range input.Fields {
+		elem, err := vibe.Find(ctx, field.Selector, &vibium.FindOptions{Timeout: timeout})
+		if err != nil {
+			errors = append(errors, fmt.Sprintf("%s: element not found", field.Selector))
+			continue
+		}
+
+		err = elem.Fill(ctx, field.Value, &vibium.ActionOptions{Timeout: timeout})
+		if err != nil {
+			errors = append(errors, fmt.Sprintf("%s: fill failed: %v", field.Selector, err))
+			continue
+		}
+
+		filled++
+
+		// Record each fill for script export
+		s.session.Recorder().RecordFill(field.Selector, field.Value)
+	}
+
+	if filled == 0 && len(errors) > 0 {
+		return nil, FillFormOutput{
+			Message: "Failed to fill any fields",
+			Filled:  0,
+			Errors:  errors,
+		}, fmt.Errorf("failed to fill any fields: %v", errors)
+	}
+
+	return nil, FillFormOutput{
+		Message: fmt.Sprintf("Filled %d of %d fields", filled, len(input.Fields)),
+		Filled:  filled,
+		Errors:  errors,
+	}, nil
 }

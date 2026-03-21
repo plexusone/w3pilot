@@ -40,7 +40,7 @@ func (s *Server) handleGetContent(
 // SetContent tool
 
 type SetContentInput struct {
-	HTML string `json:"html" jsonschema:"description=HTML content to set,required"`
+	HTML string `json:"html" jsonschema:"HTML content to set,required"`
 }
 
 type SetContentOutput struct {
@@ -95,8 +95,8 @@ func (s *Server) handleGetViewport(
 // SetViewport tool
 
 type SetViewportInput struct {
-	Width  int `json:"width" jsonschema:"description=Viewport width,required"`
-	Height int `json:"height" jsonschema:"description=Viewport height,required"`
+	Width  int `json:"width" jsonschema:"Viewport width,required"`
+	Height int `json:"height" jsonschema:"Viewport height,required"`
 }
 
 type SetViewportOutput struct {
@@ -124,10 +124,10 @@ func (s *Server) handleSetViewport(
 // PDF tool
 
 type PDFInput struct {
-	Scale           float64 `json:"scale" jsonschema:"description=Scale of the PDF (default: 1)"`
-	PrintBackground bool    `json:"print_background" jsonschema:"description=Print background graphics"`
-	Landscape       bool    `json:"landscape" jsonschema:"description=Landscape orientation"`
-	Format          string  `json:"format" jsonschema:"description=Paper format (Letter Legal A4 etc)"`
+	Scale           float64 `json:"scale" jsonschema:"Scale of the PDF (default: 1)"`
+	PrintBackground bool    `json:"print_background" jsonschema:"Print background graphics"`
+	Landscape       bool    `json:"landscape" jsonschema:"Landscape orientation"`
+	Format          string  `json:"format" jsonschema:"Paper format (Letter Legal A4 etc)"`
 }
 
 type PDFOutput struct {
@@ -250,13 +250,16 @@ func (s *Server) handleGetFrames(
 // EmulateMedia tool
 
 type EmulateMediaInput struct {
-	Media         string `json:"media" jsonschema:"description=Media type: screen print or empty"`
-	ColorScheme   string `json:"color_scheme" jsonschema:"description=Color scheme: light dark no-preference or empty"`
-	ReducedMotion string `json:"reduced_motion" jsonschema:"description=Reduced motion: reduce no-preference or empty"`
+	Media         string `json:"media,omitempty" jsonschema:"Media type: screen or print. Empty to reset."`
+	ColorScheme   string `json:"color_scheme,omitempty" jsonschema:"Color scheme preference: light dark or no-preference. For testing dark mode support.,enum=light,enum=dark,enum=no-preference"`
+	ReducedMotion string `json:"reduced_motion,omitempty" jsonschema:"Reduced motion preference: reduce or no-preference. For testing animation accessibility.,enum=reduce,enum=no-preference"`
+	ForcedColors  string `json:"forced_colors,omitempty" jsonschema:"Forced colors mode: active or none. For testing Windows High Contrast Mode.,enum=active,enum=none"`
+	Contrast      string `json:"contrast,omitempty" jsonschema:"Contrast preference: more less or no-preference. For testing low vision accessibility.,enum=more,enum=less,enum=no-preference"`
 }
 
 type EmulateMediaOutput struct {
-	Message string `json:"message"`
+	Message  string   `json:"message"`
+	Settings []string `json:"settings"`
 }
 
 func (s *Server) handleEmulateMedia(
@@ -273,20 +276,43 @@ func (s *Server) handleEmulateMedia(
 		Media:         input.Media,
 		ColorScheme:   input.ColorScheme,
 		ReducedMotion: input.ReducedMotion,
+		ForcedColors:  input.ForcedColors,
+		Contrast:      input.Contrast,
 	})
 	if err != nil {
 		return nil, EmulateMediaOutput{}, fmt.Errorf("emulate media failed: %w", err)
 	}
 
-	return nil, EmulateMediaOutput{Message: "Media emulation set"}, nil
+	// Build list of applied settings
+	var settings []string
+	if input.Media != "" {
+		settings = append(settings, "media="+input.Media)
+	}
+	if input.ColorScheme != "" {
+		settings = append(settings, "colorScheme="+input.ColorScheme)
+	}
+	if input.ReducedMotion != "" {
+		settings = append(settings, "reducedMotion="+input.ReducedMotion)
+	}
+	if input.ForcedColors != "" {
+		settings = append(settings, "forcedColors="+input.ForcedColors)
+	}
+	if input.Contrast != "" {
+		settings = append(settings, "contrast="+input.Contrast)
+	}
+
+	return nil, EmulateMediaOutput{
+		Message:  "Media emulation set",
+		Settings: settings,
+	}, nil
 }
 
 // SetGeolocation tool
 
 type SetGeolocationInput struct {
-	Latitude  float64 `json:"latitude" jsonschema:"description=Latitude,required"`
-	Longitude float64 `json:"longitude" jsonschema:"description=Longitude,required"`
-	Accuracy  float64 `json:"accuracy" jsonschema:"description=Accuracy in meters"`
+	Latitude  float64 `json:"latitude" jsonschema:"Latitude,required"`
+	Longitude float64 `json:"longitude" jsonschema:"Longitude,required"`
+	Accuracy  float64 `json:"accuracy" jsonschema:"Accuracy in meters"`
 }
 
 type SetGeolocationOutput struct {
@@ -318,7 +344,7 @@ func (s *Server) handleSetGeolocation(
 // AddScript tool
 
 type AddScriptInput struct {
-	Source string `json:"source" jsonschema:"description=JavaScript source to inject,required"`
+	Source string `json:"source" jsonschema:"JavaScript source to inject,required"`
 }
 
 type AddScriptOutput struct {
@@ -346,7 +372,7 @@ func (s *Server) handleAddScript(
 // AddStyle tool
 
 type AddStyleInput struct {
-	Source string `json:"source" jsonschema:"description=CSS source to inject,required"`
+	Source string `json:"source" jsonschema:"CSS source to inject,required"`
 }
 
 type AddStyleOutput struct {
@@ -374,8 +400,8 @@ func (s *Server) handleAddStyle(
 // WaitForURL tool
 
 type WaitForURLInput struct {
-	Pattern   string `json:"pattern" jsonschema:"description=URL pattern to wait for,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 30000)"`
+	Pattern   string `json:"pattern" jsonschema:"URL pattern to wait for,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 30000)"`
 }
 
 type WaitForURLOutput struct {
@@ -408,8 +434,8 @@ func (s *Server) handleWaitForURL(
 // WaitForLoad tool
 
 type WaitForLoadInput struct {
-	State     string `json:"state" jsonschema:"description=Load state: load domcontentloaded networkidle,required,enum=load,enum=domcontentloaded,enum=networkidle"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 30000)"`
+	State     string `json:"state" jsonschema:"Load state: load domcontentloaded networkidle,required,enum=load,enum=domcontentloaded,enum=networkidle"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 30000)"`
 }
 
 type WaitForLoadOutput struct {
@@ -442,8 +468,8 @@ func (s *Server) handleWaitForLoad(
 // WaitForFunction tool
 
 type WaitForFunctionInput struct {
-	Function  string `json:"function" jsonschema:"description=JavaScript function that returns truthy value,required"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Timeout in milliseconds (default: 30000)"`
+	Function  string `json:"function" jsonschema:"JavaScript function that returns truthy value,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 30000)"`
 }
 
 type WaitForFunctionOutput struct {
@@ -549,4 +575,47 @@ func (s *Server) handleReload(
 	}
 
 	return nil, ReloadOutput{Message: "Page reloaded"}, nil
+}
+
+// Scroll tool
+
+type ScrollInput struct {
+	Direction string `json:"direction" jsonschema:"Scroll direction: up down left right,required,enum=up,enum=down,enum=left,enum=right"`
+	Amount    int    `json:"amount" jsonschema:"Amount to scroll in pixels (0 for full page scroll)"`
+	Selector  string `json:"selector" jsonschema:"Optional CSS selector to scroll within a specific element"`
+}
+
+type ScrollOutput struct {
+	Message string `json:"message"`
+}
+
+func (s *Server) handleScroll(
+	ctx context.Context,
+	req *mcp.CallToolRequest,
+	input ScrollInput,
+) (*mcp.CallToolResult, ScrollOutput, error) {
+	vibe, err := s.session.Vibe(ctx)
+	if err != nil {
+		return nil, ScrollOutput{}, fmt.Errorf("browser not available: %w", err)
+	}
+
+	var opts *vibium.ScrollOptions
+	if input.Selector != "" {
+		opts = &vibium.ScrollOptions{Selector: input.Selector}
+	}
+
+	err = vibe.Scroll(ctx, input.Direction, input.Amount, opts)
+	if err != nil {
+		return nil, ScrollOutput{}, fmt.Errorf("scroll failed: %w", err)
+	}
+
+	msg := fmt.Sprintf("Scrolled %s", input.Direction)
+	if input.Amount > 0 {
+		msg = fmt.Sprintf("Scrolled %s %d pixels", input.Direction, input.Amount)
+	}
+	if input.Selector != "" {
+		msg += fmt.Sprintf(" in %s", input.Selector)
+	}
+
+	return nil, ScrollOutput{Message: msg}, nil
 }

@@ -61,7 +61,7 @@ func (a *FindAllActivity) Execute(ctx context.Context, params map[string]any, en
 		return nil, fmt.Errorf("selector parameter is required")
 	}
 
-	elements, err := env.Vibe.FindAll(ctx, selector)
+	elements, err := env.Vibe.FindAll(ctx, selector, nil)
 	if err != nil {
 		return nil, fmt.Errorf("find failed: %w", err)
 	}

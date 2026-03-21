@@ -50,9 +50,9 @@ Real-time event callbacks for SDK users:
 
 Browser-level event listeners:
 
-- [ ] `Browser.OnPage()` - new page created listener
-- [ ] `Browser.OnPopup()` - popup window listener
-- [ ] `Browser.RemoveAllListeners()` - cleanup all listeners
+- [x] `Vibe.OnPage()` - new page created listener
+- [x] `Vibe.OnPopup()` - popup window listener
+- [x] `Vibe.RemoveAllListeners()` - cleanup all listeners
 
 ### WebSocket Monitoring - Medium Priority
 

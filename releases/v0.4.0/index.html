@@ -10,13 +10,13 @@
       
       
       
-        <link rel="canonical" href="https://plexusone.github.io/vibium-go/releases/v0.3.0/">
+        <link rel="canonical" href="https://plexusone.github.io/vibium-go/releases/v0.4.0/">
       
       
-        <link rel="prev" href="../v0.4.0/">
+        <link rel="prev" href="../../development/changelog/">
       
       
-        <link rel="next" href="../v0.2.0/">
+        <link rel="next" href="../v0.3.0/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +24,7 @@
     
     
       
-        <title>v0.3.0 - Vibium Go</title>
+        <title>v0.4.0 - Vibium Go</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#release-notes-v030" class="md-skip">
+        <a href="#release-notes-v040" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              v0.3.0
+              v0.4.0
             
           </span>
         </div>
@@ -1065,29 +1065,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../v0.4.0/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    v0.4.0
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -1105,7 +1082,7 @@
   
   
   <span class="md-ellipsis">
-    v0.3.0
+    v0.4.0
     
   </span>
   
@@ -1118,7 +1095,7 @@
   
   
   <span class="md-ellipsis">
-    v0.3.0
+    v0.4.0
     
   </span>
   
@@ -1160,27 +1137,60 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#human-in-the-loop-tools" class="md-nav__link">
+  <a href="#semantic-selectors" class="md-nav__link">
     <span class="md-ellipsis">
-      Human-in-the-Loop Tools
+      Semantic Selectors
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Semantic Selectors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sdk-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      SDK Usage
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#workflow-example" class="md-nav__link">
+  <a href="#mcp-tool-usage" class="md-nav__link">
     <span class="md-ellipsis">
-      Workflow Example
+      MCP Tool Usage
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#init-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Init Scripts
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#supported-scenarios" class="md-nav__link">
+  <a href="#full-storage-state" class="md-nav__link">
     <span class="md-ellipsis">
-      Supported Scenarios
+      Full Storage State
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-mcp-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      New MCP Tools
     </span>
   </a>
   
@@ -1201,9 +1211,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#infrastructure" class="md-nav__link">
+  <a href="#tests" class="md-nav__link">
     <span class="md-ellipsis">
-      Infrastructure
+      Tests
     </span>
   </a>
   
@@ -1219,28 +1229,37 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
+  <a href="#usage-examples" class="md-nav__link">
     <span class="md-ellipsis">
-      Usage
+      Usage Examples
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Usage">
+    <nav class="md-nav" aria-label="Usage Examples">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#first-time-login-human-assisted" class="md-nav__link">
+  <a href="#ai-assisted-form-filling" class="md-nav__link">
     <span class="md-ellipsis">
-      First-Time Login (Human Assisted)
+      AI-Assisted Form Filling
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#subsequent-runs-automated" class="md-nav__link">
+  <a href="#session-persistence" class="md-nav__link">
     <span class="md-ellipsis">
-      Subsequent Runs (Automated)
+      Session Persistence
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-mocking-for-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Mocking for Tests
     </span>
   </a>
   
@@ -1264,6 +1283,29 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../v0.3.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    v0.3.0
+    
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -1368,27 +1410,60 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#human-in-the-loop-tools" class="md-nav__link">
+  <a href="#semantic-selectors" class="md-nav__link">
     <span class="md-ellipsis">
-      Human-in-the-Loop Tools
+      Semantic Selectors
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Semantic Selectors">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sdk-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      SDK Usage
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#workflow-example" class="md-nav__link">
+  <a href="#mcp-tool-usage" class="md-nav__link">
     <span class="md-ellipsis">
-      Workflow Example
+      MCP Tool Usage
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#init-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Init Scripts
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#supported-scenarios" class="md-nav__link">
+  <a href="#full-storage-state" class="md-nav__link">
     <span class="md-ellipsis">
-      Supported Scenarios
+      Full Storage State
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#new-mcp-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      New MCP Tools
     </span>
   </a>
   
@@ -1409,9 +1484,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#infrastructure" class="md-nav__link">
+  <a href="#tests" class="md-nav__link">
     <span class="md-ellipsis">
-      Infrastructure
+      Tests
     </span>
   </a>
   
@@ -1427,28 +1502,37 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#usage" class="md-nav__link">
+  <a href="#usage-examples" class="md-nav__link">
     <span class="md-ellipsis">
-      Usage
+      Usage Examples
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Usage">
+    <nav class="md-nav" aria-label="Usage Examples">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#first-time-login-human-assisted" class="md-nav__link">
+  <a href="#ai-assisted-form-filling" class="md-nav__link">
     <span class="md-ellipsis">
-      First-Time Login (Human Assisted)
+      AI-Assisted Form Filling
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#subsequent-runs-automated" class="md-nav__link">
+  <a href="#session-persistence" class="md-nav__link">
     <span class="md-ellipsis">
-      Subsequent Runs (Automated)
+      Session Persistence
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#api-mocking-for-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      API Mocking for Tests
     </span>
   </a>
   
@@ -1487,95 +1571,211 @@
   
 
 
-<h1 id="release-notes-v030">Release Notes - v0.3.0<a class="headerlink" href="#release-notes-v030" title="Permanent link">&para;</a></h1>
-<p>Human-in-the-Loop (HITL) support for SSO login, CAPTCHA, and 2FA workflows.</p>
+<h1 id="release-notes-v040">Release Notes - v0.4.0<a class="headerlink" href="#release-notes-v040" title="Permanent link">&para;</a></h1>
+<p>Semantic selectors, full storage state management, init scripts, and 25+ new MCP tools.</p>
 <h2 id="highlights">Highlights<a class="headerlink" href="#highlights" title="Permanent link">&para;</a></h2>
-<p><strong>New MCP tools for human-assisted automation workflows.</strong></p>
-<p>This release adds HITL capabilities, allowing AI agents to pause automation for human intervention (SSO login, CAPTCHA solving, 2FA approval) and resume automatically.</p>
+<p><strong>AI-native element finding with semantic selectors.</strong></p>
+<p>This release adds semantic selectors that find elements by accessibility attributes (role, label, text) instead of brittle CSS selectors. Also includes full storage state management with sessionStorage support, init scripts for pre-page JavaScript injection, and 25+ new MCP tools.</p>
 <h2 id="new-features">New Features<a class="headerlink" href="#new-features" title="Permanent link">&para;</a></h2>
-<h3 id="human-in-the-loop-tools">Human-in-the-Loop Tools<a class="headerlink" href="#human-in-the-loop-tools" title="Permanent link">&para;</a></h3>
-<p>Two new MCP tools enable seamless human-AI collaboration:</p>
+<h3 id="semantic-selectors">Semantic Selectors<a class="headerlink" href="#semantic-selectors" title="Permanent link">&para;</a></h3>
+<p>Find elements by accessibility attributes instead of CSS selectors:</p>
 <table>
 <thead>
 <tr>
-<th>Tool</th>
-<th>Purpose</th>
+<th>Selector</th>
+<th>Description</th>
+<th>Example</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>pause_for_human</code></td>
-<td>Pause automation with visual overlay, wait for human action</td>
+<td><code>role</code></td>
+<td>ARIA role</td>
+<td><code>button</code>, <code>textbox</code>, <code>link</code></td>
 </tr>
 <tr>
-<td><code>set_storage_state</code></td>
-<td>Restore saved session (cookies + localStorage)</td>
+<td><code>text</code></td>
+<td>Visible text content</td>
+<td><code>"Submit"</code>, <code>"Learn more"</code></td>
+</tr>
+<tr>
+<td><code>label</code></td>
+<td>Associated label text</td>
+<td><code>"Email address"</code></td>
+</tr>
+<tr>
+<td><code>placeholder</code></td>
+<td>Input placeholder</td>
+<td><code>"Enter email"</code></td>
+</tr>
+<tr>
+<td><code>testid</code></td>
+<td><code>data-testid</code> attribute</td>
+<td><code>"login-btn"</code></td>
+</tr>
+<tr>
+<td><code>alt</code></td>
+<td>Image alt text</td>
+<td><code>"Company logo"</code></td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>Element title attribute</td>
+<td><code>"Close dialog"</code></td>
+</tr>
+<tr>
+<td><code>xpath</code></td>
+<td>XPath expression</td>
+<td><code>"//button[@type='submit']"</code></td>
+</tr>
+<tr>
+<td><code>near</code></td>
+<td>CSS selector of nearby element</td>
+<td><code>"#username"</code></td>
 </tr>
 </tbody>
 </table>
-<h3 id="workflow-example">Workflow Example<a class="headerlink" href="#workflow-example" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>First Run (with human):
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  browser_launch {headless: false}
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  navigate → login page
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  pause_for_human → human completes SSO, clicks Continue
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  get_storage_state → save session
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  ... continue automation ...
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>Subsequent Runs (automated):
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>  browser_launch {headless: true}
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>  set_storage_state ← load saved session
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>  navigate → dashboard (already logged in!)
+<h4 id="sdk-usage">SDK Usage<a class="headerlink" href="#sdk-usage" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Find by ARIA role and text</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nx">elem</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">vibe</span><span class="p">.</span><span class="nx">Find</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">vibium</span><span class="p">.</span><span class="nx">FindOptions</span><span class="p">{</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nx">Role</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;button&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nx">Text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Submit&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">})</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1">// Find by label (for form inputs)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="nx">elem</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">vibe</span><span class="p">.</span><span class="nx">Find</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">vibium</span><span class="p">.</span><span class="nx">FindOptions</span><span class="p">{</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nx">Label</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Email address&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">})</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1">// Scoped search within parent element</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="nx">form</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">vibe</span><span class="p">.</span><span class="nx">Find</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;form.signup&quot;</span><span class="p">,</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="nx">emailInput</span><span class="p">,</span><span class="w"> </span><span class="nx">_</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">form</span><span class="p">.</span><span class="nx">Find</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">vibium</span><span class="p">.</span><span class="nx">FindOptions</span><span class="p">{</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">    </span><span class="nx">Label</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Email&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="p">})</span>
 </code></pre></div>
-<h3 id="supported-scenarios">Supported Scenarios<a class="headerlink" href="#supported-scenarios" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>SSO/OAuth logins</strong> - Google, Microsoft, Okta, Auth0, GitHub</li>
-<li><strong>CAPTCHA challenges</strong> - Human solves, automation continues</li>
-<li><strong>2FA/MFA verification</strong> - SMS, TOTP, hardware keys</li>
-<li><strong>Manual review steps</strong> - Human approval before proceeding</li>
-</ul>
+<h4 id="mcp-tool-usage">MCP Tool Usage<a class="headerlink" href="#mcp-tool-usage" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;click&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;button&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Sign In&quot;</span><span class="p">}}</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fill&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Email&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user@example.com&quot;</span><span class="p">}}</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;click&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;testid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;submit-btn&quot;</span><span class="p">}}</span>
+</code></pre></div>
+<h3 id="init-scripts">Init Scripts<a class="headerlink" href="#init-scripts" title="Permanent link">&para;</a></h3>
+<p>Inject JavaScript that runs before any page scripts on every navigation:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1">// Mock an API before page loads</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">vibe</span><span class="p">.</span><span class="nx">AddInitScript</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="s">`</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="s">    window.fetch = async (url, opts) =&gt; {</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="s">        if (url.includes(&#39;/api/user&#39;)) {</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="s">            return { json: () =&gt; ({ id: 1, name: &#39;Test User&#39; }) };</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="s">        }</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="s">        return originalFetch(url, opts);</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="s">    };</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="s">`</span><span class="p">)</span>
+</code></pre></div>
+<p>CLI flags for script injection:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>vibium<span class="w"> </span>mcp<span class="w"> </span>--init-script<span class="o">=</span>./mock-api.js<span class="w"> </span>--init-script<span class="o">=</span>./test-helpers.js
+</code></pre></div>
+<h3 id="full-storage-state">Full Storage State<a class="headerlink" href="#full-storage-state" title="Permanent link">&para;</a></h3>
+<p>Complete browser state management including sessionStorage:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">// Get complete storage state (cookies + localStorage + sessionStorage)</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nx">state</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">vibe</span><span class="p">.</span><span class="nx">StorageState</span><span class="p">(</span><span class="nx">ctx</span><span class="p">)</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1">// Restore storage state</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">vibe</span><span class="p">.</span><span class="nx">SetStorageState</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nx">savedState</span><span class="p">)</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1">// Clear all storage</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">vibe</span><span class="p">.</span><span class="nx">ClearStorage</span><span class="p">(</span><span class="nx">ctx</span><span class="p">)</span>
+</code></pre></div>
+<h3 id="new-mcp-tools">New MCP Tools<a class="headerlink" href="#new-mcp-tools" title="Permanent link">&para;</a></h3>
+<p>25+ new tools organized by category:</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Tools</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tracing</td>
+<td><code>start_trace</code>, <code>stop_trace</code>, <code>start_trace_chunk</code>, <code>stop_trace_chunk</code>, <code>start_trace_group</code>, <code>stop_trace_group</code></td>
+</tr>
+<tr>
+<td>Dialogs</td>
+<td><code>handle_dialog</code>, <code>get_dialog</code></td>
+</tr>
+<tr>
+<td>Network</td>
+<td><code>get_network_requests</code>, <code>clear_network_requests</code>, <code>route</code>, <code>unroute</code>, <code>route_list</code>, <code>network_state_set</code></td>
+</tr>
+<tr>
+<td>LocalStorage</td>
+<td><code>localstorage_get</code>, <code>localstorage_set</code>, <code>localstorage_list</code>, <code>localstorage_delete</code>, <code>localstorage_clear</code></td>
+</tr>
+<tr>
+<td>SessionStorage</td>
+<td><code>sessionstorage_get</code>, <code>sessionstorage_set</code>, <code>sessionstorage_list</code>, <code>sessionstorage_delete</code>, <code>sessionstorage_clear</code></td>
+</tr>
+<tr>
+<td>Tabs</td>
+<td><code>list_tabs</code>, <code>select_tab</code>, <code>close_tab</code></td>
+</tr>
+<tr>
+<td>Testing</td>
+<td><code>verify_value</code>, <code>verify_list_visible</code>, <code>generate_locator</code>, <code>fill_form</code></td>
+</tr>
+<tr>
+<td>Init Scripts</td>
+<td><code>add_init_script</code></td>
+</tr>
+<tr>
+<td>Storage</td>
+<td><code>clear_storage</code></td>
+</tr>
+</tbody>
+</table>
 <h2 id="bug-fixes">Bug Fixes<a class="headerlink" href="#bug-fixes" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>File handle error handling</strong> - RPA file activity now properly handles close errors</li>
-<li><strong>Unreachable statement removed</strong> - Fixed dead code in vibium-mcp main</li>
+<li><strong>Browser connection stability</strong> - Fixed browser connection drops in MCP server by using <code>exec.Command</code> instead of <code>exec.CommandContext</code> for clicker process lifetime</li>
 </ul>
-<h2 id="infrastructure">Infrastructure<a class="headerlink" href="#infrastructure" title="Permanent link">&para;</a></h2>
+<h2 id="tests">Tests<a class="headerlink" href="#tests" title="Permanent link">&para;</a></h2>
+<p>New integration test suites:</p>
 <ul>
-<li><strong>MCP SDK updated</strong> - <code>github.com/modelcontextprotocol/go-sdk</code> 1.4.0 → 1.4.1</li>
-<li><strong>GitHub Actions updated</strong>:</li>
-<li><code>actions/checkout</code> 4 → 6</li>
-<li><code>actions/setup-go</code> 5 → 6</li>
-<li><code>actions/upload-artifact</code> 4 → 7</li>
+<li><strong>Semantic selectors</strong> - All selector types, scoped search, element interactions</li>
+<li><strong>Tracing</strong> - Start/stop, chunks, groups, context tracing</li>
+<li><strong>Storage state</strong> - Get/set/clear, round-trip, cookies, multiple origins</li>
+<li><strong>Init scripts</strong> - Basic injection, functions, API mocking, multiple scripts</li>
 </ul>
 <h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>go<span class="w"> </span>get<span class="w"> </span>github.com/plexusone/vibium-go@v0.3.0
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>go<span class="w"> </span>get<span class="w"> </span>github.com/plexusone/vibium-go@v0.4.0
 </code></pre></div>
-<h2 id="usage">Usage<a class="headerlink" href="#usage" title="Permanent link">&para;</a></h2>
-<h3 id="first-time-login-human-assisted">First-Time Login (Human Assisted)<a class="headerlink" href="#first-time-login-human-assisted" title="Permanent link">&para;</a></h3>
-<p>Configure MCP server for visible browser:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;mcpServers&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">&quot;vibium&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">      </span><span class="nt">&quot;command&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vibium&quot;</span><span class="p">,</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">      </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;mcp&quot;</span><span class="p">]</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="p">}</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="p">}</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="p">}</span>
+<h2 id="usage-examples">Usage Examples<a class="headerlink" href="#usage-examples" title="Permanent link">&para;</a></h2>
+<h3 id="ai-assisted-form-filling">AI-Assisted Form Filling<a class="headerlink" href="#ai-assisted-form-filling" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">// Click the login button by its text</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;click&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;role&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;button&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;text&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Log In&quot;</span><span class="p">}}</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1">// Fill email by label</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fill&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;label&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Email address&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;user@example.com&quot;</span><span class="p">}}</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="c1">// Fill password by placeholder</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fill&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;placeholder&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Enter password&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;value&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;secret&quot;</span><span class="p">}}</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="c1">// Submit by test ID</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;click&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;testid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;submit-btn&quot;</span><span class="p">}}</span>
 </code></pre></div>
-<p>Then ask Claude:</p>
-<blockquote>
-<p>Navigate to app.example.com and log me in. I'll complete the Google SSO manually.</p>
-</blockquote>
-<p>Claude will launch a visible browser, navigate to the login page, and call <code>pause_for_human</code>. Complete the login and click "Continue" to resume.</p>
-<h3 id="subsequent-runs-automated">Subsequent Runs (Automated)<a class="headerlink" href="#subsequent-runs-automated" title="Permanent link">&para;</a></h3>
-<p>After saving the session, subsequent runs can be fully automated:</p>
-<blockquote>
-<p>Use my saved session to scrape the dashboard.</p>
-</blockquote>
-<p>Claude will restore the session with <code>set_storage_state</code> and proceed without human intervention.</p>
+<h3 id="session-persistence">Session Persistence<a class="headerlink" href="#session-persistence" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">// Save session after login</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;get_storage_state&quot;</span><span class="p">}</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1">// Restore session on next run</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;set_storage_state&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;state&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;saved JSON&gt;&quot;</span><span class="p">}}</span>
+</code></pre></div>
+<h3 id="api-mocking-for-tests">API Mocking for Tests<a class="headerlink" href="#api-mocking-for-tests" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1">// Inject mock before page loads</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="p">{</span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;add_init_script&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;arguments&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="nt">&quot;script&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;window.fetch = () =&gt; Promise.resolve({json: () =&gt; ({mocked: true})})&quot;</span><span class="p">}}</span>
+</code></pre></div>
 <h2 id="documentation">Documentation<a class="headerlink" href="#documentation" title="Permanent link">&para;</a></h2>
 <ul>
-<li><a href="../../guide/hitl/">Human-in-the-Loop Guide</a> - Full HITL documentation</li>
-<li><a href="../../guide/mcp-server/">MCP Server Guide</a> - Updated with HITL tools</li>
+<li><a href="../../guide/sdk/">Go Client SDK Guide</a> - Updated with semantic selectors, init scripts, tracing</li>
+<li><a href="../../reference/mcp-tools/">MCP Tools Reference</a> - All 85+ tools documented</li>
 <li><a href="https://pkg.go.dev/github.com/plexusone/vibium-go">GoDoc</a> - API reference</li>
 <li><a href="https://github.com/plexusone/vibium-go/blob/main/CHANGELOG.md">CHANGELOG</a> - Version history</li>
 </ul>

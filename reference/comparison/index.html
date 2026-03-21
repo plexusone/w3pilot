@@ -1,0 +1,4957 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Go client and tooling for Vibium browser automation">
+      
+      
+      
+        <link rel="canonical" href="https://plexusone.github.io/vibium-go/reference/comparison/">
+      
+      
+        <link rel="prev" href="../errors/">
+      
+      
+        <link rel="next" href="../../architecture/overview/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>Feature Comparison - Vibium Go</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#feature-comparison" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Vibium Go" class="md-header__button md-logo" aria-label="Vibium Go" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Vibium Go
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Feature Comparison
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/plexusone/vibium-go" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    plexusone/vibium-go
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Vibium Go" class="md-nav__button md-logo" aria-label="Vibium Go" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Vibium Go
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/plexusone/vibium-go" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    plexusone/vibium-go
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Getting Started
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Getting Started
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/quickstart/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Quick Start
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/prerequisites/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Prerequisites
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    User Guide
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            User Guide
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/sdk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Go Client SDK
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/mcp-server/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MCP Server
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/hitl/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Human-in-the-Loop
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CLI Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/scripts/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Script Runner
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/recording/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Session Recording
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../guide/cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    CI/CD Integration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Reference
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Reference
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    API Reference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mcp-tools/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MCP Tools
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../script-schema/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Script Schema
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../errors/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Error Types
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Feature Comparison
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Feature Comparison
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sdk-feature-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      SDK Feature Comparison
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SDK Feature Comparison">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-browser-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Browser Control
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#navigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Navigation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#element-finding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Element Finding
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#element-interaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Element Interaction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#element-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Element State
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#input-controllers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Input Controllers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clocktime-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clock/Time Control
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#screenshots-pdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Screenshots &amp; PDF
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#viewport-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      Viewport &amp; Window
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#media-emulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Media &amp; Emulation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      Accessibility
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frames" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frames
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-interception" class="md-nav__link">
+    <span class="md-ellipsis">
+      Network Interception
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#event-capture-jspython" class="md-nav__link">
+    <span class="md-ellipsis">
+      Event Capture (JS/Python)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dialogs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dialogs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#downloads" class="md-nav__link">
+    <span class="md-ellipsis">
+      Downloads
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#console-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Console &amp; Errors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#websocket-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      WebSocket Monitoring
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recordingtracing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recording/Tracing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#storage-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Storage State
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scrolling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scrolling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#javascript-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      JavaScript Execution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#waiting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Waiting
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcp-server-feature-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      MCP Server Feature Comparison
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MCP Server Feature Comparison">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#browser-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Browser Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#navigation_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Navigation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#element-interaction_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Element Interaction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#element-state_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Element State
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#page-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Page State
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#screenshots-pdf_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Screenshots &amp; PDF
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      JavaScript
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#waiting_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Waiting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#input-controllers_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Input Controllers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tabpage-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tab/Page Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cookie-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cookie Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#localstorage" class="md-nav__link">
+    <span class="md-ellipsis">
+      LocalStorage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionstorage" class="md-nav__link">
+    <span class="md-ellipsis">
+      SessionStorage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#storage-state_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Storage State
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network" class="md-nav__link">
+    <span class="md-ellipsis">
+      Network
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dialogs_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dialogs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recording-tracing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recording &amp; Tracing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-assertions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing &amp; Assertions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#human-in-the-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Human-in-the-Loop
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feature-parity-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Feature Parity Roadmap
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Feature Parity Roadmap">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#high-priority-sdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      High Priority (SDK)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#high-priority-mcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      High Priority (MCP)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unique-vibium-go-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unique vibium-go Features
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#legend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Legend
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Architecture
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Overview
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/prd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Product Requirements
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture/trd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Technical Design
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Development
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/testing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Testing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../development/changelog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Changelog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Releases
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Releases
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../releases/v0.4.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    v0.4.0
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../releases/v0.3.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    v0.3.0
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../releases/v0.2.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    v0.2.0
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../releases/v0.1.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    v0.1.0
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sdk-feature-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      SDK Feature Comparison
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SDK Feature Comparison">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-browser-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core Browser Control
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#navigation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Navigation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#element-finding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Element Finding
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#element-interaction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Element Interaction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#element-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Element State
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#input-controllers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Input Controllers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clocktime-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clock/Time Control
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#screenshots-pdf" class="md-nav__link">
+    <span class="md-ellipsis">
+      Screenshots &amp; PDF
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#viewport-window" class="md-nav__link">
+    <span class="md-ellipsis">
+      Viewport &amp; Window
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#media-emulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Media &amp; Emulation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      Accessibility
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#frames" class="md-nav__link">
+    <span class="md-ellipsis">
+      Frames
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network-interception" class="md-nav__link">
+    <span class="md-ellipsis">
+      Network Interception
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#event-capture-jspython" class="md-nav__link">
+    <span class="md-ellipsis">
+      Event Capture (JS/Python)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dialogs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dialogs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#downloads" class="md-nav__link">
+    <span class="md-ellipsis">
+      Downloads
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#console-errors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Console &amp; Errors
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#websocket-monitoring" class="md-nav__link">
+    <span class="md-ellipsis">
+      WebSocket Monitoring
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recordingtracing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recording/Tracing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#storage-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Storage State
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scrolling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scrolling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#javascript-execution" class="md-nav__link">
+    <span class="md-ellipsis">
+      JavaScript Execution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#waiting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Waiting
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mcp-server-feature-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      MCP Server Feature Comparison
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="MCP Server Feature Comparison">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#browser-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Browser Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#navigation_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Navigation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#element-interaction_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Element Interaction
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#element-state_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Element State
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#page-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      Page State
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#screenshots-pdf_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Screenshots &amp; PDF
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#javascript" class="md-nav__link">
+    <span class="md-ellipsis">
+      JavaScript
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#waiting_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Waiting
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#input-controllers_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Input Controllers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tabpage-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tab/Page Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cookie-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cookie Management
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#localstorage" class="md-nav__link">
+    <span class="md-ellipsis">
+      LocalStorage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sessionstorage" class="md-nav__link">
+    <span class="md-ellipsis">
+      SessionStorage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#storage-state_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Storage State
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#network" class="md-nav__link">
+    <span class="md-ellipsis">
+      Network
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dialogs_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dialogs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recording-tracing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Recording &amp; Tracing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#testing-assertions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Testing &amp; Assertions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#human-in-the-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Human-in-the-Loop
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuration
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feature-parity-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Feature Parity Roadmap
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Feature Parity Roadmap">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#high-priority-sdk" class="md-nav__link">
+    <span class="md-ellipsis">
+      High Priority (SDK)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#high-priority-mcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      High Priority (MCP)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unique-vibium-go-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unique vibium-go Features
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#legend" class="md-nav__link">
+    <span class="md-ellipsis">
+      Legend
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="feature-comparison">Feature Comparison<a class="headerlink" href="#feature-comparison" title="Permanent link">&para;</a></h1>
+<p>This document compares vibium-go against other Vibium clients (Java, JavaScript, Python) and the Playwright MCP server.</p>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>vibium-go is a Go port of the official Vibium clients. This comparison helps track feature parity and identify gaps.</p>
+<table>
+<thead>
+<tr>
+<th>Client</th>
+<th>Language</th>
+<th>Repository</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vibium-go</td>
+<td>Go</td>
+<td><a href="https://github.com/plexusone/vibium-go">plexusone/vibium-go</a></td>
+</tr>
+<tr>
+<td>vibium-java</td>
+<td>Java</td>
+<td><a href="https://github.com/VibiumDev/vibium">VibiumDev/vibium/clients/java</a></td>
+</tr>
+<tr>
+<td>vibium-js</td>
+<td>JavaScript</td>
+<td><a href="https://github.com/VibiumDev/vibium">VibiumDev/vibium/clients/javascript</a></td>
+</tr>
+<tr>
+<td>vibium-py</td>
+<td>Python</td>
+<td><a href="https://github.com/VibiumDev/vibium">VibiumDev/vibium/clients/python</a></td>
+</tr>
+<tr>
+<td>playwright-mcp</td>
+<td>TypeScript</td>
+<td><a href="https://github.com/microsoft/playwright-mcp">microsoft/playwright-mcp</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="sdk-feature-comparison">SDK Feature Comparison<a class="headerlink" href="#sdk-feature-comparison" title="Permanent link">&para;</a></h2>
+<h3 id="core-browser-control">Core Browser Control<a class="headerlink" href="#core-browser-control" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Launch browser</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Headless mode</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Connect to remote</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Multiple pages</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Browser contexts</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Page events (onPage, onPopup)</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+</tbody>
+</table>
+<h3 id="navigation">Navigation<a class="headerlink" href="#navigation" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Navigate (go)</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Back/Forward</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Reload</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>URL/Title</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Content (HTML)</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>setContent</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>bringToFront</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+</tbody>
+</table>
+<h3 id="element-finding">Element Finding<a class="headerlink" href="#element-finding" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CSS selector</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Semantic selectors</strong></td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>- By role</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>- By text</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>- By label</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>- By placeholder</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>- By alt text</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>- By title</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>- By testid</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>- By xpath</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>- By proximity (near)</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>FindAll</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Scoped find (within element)</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="element-interaction">Element Interaction<a class="headerlink" href="#element-interaction" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Click</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Double-click</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Fill</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Type</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Clear</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Press</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Check/Uncheck</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Select option</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Hover</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Focus/Blur</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Drag to</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Tap (touch)</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Scroll into view</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Set files</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>dispatchEvent</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>highlight</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:x:</td>
+<td>Java only</td>
+</tr>
+</tbody>
+</table>
+<h3 id="element-state">Element State<a class="headerlink" href="#element-state" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>text()</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>innerText()</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>html() (innerHTML)</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>value()</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>getAttribute()</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>boundingBox()</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>isVisible/isHidden</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>isEnabled</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>isChecked</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>isEditable</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>role()</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>label()</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>waitUntil (state)</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="input-controllers">Input Controllers<a class="headerlink" href="#input-controllers" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Keyboard</strong></td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>- press/down/up</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>- type</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>- insertText</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:x:</td>
+<td>Go only</td>
+</tr>
+<tr>
+<td><strong>Mouse</strong></td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>- click/move</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>- down/up</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>- wheel</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Touch</strong></td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>- tap</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>- drag/longPress</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:x:</td>
+<td>Go only</td>
+</tr>
+</tbody>
+</table>
+<h3 id="clocktime-control">Clock/Time Control<a class="headerlink" href="#clocktime-control" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>install</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>fastForward</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>runFor</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>pauseAt</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>resume</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>setFixedTime</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>setSystemTime</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>setTimezone</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="screenshots-pdf">Screenshots &amp; PDF<a class="headerlink" href="#screenshots-pdf" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Screenshot (viewport)</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Screenshot (full page)</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Screenshot (clip region)</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Element screenshot</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>PDF</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="viewport-window">Viewport &amp; Window<a class="headerlink" href="#viewport-window" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>getViewport</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>setViewport</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>getWindow</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>setWindow</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="media-emulation">Media &amp; Emulation<a class="headerlink" href="#media-emulation" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>emulateMedia (type)</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>colorScheme</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>reducedMotion</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>forcedColors</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>contrast</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>setGeolocation</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="accessibility">Accessibility<a class="headerlink" href="#accessibility" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>a11yTree</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>a11yTree (interestingOnly)</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>a11yTree (root element)</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="frames">Frames<a class="headerlink" href="#frames" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>frames()</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>frame(name/url)</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>mainFrame()</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="network-interception">Network Interception<a class="headerlink" href="#network-interception" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>route(pattern, handler)</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>unroute</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>route.fulfill</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>route.continue</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>route.abort</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>setHeaders</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>onRequest listener</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>onResponse listener</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+</tbody>
+</table>
+<h3 id="event-capture-jspython">Event Capture (JS/Python)<a class="headerlink" href="#event-capture-jspython" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>capture.response</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>JS/Py only</td>
+</tr>
+<tr>
+<td>capture.request</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>JS/Py only</td>
+</tr>
+<tr>
+<td>capture.navigation</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>JS/Py only</td>
+</tr>
+<tr>
+<td>capture.download</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>JS/Py only</td>
+</tr>
+<tr>
+<td>capture.dialog</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>JS/Py only</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dialogs">Dialogs<a class="headerlink" href="#dialogs" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>onDialog listener</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>dialog.accept</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>dialog.dismiss</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>dialog.message</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>dialog.type</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>dialog.defaultValue</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="downloads">Downloads<a class="headerlink" href="#downloads" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>onDownload listener</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>download.url</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>download.suggestedFilename</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>download.saveAs</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>download.path</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="console-errors">Console &amp; Errors<a class="headerlink" href="#console-errors" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>onConsole listener</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>collectConsole (buffered)</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>consoleMessages()</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>onError listener</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>collectErrors (buffered)</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>errors()</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+</tbody>
+</table>
+<h3 id="websocket-monitoring">WebSocket Monitoring<a class="headerlink" href="#websocket-monitoring" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>onWebSocket listener</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>ws.onMessage</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>ws.onClose</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>ws.isClosed</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="recordingtracing">Recording/Tracing<a class="headerlink" href="#recordingtracing" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>recording.start</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>recording.stop</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>recording.startChunk</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>recording.stopChunk</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>recording.startGroup</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>recording.stopGroup</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+</tbody>
+</table>
+<h3 id="storage-state">Storage State<a class="headerlink" href="#storage-state" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cookies</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td></td>
+</tr>
+<tr>
+<td>- cookies()</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>- setCookies()</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>- clearCookies()</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Storage</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td></td>
+</tr>
+<tr>
+<td>- storage() (full state)</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>- setStorage()</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>- clearStorage()</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>Init Scripts</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td></td>
+</tr>
+<tr>
+<td>- addInitScript()</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+</tbody>
+</table>
+<h3 id="scrolling">Scrolling<a class="headerlink" href="#scrolling" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>scroll()</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>scroll (direction)</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>scroll (amount)</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>scroll (selector)</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="javascript-execution">JavaScript Execution<a class="headerlink" href="#javascript-execution" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>evaluate()</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>addScript()</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>addStyle()</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>expose()</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="waiting">Waiting<a class="headerlink" href="#waiting" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th style="text-align: center;">Go</th>
+<th style="text-align: center;">Java</th>
+<th style="text-align: center;">JS</th>
+<th style="text-align: center;">Python</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wait (fixed duration)</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Use time.Sleep</td>
+</tr>
+<tr>
+<td>waitForFunction</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForURL</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>waitForLoad</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>WaitForNavigation</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:x:</td>
+<td>Go only</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="mcp-server-feature-comparison">MCP Server Feature Comparison<a class="headerlink" href="#mcp-server-feature-comparison" title="Permanent link">&para;</a></h2>
+<p>Comparison between vibium-go MCP server and <a href="https://github.com/microsoft/playwright-mcp">Playwright MCP</a>.</p>
+<h3 id="browser-management">Browser Management<a class="headerlink" href="#browser-management" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th style="text-align: center;">vibium-go</th>
+<th style="text-align: center;">Playwright MCP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Launch browser</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Quit/Close browser</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Resize viewport</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="navigation_1">Navigation<a class="headerlink" href="#navigation_1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th style="text-align: center;">vibium-go</th>
+<th style="text-align: center;">Playwright MCP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Navigate to URL</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Back</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Forward</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Reload</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="element-interaction_1">Element Interaction<a class="headerlink" href="#element-interaction_1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th style="text-align: center;">vibium-go</th>
+<th style="text-align: center;">Playwright MCP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Click</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Double-click</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Type</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Fill</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Clear</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Press key</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Check/Uncheck</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Select option</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Set files</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Hover</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Drag</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Fill form (multiple)</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="element-state_1">Element State<a class="headerlink" href="#element-state_1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th style="text-align: center;">vibium-go</th>
+<th style="text-align: center;">Playwright MCP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Get text</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Get value</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Get innerHTML</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Get innerText</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Get attribute</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Get bounding box</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Is visible</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Is hidden</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Is enabled</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Is checked</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Is editable</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Get role</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Get label</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="page-state">Page State<a class="headerlink" href="#page-state" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th style="text-align: center;">vibium-go</th>
+<th style="text-align: center;">Playwright MCP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Get title</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Get URL</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Get content</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Set content</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Get viewport</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Set viewport</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Accessibility snapshot</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Playwright uses a11y tree</td>
+</tr>
+</tbody>
+</table>
+<h3 id="screenshots-pdf_1">Screenshots &amp; PDF<a class="headerlink" href="#screenshots-pdf_1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th style="text-align: center;">vibium-go</th>
+<th style="text-align: center;">Playwright MCP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Screenshot (viewport)</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Screenshot (full page)</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Element screenshot</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>PDF</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="javascript">JavaScript<a class="headerlink" href="#javascript" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th style="text-align: center;">vibium-go</th>
+<th style="text-align: center;">Playwright MCP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Evaluate</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Element eval</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Add script</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Add style</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Run Playwright code</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Playwright-specific</td>
+</tr>
+</tbody>
+</table>
+<h3 id="waiting_1">Waiting<a class="headerlink" href="#waiting_1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th style="text-align: center;">vibium-go</th>
+<th style="text-align: center;">Playwright MCP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wait for element state</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Wait for URL</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Wait for load state</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Wait for function</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Wait for text</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+</tbody>
+</table>
+<h3 id="input-controllers_1">Input Controllers<a class="headerlink" href="#input-controllers_1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th style="text-align: center;">vibium-go</th>
+<th style="text-align: center;">Playwright MCP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Keyboard press</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Keyboard down/up</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Keyboard type</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Mouse click (coords)</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Mouse move</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Mouse down/up</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Mouse wheel</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Mouse drag (coords)</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Touch tap</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Touch swipe</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="tabpage-management">Tab/Page Management<a class="headerlink" href="#tabpage-management" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th style="text-align: center;">vibium-go</th>
+<th style="text-align: center;">Playwright MCP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>New page</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Get page count</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Close page</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Bring to front</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Select tab</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>List tabs</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Close tab</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="cookie-management">Cookie Management<a class="headerlink" href="#cookie-management" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th style="text-align: center;">vibium-go</th>
+<th style="text-align: center;">Playwright MCP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Get cookies</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Set cookies</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Clear cookies</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Delete cookie</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+</tbody>
+</table>
+<h3 id="localstorage">LocalStorage<a class="headerlink" href="#localstorage" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th style="text-align: center;">vibium-go</th>
+<th style="text-align: center;">Playwright MCP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Get item</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Set item</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>List items</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Delete item</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Clear</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="sessionstorage">SessionStorage<a class="headerlink" href="#sessionstorage" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th style="text-align: center;">vibium-go</th>
+<th style="text-align: center;">Playwright MCP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Get item</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Set item</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>List items</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Delete item</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Clear</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="storage-state_1">Storage State<a class="headerlink" href="#storage-state_1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th style="text-align: center;">vibium-go</th>
+<th style="text-align: center;">Playwright MCP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Get storage state</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Set storage state</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="network">Network<a class="headerlink" href="#network" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th style="text-align: center;">vibium-go</th>
+<th style="text-align: center;">Playwright MCP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Route (mock)</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>Route list</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>Unroute</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>Network state (offline)</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>List network requests</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Clear network requests</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Console messages</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Clear console messages</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="dialogs_1">Dialogs<a class="headerlink" href="#dialogs_1" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th style="text-align: center;">vibium-go</th>
+<th style="text-align: center;">Playwright MCP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Handle dialog</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Get dialog info</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="recording-tracing">Recording &amp; Tracing<a class="headerlink" href="#recording-tracing" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th style="text-align: center;">vibium-go</th>
+<th style="text-align: center;">Playwright MCP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Start recording</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td>Script recording</td>
+</tr>
+<tr>
+<td>Stop recording</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Export script</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Start tracing</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>Stop tracing</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>Start video</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>Stop video</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+</tbody>
+</table>
+<h3 id="testing-assertions">Testing &amp; Assertions<a class="headerlink" href="#testing-assertions" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th style="text-align: center;">vibium-go</th>
+<th style="text-align: center;">Playwright MCP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Assert text</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Assert element</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Assert URL</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+<tr>
+<td>Verify value</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>Verify list visible</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>Generate locator</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+<tr>
+<td>Test report</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="human-in-the-loop">Human-in-the-Loop<a class="headerlink" href="#human-in-the-loop" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th style="text-align: center;">vibium-go</th>
+<th style="text-align: center;">Playwright MCP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pause for human</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:x:</td>
+<td>Unique to vibium-go</td>
+</tr>
+<tr>
+<td>Get storage state</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+<tr>
+<td>Set storage state</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th style="text-align: center;">vibium-go</th>
+<th style="text-align: center;">Playwright MCP</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Get config</td>
+<td style="text-align: center;">:x:</td>
+<td style="text-align: center;">:white_check_mark:</td>
+<td>Planned</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="feature-parity-roadmap">Feature Parity Roadmap<a class="headerlink" href="#feature-parity-roadmap" title="Permanent link">&para;</a></h2>
+<h3 id="high-priority-sdk">High Priority (SDK)<a class="headerlink" href="#high-priority-sdk" title="Permanent link">&para;</a></h3>
+<p>The following features are prioritized for SDK parity:</p>
+<ol>
+<li><strong>Recording/Tracing</strong> - Full trace recording with chunks and groups</li>
+<li>~~<strong>Media Emulation</strong> - colorScheme, reducedMotion, forcedColors, contrast~~ :white_check_mark: Done</li>
+<li><strong>Console/Error Collection</strong> - Buffered console messages and errors</li>
+<li><strong>Request/Response Listeners</strong> - Network observation events</li>
+<li><strong>Init Scripts</strong> - Per-context script injection</li>
+<li><strong>Full Storage State</strong> - localStorage, sessionStorage, indexedDB</li>
+</ol>
+<h3 id="high-priority-mcp">High Priority (MCP)<a class="headerlink" href="#high-priority-mcp" title="Permanent link">&para;</a></h3>
+<p>The following MCP tools are prioritized for Playwright MCP parity:</p>
+<ol>
+<li><strong>Network Mocking</strong> - route, route_list, unroute</li>
+<li>~~<strong>Tab Management</strong> - list tabs, select tab~~ :white_check_mark: Done</li>
+<li>~~<strong>Dialog Handling</strong> - handle_dialog tool~~ :white_check_mark: Done</li>
+<li>~~<strong>Console Messages</strong> - console_messages with filtering~~ :white_check_mark: Done</li>
+<li>~~<strong>Network Requests</strong> - network_requests listing~~ :white_check_mark: Done</li>
+</ol>
+<h3 id="unique-vibium-go-features">Unique vibium-go Features<a class="headerlink" href="#unique-vibium-go-features" title="Permanent link">&para;</a></h3>
+<p>Features in vibium-go not found in other clients:</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Script Runner</td>
+<td>YAML/JSON deterministic test execution</td>
+</tr>
+<tr>
+<td>Session Recording</td>
+<td>Capture MCP actions as replayable scripts</td>
+</tr>
+<tr>
+<td>Human-in-the-Loop</td>
+<td>pauseForHuman for SSO, CAPTCHA, 2FA</td>
+</tr>
+<tr>
+<td>Test Reports</td>
+<td>Structured test execution reports</td>
+</tr>
+<tr>
+<td>RPA Engine</td>
+<td>Workflow automation with activities</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="legend">Legend<a class="headerlink" href="#legend" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>:white_check_mark:</td>
+<td>Supported</td>
+</tr>
+<tr>
+<td>:x:</td>
+<td>Not supported</td>
+</tr>
+<tr>
+<td>Planned</td>
+<td>On roadmap</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/plexusone/vibium-go" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.sections", "navigation.expand", "navigation.top", "content.code.copy", "content.tabs.link"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+    
+  </body>
+</html>

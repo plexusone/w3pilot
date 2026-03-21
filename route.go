@@ -120,3 +120,12 @@ type ConsoleMessage struct {
 	URL  string   `json:"url,omitempty"`
 	Line int      `json:"line,omitempty"`
 }
+
+// PageError represents a JavaScript error that occurred on the page.
+type PageError struct {
+	Message string `json:"message"`
+	Stack   string `json:"stack,omitempty"`
+	URL     string `json:"url,omitempty"`
+	Line    int    `json:"line,omitempty"`
+	Column  int    `json:"column,omitempty"`
+}

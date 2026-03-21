@@ -34,13 +34,17 @@ Missing tests for implemented features:
 
 Real-time event callbacks for SDK users:
 
-- [ ] `Page.OnConsole()` - console message listener
-- [ ] `Page.CollectConsole()` - enable buffered console collection
-- [ ] `Page.OnError()` - page error listener
-- [ ] `Page.CollectErrors()` - enable buffered error collection
-- [ ] `Page.Errors()` - retrieve buffered errors
-- [ ] `Page.OnRequest()` - network request listener
-- [ ] `Page.OnResponse()` - network response listener
+- [x] `Vibe.OnConsole()` - console message listener
+- [x] `Vibe.CollectConsole()` - enable buffered console collection
+- [x] `Vibe.OnError()` - page error listener
+- [x] `Vibe.CollectErrors()` - enable buffered error collection
+- [x] `Vibe.Errors()` - retrieve buffered errors
+- [x] `Vibe.ClearErrors()` - clear buffered errors
+- [x] `Vibe.OnRequest()` - network request listener
+- [x] `Vibe.OnResponse()` - network response listener
+- [x] `Vibe.OnDialog()` - dialog event listener
+- [x] `Vibe.OnDownload()` - download event listener
+- [x] BiDi client event dispatch infrastructure (`bidi.go`)
 
 ### Page Events - Medium Priority
 

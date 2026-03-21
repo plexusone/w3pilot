@@ -66,7 +66,7 @@ func (s *Server) handleGetPages(
 // GetCookies tool
 
 type GetCookiesInput struct {
-	URLs []string `json:"urls" jsonschema:"description=URLs to get cookies for (optional)"`
+	URLs []string `json:"urls" jsonschema:"URLs to get cookies for (optional)"`
 }
 
 type GetCookiesOutput struct {
@@ -124,7 +124,7 @@ func (s *Server) handleGetCookies(
 // SetCookies tool
 
 type SetCookiesInput struct {
-	Cookies []SetCookieInput `json:"cookies" jsonschema:"description=Cookies to set,required"`
+	Cookies []SetCookieInput `json:"cookies" jsonschema:"Cookies to set,required"`
 }
 
 type SetCookieInput struct {
@@ -230,12 +230,8 @@ func (s *Server) handleGetStorageState(
 		return nil, GetStorageStateOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	browserCtx, err := vibe.NewContext(ctx)
-	if err != nil {
-		return nil, GetStorageStateOutput{}, fmt.Errorf("context not available: %w", err)
-	}
-
-	state, err := browserCtx.StorageState(ctx)
+	// Use Vibe.StorageState() which captures cookies, localStorage, AND sessionStorage
+	state, err := vibe.StorageState(ctx)
 	if err != nil {
 		return nil, GetStorageStateOutput{}, fmt.Errorf("get storage state failed: %w", err)
 	}
@@ -251,7 +247,7 @@ func (s *Server) handleGetStorageState(
 // SetStorageState tool
 
 type SetStorageStateInput struct {
-	State string `json:"state" jsonschema:"description=JSON from get_storage_state containing cookies and localStorage,required"`
+	State string `json:"state" jsonschema:"JSON from get_storage_state containing cookies, localStorage, and sessionStorage,required"`
 }
 
 type SetStorageStateOutput struct {
@@ -268,88 +264,66 @@ func (s *Server) handleSetStorageState(
 		return nil, SetStorageStateOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	browserCtx, err := vibe.NewContext(ctx)
-	if err != nil {
-		return nil, SetStorageStateOutput{}, fmt.Errorf("context not available: %w", err)
-	}
-
 	// Parse the storage state JSON
 	var state vibium.StorageState
 	if err := json.Unmarshal([]byte(input.State), &state); err != nil {
 		return nil, SetStorageStateOutput{}, fmt.Errorf("invalid storage state JSON: %w", err)
 	}
 
-	// Set cookies
-	if len(state.Cookies) > 0 {
-		cookies := make([]vibium.SetCookieParam, len(state.Cookies))
-		for i, c := range state.Cookies {
-			cookies[i] = vibium.SetCookieParam{
-				Name:     c.Name,
-				Value:    c.Value,
-				Domain:   c.Domain,
-				Path:     c.Path,
-				Expires:  c.Expires,
-				HTTPOnly: c.HTTPOnly,
-				Secure:   c.Secure,
-				SameSite: c.SameSite,
-			}
-		}
-		if err := browserCtx.SetCookies(ctx, cookies); err != nil {
-			return nil, SetStorageStateOutput{}, fmt.Errorf("set cookies failed: %w", err)
-		}
+	// Use Vibe.SetStorageState() which handles cookies, localStorage, AND sessionStorage
+	if err := vibe.SetStorageState(ctx, &state); err != nil {
+		return nil, SetStorageStateOutput{}, fmt.Errorf("set storage state failed: %w", err)
 	}
 
-	// Set localStorage for each origin
-	for _, origin := range state.Origins {
-		if len(origin.LocalStorage) == 0 {
-			continue
-		}
-
-		// Build JavaScript to set localStorage items
-		localStorageJSON, err := json.Marshal(origin.LocalStorage)
-		if err != nil {
-			return nil, SetStorageStateOutput{}, fmt.Errorf("marshal localStorage failed: %w", err)
-		}
-
-		// Navigate to origin first (required to set localStorage for that origin)
-		// Then set localStorage items
-		script := fmt.Sprintf(`
-			(function() {
-				const items = %s;
-				for (const [key, value] of Object.entries(items)) {
-					localStorage.setItem(key, value);
-				}
-				return Object.keys(items).length;
-			})()
-		`, string(localStorageJSON))
-
-		// We need to be on the correct origin to set localStorage
-		// First check current URL
-		currentURL, _ := vibe.URL(ctx)
-		if currentURL == "" || currentURL == "about:blank" {
-			// Navigate to the origin to set localStorage
-			if err := vibe.Go(ctx, origin.Origin); err != nil {
-				return nil, SetStorageStateOutput{}, fmt.Errorf("navigate to origin %s failed: %w", origin.Origin, err)
-			}
-		}
-
-		if _, err := vibe.Evaluate(ctx, script); err != nil {
-			return nil, SetStorageStateOutput{}, fmt.Errorf("set localStorage for %s failed: %w", origin.Origin, err)
-		}
-	}
-
+	// Count what was restored
 	cookieCount := len(state.Cookies)
 	originCount := len(state.Origins)
-	return nil, SetStorageStateOutput{
-		Message: fmt.Sprintf("Restored %d cookies and localStorage for %d origins", cookieCount, originCount),
-	}, nil
+	sessionCount := 0
+	for _, origin := range state.Origins {
+		if len(origin.SessionStorage) > 0 {
+			sessionCount++
+		}
+	}
+
+	msg := fmt.Sprintf("Restored %d cookies and storage for %d origins", cookieCount, originCount)
+	if sessionCount > 0 {
+		msg += fmt.Sprintf(" (including sessionStorage for %d origins)", sessionCount)
+	}
+
+	return nil, SetStorageStateOutput{Message: msg}, nil
+}
+
+// ClearStorage tool
+
+type ClearStorageInput struct{}
+
+type ClearStorageOutput struct {
+	Message string `json:"message"`
+}
+
+func (s *Server) handleClearStorage(
+	ctx context.Context,
+	req *mcp.CallToolRequest,
+	input ClearStorageInput,
+) (*mcp.CallToolResult, ClearStorageOutput, error) {
+	vibe, err := s.session.Vibe(ctx)
+	if err != nil {
+		return nil, ClearStorageOutput{}, fmt.Errorf("browser not available: %w", err)
+	}
+
+	// Use Vibe.ClearStorage() which clears cookies, localStorage, AND sessionStorage
+	if err := vibe.ClearStorage(ctx); err != nil {
+		return nil, ClearStorageOutput{}, fmt.Errorf("clear storage failed: %w", err)
+	}
+
+	return nil, ClearStorageOutput{Message: "Cleared all cookies, localStorage, and sessionStorage"}, nil
 }
 
 // PauseForHuman tool
 
 type PauseForHumanInput struct {
-	Message   string `json:"message" jsonschema:"description=Message to display to the human (e.g. 'Please complete the login')"`
-	TimeoutMS int    `json:"timeout_ms" jsonschema:"description=Maximum time to wait in milliseconds (default: 300000 = 5 minutes)"`
+	Message   string `json:"message" jsonschema:"Message to display to the human (e.g. 'Please complete the login')"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Maximum time to wait in milliseconds (default: 300000 = 5 minutes)"`
 }
 
 type PauseForHumanOutput struct {
@@ -428,4 +402,28 @@ func (s *Server) handlePauseForHuman(
 	}
 
 	return nil, PauseForHumanOutput{Message: "Human action completed"}, nil
+}
+
+// GetConfig tool
+
+type GetConfigInput struct{}
+
+type GetConfigOutput struct {
+	Headless         bool   `json:"headless"`
+	Project          string `json:"project"`
+	DefaultTimeoutMS int64  `json:"default_timeout_ms"`
+	BrowserLaunched  bool   `json:"browser_launched"`
+}
+
+func (s *Server) handleGetConfig(
+	ctx context.Context,
+	req *mcp.CallToolRequest,
+	input GetConfigInput,
+) (*mcp.CallToolResult, GetConfigOutput, error) {
+	return nil, GetConfigOutput{
+		Headless:         s.config.Headless,
+		Project:          s.config.Project,
+		DefaultTimeoutMS: s.config.DefaultTimeout.Milliseconds(),
+		BrowserLaunched:  s.session.IsLaunched(),
+	}, nil
 }

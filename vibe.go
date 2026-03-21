@@ -291,8 +291,9 @@ func (v *Vibe) Find(ctx context.Context, selector string, opts *FindOptions) (*E
 	return NewElement(v.client, browsingCtx, selector, info), nil
 }
 
-// FindAll finds all elements matching the CSS selector.
-func (v *Vibe) FindAll(ctx context.Context, selector string) ([]*Element, error) {
+// FindAll finds all elements matching the selector and optional semantic options.
+// If selector is empty but semantic options are provided, elements are found by those options.
+func (v *Vibe) FindAll(ctx context.Context, selector string, opts *FindOptions) ([]*Element, error) {
 	if v.closed {
 		return nil, ErrConnectionClosed
 	}
@@ -303,72 +304,78 @@ func (v *Vibe) FindAll(ctx context.Context, selector string) ([]*Element, error)
 		return nil, err
 	}
 
-	// Use JavaScript to find all matching elements and return JSON string
-	// (BiDi serializes arrays in a complex format, so we JSON.stringify ourselves)
-	script := `(selector) => {
-		const elements = document.querySelectorAll(selector);
-		const result = Array.from(elements).map((el, index) => {
-			const rect = el.getBoundingClientRect();
-			return {
-				index: index,
-				tag: el.tagName.toLowerCase(),
-				text: (el.textContent || '').trim().substring(0, 100),
-				box: { x: rect.x, y: rect.y, width: rect.width, height: rect.height }
-			};
-		});
-		return JSON.stringify(result);
-	}`
-
-	params := map[string]interface{}{
-		"functionDeclaration": script,
-		"target":              map[string]interface{}{"context": browsingCtx},
-		"arguments": []interface{}{
-			map[string]interface{}{
-				"type":  "string",
-				"value": selector,
-			},
-		},
-		"awaitPromise":    false,
-		"resultOwnership": "root",
+	timeout := DefaultTimeout
+	if opts != nil && opts.Timeout > 0 {
+		timeout = opts.Timeout
 	}
 
-	result, err := v.client.Send(ctx, "script.callFunction", params)
+	params := map[string]interface{}{
+		"context":  browsingCtx,
+		"selector": selector,
+		"timeout":  timeout.Milliseconds(),
+	}
+
+	// Add semantic selector options if present
+	if opts != nil {
+		if opts.Role != "" {
+			params["role"] = opts.Role
+		}
+		if opts.Text != "" {
+			params["text"] = opts.Text
+		}
+		if opts.Label != "" {
+			params["label"] = opts.Label
+		}
+		if opts.Placeholder != "" {
+			params["placeholder"] = opts.Placeholder
+		}
+		if opts.TestID != "" {
+			params["testid"] = opts.TestID
+		}
+		if opts.Alt != "" {
+			params["alt"] = opts.Alt
+		}
+		if opts.Title != "" {
+			params["title"] = opts.Title
+		}
+		if opts.XPath != "" {
+			params["xpath"] = opts.XPath
+		}
+		if opts.Near != "" {
+			params["near"] = opts.Near
+		}
+	}
+
+	result, err := v.client.Send(ctx, "vibium:findAll", params)
 	if err != nil {
 		return nil, err
 	}
 
-	// Parse the outer BiDi response to get the JSON string
-	var resp struct {
-		Result struct {
-			Type  string `json:"type"`
-			Value string `json:"value"`
-		} `json:"result"`
-	}
-	if err := json.Unmarshal(result, &resp); err != nil {
-		return nil, fmt.Errorf("failed to parse response: %w", err)
-	}
-
-	// Parse the JSON string containing element data
+	// Parse the response containing element data
 	var items []struct {
-		Index int         `json:"index"`
-		Tag   string      `json:"tag"`
-		Text  string      `json:"text"`
-		Box   BoundingBox `json:"box"`
+		Index    int         `json:"index"`
+		Selector string      `json:"selector"`
+		Tag      string      `json:"tag"`
+		Text     string      `json:"text"`
+		Box      BoundingBox `json:"box"`
 	}
-	if err := json.Unmarshal([]byte(resp.Result.Value), &items); err != nil {
+	if err := json.Unmarshal(result, &items); err != nil {
 		return nil, fmt.Errorf("failed to parse elements: %w", err)
 	}
 
 	elements := make([]*Element, len(items))
 	for i, item := range items {
-		// Create indexed selector for each element
-		indexedSelector := fmt.Sprintf("%s:nth-of-type(%d)", selector, item.Index+1)
+		// Use the selector returned by the server, or create an indexed one
+		elemSelector := item.Selector
+		if elemSelector == "" {
+			elemSelector = fmt.Sprintf("%s:nth-of-type(%d)", selector, item.Index+1)
+		}
 		info := ElementInfo{
 			Tag:  item.Tag,
 			Text: item.Text,
 			Box:  item.Box,
 		}
-		elements[i] = NewElement(v.client, browsingCtx, indexedSelector, info)
+		elements[i] = NewElement(v.client, browsingCtx, elemSelector, info)
 	}
 
 	debugLog(ctx, "elements found", "selector", selector, "count", len(elements))
@@ -507,6 +514,11 @@ func (v *Vibe) Quit(ctx context.Context) error {
 // IsClosed returns whether the browser has been closed.
 func (v *Vibe) IsClosed() bool {
 	return v.closed
+}
+
+// BrowsingContext returns the browsing context ID for this page.
+func (v *Vibe) BrowsingContext() string {
+	return v.browsingContext
 }
 
 // Keyboard returns the keyboard controller for this page.
@@ -957,6 +969,9 @@ func (v *Vibe) EmulateMedia(ctx context.Context, opts EmulateMediaOptions) error
 	if opts.ForcedColors != "" {
 		params["forcedColors"] = opts.ForcedColors
 	}
+	if opts.Contrast != "" {
+		params["contrast"] = opts.Contrast
+	}
 
 	_, err = v.client.Send(ctx, "vibium:page.emulateMedia", params)
 	return err
@@ -1174,6 +1189,112 @@ func (v *Vibe) Unroute(ctx context.Context, pattern string) error {
 	}
 
 	_, err = v.client.Send(ctx, "vibium:network.unroute", params)
+	return err
+}
+
+// MockRouteOptions configures a static mock response for a route.
+type MockRouteOptions struct {
+	Status      int               // HTTP status code (default: 200)
+	Body        string            // Response body
+	ContentType string            // Content-Type header (default: application/json)
+	Headers     map[string]string // Additional response headers
+}
+
+// MockRoute registers a route that returns a static mock response.
+// This is useful for MCP tools and testing without callbacks.
+func (v *Vibe) MockRoute(ctx context.Context, pattern string, opts MockRouteOptions) error {
+	if v.closed {
+		return ErrConnectionClosed
+	}
+
+	browsingCtx, err := v.getContext(ctx)
+	if err != nil {
+		return err
+	}
+
+	params := map[string]interface{}{
+		"context": browsingCtx,
+		"pattern": pattern,
+	}
+
+	if opts.Status != 0 {
+		params["status"] = opts.Status
+	} else {
+		params["status"] = 200
+	}
+
+	if opts.Body != "" {
+		params["body"] = opts.Body
+	}
+
+	if opts.ContentType != "" {
+		params["contentType"] = opts.ContentType
+	} else {
+		params["contentType"] = "application/json"
+	}
+
+	if opts.Headers != nil {
+		params["headers"] = opts.Headers
+	}
+
+	_, err = v.client.Send(ctx, "vibium:network.mockRoute", params)
+	return err
+}
+
+// RouteInfo represents information about an active route.
+type RouteInfo struct {
+	Pattern     string `json:"pattern"`
+	Status      int    `json:"status,omitempty"`
+	ContentType string `json:"contentType,omitempty"`
+}
+
+// ListRoutes returns all active route handlers.
+func (v *Vibe) ListRoutes(ctx context.Context) ([]RouteInfo, error) {
+	if v.closed {
+		return nil, ErrConnectionClosed
+	}
+
+	browsingCtx, err := v.getContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	params := map[string]interface{}{
+		"context": browsingCtx,
+	}
+
+	result, err := v.client.Send(ctx, "vibium:network.listRoutes", params)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp struct {
+		Routes []RouteInfo `json:"routes"`
+	}
+	if err := json.Unmarshal(result, &resp); err != nil {
+		return nil, err
+	}
+
+	return resp.Routes, nil
+}
+
+// SetOffline sets the browser's offline mode.
+func (v *Vibe) SetOffline(ctx context.Context, offline bool) error {
+	if v.closed {
+		return ErrConnectionClosed
+	}
+
+	browsingCtx, err := v.getContext(ctx)
+	if err != nil {
+		return err
+	}
+
+	params := map[string]interface{}{
+		"context": browsingCtx,
+		"offline": offline,
+	}
+
+	_, err = v.client.Send(ctx, "vibium:network.setOffline", params)
 	return err
 }
 
@@ -1399,6 +1520,243 @@ func (v *Vibe) Context() *BrowserContext {
 	return nil
 }
 
+// HandleDialog handles the current dialog by accepting or dismissing it.
+// If accept is true, the dialog is accepted. If promptText is provided (for prompt dialogs),
+// it will be entered before accepting.
+func (v *Vibe) HandleDialog(ctx context.Context, accept bool, promptText string) error {
+	if v.closed {
+		return ErrConnectionClosed
+	}
+
+	browsingCtx, err := v.getContext(ctx)
+	if err != nil {
+		return err
+	}
+
+	params := map[string]interface{}{
+		"context": browsingCtx,
+		"accept":  accept,
+	}
+
+	if accept && promptText != "" {
+		params["userText"] = promptText
+	}
+
+	_, err = v.client.Send(ctx, "vibium:dialog.handle", params)
+	return err
+}
+
+// GetDialog returns information about the current dialog, if any.
+func (v *Vibe) GetDialog(ctx context.Context) (DialogInfo, error) {
+	if v.closed {
+		return DialogInfo{}, ErrConnectionClosed
+	}
+
+	browsingCtx, err := v.getContext(ctx)
+	if err != nil {
+		return DialogInfo{}, err
+	}
+
+	params := map[string]interface{}{
+		"context": browsingCtx,
+	}
+
+	result, err := v.client.Send(ctx, "vibium:dialog.get", params)
+	if err != nil {
+		// No dialog open is not an error
+		return DialogInfo{HasDialog: false}, nil
+	}
+
+	var resp struct {
+		Type         string `json:"type"`
+		Message      string `json:"message"`
+		DefaultValue string `json:"defaultValue"`
+	}
+	if err := json.Unmarshal(result, &resp); err != nil {
+		return DialogInfo{HasDialog: false}, nil
+	}
+
+	if resp.Type == "" {
+		return DialogInfo{HasDialog: false}, nil
+	}
+
+	return DialogInfo{
+		HasDialog:    true,
+		Type:         resp.Type,
+		Message:      resp.Message,
+		DefaultValue: resp.DefaultValue,
+	}, nil
+}
+
+// ConsoleMessages returns buffered console messages from the page.
+// The level parameter filters messages by type (log, info, warn, error, debug).
+// If level is empty, all messages are returned.
+func (v *Vibe) ConsoleMessages(ctx context.Context, level string) ([]ConsoleMessage, error) {
+	if v.closed {
+		return nil, ErrConnectionClosed
+	}
+
+	browsingCtx, err := v.getContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	params := map[string]interface{}{
+		"context": browsingCtx,
+	}
+
+	if level != "" {
+		params["level"] = level
+	}
+
+	result, err := v.client.Send(ctx, "vibium:console.messages", params)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp struct {
+		Messages []ConsoleMessage `json:"messages"`
+	}
+	if err := json.Unmarshal(result, &resp); err != nil {
+		return nil, err
+	}
+
+	return resp.Messages, nil
+}
+
+// ClearConsoleMessages clears the buffered console messages.
+func (v *Vibe) ClearConsoleMessages(ctx context.Context) error {
+	if v.closed {
+		return ErrConnectionClosed
+	}
+
+	browsingCtx, err := v.getContext(ctx)
+	if err != nil {
+		return err
+	}
+
+	params := map[string]interface{}{
+		"context": browsingCtx,
+	}
+
+	_, err = v.client.Send(ctx, "vibium:console.clear", params)
+	return err
+}
+
+// NetworkRequest represents a captured network request with its response.
+type NetworkRequest struct {
+	URL          string            `json:"url"`
+	Method       string            `json:"method"`
+	Headers      map[string]string `json:"headers,omitempty"`
+	PostData     string            `json:"postData,omitempty"`
+	ResourceType string            `json:"resourceType"`
+	Status       int               `json:"status,omitempty"`
+	StatusText   string            `json:"statusText,omitempty"`
+	ResponseSize int64             `json:"responseSize,omitempty"`
+	Timestamp    int64             `json:"timestamp,omitempty"`
+}
+
+// NetworkRequests returns buffered network requests from the page.
+// Options can filter by URL pattern, method, or resource type.
+func (v *Vibe) NetworkRequests(ctx context.Context, opts *NetworkRequestsOptions) ([]NetworkRequest, error) {
+	if v.closed {
+		return nil, ErrConnectionClosed
+	}
+
+	browsingCtx, err := v.getContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	params := map[string]interface{}{
+		"context": browsingCtx,
+	}
+
+	if opts != nil {
+		if opts.URLPattern != "" {
+			params["urlPattern"] = opts.URLPattern
+		}
+		if opts.Method != "" {
+			params["method"] = opts.Method
+		}
+		if opts.ResourceType != "" {
+			params["resourceType"] = opts.ResourceType
+		}
+	}
+
+	result, err := v.client.Send(ctx, "vibium:network.requests", params)
+	if err != nil {
+		return nil, err
+	}
+
+	var resp struct {
+		Requests []NetworkRequest `json:"requests"`
+	}
+	if err := json.Unmarshal(result, &resp); err != nil {
+		return nil, err
+	}
+
+	return resp.Requests, nil
+}
+
+// NetworkRequestsOptions configures network request filtering.
+type NetworkRequestsOptions struct {
+	URLPattern   string // Glob or regex pattern to filter URLs
+	Method       string // Filter by HTTP method (GET, POST, etc.)
+	ResourceType string // Filter by resource type (document, script, xhr, etc.)
+}
+
+// ClearNetworkRequests clears the buffered network requests.
+func (v *Vibe) ClearNetworkRequests(ctx context.Context) error {
+	if v.closed {
+		return ErrConnectionClosed
+	}
+
+	browsingCtx, err := v.getContext(ctx)
+	if err != nil {
+		return err
+	}
+
+	params := map[string]interface{}{
+		"context": browsingCtx,
+	}
+
+	_, err = v.client.Send(ctx, "vibium:network.clearRequests", params)
+	return err
+}
+
+// ScrollOptions configures scroll behavior.
+type ScrollOptions struct {
+	Selector string // Optional CSS selector to scroll within
+}
+
+// Scroll scrolls the page or a specific element.
+// direction can be "up", "down", "left", or "right".
+// amount is the number of pixels to scroll (use 0 for full page).
+func (v *Vibe) Scroll(ctx context.Context, direction string, amount int, opts *ScrollOptions) error {
+	if v.closed {
+		return ErrConnectionClosed
+	}
+
+	browsingCtx, err := v.getContext(ctx)
+	if err != nil {
+		return err
+	}
+
+	params := map[string]interface{}{
+		"context":   browsingCtx,
+		"direction": direction,
+		"amount":    amount,
+	}
+
+	if opts != nil && opts.Selector != "" {
+		params["selector"] = opts.Selector
+	}
+
+	_, err = v.client.Send(ctx, "vibium:page.scroll", params)
+	return err
+}
+
 // BrowserVersion returns the browser version string.
 func (v *Vibe) BrowserVersion(ctx context.Context) (string, error) {
 	if v.closed {
@@ -1419,4 +1777,274 @@ func (v *Vibe) BrowserVersion(ctx context.Context) (string, error) {
 	}
 
 	return resp.Version, nil
+}
+
+// Tracing returns a tracing controller for the default browser context.
+// Use this to record traces for debugging and analysis.
+func (v *Vibe) Tracing() *Tracing {
+	return &Tracing{
+		client:      v.client,
+		userContext: "", // Empty string uses the default user context
+	}
+}
+
+// AddInitScript adds a script that will be evaluated in every page before any page scripts.
+// This is useful for mocking APIs, injecting test helpers, or setting up authentication.
+func (v *Vibe) AddInitScript(ctx context.Context, script string) error {
+	if v.closed {
+		return ErrConnectionClosed
+	}
+
+	// Get the default user context
+	userContext, err := v.getDefaultUserContext(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to get user context: %w", err)
+	}
+
+	params := map[string]interface{}{
+		"userContext": userContext,
+		"script":      script,
+	}
+
+	_, err = v.client.Send(ctx, "vibium:context.addInitScript", params)
+	return err
+}
+
+// getDefaultUserContext returns the default user context ID.
+func (v *Vibe) getDefaultUserContext(ctx context.Context) (string, error) {
+	result, err := v.client.Send(ctx, "browser.getUserContexts", map[string]interface{}{})
+	if err != nil {
+		return "", err
+	}
+
+	var resp struct {
+		UserContexts []struct {
+			UserContext string `json:"userContext"`
+		} `json:"userContexts"`
+	}
+	if err := json.Unmarshal(result, &resp); err != nil {
+		return "", err
+	}
+
+	if len(resp.UserContexts) == 0 {
+		return "", fmt.Errorf("no user contexts available")
+	}
+
+	// Return the first (default) user context
+	return resp.UserContexts[0].UserContext, nil
+}
+
+// StorageState returns the complete browser storage state including cookies, localStorage,
+// and sessionStorage for the current page's origin. This can be saved and later restored
+// using SetStorageState to resume a session.
+func (v *Vibe) StorageState(ctx context.Context) (*StorageState, error) {
+	if v.closed {
+		return nil, ErrConnectionClosed
+	}
+
+	// Get base storage state (cookies + localStorage) from context
+	browserCtx, err := v.NewContext(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get browser context: %w", err)
+	}
+
+	state, err := browserCtx.StorageState(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get storage state: %w", err)
+	}
+
+	// Capture sessionStorage for the current page's origin
+	currentURL, err := v.URL(ctx)
+	if err != nil || currentURL == "" || currentURL == "about:blank" {
+		// No page loaded, return state without sessionStorage
+		return state, nil
+	}
+
+	// Get sessionStorage via JavaScript
+	sessionStorageScript := `
+		(function() {
+			const items = {};
+			for (let i = 0; i < sessionStorage.length; i++) {
+				const key = sessionStorage.key(i);
+				items[key] = sessionStorage.getItem(key);
+			}
+			return JSON.stringify({
+				origin: window.location.origin,
+				items: items
+			});
+		})()
+	`
+
+	result, err := v.Evaluate(ctx, sessionStorageScript)
+	if err != nil {
+		// sessionStorage not available (e.g., file:// protocol), return without it
+		return state, nil
+	}
+
+	// Parse the sessionStorage result
+	resultStr, ok := result.(string)
+	if !ok {
+		return state, nil
+	}
+
+	var sessionData struct {
+		Origin string            `json:"origin"`
+		Items  map[string]string `json:"items"`
+	}
+	if err := json.Unmarshal([]byte(resultStr), &sessionData); err != nil {
+		return state, nil
+	}
+
+	// Merge sessionStorage into the appropriate origin
+	if len(sessionData.Items) > 0 {
+		found := false
+		for i := range state.Origins {
+			if state.Origins[i].Origin == sessionData.Origin {
+				state.Origins[i].SessionStorage = sessionData.Items
+				found = true
+				break
+			}
+		}
+		if !found {
+			// Add new origin entry for sessionStorage
+			state.Origins = append(state.Origins, StorageStateOrigin{
+				Origin:         sessionData.Origin,
+				LocalStorage:   map[string]string{},
+				SessionStorage: sessionData.Items,
+			})
+		}
+	}
+
+	return state, nil
+}
+
+// SetStorageState restores browser storage state from a previously saved StorageState.
+// This includes cookies, localStorage, and sessionStorage. The browser should be on
+// a page (or will be navigated to the first origin) for storage to be set correctly.
+func (v *Vibe) SetStorageState(ctx context.Context, state *StorageState) error {
+	if v.closed {
+		return ErrConnectionClosed
+	}
+
+	browserCtx, err := v.NewContext(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to get browser context: %w", err)
+	}
+
+	// Set cookies
+	if len(state.Cookies) > 0 {
+		cookies := make([]SetCookieParam, len(state.Cookies))
+		for i, c := range state.Cookies {
+			cookies[i] = SetCookieParam{
+				Name:     c.Name,
+				Value:    c.Value,
+				Domain:   c.Domain,
+				Path:     c.Path,
+				Expires:  c.Expires,
+				HTTPOnly: c.HTTPOnly,
+				Secure:   c.Secure,
+				SameSite: c.SameSite,
+			}
+		}
+		if err := browserCtx.SetCookies(ctx, cookies); err != nil {
+			return fmt.Errorf("failed to set cookies: %w", err)
+		}
+	}
+
+	// Set localStorage and sessionStorage for each origin
+	for _, origin := range state.Origins {
+		hasLocalStorage := len(origin.LocalStorage) > 0
+		hasSessionStorage := len(origin.SessionStorage) > 0
+
+		if !hasLocalStorage && !hasSessionStorage {
+			continue
+		}
+
+		// Check current URL - we may need to navigate to the origin
+		currentURL, _ := v.URL(ctx)
+		if currentURL == "" || currentURL == "about:blank" {
+			// Navigate to the origin to set storage
+			if err := v.Go(ctx, origin.Origin); err != nil {
+				return fmt.Errorf("failed to navigate to origin %s: %w", origin.Origin, err)
+			}
+		}
+
+		// Set localStorage
+		if hasLocalStorage {
+			localStorageJSON, err := json.Marshal(origin.LocalStorage)
+			if err != nil {
+				return fmt.Errorf("failed to marshal localStorage: %w", err)
+			}
+
+			script := fmt.Sprintf(`
+				(function() {
+					const items = %s;
+					for (const [key, value] of Object.entries(items)) {
+						localStorage.setItem(key, value);
+					}
+					return Object.keys(items).length;
+				})()
+			`, string(localStorageJSON))
+
+			if _, err := v.Evaluate(ctx, script); err != nil {
+				return fmt.Errorf("failed to set localStorage for %s: %w", origin.Origin, err)
+			}
+		}
+
+		// Set sessionStorage
+		if hasSessionStorage {
+			sessionStorageJSON, err := json.Marshal(origin.SessionStorage)
+			if err != nil {
+				return fmt.Errorf("failed to marshal sessionStorage: %w", err)
+			}
+
+			script := fmt.Sprintf(`
+				(function() {
+					const items = %s;
+					for (const [key, value] of Object.entries(items)) {
+						sessionStorage.setItem(key, value);
+					}
+					return Object.keys(items).length;
+				})()
+			`, string(sessionStorageJSON))
+
+			if _, err := v.Evaluate(ctx, script); err != nil {
+				return fmt.Errorf("failed to set sessionStorage for %s: %w", origin.Origin, err)
+			}
+		}
+	}
+
+	return nil
+}
+
+// ClearStorage clears all cookies, localStorage, and sessionStorage.
+func (v *Vibe) ClearStorage(ctx context.Context) error {
+	if v.closed {
+		return ErrConnectionClosed
+	}
+
+	browserCtx, err := v.NewContext(ctx)
+	if err != nil {
+		return fmt.Errorf("failed to get browser context: %w", err)
+	}
+
+	// Clear cookies
+	if err := browserCtx.ClearCookies(ctx); err != nil {
+		return fmt.Errorf("failed to clear cookies: %w", err)
+	}
+
+	// Clear localStorage and sessionStorage for current page
+	script := `
+		(function() {
+			localStorage.clear();
+			sessionStorage.clear();
+			return true;
+		})()
+	`
+	if _, err := v.Evaluate(ctx, script); err != nil {
+		// Ignore errors (e.g., about:blank page)
+		return nil
+	}
+
+	return nil
 }

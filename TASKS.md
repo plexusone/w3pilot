@@ -58,10 +58,11 @@ Browser-level event listeners:
 
 WebSocket connection observation:
 
-- [ ] `WebSocketInfo` type (url, isClosed)
-- [ ] `Page.OnWebSocket()` - WebSocket connection listener
-- [ ] `WebSocketInfo.OnMessage()` - message listener
-- [ ] `WebSocketInfo.OnClose()` - close listener
+- [x] `WebSocketInfo` type (URL, IsClosed, socketID)
+- [x] `WebSocketMessage` type (Data, IsBinary, Direction)
+- [x] `Vibe.OnWebSocket()` - WebSocket connection listener
+- [x] `WebSocketInfo.OnMessage()` - message listener
+- [x] `WebSocketInfo.OnClose()` - close listener
 
 ### Video Recording - Medium Priority
 

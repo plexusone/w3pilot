@@ -13,6 +13,10 @@ type Config struct {
 
 	// DefaultTimeout is the default timeout for browser operations.
 	DefaultTimeout time.Duration
+
+	// InitScripts are JavaScript files to inject before any page scripts.
+	// Each string is the content of a script (not a file path).
+	InitScripts []string
 }
 
 // DefaultConfig returns a Config with sensible defaults.

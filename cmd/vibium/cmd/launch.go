@@ -10,7 +10,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var launchHeadless bool
+var (
+	launchHeadless    bool
+	launchInitScripts []string
+)
 
 var launchCmd = &cobra.Command{
 	Use:   "launch",
@@ -21,7 +24,8 @@ The browser will stay open until you run 'vibium quit' or press Ctrl+C.
 
 Examples:
   vibium launch              # Launch visible browser
-  vibium launch --headless   # Launch headless browser`,
+  vibium launch --headless   # Launch headless browser
+  vibium launch --init-script ./setup.js --init-script ./mock-api.js`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
@@ -35,11 +39,28 @@ Examples:
 			return err
 		}
 
+		// Load and apply init scripts
+		for _, scriptPath := range launchInitScripts {
+			content, err := os.ReadFile(scriptPath)
+			if err != nil {
+				return fmt.Errorf("failed to read init script %s: %w", scriptPath, err)
+			}
+			if err := vibe.AddInitScript(ctx, string(content)); err != nil {
+				return fmt.Errorf("failed to add init script %s: %w", scriptPath, err)
+			}
+			if verbose {
+				fmt.Printf("Loaded init script: %s\n", scriptPath)
+			}
+		}
+
 		mode := "visible"
 		if launchHeadless {
 			mode = "headless"
 		}
 		fmt.Printf("Browser launched (%s mode)\n", mode)
+		if len(launchInitScripts) > 0 {
+			fmt.Printf("Loaded %d init script(s)\n", len(launchInitScripts))
+		}
 		fmt.Println("Press Ctrl+C to quit or use 'vibium quit'")
 
 		// Wait for interrupt
@@ -60,4 +81,5 @@ Examples:
 func init() {
 	rootCmd.AddCommand(launchCmd)
 	launchCmd.Flags().BoolVar(&launchHeadless, "headless", false, "Run browser in headless mode")
+	launchCmd.Flags().StringArrayVar(&launchInitScripts, "init-script", nil, "JavaScript file to inject before page scripts (can be repeated)")
 }

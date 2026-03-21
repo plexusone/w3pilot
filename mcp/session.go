@@ -13,12 +13,13 @@ import (
 
 // Session manages a browser session and collects test results.
 type Session struct {
-	mu       sync.Mutex
-	vibe     *vibium.Vibe
-	config   SessionConfig
-	results  []report.StepResult
-	stepNum  int
-	recorder *Recorder
+	mu            sync.Mutex
+	vibe          *vibium.Vibe
+	activeContext string // Active browsing context ID for tab management
+	config        SessionConfig
+	results       []report.StepResult
+	stepNum       int
+	recorder      *Recorder
 }
 
 // SessionConfig holds session configuration.
@@ -27,6 +28,7 @@ type SessionConfig struct {
 	DefaultTimeout time.Duration
 	Project        string
 	Target         string
+	InitScripts    []string
 }
 
 // NewSession creates a new Session.
@@ -64,16 +66,48 @@ func (s *Session) LaunchIfNeeded(ctx context.Context) error {
 	} else {
 		s.vibe, err = vibium.Launch(ctx)
 	}
-	return err
+	if err != nil {
+		return err
+	}
+
+	// Apply init scripts
+	for _, script := range s.config.InitScripts {
+		if err := s.vibe.AddInitScript(ctx, script); err != nil {
+			return fmt.Errorf("failed to add init script: %w", err)
+		}
+	}
+
+	return nil
 }
 
 // Vibe returns the browser controller, launching if needed.
+// If an active context is set (via SetActiveContext), returns the page for that context.
 func (s *Session) Vibe(ctx context.Context) (*vibium.Vibe, error) {
 	if err := s.LaunchIfNeeded(ctx); err != nil {
 		return nil, err
 	}
 	s.mu.Lock()
 	defer s.mu.Unlock()
+
+	// If no active context is set, return the default vibe
+	if s.activeContext == "" {
+		return s.vibe, nil
+	}
+
+	// Find the page with the active context
+	pages, err := s.vibe.Pages(ctx)
+	if err != nil {
+		return s.vibe, nil // Fallback to default
+	}
+
+	for _, page := range pages {
+		if page.BrowsingContext() == s.activeContext {
+			return page, nil
+		}
+	}
+
+	// Active context no longer exists, clear it and return default
+	s.activeContext = ""
 	return s.vibe, nil
 }
 
@@ -126,6 +160,13 @@ func (s *Session) Reset() {
 	s.stepNum = 0
 }
 
+// IsLaunched returns whether the browser has been launched.
+func (s *Session) IsLaunched() bool {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.vibe != nil && !s.vibe.IsClosed()
+}
+
 // Close closes the browser session.
 func (s *Session) Close(ctx context.Context) error {
 	s.mu.Lock()
@@ -144,6 +185,20 @@ func (s *Session) SetTarget(target string) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.config.Target = target
+}
+
+// SetActiveContext sets the active browsing context ID for tab management.
+func (s *Session) SetActiveContext(contextID string) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	s.activeContext = contextID
+}
+
+// ActiveContext returns the active browsing context ID.
+func (s *Session) ActiveContext() string {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	return s.activeContext
 }
 
 // CaptureScreenshot captures a screenshot and returns a ScreenshotRef.

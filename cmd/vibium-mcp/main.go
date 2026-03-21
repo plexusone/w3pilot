@@ -4,6 +4,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 	"os"
 	"os/signal"
@@ -13,16 +14,43 @@ import (
 	"github.com/plexusone/vibium-go/mcp"
 )
 
+// stringSlice implements flag.Value for repeated string flags
+type stringSlice []string
+
+func (s *stringSlice) String() string {
+	return fmt.Sprintf("%v", *s)
+}
+
+func (s *stringSlice) Set(value string) error {
+	*s = append(*s, value)
+	return nil
+}
+
 func main() {
 	headless := flag.Bool("headless", true, "Run browser in headless mode")
 	project := flag.String("project", "vibium-tests", "Project name for reports")
 	timeout := flag.Duration("timeout", 30*time.Second, "Default timeout for browser operations")
+
+	var initScriptPaths stringSlice
+	flag.Var(&initScriptPaths, "init-script", "JavaScript file to inject before page scripts (can be repeated)")
+
 	flag.Parse()
+
+	// Load init scripts from files
+	var initScripts []string
+	for _, path := range initScriptPaths {
+		content, err := os.ReadFile(path)
+		if err != nil {
+			log.Fatalf("Failed to read init script %s: %v", path, err)
+		}
+		initScripts = append(initScripts, string(content))
+	}
 
 	config := mcp.Config{
 		Headless:       *headless,
 		Project:        *project,
 		DefaultTimeout: *timeout,
+		InitScripts:    initScripts,
 	}
 
 	server := mcp.NewServer(config)

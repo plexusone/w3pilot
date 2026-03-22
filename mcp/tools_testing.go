@@ -403,3 +403,303 @@ func (s *Server) handleGenerateLocator(
 		Metadata: metadata,
 	}, nil
 }
+
+// WaitForSelector tool - waits for an element to reach a specific state
+
+type WaitForSelectorInput struct {
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	State     string `json:"state" jsonschema:"State to wait for: attached detached visible hidden (default: visible),enum=attached,enum=detached,enum=visible,enum=hidden"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 30000)"`
+}
+
+type WaitForSelectorOutput struct {
+	Message string `json:"message"`
+}
+
+func (s *Server) handleWaitForSelector(
+	ctx context.Context,
+	req *mcp.CallToolRequest,
+	input WaitForSelectorInput,
+) (*mcp.CallToolResult, WaitForSelectorOutput, error) {
+	vibe, err := s.session.Vibe(ctx)
+	if err != nil {
+		return nil, WaitForSelectorOutput{}, fmt.Errorf("browser not available: %w", err)
+	}
+
+	if input.TimeoutMS == 0 {
+		input.TimeoutMS = 30000
+	}
+	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
+
+	if input.State == "" {
+		input.State = "visible"
+	}
+
+	// Find the element first (for attached/visible states) or wait for condition
+	switch input.State {
+	case "attached", "visible":
+		elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+		if err != nil {
+			return nil, WaitForSelectorOutput{}, fmt.Errorf("wait for selector failed: %w", err)
+		}
+		if input.State == "visible" {
+			err = elem.WaitUntil(ctx, "visible", timeout)
+			if err != nil {
+				return nil, WaitForSelectorOutput{}, fmt.Errorf("wait for visible failed: %w", err)
+			}
+		}
+	case "detached", "hidden":
+		err = vibe.WaitForFunction(ctx, fmt.Sprintf(`() => {
+			const el = document.querySelector(%q);
+			if (%q === "detached") return el === null;
+			if (el === null) return true;
+			const style = window.getComputedStyle(el);
+			return style.display === 'none' || style.visibility === 'hidden' || el.offsetParent === null;
+		}`, input.Selector, input.State), timeout)
+		if err != nil {
+			return nil, WaitForSelectorOutput{}, fmt.Errorf("wait for %s failed: %w", input.State, err)
+		}
+	default:
+		return nil, WaitForSelectorOutput{}, fmt.Errorf("invalid state: %s", input.State)
+	}
+
+	return nil, WaitForSelectorOutput{
+		Message: fmt.Sprintf("Element %s is %s", input.Selector, input.State),
+	}, nil
+}
+
+// VerifyText tool - verifies element text matches expected value
+
+type VerifyTextInput struct {
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	Expected  string `json:"expected" jsonschema:"Expected text content,required"`
+	Exact     bool   `json:"exact" jsonschema:"Require exact match (default: false uses contains)"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
+}
+
+type VerifyTextOutput struct {
+	Passed  bool   `json:"passed"`
+	Actual  string `json:"actual"`
+	Message string `json:"message"`
+}
+
+func (s *Server) handleVerifyText(
+	ctx context.Context,
+	req *mcp.CallToolRequest,
+	input VerifyTextInput,
+) (*mcp.CallToolResult, VerifyTextOutput, error) {
+	vibe, err := s.session.Vibe(ctx)
+	if err != nil {
+		return nil, VerifyTextOutput{}, fmt.Errorf("browser not available: %w", err)
+	}
+
+	if input.TimeoutMS == 0 {
+		input.TimeoutMS = 5000
+	}
+	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
+
+	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	if err != nil {
+		return nil, VerifyTextOutput{}, fmt.Errorf("element not found: %s", input.Selector)
+	}
+
+	actual, err := elem.Text(ctx)
+	if err != nil {
+		return nil, VerifyTextOutput{}, fmt.Errorf("get text failed: %w", err)
+	}
+
+	var passed bool
+	if input.Exact {
+		passed = actual == input.Expected
+	} else {
+		passed = contains(actual, input.Expected)
+	}
+
+	if !passed {
+		matchType := "contain"
+		if input.Exact {
+			matchType = "equal"
+		}
+		return nil, VerifyTextOutput{
+			Passed:  false,
+			Actual:  actual,
+			Message: fmt.Sprintf("Text does not %s expected: got %q, expected %q", matchType, actual, input.Expected),
+		}, nil
+	}
+
+	return nil, VerifyTextOutput{
+		Passed:  true,
+		Actual:  actual,
+		Message: fmt.Sprintf("Text matches: %q", actual),
+	}, nil
+}
+
+// contains checks if s contains substr (case-sensitive)
+func contains(s, substr string) bool {
+	return len(substr) == 0 || (len(s) >= len(substr) && searchString(s, substr))
+}
+
+func searchString(s, substr string) bool {
+	for i := 0; i <= len(s)-len(substr); i++ {
+		if s[i:i+len(substr)] == substr {
+			return true
+		}
+	}
+	return false
+}
+
+// VerifyVisible tool - verifies element is visible
+
+type VerifyVisibleInput struct {
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
+}
+
+type VerifyVisibleOutput struct {
+	Passed  bool   `json:"passed"`
+	Message string `json:"message"`
+}
+
+func (s *Server) handleVerifyVisible(
+	ctx context.Context,
+	req *mcp.CallToolRequest,
+	input VerifyVisibleInput,
+) (*mcp.CallToolResult, VerifyVisibleOutput, error) {
+	passed, msg, err := s.verifyElementState(ctx, input.Selector, input.TimeoutMS, "visible")
+	if err != nil {
+		return nil, VerifyVisibleOutput{}, err
+	}
+	return nil, VerifyVisibleOutput{Passed: passed, Message: msg}, nil
+}
+
+// VerifyEnabled tool - verifies element is enabled
+
+type VerifyEnabledInput struct {
+	Selector  string `json:"selector" jsonschema:"CSS selector for the element,required"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
+}
+
+type VerifyEnabledOutput struct {
+	Passed  bool   `json:"passed"`
+	Message string `json:"message"`
+}
+
+func (s *Server) handleVerifyEnabled(
+	ctx context.Context,
+	req *mcp.CallToolRequest,
+	input VerifyEnabledInput,
+) (*mcp.CallToolResult, VerifyEnabledOutput, error) {
+	passed, msg, err := s.verifyElementState(ctx, input.Selector, input.TimeoutMS, "enabled")
+	if err != nil {
+		return nil, VerifyEnabledOutput{}, err
+	}
+	return nil, VerifyEnabledOutput{Passed: passed, Message: msg}, nil
+}
+
+// verifyElementState is a helper that verifies an element's state (visible, enabled, etc.)
+func (s *Server) verifyElementState(ctx context.Context, selector string, timeoutMS int, state string) (bool, string, error) {
+	vibe, err := s.session.Vibe(ctx)
+	if err != nil {
+		return false, "", fmt.Errorf("browser not available: %w", err)
+	}
+
+	if timeoutMS == 0 {
+		timeoutMS = 5000
+	}
+	timeout := time.Duration(timeoutMS) * time.Millisecond
+
+	elem, err := vibe.Find(ctx, selector, &vibium.FindOptions{Timeout: timeout})
+	if err != nil {
+		return false, fmt.Sprintf("Element not found: %s", selector), nil
+	}
+
+	var checkResult bool
+	var checkErr error
+
+	switch state {
+	case "visible":
+		checkResult, checkErr = elem.IsVisible(ctx)
+	case "enabled":
+		checkResult, checkErr = elem.IsEnabled(ctx)
+	default:
+		return false, "", fmt.Errorf("unknown state: %s", state)
+	}
+
+	if checkErr != nil {
+		return false, "", fmt.Errorf("check %s failed: %w", state, checkErr)
+	}
+
+	if !checkResult {
+		negativeMsg := map[string]string{
+			"visible": "not visible",
+			"enabled": "disabled",
+		}
+		return false, fmt.Sprintf("Element is %s: %s", negativeMsg[state], selector), nil
+	}
+
+	return true, fmt.Sprintf("Element is %s: %s", state, selector), nil
+}
+
+// VerifyChecked tool - verifies checkbox/radio is checked
+
+type VerifyCheckedInput struct {
+	Selector  string `json:"selector" jsonschema:"CSS selector for the checkbox/radio element,required"`
+	Checked   bool   `json:"checked" jsonschema:"Expected checked state (default: true)"`
+	TimeoutMS int    `json:"timeout_ms" jsonschema:"Timeout in milliseconds (default: 5000)"`
+}
+
+type VerifyCheckedOutput struct {
+	Passed  bool   `json:"passed"`
+	Checked bool   `json:"checked"`
+	Message string `json:"message"`
+}
+
+func (s *Server) handleVerifyChecked(
+	ctx context.Context,
+	req *mcp.CallToolRequest,
+	input VerifyCheckedInput,
+) (*mcp.CallToolResult, VerifyCheckedOutput, error) {
+	vibe, err := s.session.Vibe(ctx)
+	if err != nil {
+		return nil, VerifyCheckedOutput{}, fmt.Errorf("browser not available: %w", err)
+	}
+
+	if input.TimeoutMS == 0 {
+		input.TimeoutMS = 5000
+	}
+	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
+
+	// Default to expecting checked=true if not specified
+	// Note: JSON unmarshaling will set Checked to false if not provided,
+	// so we check if this is the first call by looking at the raw input
+	expectedChecked := input.Checked
+
+	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	if err != nil {
+		return nil, VerifyCheckedOutput{
+			Passed:  false,
+			Message: fmt.Sprintf("Element not found: %s", input.Selector),
+		}, nil
+	}
+
+	actualChecked, err := elem.IsChecked(ctx)
+	if err != nil {
+		return nil, VerifyCheckedOutput{}, fmt.Errorf("check checked state failed: %w", err)
+	}
+
+	passed := actualChecked == expectedChecked
+
+	if !passed {
+		return nil, VerifyCheckedOutput{
+			Passed:  false,
+			Checked: actualChecked,
+			Message: fmt.Sprintf("Element checked state is %v, expected %v", actualChecked, expectedChecked),
+		}, nil
+	}
+
+	return nil, VerifyCheckedOutput{
+		Passed:  true,
+		Checked: actualChecked,
+		Message: fmt.Sprintf("Element checked state is %v as expected", actualChecked),
+	}, nil
+}

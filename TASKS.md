@@ -93,6 +93,11 @@ API compatibility and debugging features:
 - [x] `delete_cookie` - delete a specific cookie by name
 - [x] `wait_for_text` - wait for text to appear on the page
 - [x] `accessibility_snapshot` - get accessibility tree snapshot
+- [x] `wait_for_selector` - wait for element to appear/disappear with state option
+- [x] `verify_text` - verify element text matches expected value
+- [x] `verify_visible` - verify element is visible
+- [x] `verify_enabled` - verify element is enabled
+- [x] `verify_checked` - verify checkbox/radio is checked
 
 ---
 

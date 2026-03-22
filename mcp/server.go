@@ -647,6 +647,31 @@ func (s *Server) registerTools() {
 		Description: "Generate a locator string for a given element using a specific strategy (css, xpath, testid, role, text).",
 	}, s.handleGenerateLocator)
 
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "wait_for_selector",
+		Description: "Wait for an element to reach a specific state (attached, detached, visible, hidden).",
+	}, s.handleWaitForSelector)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "verify_text",
+		Description: "Verify that an element's text content matches the expected value.",
+	}, s.handleVerifyText)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "verify_visible",
+		Description: "Verify that an element is visible on the page.",
+	}, s.handleVerifyVisible)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "verify_enabled",
+		Description: "Verify that an element is enabled (not disabled).",
+	}, s.handleVerifyEnabled)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "verify_checked",
+		Description: "Verify that a checkbox or radio button is checked or unchecked.",
+	}, s.handleVerifyChecked)
+
 	// === Test Reporting ===
 
 	mcp.AddTool(s.mcpServer, &mcp.Tool{

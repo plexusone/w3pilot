@@ -1,550 +1,541 @@
 # Feature Comparison
 
-This document compares vibium-go against other Vibium clients (Java, JavaScript, Python) and the Playwright MCP server.
+This document compares vibium-go against VibiumDev clients (Java/JS/Python), the VibiumDev MCP server, and Playwright MCP.
 
 ## Overview
 
-vibium-go is a Go port of the official Vibium clients. This comparison helps track feature parity and identify gaps.
-
-| Client | Language | Repository |
-|--------|----------|------------|
-| vibium-go | Go | [plexusone/vibium-go](https://github.com/plexusone/vibium-go) |
-| vibium-java | Java | [VibiumDev/vibium/clients/java](https://github.com/VibiumDev/vibium) |
-| vibium-js | JavaScript | [VibiumDev/vibium/clients/javascript](https://github.com/VibiumDev/vibium) |
-| vibium-py | Python | [VibiumDev/vibium/clients/python](https://github.com/VibiumDev/vibium) |
-| playwright-mcp | TypeScript | [microsoft/playwright-mcp](https://github.com/microsoft/playwright-mcp) |
-
-## SDK Feature Comparison
-
-### Core Browser Control
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| Launch browser | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Headless mode | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Connect to remote | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Multiple pages | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Browser contexts | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Page events (onPage, onPopup) | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-
-### Navigation
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| Navigate (go) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Back/Forward | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Reload | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| URL/Title | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Content (HTML) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| setContent | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| bringToFront | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-
-### Element Finding
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| CSS selector | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| **Semantic selectors** | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| - By role | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| - By text | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| - By label | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| - By placeholder | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| - By alt text | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| - By title | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| - By testid | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| - By xpath | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| - By proximity (near) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| FindAll | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Scoped find (within element) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-
-### Element Interaction
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| Click | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Double-click | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Fill | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Type | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Clear | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Press | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Check/Uncheck | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Select option | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Hover | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Focus/Blur | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Drag to | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Tap (touch) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Scroll into view | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Set files | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| dispatchEvent | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| highlight | :x: | :white_check_mark: | :x: | :x: | Java only |
-
-### Element State
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| text() | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| innerText() | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| html() (innerHTML) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| value() | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| getAttribute() | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| boundingBox() | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| isVisible/isHidden | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| isEnabled | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| isChecked | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| isEditable | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| role() | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| label() | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| waitUntil (state) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-
-### Input Controllers
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| **Keyboard** | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| - press/down/up | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| - type | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| - insertText | :white_check_mark: | :x: | :x: | :x: | Go only |
-| **Mouse** | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| - click/move | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| - down/up | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| - wheel | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| **Touch** | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| - tap | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| - drag/longPress | :white_check_mark: | :x: | :x: | :x: | Go only |
-
-### Clock/Time Control
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| install | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| fastForward | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| runFor | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| pauseAt | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| resume | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| setFixedTime | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| setSystemTime | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| setTimezone | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-
-### Screenshots & PDF
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| Screenshot (viewport) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Screenshot (full page) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Screenshot (clip region) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Element screenshot | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| PDF | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-
-### Viewport & Window
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| getViewport | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| setViewport | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| getWindow | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| setWindow | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-
-### Media & Emulation
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| emulateMedia (type) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| colorScheme | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| reducedMotion | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| forcedColors | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| contrast | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| setGeolocation | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-
-### Accessibility
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| a11yTree | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| a11yTree (interestingOnly) | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| a11yTree (root element) | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-
-### Frames
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| frames() | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| frame(name/url) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| mainFrame() | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-
-### Network Interception
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| route(pattern, handler) | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| unroute | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| route.fulfill | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| route.continue | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| route.abort | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| setHeaders | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| onRequest listener | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-| onResponse listener | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-
-### Event Capture (JS/Python)
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| capture.response | :x: | :x: | :white_check_mark: | :white_check_mark: | JS/Py only |
-| capture.request | :x: | :x: | :white_check_mark: | :white_check_mark: | JS/Py only |
-| capture.navigation | :x: | :x: | :white_check_mark: | :white_check_mark: | JS/Py only |
-| capture.download | :x: | :x: | :white_check_mark: | :white_check_mark: | JS/Py only |
-| capture.dialog | :x: | :x: | :white_check_mark: | :white_check_mark: | JS/Py only |
-
-### Dialogs
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| onDialog listener | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| dialog.accept | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| dialog.dismiss | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| dialog.message | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| dialog.type | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| dialog.defaultValue | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-
-### Downloads
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| onDownload listener | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| download.url | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| download.suggestedFilename | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| download.saveAs | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| download.path | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-
-### Console & Errors
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| onConsole listener | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-| collectConsole (buffered) | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-| consoleMessages() | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-| onError listener | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-| collectErrors (buffered) | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-| errors() | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-
-### WebSocket Monitoring
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| onWebSocket listener | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-| ws.onMessage | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| ws.onClose | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| ws.isClosed | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-
-### Recording/Tracing
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| recording.start | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-| recording.stop | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-| recording.startChunk | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-| recording.stopChunk | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-| recording.startGroup | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-| recording.stopGroup | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-
-### Storage State
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| Cookies | | | | | |
-| - cookies() | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| - setCookies() | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| - clearCookies() | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| Storage | | | | | |
-| - storage() (full state) | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-| - setStorage() | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-| - clearStorage() | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-| Init Scripts | | | | | |
-| - addInitScript() | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-
-### Scrolling
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| scroll() | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Planned |
-| scroll (direction) | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| scroll (amount) | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| scroll (selector) | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-
-### JavaScript Execution
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| evaluate() | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| addScript() | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| addStyle() | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| expose() | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-
-### Waiting
-
-| Feature | Go | Java | JS | Python | Notes |
-|---------|:--:|:----:|:--:|:------:|-------|
-| Wait (fixed duration) | :x: | :white_check_mark: | :white_check_mark: | :white_check_mark: | Use time.Sleep |
-| waitForFunction | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| waitForURL | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| waitForLoad | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: | |
-| WaitForNavigation | :white_check_mark: | :x: | :x: | :x: | Go only |
+| Project | Language | Type | Repository |
+|---------|----------|------|------------|
+| **vibium-go** | Go | SDK + MCP Server | [plexusone/vibium-go](https://github.com/plexusone/vibium-go) |
+| **VibiumDev** | Go + JS/Python/Java | Daemon + MCP + Clients | [VibiumDev/vibium](https://github.com/VibiumDev/vibium) |
+| **Playwright MCP** | TypeScript | MCP Server | [microsoft/playwright-mcp](https://github.com/microsoft/playwright-mcp) |
 
 ---
 
-## MCP Server Feature Comparison
+## Part 1: MCP Server Comparison
 
-Comparison between vibium-go MCP server and [Playwright MCP](https://github.com/microsoft/playwright-mcp).
+Compare the three MCP servers for LLM agent integration.
 
-### Browser Management
+### Architecture
 
-| Tool | vibium-go | Playwright MCP | Notes |
-|------|:---------:|:--------------:|-------|
-| Launch browser | :white_check_mark: | :white_check_mark: | |
-| Quit/Close browser | :white_check_mark: | :white_check_mark: | |
-| Resize viewport | :white_check_mark: | :white_check_mark: | |
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                         vibium-go MCP                               │
+├─────────────────────────────────────────────────────────────────────┤
+│  vibium-mcp ──► vibium-go SDK ──► BiDi Client ──► Chrome           │
+│       │                                                             │
+│       └── Uses official Go MCP SDK                                  │
+│       └── 100+ tools, comprehensive automation                      │
+└─────────────────────────────────────────────────────────────────────┘
 
-### Navigation
+┌─────────────────────────────────────────────────────────────────────┐
+│                        VibiumDev MCP                                │
+├─────────────────────────────────────────────────────────────────────┤
+│  vibium mcp ──► clicker ──► BiDi Client ──► Chrome                 │
+│       │                                                             │
+│       └── Hand-rolled JSON-RPC                                      │
+│       └── ~25 tools, core automation                                │
+└─────────────────────────────────────────────────────────────────────┘
 
-| Tool | vibium-go | Playwright MCP | Notes |
-|------|:---------:|:--------------:|-------|
-| Navigate to URL | :white_check_mark: | :white_check_mark: | |
-| Back | :white_check_mark: | :white_check_mark: | |
-| Forward | :white_check_mark: | :white_check_mark: | |
-| Reload | :white_check_mark: | :white_check_mark: | |
+┌─────────────────────────────────────────────────────────────────────┐
+│                       Playwright MCP                                │
+├─────────────────────────────────────────────────────────────────────┤
+│  @playwright/mcp ──► Playwright ──► CDP/BiDi ──► Chromium          │
+│       │                                                             │
+│       └── Official TS MCP SDK                                       │
+│       └── ~45 tools (with opt-in caps)                              │
+│       └── Snapshot-based (accessibility tree)                       │
+└─────────────────────────────────────────────────────────────────────┘
+```
 
-### Element Interaction
+### Implementation Details
 
-| Tool | vibium-go | Playwright MCP | Notes |
-|------|:---------:|:--------------:|-------|
-| Click | :white_check_mark: | :white_check_mark: | |
-| Double-click | :white_check_mark: | :white_check_mark: | |
-| Type | :white_check_mark: | :white_check_mark: | |
-| Fill | :white_check_mark: | :white_check_mark: | |
-| Clear | :white_check_mark: | :x: | |
-| Press key | :white_check_mark: | :white_check_mark: | |
-| Check/Uncheck | :white_check_mark: | :x: | |
-| Select option | :white_check_mark: | :white_check_mark: | |
-| Set files | :white_check_mark: | :white_check_mark: | |
-| Hover | :white_check_mark: | :white_check_mark: | |
-| Drag | :white_check_mark: | :white_check_mark: | |
-| Fill form (multiple) | :white_check_mark: | :white_check_mark: | |
+| Aspect | vibium-go | VibiumDev | Playwright MCP |
+|--------|-----------|-----------|----------------|
+| Language | Go | Go | TypeScript |
+| MCP SDK | Official Go SDK | Hand-rolled | Official TS SDK |
+| Protocol | WebDriver BiDi | WebDriver BiDi | CDP + BiDi |
+| Tool prefix | None | `browser_` | `browser_` |
+| Tool count | **100+** | ~25 | ~45 (with caps) |
+| Browser | Chrome | Chrome | Chromium/Firefox/WebKit |
 
-### Element State
+### Tool Comparison Matrix
 
-| Tool | vibium-go | Playwright MCP | Notes |
-|------|:---------:|:--------------:|-------|
-| Get text | :white_check_mark: | :white_check_mark: | |
-| Get value | :white_check_mark: | :white_check_mark: | |
-| Get innerHTML | :white_check_mark: | :white_check_mark: | |
-| Get innerText | :white_check_mark: | :x: | |
-| Get attribute | :white_check_mark: | :white_check_mark: | |
-| Get bounding box | :white_check_mark: | :x: | |
-| Is visible | :white_check_mark: | :white_check_mark: | |
-| Is hidden | :white_check_mark: | :x: | |
-| Is enabled | :white_check_mark: | :x: | |
-| Is checked | :white_check_mark: | :x: | |
-| Is editable | :white_check_mark: | :x: | |
-| Get role | :white_check_mark: | :x: | |
-| Get label | :white_check_mark: | :x: | |
+Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires opt-in flag
 
-### Page State
+#### Browser Management
 
-| Tool | vibium-go | Playwright MCP | Notes |
-|------|:---------:|:--------------:|-------|
-| Get title | :white_check_mark: | :white_check_mark: | |
-| Get URL | :white_check_mark: | :white_check_mark: | |
-| Get content | :white_check_mark: | :white_check_mark: | |
-| Set content | :white_check_mark: | :x: | |
-| Get viewport | :white_check_mark: | :x: | |
-| Set viewport | :white_check_mark: | :white_check_mark: | |
-| Accessibility snapshot | :x: | :white_check_mark: | Playwright uses a11y tree |
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Launch browser | `browser_launch` | `browser_start` | (auto-launch) |
+| Quit browser | `browser_quit` | `browser_stop` | `browser_close` |
+| Resize viewport | `set_viewport` | :x: | `browser_resize` |
+| Get viewport | `get_viewport` | :x: | :x: |
 
-### Screenshots & PDF
+#### Navigation
 
-| Tool | vibium-go | Playwright MCP | Notes |
-|------|:---------:|:--------------:|-------|
-| Screenshot (viewport) | :white_check_mark: | :white_check_mark: | |
-| Screenshot (full page) | :white_check_mark: | :white_check_mark: | |
-| Element screenshot | :white_check_mark: | :white_check_mark: | |
-| PDF | :white_check_mark: | :white_check_mark: | |
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Navigate | `navigate` | `browser_navigate` | `browser_navigate` |
+| Back | `back` | :x: | `browser_navigate_back` |
+| Forward | `forward` | :x: | :x: |
+| Reload | `reload` | :x: | :x: |
+| Scroll | `scroll` | `browser_scroll` | :x: |
 
-### JavaScript
+#### Element Interaction
 
-| Tool | vibium-go | Playwright MCP | Notes |
-|------|:---------:|:--------------:|-------|
-| Evaluate | :white_check_mark: | :white_check_mark: | |
-| Element eval | :white_check_mark: | :x: | |
-| Add script | :white_check_mark: | :x: | |
-| Add style | :white_check_mark: | :x: | |
-| Run Playwright code | :x: | :white_check_mark: | Playwright-specific |
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Click | `click` | `browser_click` | `browser_click` |
+| Double-click | `dblclick` | :x: | `browser_click` (doubleClick) |
+| Type | `type` | `browser_type` | `browser_type` |
+| Fill | `fill` | :x: | `browser_type` |
+| Clear | `clear` | :x: | :x: |
+| Press key | `press` | `browser_keys` | `browser_press_key` |
+| Check/Uncheck | `check`, `uncheck` | :x: | :x: |
+| Select option | `select_option` | `browser_select` | `browser_select_option` |
+| Hover | `hover` | `browser_hover` | `browser_hover` |
+| Focus | `focus` | :x: | :x: |
+| Drag | `drag_to` | :x: | `browser_drag` |
+| Tap (touch) | `tap` | :x: | :x: |
+| Set files | `set_files` | :x: | `browser_file_upload` |
+| Fill form | `fill_form` | :x: | `browser_fill_form` |
+| Dispatch event | `dispatch_event` | :x: | :x: |
 
-### Waiting
+#### Element State
 
-| Tool | vibium-go | Playwright MCP | Notes |
-|------|:---------:|:--------------:|-------|
-| Wait for element state | :white_check_mark: | :white_check_mark: | |
-| Wait for URL | :white_check_mark: | :x: | |
-| Wait for load state | :white_check_mark: | :x: | |
-| Wait for function | :white_check_mark: | :x: | |
-| Wait for text | :x: | :white_check_mark: | Planned |
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Get text | `get_text` | `browser_get_text` | `browser_snapshot` |
+| Get value | `get_value` | :x: | :x: |
+| Get innerHTML | `get_inner_html` | `browser_get_html` | :x: |
+| Get outerHTML | `get_outer_html` | :x: | :x: |
+| Get innerText | `get_inner_text` | :x: | :x: |
+| Get attribute | `get_attribute` | :x: | :x: |
+| Get bounding box | `get_bounding_box` | :x: | :x: |
+| Is visible | `is_visible` | :x: | :x: |
+| Is hidden | `is_hidden` | :x: | :x: |
+| Is enabled | `is_enabled` | :x: | :x: |
+| Is checked | `is_checked` | :x: | :x: |
+| Is editable | `is_editable` | :x: | :x: |
+| Get role | `get_role` | :x: | :x: |
+| Get label | `get_label` | :x: | :x: |
 
-### Input Controllers
+#### Page State
 
-| Tool | vibium-go | Playwright MCP | Notes |
-|------|:---------:|:--------------:|-------|
-| Keyboard press | :white_check_mark: | :white_check_mark: | |
-| Keyboard down/up | :white_check_mark: | :x: | |
-| Keyboard type | :white_check_mark: | :x: | |
-| Mouse click (coords) | :white_check_mark: | :white_check_mark: | |
-| Mouse move | :white_check_mark: | :white_check_mark: | |
-| Mouse down/up | :white_check_mark: | :white_check_mark: | |
-| Mouse wheel | :white_check_mark: | :white_check_mark: | |
-| Mouse drag (coords) | :white_check_mark: | :white_check_mark: | |
-| Touch tap | :white_check_mark: | :x: | |
-| Touch swipe | :white_check_mark: | :x: | |
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Get title | `get_title` | `browser_get_title` | :x: |
+| Get URL | `get_url` | `browser_get_url` | :x: |
+| Get content | `get_content` | :x: | :x: |
+| Set content | `set_content` | :x: | :x: |
+| Accessibility snapshot | `accessibility_snapshot` | :x: | `browser_snapshot` |
 
-### Tab/Page Management
+#### Screenshots & PDF
 
-| Tool | vibium-go | Playwright MCP | Notes |
-|------|:---------:|:--------------:|-------|
-| New page | :white_check_mark: | :white_check_mark: | |
-| Get page count | :white_check_mark: | :white_check_mark: | |
-| Close page | :white_check_mark: | :white_check_mark: | |
-| Bring to front | :white_check_mark: | :x: | |
-| Select tab | :white_check_mark: | :white_check_mark: | |
-| List tabs | :white_check_mark: | :white_check_mark: | |
-| Close tab | :white_check_mark: | :white_check_mark: | |
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Screenshot | `screenshot` | `browser_screenshot` | `browser_take_screenshot` |
+| Full page screenshot | `screenshot` (fullPage) | :x: | `browser_take_screenshot` (fullPage) |
+| Element screenshot | `element_screenshot` | :x: | `browser_take_screenshot` (ref) |
+| PDF | `pdf` | :x: | :x: |
 
-### Cookie Management
+#### JavaScript
 
-| Tool | vibium-go | Playwright MCP | Notes |
-|------|:---------:|:--------------:|-------|
-| Get cookies | :white_check_mark: | :white_check_mark: | |
-| Set cookies | :white_check_mark: | :white_check_mark: | |
-| Clear cookies | :white_check_mark: | :white_check_mark: | |
-| Delete cookie | :x: | :white_check_mark: | Planned |
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Evaluate | `evaluate` | `browser_evaluate` | `browser_evaluate` |
+| Element eval | `element_eval` | :x: | `browser_evaluate` (ref) |
+| Add script | `add_script` | :x: | :x: |
+| Add style | `add_style` | :x: | :x: |
+| Run Playwright code | :x: | :x: | `browser_run_code` |
 
-### LocalStorage
+#### Waiting
 
-| Tool | vibium-go | Playwright MCP | Notes |
-|------|:---------:|:--------------:|-------|
-| Get item | :white_check_mark: | :white_check_mark: | |
-| Set item | :white_check_mark: | :white_check_mark: | |
-| List items | :white_check_mark: | :white_check_mark: | |
-| Delete item | :white_check_mark: | :white_check_mark: | |
-| Clear | :white_check_mark: | :white_check_mark: | |
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Wait for element state | `wait_until` | `browser_wait` | `browser_wait_for` |
+| Wait for selector | `wait_for_selector` | :x: | :x: |
+| Wait for URL | `wait_for_url` | :x: | :x: |
+| Wait for load | `wait_for_load` | :x: | :x: |
+| Wait for function | `wait_for_function` | :x: | :x: |
+| Wait for text | `wait_for_text` | :x: | `browser_wait_for` (text) |
+| Wait for time | :x: | :x: | `browser_wait_for` (time) |
 
-### SessionStorage
+#### Input Controllers
 
-| Tool | vibium-go | Playwright MCP | Notes |
-|------|:---------:|:--------------:|-------|
-| Get item | :white_check_mark: | :white_check_mark: | |
-| Set item | :white_check_mark: | :white_check_mark: | |
-| List items | :white_check_mark: | :white_check_mark: | |
-| Delete item | :white_check_mark: | :white_check_mark: | |
-| Clear | :white_check_mark: | :white_check_mark: | |
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Keyboard press | `keyboard_press` | `browser_keys` | `browser_press_key` |
+| Keyboard down/up | `keyboard_down`, `keyboard_up` | :x: | :x: |
+| Keyboard type | `keyboard_type` | :x: | :x: |
+| Mouse click | `mouse_click` | :x: | :x: |
+| Mouse move | `mouse_move` | :x: | :x: |
+| Mouse down/up | `mouse_down`, `mouse_up` | :x: | :x: |
+| Mouse wheel | `mouse_wheel` | :x: | :x: |
+| Mouse drag | `mouse_drag` | :x: | `browser_drag` |
+| Touch tap | `touch_tap` | :x: | :x: |
+| Touch swipe | `touch_swipe` | :x: | :x: |
 
-### Storage State
+#### Tab/Page Management
 
-| Tool | vibium-go | Playwright MCP | Notes |
-|------|:---------:|:--------------:|-------|
-| Get storage state | :white_check_mark: | :white_check_mark: | |
-| Set storage state | :white_check_mark: | :white_check_mark: | |
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| New page | `new_page` | `browser_new_page` | `browser_tabs` (new) |
+| List pages | `get_pages`, `list_tabs` | `browser_list_pages` | `browser_tabs` (list) |
+| Switch page | `select_tab` | `browser_switch_page` | `browser_tabs` (select) |
+| Close page | `close_page`, `close_tab` | `browser_close_page` | `browser_tabs` (close) |
+| Bring to front | `bring_to_front` | :x: | :x: |
 
-### Network
+#### Frame Management
 
-| Tool | vibium-go | Playwright MCP | Notes |
-|------|:---------:|:--------------:|-------|
-| Route (mock) | :x: | :white_check_mark: | Planned |
-| Route list | :x: | :white_check_mark: | Planned |
-| Unroute | :x: | :white_check_mark: | Planned |
-| Network state (offline) | :x: | :white_check_mark: | Planned |
-| List network requests | :white_check_mark: | :white_check_mark: | |
-| Clear network requests | :white_check_mark: | :x: | |
-| Console messages | :white_check_mark: | :white_check_mark: | |
-| Clear console messages | :white_check_mark: | :x: | |
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Get frames | `get_frames` | :x: | :x: |
+| Select frame | `select_frame` | :x: | :x: |
+| Select main frame | `select_main_frame` | :x: | :x: |
 
-### Dialogs
+#### Cookie Management
 
-| Tool | vibium-go | Playwright MCP | Notes |
-|------|:---------:|:--------------:|-------|
-| Handle dialog | :white_check_mark: | :white_check_mark: | |
-| Get dialog info | :white_check_mark: | :x: | |
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Get cookies | `get_cookies` | :x: | `browser_cookie_list` (opt) |
+| Get cookie | :x: | :x: | `browser_cookie_get` (opt) |
+| Set cookies | `set_cookies` | :x: | `browser_cookie_set` (opt) |
+| Clear cookies | `clear_cookies` | :x: | `browser_cookie_clear` (opt) |
+| Delete cookie | `delete_cookie` | :x: | `browser_cookie_delete` (opt) |
 
-### Recording & Tracing
+#### LocalStorage
 
-| Tool | vibium-go | Playwright MCP | Notes |
-|------|:---------:|:--------------:|-------|
-| Start recording | :white_check_mark: | :x: | Script recording |
-| Stop recording | :white_check_mark: | :x: | |
-| Export script | :white_check_mark: | :x: | |
-| Start tracing | :x: | :white_check_mark: | Planned |
-| Stop tracing | :x: | :white_check_mark: | Planned |
-| Start video | :x: | :white_check_mark: | Planned |
-| Stop video | :x: | :white_check_mark: | Planned |
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Get item | `localstorage_get` | :x: | `browser_localstorage_get` (opt) |
+| Set item | `localstorage_set` | :x: | `browser_localstorage_set` (opt) |
+| List items | `localstorage_list` | :x: | `browser_localstorage_list` (opt) |
+| Delete item | `localstorage_delete` | :x: | `browser_localstorage_delete` (opt) |
+| Clear | `localstorage_clear` | :x: | `browser_localstorage_clear` (opt) |
 
-### Testing & Assertions
+#### SessionStorage
 
-| Tool | vibium-go | Playwright MCP | Notes |
-|------|:---------:|:--------------:|-------|
-| Assert text | :white_check_mark: | :white_check_mark: | |
-| Assert element | :white_check_mark: | :white_check_mark: | |
-| Assert URL | :white_check_mark: | :x: | |
-| Verify value | :x: | :white_check_mark: | Planned |
-| Verify list visible | :x: | :white_check_mark: | Planned |
-| Generate locator | :x: | :white_check_mark: | Planned |
-| Test report | :white_check_mark: | :x: | |
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Get item | `sessionstorage_get` | :x: | `browser_sessionstorage_get` (opt) |
+| Set item | `sessionstorage_set` | :x: | `browser_sessionstorage_set` (opt) |
+| List items | `sessionstorage_list` | :x: | `browser_sessionstorage_list` (opt) |
+| Delete item | `sessionstorage_delete` | :x: | `browser_sessionstorage_delete` (opt) |
+| Clear | `sessionstorage_clear` | :x: | `browser_sessionstorage_clear` (opt) |
 
-### Human-in-the-Loop
+#### Storage State
 
-| Tool | vibium-go | Playwright MCP | Notes |
-|------|:---------:|:--------------:|-------|
-| Pause for human | :white_check_mark: | :x: | Unique to vibium-go |
-| Get storage state | :white_check_mark: | :white_check_mark: | |
-| Set storage state | :white_check_mark: | :white_check_mark: | |
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Get storage state | `get_storage_state` | :x: | `browser_storage_state` (opt) |
+| Set storage state | `set_storage_state` | :x: | `browser_set_storage_state` (opt) |
+| Clear storage | `clear_storage` | :x: | :x: |
 
-### Configuration
+#### Network
 
-| Tool | vibium-go | Playwright MCP | Notes |
-|------|:---------:|:--------------:|-------|
-| Get config | :x: | :white_check_mark: | Planned |
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Route (mock) | `route` | :x: | `browser_route` (opt) |
+| Route list | `route_list` | :x: | `browser_route_list` (opt) |
+| Unroute | `unroute` | :x: | `browser_unroute` (opt) |
+| Network offline | `network_state_set` | :x: | `browser_network_state_set` (opt) |
+| Get requests | `get_network_requests` | :x: | `browser_network_requests` |
+| Clear requests | `clear_network_requests` | :x: | :x: |
 
----
+#### Console
 
-## Feature Parity Roadmap
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Get console messages | `get_console_messages` | :x: | `browser_console_messages` |
+| Clear console | `clear_console_messages` | :x: | :x: |
 
-### High Priority (SDK)
+#### Dialogs
 
-The following features are prioritized for SDK parity:
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Handle dialog | `handle_dialog` | :x: | `browser_handle_dialog` |
+| Get dialog info | `get_dialog` | :x: | :x: |
 
-1. **Recording/Tracing** - Full trace recording with chunks and groups
-2. ~~**Media Emulation** - colorScheme, reducedMotion, forcedColors, contrast~~ :white_check_mark: Done
-3. **Console/Error Collection** - Buffered console messages and errors
-4. **Request/Response Listeners** - Network observation events
-5. **Init Scripts** - Per-context script injection
-6. **Full Storage State** - localStorage, sessionStorage, indexedDB
+#### Emulation
 
-### High Priority (MCP)
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Emulate media | `emulate_media` | :x: | :x: |
+| Set geolocation | `set_geolocation` | :x: | :x: |
 
-The following MCP tools are prioritized for Playwright MCP parity:
+#### Recording & Tracing
 
-1. **Network Mocking** - route, route_list, unroute
-2. ~~**Tab Management** - list tabs, select tab~~ :white_check_mark: Done
-3. ~~**Dialog Handling** - handle_dialog tool~~ :white_check_mark: Done
-4. ~~**Console Messages** - console_messages with filtering~~ :white_check_mark: Done
-5. ~~**Network Requests** - network_requests listing~~ :white_check_mark: Done
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Start recording | `start_recording` | :x: | :x: |
+| Stop recording | `stop_recording` | :x: | :x: |
+| Export script | `export_script` | :x: | :x: |
+| Start trace | `start_trace` | :x: | `browser_start_tracing` (opt) |
+| Stop trace | `stop_trace` | :x: | `browser_stop_tracing` (opt) |
+| Trace chunks | `start_trace_chunk`, `stop_trace_chunk` | :x: | :x: |
+| Trace groups | `start_trace_group`, `stop_trace_group` | :x: | :x: |
+| Start video | `start_video` | :x: | `browser_start_video` (opt) |
+| Stop video | `stop_video` | :x: | `browser_stop_video` (opt) |
 
-### Unique vibium-go Features
+#### Testing & Assertions
 
-Features in vibium-go not found in other clients:
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Assert text | `assert_text` | :x: | :x: |
+| Assert element | `assert_element` | :x: | :x: |
+| Verify value | `verify_value` | :x: | :x: |
+| Verify text | `verify_text` | :x: | :x: |
+| Verify visible | `verify_visible` | :x: | :x: |
+| Verify hidden | `verify_hidden` | :x: | :x: |
+| Verify enabled | `verify_enabled` | :x: | :x: |
+| Verify disabled | `verify_disabled` | :x: | :x: |
+| Verify checked | `verify_checked` | :x: | :x: |
+| Verify list visible | `verify_list_visible` | :x: | :x: |
+| Generate locator | `generate_locator` | :x: | :x: |
+| Get test report | `get_test_report` | :x: | :x: |
+| Reset session | `reset_session` | :x: | :x: |
+| Set target | `set_target` | :x: | :x: |
+
+#### Human-in-the-Loop
+
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Pause for human | `pause_for_human` | :x: | :x: |
+
+#### Configuration
+
+| Tool | vibium-go | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Get config | `get_config` | :x: | `browser_get_config` (opt) |
+| Add init script | `add_init_script` | :x: | :x: |
+
+### Tool Count Summary
+
+| MCP Server | Core Tools | Opt-in Tools | Total |
+|------------|:----------:|:------------:|:-----:|
+| **vibium-go** | 100+ | - | **100+** |
+| Playwright MCP | ~20 | ~25 | ~45 |
+| VibiumDev | ~25 | - | ~25 |
+
+### Unique Features by Server
+
+#### vibium-go Only
 
 | Feature | Description |
 |---------|-------------|
-| Script Runner | YAML/JSON deterministic test execution |
-| Session Recording | Capture MCP actions as replayable scripts |
-| Human-in-the-Loop | pauseForHuman for SSO, CAPTCHA, 2FA |
-| Test Reports | Structured test execution reports |
-| RPA Engine | Workflow automation with activities |
+| Script Runner | YAML/JSON test execution via `vibium run` |
+| Session Recording | Capture actions as replayable scripts |
+| Human-in-the-Loop | `pause_for_human` for SSO, CAPTCHA, 2FA |
+| Test Reports | Structured reports (box, diagnostic, JSON) |
+| Verification Tools | `verify_*` tools with detailed output |
+| Frame Selection | `select_frame`/`select_main_frame` |
+| Trace Chunks/Groups | Fine-grained trace control |
+
+#### Playwright MCP Only
+
+| Feature | Description |
+|---------|-------------|
+| `browser_run_code` | Execute arbitrary Playwright code |
+| `browser_snapshot` | Accessibility tree snapshots |
+| Multi-browser | Chromium, Firefox, WebKit |
+| Opt-in capabilities | `--caps=network,storage,devtools` |
+
+#### VibiumDev Only
+
+| Feature | Description |
+|---------|-------------|
+| Daemon mode | HTTP API for multi-client scenarios |
+| Multi-language clients | Official JS, Python, Java SDKs |
+
+---
+
+## Part 2: Client Library Comparison
+
+Compare vibium-go SDK with VibiumDev client libraries.
+
+### Language & Integration
+
+| Aspect | vibium-go | vibium-js | vibium-py | vibium-java |
+|--------|-----------|-----------|-----------|-------------|
+| Language | Go | JavaScript/TS | Python | Java |
+| Async model | Context-based | Promises | async/await | CompletableFuture |
+| Error handling | Error returns | try/catch | try/except | Exceptions |
+| Package manager | go modules | npm | pip | Maven/Gradle |
+| Type safety | Strong | TypeScript | Type hints | Strong |
+
+### Core Features
+
+| Feature | vibium-go | vibium-js | vibium-py | vibium-java |
+|---------|:---------:|:---------:|:---------:|:-----------:|
+| Launch browser | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| Headless mode | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| Connect remote | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| Multiple contexts | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+
+### Element Finding
+
+| Feature | vibium-go | vibium-js | vibium-py | vibium-java |
+|---------|:---------:|:---------:|:---------:|:-----------:|
+| CSS selector | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| **Semantic selectors** | | | | |
+| - By role | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| - By text | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| - By label | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| - By placeholder | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| - By alt text | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| - By title | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| - By testid | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| - By xpath | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| - By proximity | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| FindAll | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| Scoped find | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+
+### Interactions
+
+| Feature | vibium-go | vibium-js | vibium-py | vibium-java |
+|---------|:---------:|:---------:|:---------:|:-----------:|
+| Click/Type/Fill | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| Check/Uncheck | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| Select option | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| Drag and drop | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| File upload | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| dispatchEvent | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| Highlight element | :white_check_mark: | :x: | :x: | :white_check_mark: |
+
+### Input Controllers
+
+| Feature | vibium-go | vibium-js | vibium-py | vibium-java |
+|---------|:---------:|:---------:|:---------:|:-----------:|
+| Keyboard | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| Mouse | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| Touch | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+
+### Event Listeners
+
+| Feature | vibium-go | vibium-js | vibium-py | vibium-java |
+|---------|:---------:|:---------:|:---------:|:-----------:|
+| onConsole | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| onError | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| onRequest/onResponse | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| onDialog | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| onDownload | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| onPage/onPopup | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| onWebSocket | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+
+### Recording/Tracing
+
+| Feature | vibium-go | vibium-js | vibium-py | vibium-java |
+|---------|:---------:|:---------:|:---------:|:-----------:|
+| Trace recording | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| Trace chunks | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| Trace groups | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| Video recording | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+
+### Storage
+
+| Feature | vibium-go | vibium-js | vibium-py | vibium-java |
+|---------|:---------:|:---------:|:---------:|:-----------:|
+| Cookies | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| LocalStorage | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| SessionStorage | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| Full storage state | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| Init scripts | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| Delete single cookie | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+
+### Network
+
+| Feature | vibium-go | vibium-js | vibium-py | vibium-java |
+|---------|:---------:|:---------:|:---------:|:-----------:|
+| Route/mock | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| Offline mode | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| Extra headers | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+
+### Clock Control
+
+| Feature | vibium-go | vibium-js | vibium-py | vibium-java |
+|---------|:---------:|:---------:|:---------:|:-----------:|
+| Install/fastForward | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| pauseAt/resume | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| setFixedTime | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| setTimezone | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+
+### Accessibility
+
+| Feature | vibium-go | vibium-js | vibium-py | vibium-java |
+|---------|:---------:|:---------:|:---------:|:-----------:|
+| a11yTree | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| interestingOnly option | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| root element option | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+
+---
+
+## When to Use Which
+
+### MCP Server Selection
+
+| Use Case | Recommendation |
+|----------|----------------|
+| **Comprehensive LLM automation** | vibium-go MCP (100+ tools) |
+| **Simple browser control** | VibiumDev MCP or Playwright MCP |
+| **Accessibility-focused** | Playwright MCP (`browser_snapshot`) |
+| **Human-in-the-loop flows** | vibium-go MCP (`pause_for_human`) |
+| **Test automation with reports** | vibium-go MCP (verification + reports) |
+| **Multi-browser support** | Playwright MCP |
+
+### Client Library Selection
+
+| Use Case | Recommendation |
+|----------|----------------|
+| **Go application** | vibium-go SDK |
+| **JavaScript/TypeScript app** | vibium-js |
+| **Python application** | vibium-py |
+| **Java/JVM application** | vibium-java |
+| **Script-based automation** | vibium-go (`vibium run`) |
+
+---
+
+## Relationship Between Projects
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                      VibiumDev/vibium                               │
+│                                                                     │
+│   ┌─────────┐  ┌─────────┐  ┌─────────┐                            │
+│   │vibium-js│  │vibium-py│  │vibium-  │                            │
+│   │ Client  │  │ Client  │  │java Cli │                            │
+│   └────┬────┘  └────┬────┘  └────┬────┘                            │
+│        └────────────┼───────────┘                                  │
+│                     │ HTTP API                                      │
+│                     ▼                                               │
+│               ┌──────────┐                                          │
+│               │ clicker  │◄─── vibium mcp                          │
+│               │ (binary) │                                          │
+│               └────┬─────┘                                          │
+│                    │ BiDi                                           │
+└────────────────────┼────────────────────────────────────────────────┘
+                     │
+                     │  vibium-go uses clicker
+                     │  ONLY for launching Chrome
+                     ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                    plexusone/vibium-go                              │
+│                                                                     │
+│   ┌────────────────────────────────────────────────────────────┐   │
+│   │                    vibium-go SDK                            │   │
+│   │              (own BiDi client implementation)               │   │
+│   └────────────────────────┬───────────────────────────────────┘   │
+│                            │                                        │
+│         ┌──────────────────┼──────────────────┐                    │
+│         │                  │                  │                    │
+│         ▼                  ▼                  ▼                    │
+│    vibium-mcp         vibium run        Direct SDK                 │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+**Key point**: vibium-go is an independent implementation that uses VibiumDev's `clicker` binary only as a Chrome launcher. The BiDi communication, MCP server, and all SDK functionality are implemented independently in Go.
 
 ---
 
@@ -554,4 +545,4 @@ Features in vibium-go not found in other clients:
 |--------|---------|
 | :white_check_mark: | Supported |
 | :x: | Not supported |
-| Planned | On roadmap |
+| (opt) | Requires opt-in flag |

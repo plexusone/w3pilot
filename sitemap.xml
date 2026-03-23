@@ -1,107 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://plexusone.github.io/vibium-go/</loc>
+         <loc>https://plexusone.github.io/webpilot/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/architecture/overview/</loc>
+         <loc>https://plexusone.github.io/webpilot/architecture/overview/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/architecture/prd/</loc>
+         <loc>https://plexusone.github.io/webpilot/architecture/prd/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/architecture/trd/</loc>
+         <loc>https://plexusone.github.io/webpilot/architecture/trd/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/development/changelog/</loc>
+         <loc>https://plexusone.github.io/webpilot/development/changelog/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/development/contributing/</loc>
+         <loc>https://plexusone.github.io/webpilot/development/contributing/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/development/testing/</loc>
+         <loc>https://plexusone.github.io/webpilot/development/testing/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/getting-started/installation/</loc>
+         <loc>https://plexusone.github.io/webpilot/getting-started/installation/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/getting-started/prerequisites/</loc>
+         <loc>https://plexusone.github.io/webpilot/getting-started/prerequisites/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/getting-started/quickstart/</loc>
+         <loc>https://plexusone.github.io/webpilot/getting-started/quickstart/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/guide/cicd/</loc>
+         <loc>https://plexusone.github.io/webpilot/guide/cicd/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/guide/cli/</loc>
+         <loc>https://plexusone.github.io/webpilot/guide/cli/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/guide/hitl/</loc>
+         <loc>https://plexusone.github.io/webpilot/guide/hitl/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/guide/mcp-server/</loc>
+         <loc>https://plexusone.github.io/webpilot/guide/mcp-server/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/guide/recording/</loc>
+         <loc>https://plexusone.github.io/webpilot/guide/recording/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/guide/scripts/</loc>
+         <loc>https://plexusone.github.io/webpilot/guide/scripts/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/guide/sdk/</loc>
+         <loc>https://plexusone.github.io/webpilot/guide/sdk/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/reference/api/</loc>
+         <loc>https://plexusone.github.io/webpilot/reference/api/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/reference/comparison/</loc>
+         <loc>https://plexusone.github.io/webpilot/reference/comparison/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/reference/errors/</loc>
+         <loc>https://plexusone.github.io/webpilot/reference/errors/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/reference/mcp-tools/</loc>
+         <loc>https://plexusone.github.io/webpilot/reference/mcp-tools/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/reference/script-schema/</loc>
+         <loc>https://plexusone.github.io/webpilot/reference/script-schema/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/releases/v0.1.0/</loc>
+         <loc>https://plexusone.github.io/webpilot/releases/v0.1.0/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/releases/v0.2.0/</loc>
+         <loc>https://plexusone.github.io/webpilot/releases/v0.2.0/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/releases/v0.3.0/</loc>
+         <loc>https://plexusone.github.io/webpilot/releases/v0.3.0/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
     <url>
-         <loc>https://plexusone.github.io/vibium-go/releases/v0.4.0/</loc>
+         <loc>https://plexusone.github.io/webpilot/releases/v0.4.0/</loc>
+         <lastmod>2026-03-23</lastmod>
+    </url>
+    <url>
+         <loc>https://plexusone.github.io/webpilot/releases/v0.5.0/</loc>
          <lastmod>2026-03-23</lastmod>
     </url>
 </urlset>

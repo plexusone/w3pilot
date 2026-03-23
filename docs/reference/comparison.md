@@ -22,7 +22,7 @@ Compare the three MCP servers for LLM agent integration.
 ┌─────────────────────────────────────────────────────────────────────┐
 │                         vibium-go MCP                               │
 ├─────────────────────────────────────────────────────────────────────┤
-│  vibium-mcp ──► vibium-go SDK ──► BiDi Client ──► Chrome           │
+│  vibium-mcp ──► vibium-go SDK ──► BiDi Client ──► Chrome            │
 │       │                                                             │
 │       └── Uses official Go MCP SDK                                  │
 │       └── 100+ tools, comprehensive automation                      │
@@ -31,7 +31,7 @@ Compare the three MCP servers for LLM agent integration.
 ┌─────────────────────────────────────────────────────────────────────┐
 │                        VibiumDev MCP                                │
 ├─────────────────────────────────────────────────────────────────────┤
-│  vibium mcp ──► clicker ──► BiDi Client ──► Chrome                 │
+│  vibium mcp ──► clicker ──► BiDi Client ──► Chrome                  │
 │       │                                                             │
 │       └── Hand-rolled JSON-RPC                                      │
 │       └── ~25 tools, core automation                                │
@@ -40,7 +40,7 @@ Compare the three MCP servers for LLM agent integration.
 ┌─────────────────────────────────────────────────────────────────────┐
 │                       Playwright MCP                                │
 ├─────────────────────────────────────────────────────────────────────┤
-│  @playwright/mcp ──► Playwright ──► CDP/BiDi ──► Chromium          │
+│  @playwright/mcp ──► Playwright ──► CDP/BiDi ──► Chromium           │
 │       │                                                             │
 │       └── Official TS MCP SDK                                       │
 │       └── ~45 tools (with opt-in caps)                              │

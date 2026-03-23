@@ -1,6 +1,6 @@
-// Package vibium provides a Go client for browser automation using the WebDriver BiDi protocol.
+// Package webpilot provides a Go client for browser automation using the WebDriver BiDi protocol.
 // It launches Chrome with BiDi support and communicates over WebSocket.
-package vibium
+package webpilot
 
 import "time"
 

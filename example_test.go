@@ -1,4 +1,4 @@
-package vibium_test
+package webpilot_test
 
 import (
 	"context"
@@ -6,26 +6,26 @@ import (
 	"log"
 	"os"
 
-	"github.com/plexusone/vibium-go"
+	"github.com/plexusone/webpilot"
 )
 
 func Example() {
 	ctx := context.Background()
 
 	// Launch browser
-	vibe, err := vibium.Launch(ctx)
+	pilot, err := webpilot.Launch(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer func() { _ = vibe.Quit(ctx) }()
+	defer func() { _ = pilot.Quit(ctx) }()
 
 	// Navigate to a page
-	if err := vibe.Go(ctx, "https://example.com"); err != nil {
+	if err := pilot.Go(ctx, "https://example.com"); err != nil {
 		log.Fatal(err)
 	}
 
 	// Find and click a link
-	link, err := vibe.Find(ctx, "a", nil)
+	link, err := pilot.Find(ctx, "a", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -35,7 +35,7 @@ func Example() {
 	}
 
 	// Get page title
-	title, err := vibe.Title(ctx)
+	title, err := pilot.Title(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -46,19 +46,19 @@ func Example_headless() {
 	ctx := context.Background()
 
 	// Launch headless browser
-	vibe, err := vibium.LaunchHeadless(ctx)
+	pilot, err := webpilot.LaunchHeadless(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer func() { _ = vibe.Quit(ctx) }()
+	defer func() { _ = pilot.Quit(ctx) }()
 
 	// Navigate
-	if err := vibe.Go(ctx, "https://example.com"); err != nil {
+	if err := pilot.Go(ctx, "https://example.com"); err != nil {
 		log.Fatal(err)
 	}
 
 	// Take screenshot
-	data, err := vibe.Screenshot(ctx)
+	data, err := pilot.Screenshot(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -72,21 +72,21 @@ func Example_headless() {
 func Example_formInteraction() {
 	ctx := context.Background()
 
-	vibe, err := vibium.Browser.Launch(ctx, &vibium.LaunchOptions{
+	pilot, err := webpilot.Browser.Launch(ctx, &webpilot.LaunchOptions{
 		Headless: true,
 	})
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer func() { _ = vibe.Quit(ctx) }()
+	defer func() { _ = pilot.Quit(ctx) }()
 
 	// Navigate to a form page
-	if err := vibe.Go(ctx, "https://example.com/login"); err != nil {
+	if err := pilot.Go(ctx, "https://example.com/login"); err != nil {
 		log.Fatal(err)
 	}
 
 	// Fill in username
-	username, err := vibe.Find(ctx, "input[name='username']", nil)
+	username, err := pilot.Find(ctx, "input[name='username']", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -95,7 +95,7 @@ func Example_formInteraction() {
 	}
 
 	// Fill in password
-	password, err := vibe.Find(ctx, "input[name='password']", nil)
+	password, err := pilot.Find(ctx, "input[name='password']", nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -104,7 +104,7 @@ func Example_formInteraction() {
 	}
 
 	// Click submit
-	submit, err := vibe.Find(ctx, "button[type='submit']", nil)
+	submit, err := pilot.Find(ctx, "button[type='submit']", nil)
 	if err != nil {
 		log.Fatal(err)
 	}

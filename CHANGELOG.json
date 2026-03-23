@@ -1,11 +1,61 @@
 {
   "irVersion": "1.0",
-  "project": "vibium-go",
-  "repository": "https://github.com/plexusone/vibium-go",
+  "project": "webpilot",
+  "repository": "https://github.com/plexusone/webpilot",
   "versioning": "semver",
   "commitConvention": "conventional",
   "maintainers": ["plexusone"],
   "releases": [
+    {
+      "version": "v0.5.0",
+      "date": "2026-03-23",
+      "highlights": [
+        { "description": "Project renamed from vibium-go to webpilot with new module path and CLI" },
+        { "description": "Native Chrome launcher replaces external clicker dependency" },
+        { "description": "Video recording and WebSocket monitoring support" },
+        { "description": "Page event listeners and accessibility snapshot" }
+      ],
+      "breaking": [
+        { "description": "Module path changed from `github.com/plexusone/vibium-go` to `github.com/plexusone/webpilot`", "commit": "3e7b47d" },
+        { "description": "Package renamed from `vibium` to `webpilot`", "commit": "3e7b47d" },
+        { "description": "Core type renamed from `*Vibe` to `*Pilot`", "commit": "3e7b47d" },
+        { "description": "CLI renamed from `vibium` to `webpilot`, `vibium-mcp` to `webpilot-mcp`, `vibium-rpa` to `webpilot-rpa`", "commit": "3422023" },
+        { "description": "Environment variables renamed from `VIBIUM_*` to `WEBPILOT_*` (DEBUG, HEADLESS, SKIP_BROWSER_DOWNLOAD)", "commit": "658103b" }
+      ],
+      "added": [
+        { "description": "Native Chrome launcher - browser is now bundled and auto-installed, removing need for external clicker binary", "commit": "27c4ce3" },
+        { "description": "`Pilot.StartVideo()` and `Pilot.StopVideo()` for video recording of browser sessions", "commit": "27bf163" },
+        { "description": "`Pilot.OnWebSocket()` for monitoring WebSocket connections opened by the page", "commit": "3583311" },
+        { "description": "Page event listeners: `OnConsole()`, `OnPageError()`, `OnRequest()`, `OnResponse()`, `OnDialog()`", "commit": "484d6c9" },
+        { "description": "Event listener infrastructure with `OnEvent()` method on BiDi client", "commit": "250882f" },
+        { "description": "`delete_cookie` MCP tool", "commit": "ff8c1f0" },
+        { "description": "`wait_for_text` MCP tool", "commit": "ff8c1f0" },
+        { "description": "`accessibility_snapshot` MCP tool", "commit": "ff8c1f0" },
+        { "description": "Frame selection MCP tools: `list_frames`, `select_frame`", "commit": "b45550b" },
+        { "description": "State verification MCP tools: `get_state`, `verify_state`", "commit": "b45550b" },
+        { "description": "Assertion MCP tools: `assert_text`, `assert_element`, `assert_url`, `assert_title`", "commit": "736f41d" },
+        { "description": "Waiting MCP tools: `wait_for_element`, `wait_for_text`, `wait_for_url`", "commit": "736f41d" },
+        { "description": "Low-priority SDK methods for parity with JS/Python clients", "commit": "25bb45e" }
+      ],
+      "fixed": [
+        { "description": "Writable file handle closed without error handling (code scanning alert)", "commit": "8294c13" }
+      ],
+      "tests": [
+        { "description": "Integration tests for verification operations", "commit": "922cb94" },
+        { "description": "Integration tests for MCP tools and page methods", "commit": "06a0742" }
+      ],
+      "documentation": [
+        { "description": "VibiumDev vs webpilot feature comparison", "commit": "418a547" },
+        { "description": "Consolidated comparison documentation with Playwright MCP", "commit": "155da81" },
+        { "description": "Updated all documentation for webpilot rename", "commit": "3cef949" },
+        { "description": "Updated references from clicker to Chrome native launcher", "commit": "a33e96c" }
+      ],
+      "infrastructure": [
+        { "description": "Update CI/CD workflows for webpilot rename", "commit": "9c562e4" },
+        { "description": "Update cache directories from `vibium` to `webpilot`", "commit": "658103b" },
+        { "description": "Update MCP server name from `vibium-mcp` to `webpilot-mcp`", "commit": "658103b" }
+      ]
+    },
     {
       "version": "v0.4.0",
       "date": "2026-03-21",

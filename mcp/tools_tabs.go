@@ -32,12 +32,12 @@ func (s *Server) handleListTabs(
 	req *mcp.CallToolRequest,
 	input ListTabsInput,
 ) (*mcp.CallToolResult, ListTabsOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, ListTabsOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	pages, err := vibe.Pages(ctx)
+	pages, err := pilot.Pages(ctx)
 	if err != nil {
 		return nil, ListTabsOutput{}, fmt.Errorf("failed to get pages: %w", err)
 	}
@@ -57,7 +57,7 @@ func (s *Server) handleListTabs(
 		}
 
 		// Track which tab is current (matches the session's vibe)
-		if page.BrowsingContext() == vibe.BrowsingContext() {
+		if page.BrowsingContext() == pilot.BrowsingContext() {
 			currentTab = i
 		}
 	}
@@ -87,12 +87,12 @@ func (s *Server) handleSelectTab(
 	req *mcp.CallToolRequest,
 	input SelectTabInput,
 ) (*mcp.CallToolResult, SelectTabOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, SelectTabOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	pages, err := vibe.Pages(ctx)
+	pages, err := pilot.Pages(ctx)
 	if err != nil {
 		return nil, SelectTabOutput{}, fmt.Errorf("failed to get pages: %w", err)
 	}
@@ -137,16 +137,16 @@ func (s *Server) handleSelectTab(
 	s.session.SetActiveContext(targetPage.id)
 
 	// Get the new active page info
-	newVibe, err := s.session.Vibe(ctx)
+	newPilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, SelectTabOutput{}, fmt.Errorf("failed to get new active page: %w", err)
 	}
 
-	url, _ := newVibe.URL(ctx)
-	title, _ := newVibe.Title(ctx)
+	url, _ := newPilot.URL(ctx)
+	title, _ := newPilot.Title(ctx)
 
 	// Bring the tab to front
-	_ = newVibe.BringToFront(ctx)
+	_ = newPilot.BringToFront(ctx)
 
 	return nil, SelectTabOutput{
 		Message: fmt.Sprintf("Switched to tab %d", targetPage.index),
@@ -171,12 +171,12 @@ func (s *Server) handleCloseTab(
 	req *mcp.CallToolRequest,
 	input CloseTabInput,
 ) (*mcp.CallToolResult, CloseTabOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, CloseTabOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	pages, err := vibe.Pages(ctx)
+	pages, err := pilot.Pages(ctx)
 	if err != nil {
 		return nil, CloseTabOutput{}, fmt.Errorf("failed to get pages: %w", err)
 	}
@@ -211,7 +211,7 @@ func (s *Server) handleCloseTab(
 		}
 	} else {
 		// Close current tab
-		targetID = vibe.BrowsingContext()
+		targetID = pilot.BrowsingContext()
 		for i, page := range pages {
 			if page.BrowsingContext() == targetID {
 				targetIndex = i
@@ -231,14 +231,14 @@ func (s *Server) handleCloseTab(
 	}
 
 	// If we closed the current tab, switch to another
-	if targetID == vibe.BrowsingContext() && len(pages) > 1 {
+	if targetID == pilot.BrowsingContext() && len(pages) > 1 {
 		// Switch to the previous tab, or the next one if this was the first
 		newIndex := targetIndex - 1
 		if newIndex < 0 {
 			newIndex = 0
 		}
 		// Get fresh pages list
-		newPages, err := vibe.Pages(ctx)
+		newPages, err := pilot.Pages(ctx)
 		if err == nil && len(newPages) > newIndex {
 			s.session.SetActiveContext(newPages[newIndex].BrowsingContext())
 		}

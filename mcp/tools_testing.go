@@ -7,8 +7,8 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	vibium "github.com/plexusone/vibium-go"
-	"github.com/plexusone/vibium-go/mcp/report"
+	vibium "github.com/plexusone/webpilot"
+	"github.com/plexusone/webpilot/mcp/report"
 )
 
 // VerifyValue tool - verifies that an input element has the expected value
@@ -30,7 +30,7 @@ func (s *Server) handleVerifyValue(
 	req *mcp.CallToolRequest,
 	input VerifyValueInput,
 ) (*mcp.CallToolResult, VerifyValueOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, VerifyValueOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -41,7 +41,7 @@ func (s *Server) handleVerifyValue(
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
 	start := time.Now()
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 
 	result := report.StepResult{
 		ID:     s.session.NextStepID("verify_value"),
@@ -134,7 +134,7 @@ func (s *Server) handleVerifyListVisible(
 	req *mcp.CallToolRequest,
 	input VerifyListVisibleInput,
 ) (*mcp.CallToolResult, VerifyListVisibleOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, VerifyListVisibleOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -168,7 +168,7 @@ func (s *Server) handleVerifyListVisible(
 			script = fmt.Sprintf(`document.body.textContent.includes(%q)`, item)
 		}
 
-		evalResult, err := vibe.Evaluate(ctx, script)
+		evalResult, err := pilot.Evaluate(ctx, script)
 		if err != nil {
 			missing = append(missing, item)
 			continue
@@ -236,7 +236,7 @@ func (s *Server) handleGenerateLocator(
 	req *mcp.CallToolRequest,
 	input GenerateLocatorInput,
 ) (*mcp.CallToolResult, GenerateLocatorOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, GenerateLocatorOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -250,7 +250,7 @@ func (s *Server) handleGenerateLocator(
 		input.Strategy = "css"
 	}
 
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 	if err != nil {
 		return nil, GenerateLocatorOutput{}, fmt.Errorf("element not found: %s", input.Selector)
 	}
@@ -305,7 +305,7 @@ func (s *Server) handleGenerateLocator(
 				return path.join(' > ');
 			})(%q)
 		`
-		result, err := vibe.Evaluate(ctx, fmt.Sprintf(script, input.Selector))
+		result, err := pilot.Evaluate(ctx, fmt.Sprintf(script, input.Selector))
 		if err != nil {
 			return nil, GenerateLocatorOutput{}, fmt.Errorf("generate locator failed: %w", err)
 		}
@@ -342,7 +342,7 @@ func (s *Server) handleGenerateLocator(
 				return '/' + path.join('/');
 			})(%q)
 		`
-		result, err := vibe.Evaluate(ctx, fmt.Sprintf(script, input.Selector))
+		result, err := pilot.Evaluate(ctx, fmt.Sprintf(script, input.Selector))
 		if err != nil {
 			return nil, GenerateLocatorOutput{}, fmt.Errorf("generate locator failed: %w", err)
 		}
@@ -421,7 +421,7 @@ func (s *Server) handleWaitForSelector(
 	req *mcp.CallToolRequest,
 	input WaitForSelectorInput,
 ) (*mcp.CallToolResult, WaitForSelectorOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, WaitForSelectorOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -438,7 +438,7 @@ func (s *Server) handleWaitForSelector(
 	// Find the element first (for attached/visible states) or wait for condition
 	switch input.State {
 	case "attached", "visible":
-		elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+		elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 		if err != nil {
 			return nil, WaitForSelectorOutput{}, fmt.Errorf("wait for selector failed: %w", err)
 		}
@@ -449,7 +449,7 @@ func (s *Server) handleWaitForSelector(
 			}
 		}
 	case "detached", "hidden":
-		err = vibe.WaitForFunction(ctx, fmt.Sprintf(`() => {
+		err = pilot.WaitForFunction(ctx, fmt.Sprintf(`() => {
 			const el = document.querySelector(%q);
 			if (%q === "detached") return el === null;
 			if (el === null) return true;
@@ -488,7 +488,7 @@ func (s *Server) handleVerifyText(
 	req *mcp.CallToolRequest,
 	input VerifyTextInput,
 ) (*mcp.CallToolResult, VerifyTextOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, VerifyTextOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -498,7 +498,7 @@ func (s *Server) handleVerifyText(
 	}
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 	if err != nil {
 		return nil, VerifyTextOutput{}, fmt.Errorf("element not found: %s", input.Selector)
 	}
@@ -598,7 +598,7 @@ func (s *Server) handleVerifyEnabled(
 
 // verifyElementState is a helper that verifies an element's state (visible, hidden, enabled, disabled)
 func (s *Server) verifyElementState(ctx context.Context, selector string, timeoutMS int, state string) (bool, string, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return false, "", fmt.Errorf("browser not available: %w", err)
 	}
@@ -608,7 +608,7 @@ func (s *Server) verifyElementState(ctx context.Context, selector string, timeou
 	}
 	timeout := time.Duration(timeoutMS) * time.Millisecond
 
-	elem, err := vibe.Find(ctx, selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, selector, &vibium.FindOptions{Timeout: timeout})
 	if err != nil {
 		// For hidden state, element not found could be valid
 		if state == "hidden" {
@@ -723,7 +723,7 @@ func (s *Server) handleVerifyChecked(
 	req *mcp.CallToolRequest,
 	input VerifyCheckedInput,
 ) (*mcp.CallToolResult, VerifyCheckedOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, VerifyCheckedOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -738,7 +738,7 @@ func (s *Server) handleVerifyChecked(
 	// so we check if this is the first call by looking at the raw input
 	expectedChecked := input.Checked
 
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 	if err != nil {
 		return nil, VerifyCheckedOutput{
 			Passed:  false,

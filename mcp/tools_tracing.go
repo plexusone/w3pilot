@@ -9,7 +9,7 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	vibium "github.com/plexusone/vibium-go"
+	vibium "github.com/plexusone/webpilot"
 )
 
 // StartTrace tool - start trace recording
@@ -32,7 +32,7 @@ func (s *Server) handleStartTrace(
 	req *mcp.CallToolRequest,
 	input StartTraceInput,
 ) (*mcp.CallToolResult, StartTraceOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, StartTraceOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -55,7 +55,7 @@ func (s *Server) handleStartTrace(
 		Sources:     input.Sources,
 	}
 
-	tracing := vibe.Tracing()
+	tracing := pilot.Tracing()
 	if err := tracing.Start(ctx, opts); err != nil {
 		return nil, StartTraceOutput{}, fmt.Errorf("start trace failed: %w", err)
 	}
@@ -90,12 +90,12 @@ func (s *Server) handleStopTrace(
 	req *mcp.CallToolRequest,
 	input StopTraceInput,
 ) (*mcp.CallToolResult, StopTraceOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, StopTraceOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	tracing := vibe.Tracing()
+	tracing := pilot.Tracing()
 	data, err := tracing.Stop(ctx, &vibium.TracingStopOptions{
 		Path: input.Path,
 	})
@@ -150,12 +150,12 @@ func (s *Server) handleStartTraceChunk(
 	req *mcp.CallToolRequest,
 	input StartTraceChunkInput,
 ) (*mcp.CallToolResult, StartTraceChunkOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, StartTraceChunkOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	tracing := vibe.Tracing()
+	tracing := pilot.Tracing()
 	if err := tracing.StartChunk(ctx, &vibium.TracingChunkOptions{
 		Name:  input.Name,
 		Title: input.Title,
@@ -191,12 +191,12 @@ func (s *Server) handleStopTraceChunk(
 	req *mcp.CallToolRequest,
 	input StopTraceChunkInput,
 ) (*mcp.CallToolResult, StopTraceChunkOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, StopTraceChunkOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	tracing := vibe.Tracing()
+	tracing := pilot.Tracing()
 	data, err := tracing.StopChunk(ctx, &vibium.TracingChunkOptions{})
 	if err != nil {
 		return nil, StopTraceChunkOutput{}, fmt.Errorf("stop trace chunk failed: %w", err)
@@ -247,12 +247,12 @@ func (s *Server) handleStartTraceGroup(
 	req *mcp.CallToolRequest,
 	input StartTraceGroupInput,
 ) (*mcp.CallToolResult, StartTraceGroupOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, StartTraceGroupOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	tracing := vibe.Tracing()
+	tracing := pilot.Tracing()
 	opts := &vibium.TracingGroupOptions{}
 	if input.Location != "" {
 		opts.Location = input.Location
@@ -280,12 +280,12 @@ func (s *Server) handleStopTraceGroup(
 	req *mcp.CallToolRequest,
 	input StopTraceGroupInput,
 ) (*mcp.CallToolResult, StopTraceGroupOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, StopTraceGroupOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	tracing := vibe.Tracing()
+	tracing := pilot.Tracing()
 	if err := tracing.StopGroup(ctx); err != nil {
 		return nil, StopTraceGroupOutput{}, fmt.Errorf("stop trace group failed: %w", err)
 	}

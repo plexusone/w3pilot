@@ -7,14 +7,14 @@ import (
 	"sync"
 	"time"
 
-	vibium "github.com/plexusone/vibium-go"
-	"github.com/plexusone/vibium-go/mcp/report"
+	"github.com/plexusone/webpilot"
+	"github.com/plexusone/webpilot/mcp/report"
 )
 
 // Session manages a browser session and collects test results.
 type Session struct {
 	mu            sync.Mutex
-	vibe          *vibium.Vibe
+	pilot         *webpilot.Pilot
 	activeContext string // Active browsing context ID for tab management
 	config        SessionConfig
 	results       []report.StepResult
@@ -37,7 +37,7 @@ func NewSession(config SessionConfig) *Session {
 		config.DefaultTimeout = 30 * time.Second
 	}
 	if config.Project == "" {
-		config.Project = "vibium-tests"
+		config.Project = "webpilot-tests"
 	}
 	return &Session{
 		config:   config,
@@ -56,15 +56,15 @@ func (s *Session) LaunchIfNeeded(ctx context.Context) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	if s.vibe != nil && !s.vibe.IsClosed() {
+	if s.pilot != nil && !s.pilot.IsClosed() {
 		return nil
 	}
 
 	var err error
 	if s.config.Headless {
-		s.vibe, err = vibium.LaunchHeadless(ctx)
+		s.pilot, err = webpilot.LaunchHeadless(ctx)
 	} else {
-		s.vibe, err = vibium.Launch(ctx)
+		s.pilot, err = webpilot.Launch(ctx)
 	}
 	if err != nil {
 		return err
@@ -72,7 +72,7 @@ func (s *Session) LaunchIfNeeded(ctx context.Context) error {
 
 	// Apply init scripts
 	for _, script := range s.config.InitScripts {
-		if err := s.vibe.AddInitScript(ctx, script); err != nil {
+		if err := s.pilot.AddInitScript(ctx, script); err != nil {
 			return fmt.Errorf("failed to add init script: %w", err)
 		}
 	}
@@ -80,9 +80,9 @@ func (s *Session) LaunchIfNeeded(ctx context.Context) error {
 	return nil
 }
 
-// Vibe returns the browser controller, launching if needed.
+// Pilot returns the browser controller, launching if needed.
 // If an active context is set (via SetActiveContext), returns the page for that context.
-func (s *Session) Vibe(ctx context.Context) (*vibium.Vibe, error) {
+func (s *Session) Pilot(ctx context.Context) (*webpilot.Pilot, error) {
 	if err := s.LaunchIfNeeded(ctx); err != nil {
 		return nil, err
 	}
@@ -91,13 +91,13 @@ func (s *Session) Vibe(ctx context.Context) (*vibium.Vibe, error) {
 
 	// If no active context is set, return the default vibe
 	if s.activeContext == "" {
-		return s.vibe, nil
+		return s.pilot, nil
 	}
 
 	// Find the page with the active context
-	pages, err := s.vibe.Pages(ctx)
+	pages, err := s.pilot.Pages(ctx)
 	if err != nil {
-		return s.vibe, nil // Fallback to default
+		return s.pilot, nil // Fallback to default
 	}
 
 	for _, page := range pages {
@@ -108,7 +108,7 @@ func (s *Session) Vibe(ctx context.Context) (*vibium.Vibe, error) {
 
 	// Active context no longer exists, clear it and return default
 	s.activeContext = ""
-	return s.vibe, nil
+	return s.pilot, nil
 }
 
 // RecordStep records a step result.
@@ -164,7 +164,7 @@ func (s *Session) Reset() {
 func (s *Session) IsLaunched() bool {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	return s.vibe != nil && !s.vibe.IsClosed()
+	return s.pilot != nil && !s.pilot.IsClosed()
 }
 
 // Close closes the browser session.
@@ -172,9 +172,9 @@ func (s *Session) Close(ctx context.Context) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	if s.vibe != nil {
-		err := s.vibe.Quit(ctx)
-		s.vibe = nil
+	if s.pilot != nil {
+		err := s.pilot.Quit(ctx)
+		s.pilot = nil
 		return err
 	}
 	return nil
@@ -201,26 +201,26 @@ func (s *Session) ActiveContext() string {
 	return s.activeContext
 }
 
-// SetVibe sets the active Vibe instance (page or frame).
+// SetPilot sets the active Pilot instance (page or frame).
 // This is used for frame selection.
-func (s *Session) SetVibe(v *vibium.Vibe) {
+func (s *Session) SetPilot(p *webpilot.Pilot) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
-	s.vibe = v
-	s.activeContext = "" // Clear active context since we're using a specific vibe
+	s.pilot = p
+	s.activeContext = "" // Clear active context since we're using a specific pilot
 }
 
 // CaptureScreenshot captures a screenshot and returns a ScreenshotRef.
 func (s *Session) CaptureScreenshot(ctx context.Context) *report.ScreenshotRef {
 	s.mu.Lock()
-	vibe := s.vibe
+	pilot := s.pilot
 	s.mu.Unlock()
 
-	if vibe == nil {
+	if pilot == nil {
 		return nil
 	}
 
-	data, err := vibe.Screenshot(ctx)
+	data, err := pilot.Screenshot(ctx)
 	if err != nil {
 		return nil
 	}
@@ -233,15 +233,15 @@ func (s *Session) CaptureScreenshot(ctx context.Context) *report.ScreenshotRef {
 // CaptureContext captures the current page context.
 func (s *Session) CaptureContext(ctx context.Context) *report.StepContext {
 	s.mu.Lock()
-	vibe := s.vibe
+	pilot := s.pilot
 	s.mu.Unlock()
 
-	if vibe == nil {
+	if pilot == nil {
 		return nil
 	}
 
-	pageURL, _ := vibe.URL(ctx)
-	pageTitle, _ := vibe.Title(ctx)
+	pageURL, _ := pilot.URL(ctx)
+	pageTitle, _ := pilot.Title(ctx)
 
 	stepContext := &report.StepContext{
 		PageURL:   pageURL,
@@ -253,7 +253,7 @@ func (s *Session) CaptureContext(ctx context.Context) *report.StepContext {
 		.filter(el => el.offsetParent !== null)
 		.map(el => el.id ? '#' + el.id : (el.className ? '.' + el.className.split(' ')[0] : el.tagName))
 		.slice(0, 10)`
-	if result, err := vibe.Evaluate(ctx, script); err == nil {
+	if result, err := pilot.Evaluate(ctx, script); err == nil {
 		if elems, ok := result.([]any); ok {
 			for _, e := range elems {
 				if str, ok := e.(string); ok {
@@ -269,10 +269,10 @@ func (s *Session) CaptureContext(ctx context.Context) *report.StepContext {
 // FindSimilarSelectors attempts to find similar selectors to the given one.
 func (s *Session) FindSimilarSelectors(ctx context.Context, selector string) []string {
 	s.mu.Lock()
-	vibe := s.vibe
+	pilot := s.pilot
 	s.mu.Unlock()
 
-	if vibe == nil {
+	if pilot == nil {
 		return nil
 	}
 
@@ -318,7 +318,7 @@ func (s *Session) FindSimilarSelectors(ctx context.Context, selector string) []s
 		})()
 	`, baseName)
 
-	result, err := vibe.Evaluate(ctx, script)
+	result, err := pilot.Evaluate(ctx, script)
 	if err != nil {
 		return nil
 	}

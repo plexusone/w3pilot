@@ -8,7 +8,7 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	vibium "github.com/plexusone/vibium-go"
+	vibium "github.com/plexusone/webpilot"
 )
 
 // NewPage tool
@@ -24,12 +24,12 @@ func (s *Server) handleNewPage(
 	req *mcp.CallToolRequest,
 	input NewPageInput,
 ) (*mcp.CallToolResult, NewPageOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, NewPageOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	_, err = vibe.NewPage(ctx)
+	_, err = pilot.NewPage(ctx)
 	if err != nil {
 		return nil, NewPageOutput{}, fmt.Errorf("new page failed: %w", err)
 	}
@@ -50,12 +50,12 @@ func (s *Server) handleGetPages(
 	req *mcp.CallToolRequest,
 	input GetPagesInput,
 ) (*mcp.CallToolResult, GetPagesOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, GetPagesOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	pages, err := vibe.Pages(ctx)
+	pages, err := pilot.Pages(ctx)
 	if err != nil {
 		return nil, GetPagesOutput{}, fmt.Errorf("get pages failed: %w", err)
 	}
@@ -89,12 +89,12 @@ func (s *Server) handleGetCookies(
 	req *mcp.CallToolRequest,
 	input GetCookiesInput,
 ) (*mcp.CallToolResult, GetCookiesOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, GetCookiesOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	browserCtx, err := vibe.NewContext(ctx)
+	browserCtx, err := pilot.NewContext(ctx)
 	if err != nil {
 		return nil, GetCookiesOutput{}, fmt.Errorf("context not available: %w", err)
 	}
@@ -148,12 +148,12 @@ func (s *Server) handleSetCookies(
 	req *mcp.CallToolRequest,
 	input SetCookiesInput,
 ) (*mcp.CallToolResult, SetCookiesOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, SetCookiesOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	browserCtx, err := vibe.NewContext(ctx)
+	browserCtx, err := pilot.NewContext(ctx)
 	if err != nil {
 		return nil, SetCookiesOutput{}, fmt.Errorf("context not available: %w", err)
 	}
@@ -194,12 +194,12 @@ func (s *Server) handleClearCookies(
 	req *mcp.CallToolRequest,
 	input ClearCookiesInput,
 ) (*mcp.CallToolResult, ClearCookiesOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, ClearCookiesOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	browserCtx, err := vibe.NewContext(ctx)
+	browserCtx, err := pilot.NewContext(ctx)
 	if err != nil {
 		return nil, ClearCookiesOutput{}, fmt.Errorf("context not available: %w", err)
 	}
@@ -229,12 +229,12 @@ func (s *Server) handleDeleteCookie(
 	req *mcp.CallToolRequest,
 	input DeleteCookieInput,
 ) (*mcp.CallToolResult, DeleteCookieOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, DeleteCookieOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	browserCtx, err := vibe.NewContext(ctx)
+	browserCtx, err := pilot.NewContext(ctx)
 	if err != nil {
 		return nil, DeleteCookieOutput{}, fmt.Errorf("context not available: %w", err)
 	}
@@ -260,13 +260,13 @@ func (s *Server) handleGetStorageState(
 	req *mcp.CallToolRequest,
 	input GetStorageStateInput,
 ) (*mcp.CallToolResult, GetStorageStateOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, GetStorageStateOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
 	// Use Vibe.StorageState() which captures cookies, localStorage, AND sessionStorage
-	state, err := vibe.StorageState(ctx)
+	state, err := pilot.StorageState(ctx)
 	if err != nil {
 		return nil, GetStorageStateOutput{}, fmt.Errorf("get storage state failed: %w", err)
 	}
@@ -294,7 +294,7 @@ func (s *Server) handleSetStorageState(
 	req *mcp.CallToolRequest,
 	input SetStorageStateInput,
 ) (*mcp.CallToolResult, SetStorageStateOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, SetStorageStateOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -306,7 +306,7 @@ func (s *Server) handleSetStorageState(
 	}
 
 	// Use Vibe.SetStorageState() which handles cookies, localStorage, AND sessionStorage
-	if err := vibe.SetStorageState(ctx, &state); err != nil {
+	if err := pilot.SetStorageState(ctx, &state); err != nil {
 		return nil, SetStorageStateOutput{}, fmt.Errorf("set storage state failed: %w", err)
 	}
 
@@ -341,13 +341,13 @@ func (s *Server) handleClearStorage(
 	req *mcp.CallToolRequest,
 	input ClearStorageInput,
 ) (*mcp.CallToolResult, ClearStorageOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, ClearStorageOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
 	// Use Vibe.ClearStorage() which clears cookies, localStorage, AND sessionStorage
-	if err := vibe.ClearStorage(ctx); err != nil {
+	if err := pilot.ClearStorage(ctx); err != nil {
 		return nil, ClearStorageOutput{}, fmt.Errorf("clear storage failed: %w", err)
 	}
 
@@ -370,7 +370,7 @@ func (s *Server) handlePauseForHuman(
 	req *mcp.CallToolRequest,
 	input PauseForHumanInput,
 ) (*mcp.CallToolResult, PauseForHumanOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, PauseForHumanOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -419,7 +419,7 @@ func (s *Server) handlePauseForHuman(
 	`, input.Message)
 
 	// Inject the overlay
-	if _, err := vibe.Evaluate(ctx, overlayScript); err != nil {
+	if _, err := pilot.Evaluate(ctx, overlayScript); err != nil {
 		return nil, PauseForHumanOutput{}, fmt.Errorf("inject overlay failed: %w", err)
 	}
 
@@ -427,9 +427,9 @@ func (s *Server) handlePauseForHuman(
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 	checkScript := `window.__vibium_human_done__ === true`
 
-	if err := vibe.WaitForFunction(ctx, checkScript, timeout); err != nil {
+	if err := pilot.WaitForFunction(ctx, checkScript, timeout); err != nil {
 		// Clean up overlay on timeout (best-effort, ignore error since we're already returning one)
-		_, _ = vibe.Evaluate(ctx, `
+		_, _ = pilot.Evaluate(ctx, `
 			const overlay = document.getElementById('__vibium_pause_overlay__');
 			if (overlay) overlay.remove();
 		`)

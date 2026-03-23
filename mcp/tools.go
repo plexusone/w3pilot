@@ -9,8 +9,8 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	vibium "github.com/plexusone/vibium-go"
-	"github.com/plexusone/vibium-go/mcp/report"
+	vibium "github.com/plexusone/webpilot"
+	"github.com/plexusone/webpilot/mcp/report"
 )
 
 // Tool input/output types
@@ -143,13 +143,13 @@ func (s *Server) handleNavigate(
 	req *mcp.CallToolRequest,
 	input NavigateInput,
 ) (*mcp.CallToolResult, NavigateOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, NavigateOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
 	start := time.Now()
-	err = vibe.Go(ctx, input.URL)
+	err = pilot.Go(ctx, input.URL)
 	duration := time.Since(start)
 
 	result := report.StepResult{
@@ -171,8 +171,8 @@ func (s *Server) handleNavigate(
 		return nil, NavigateOutput{}, fmt.Errorf("navigation failed: %w", err)
 	}
 
-	currentURL, _ := vibe.URL(ctx)
-	currentTitle, _ := vibe.Title(ctx)
+	currentURL, _ := pilot.URL(ctx)
+	currentTitle, _ := pilot.Title(ctx)
 
 	result.Status = report.StatusGo
 	result.Severity = report.SeverityInfo
@@ -206,7 +206,7 @@ func (s *Server) handleClick(
 	req *mcp.CallToolRequest,
 	input ClickInput,
 ) (*mcp.CallToolResult, ClickOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, ClickOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -218,7 +218,7 @@ func (s *Server) handleClick(
 
 	start := time.Now()
 	findOpts := input.SemanticSelector.toFindOptions(timeout)
-	elem, err := vibe.Find(ctx, input.Selector, findOpts)
+	elem, err := pilot.Find(ctx, input.Selector, findOpts)
 
 	result := report.StepResult{
 		ID:     s.session.NextStepID("click"),
@@ -285,7 +285,7 @@ func (s *Server) handleType(
 	req *mcp.CallToolRequest,
 	input TypeInput,
 ) (*mcp.CallToolResult, TypeOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, TypeOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -297,7 +297,7 @@ func (s *Server) handleType(
 
 	start := time.Now()
 	findOpts := input.SemanticSelector.toFindOptions(timeout)
-	elem, err := vibe.Find(ctx, input.Selector, findOpts)
+	elem, err := pilot.Find(ctx, input.Selector, findOpts)
 
 	result := report.StepResult{
 		ID:     s.session.NextStepID("type"),
@@ -362,7 +362,7 @@ func (s *Server) handleGetText(
 	req *mcp.CallToolRequest,
 	input GetTextInput,
 ) (*mcp.CallToolResult, GetTextOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, GetTextOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -373,7 +373,7 @@ func (s *Server) handleGetText(
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
 	start := time.Now()
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 
 	result := report.StepResult{
 		ID:     s.session.NextStepID("get_text"),
@@ -435,7 +435,7 @@ func (s *Server) handleScreenshot(
 	req *mcp.CallToolRequest,
 	input ScreenshotInput,
 ) (*mcp.CallToolResult, ScreenshotOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, ScreenshotOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -445,7 +445,7 @@ func (s *Server) handleScreenshot(
 	}
 
 	start := time.Now()
-	data, err := vibe.Screenshot(ctx)
+	data, err := pilot.Screenshot(ctx)
 	duration := time.Since(start)
 
 	result := report.StepResult{
@@ -493,12 +493,12 @@ func (s *Server) handleGetTitle(
 	req *mcp.CallToolRequest,
 	input GetTitleInput,
 ) (*mcp.CallToolResult, GetTitleOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, GetTitleOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	title, err := vibe.Title(ctx)
+	title, err := pilot.Title(ctx)
 	if err != nil {
 		return nil, GetTitleOutput{}, fmt.Errorf("get title failed: %w", err)
 	}
@@ -516,12 +516,12 @@ func (s *Server) handleGetURL(
 	req *mcp.CallToolRequest,
 	input GetURLInput,
 ) (*mcp.CallToolResult, GetURLOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, GetURLOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	url, err := vibe.URL(ctx)
+	url, err := pilot.URL(ctx)
 	if err != nil {
 		return nil, GetURLOutput{}, fmt.Errorf("get url failed: %w", err)
 	}
@@ -541,13 +541,13 @@ func (s *Server) handleEvaluate(
 	req *mcp.CallToolRequest,
 	input EvaluateInput,
 ) (*mcp.CallToolResult, EvaluateOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, EvaluateOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
 	start := time.Now()
-	result, err := vibe.Evaluate(ctx, input.Script)
+	result, err := pilot.Evaluate(ctx, input.Script)
 	duration := time.Since(start)
 
 	stepResult := report.StepResult{
@@ -593,7 +593,7 @@ func (s *Server) handleAssertText(
 	req *mcp.CallToolRequest,
 	input AssertTextInput,
 ) (*mcp.CallToolResult, AssertTextOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, AssertTextOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -613,7 +613,7 @@ func (s *Server) handleAssertText(
 		script = fmt.Sprintf(`document.body.textContent.includes(%q)`, input.Text)
 	}
 
-	result, err := vibe.Evaluate(ctx, script)
+	result, err := pilot.Evaluate(ctx, script)
 	duration := time.Since(start)
 
 	stepResult := report.StepResult{
@@ -670,7 +670,7 @@ func (s *Server) handleAssertElement(
 	req *mcp.CallToolRequest,
 	input AssertElementInput,
 ) (*mcp.CallToolResult, AssertElementOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, AssertElementOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -681,7 +681,7 @@ func (s *Server) handleAssertElement(
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
 	start := time.Now()
-	_, err = vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	_, err = pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 	duration := time.Since(start)
 
 	stepResult := report.StepResult{

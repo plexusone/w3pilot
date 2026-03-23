@@ -6,7 +6,7 @@ import (
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
-// Server is the Vibium MCP server.
+// Server is the WebPilot MCP server.
 type Server struct {
 	session   *Session
 	mcpServer *mcp.Server
@@ -27,7 +27,7 @@ func NewServer(config Config) *Server {
 
 	s.mcpServer = mcp.NewServer(
 		&mcp.Implementation{
-			Name:    "vibium-mcp",
+			Name:    "webpilot-mcp",
 			Version: "0.2.0",
 		},
 		nil,
@@ -723,7 +723,7 @@ func (s *Server) registerTools() {
 
 	mcp.AddTool(s.mcpServer, &mcp.Tool{
 		Name:        "export_script",
-		Description: "Export recorded actions as a JSON test script that can be run with 'vibium run'.",
+		Description: "Export recorded actions as a JSON test script that can be run with 'webpilot run'.",
 	}, s.handleExportScript)
 
 	mcp.AddTool(s.mcpServer, &mcp.Tool{

@@ -6,7 +6,7 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	vibium "github.com/plexusone/vibium-go"
+	vibium "github.com/plexusone/webpilot"
 )
 
 // Route tool - register a mock response for a URL pattern
@@ -29,7 +29,7 @@ func (s *Server) handleRoute(
 	req *mcp.CallToolRequest,
 	input RouteInput,
 ) (*mcp.CallToolResult, RouteOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, RouteOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -41,7 +41,7 @@ func (s *Server) handleRoute(
 		Headers:     input.Headers,
 	}
 
-	err = vibe.MockRoute(ctx, input.Pattern, opts)
+	err = pilot.MockRoute(ctx, input.Pattern, opts)
 	if err != nil {
 		return nil, RouteOutput{}, fmt.Errorf("route failed: %w", err)
 	}
@@ -77,12 +77,12 @@ func (s *Server) handleRouteList(
 	req *mcp.CallToolRequest,
 	input RouteListInput,
 ) (*mcp.CallToolResult, RouteListOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, RouteListOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	routes, err := vibe.ListRoutes(ctx)
+	routes, err := pilot.ListRoutes(ctx)
 	if err != nil {
 		return nil, RouteListOutput{}, fmt.Errorf("list routes failed: %w", err)
 	}
@@ -117,12 +117,12 @@ func (s *Server) handleUnroute(
 	req *mcp.CallToolRequest,
 	input UnrouteInput,
 ) (*mcp.CallToolResult, UnrouteOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, UnrouteOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	err = vibe.Unroute(ctx, input.Pattern)
+	err = pilot.Unroute(ctx, input.Pattern)
 	if err != nil {
 		return nil, UnrouteOutput{}, fmt.Errorf("unroute failed: %w", err)
 	}
@@ -148,12 +148,12 @@ func (s *Server) handleNetworkStateSet(
 	req *mcp.CallToolRequest,
 	input NetworkStateSetInput,
 ) (*mcp.CallToolResult, NetworkStateSetOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, NetworkStateSetOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	err = vibe.SetOffline(ctx, input.Offline)
+	err = pilot.SetOffline(ctx, input.Offline)
 	if err != nil {
 		return nil, NetworkStateSetOutput{}, fmt.Errorf("set network state failed: %w", err)
 	}

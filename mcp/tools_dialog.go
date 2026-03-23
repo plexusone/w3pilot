@@ -26,14 +26,14 @@ func (s *Server) handleHandleDialog(
 	req *mcp.CallToolRequest,
 	input HandleDialogInput,
 ) (*mcp.CallToolResult, HandleDialogOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, HandleDialogOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
 	accept := input.Action == "accept"
 
-	err = vibe.HandleDialog(ctx, accept, input.PromptText)
+	err = pilot.HandleDialog(ctx, accept, input.PromptText)
 	if err != nil {
 		return nil, HandleDialogOutput{}, fmt.Errorf("failed to handle dialog: %w", err)
 	}
@@ -65,12 +65,12 @@ func (s *Server) handleGetDialog(
 	req *mcp.CallToolRequest,
 	input GetDialogInput,
 ) (*mcp.CallToolResult, GetDialogOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, GetDialogOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	info, err := vibe.GetDialog(ctx)
+	info, err := pilot.GetDialog(ctx)
 	if err != nil {
 		return nil, GetDialogOutput{}, fmt.Errorf("failed to get dialog: %w", err)
 	}

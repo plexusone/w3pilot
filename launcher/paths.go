@@ -38,7 +38,7 @@ func GetPlatform() Platform {
 	}
 }
 
-// GetCacheDir returns the platform-specific cache directory for vibium.
+// GetCacheDir returns the platform-specific cache directory for webpilot.
 func GetCacheDir() (string, error) {
 	var baseDir string
 
@@ -48,26 +48,26 @@ func GetCacheDir() (string, error) {
 		if err != nil {
 			return "", err
 		}
-		baseDir = filepath.Join(home, "Library", "Caches", "vibium")
+		baseDir = filepath.Join(home, "Library", "Caches", "webpilot")
 	case "windows":
 		if localAppData := os.Getenv("LOCALAPPDATA"); localAppData != "" {
-			baseDir = filepath.Join(localAppData, "vibium")
+			baseDir = filepath.Join(localAppData, "webpilot")
 		} else {
 			home, err := os.UserHomeDir()
 			if err != nil {
 				return "", err
 			}
-			baseDir = filepath.Join(home, "AppData", "Local", "vibium")
+			baseDir = filepath.Join(home, "AppData", "Local", "webpilot")
 		}
 	default: // Linux and others
 		if xdgCache := os.Getenv("XDG_CACHE_HOME"); xdgCache != "" {
-			baseDir = filepath.Join(xdgCache, "vibium")
+			baseDir = filepath.Join(xdgCache, "webpilot")
 		} else {
 			home, err := os.UserHomeDir()
 			if err != nil {
 				return "", err
 			}
-			baseDir = filepath.Join(home, ".cache", "vibium")
+			baseDir = filepath.Join(home, ".cache", "webpilot")
 		}
 	}
 

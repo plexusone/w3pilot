@@ -6,7 +6,7 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	vibium "github.com/plexusone/vibium-go"
+	vibium "github.com/plexusone/webpilot"
 )
 
 // StartVideo tool - start video recording
@@ -27,7 +27,7 @@ func (s *Server) handleStartVideo(
 	req *mcp.CallToolRequest,
 	input StartVideoInput,
 ) (*mcp.CallToolResult, StartVideoOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, StartVideoOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -43,7 +43,7 @@ func (s *Server) handleStartVideo(
 		}
 	}
 
-	video, err := vibe.StartVideo(ctx, opts)
+	video, err := pilot.StartVideo(ctx, opts)
 	if err != nil {
 		return nil, StartVideoOutput{}, fmt.Errorf("failed to start video: %w", err)
 	}
@@ -68,12 +68,12 @@ func (s *Server) handleStopVideo(
 	req *mcp.CallToolRequest,
 	input StopVideoInput,
 ) (*mcp.CallToolResult, StopVideoOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, StopVideoOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	path, err := vibe.StopVideo(ctx)
+	path, err := pilot.StopVideo(ctx)
 	if err != nil {
 		return nil, StopVideoOutput{}, fmt.Errorf("failed to stop video: %w", err)
 	}

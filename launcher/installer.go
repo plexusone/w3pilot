@@ -46,8 +46,8 @@ type InstallResult struct {
 // Skips download if already installed.
 func Install() (*InstallResult, error) {
 	// Check for skip environment variable
-	if os.Getenv("VIBIUM_SKIP_BROWSER_DOWNLOAD") == "1" {
-		return nil, fmt.Errorf("browser download skipped (VIBIUM_SKIP_BROWSER_DOWNLOAD=1)")
+	if os.Getenv("WEBPILOT_SKIP_BROWSER_DOWNLOAD") == "1" {
+		return nil, fmt.Errorf("browser download skipped (WEBPILOT_SKIP_BROWSER_DOWNLOAD=1)")
 	}
 
 	// Check if already installed

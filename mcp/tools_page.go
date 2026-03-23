@@ -8,7 +8,7 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	vibium "github.com/plexusone/vibium-go"
+	vibium "github.com/plexusone/webpilot"
 )
 
 // GetContent tool
@@ -24,12 +24,12 @@ func (s *Server) handleGetContent(
 	req *mcp.CallToolRequest,
 	input GetContentInput,
 ) (*mcp.CallToolResult, GetContentOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, GetContentOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	content, err := vibe.Content(ctx)
+	content, err := pilot.Content(ctx)
 	if err != nil {
 		return nil, GetContentOutput{}, fmt.Errorf("get content failed: %w", err)
 	}
@@ -52,12 +52,12 @@ func (s *Server) handleSetContent(
 	req *mcp.CallToolRequest,
 	input SetContentInput,
 ) (*mcp.CallToolResult, SetContentOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, SetContentOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	err = vibe.SetContent(ctx, input.HTML)
+	err = pilot.SetContent(ctx, input.HTML)
 	if err != nil {
 		return nil, SetContentOutput{}, fmt.Errorf("set content failed: %w", err)
 	}
@@ -79,12 +79,12 @@ func (s *Server) handleGetViewport(
 	req *mcp.CallToolRequest,
 	input GetViewportInput,
 ) (*mcp.CallToolResult, GetViewportOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, GetViewportOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	vp, err := vibe.GetViewport(ctx)
+	vp, err := pilot.GetViewport(ctx)
 	if err != nil {
 		return nil, GetViewportOutput{}, fmt.Errorf("get viewport failed: %w", err)
 	}
@@ -108,12 +108,12 @@ func (s *Server) handleSetViewport(
 	req *mcp.CallToolRequest,
 	input SetViewportInput,
 ) (*mcp.CallToolResult, SetViewportOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, SetViewportOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	err = vibe.SetViewport(ctx, vibium.Viewport{Width: input.Width, Height: input.Height})
+	err = pilot.SetViewport(ctx, vibium.Viewport{Width: input.Width, Height: input.Height})
 	if err != nil {
 		return nil, SetViewportOutput{}, fmt.Errorf("set viewport failed: %w", err)
 	}
@@ -139,7 +139,7 @@ func (s *Server) handlePDF(
 	req *mcp.CallToolRequest,
 	input PDFInput,
 ) (*mcp.CallToolResult, PDFOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, PDFOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -151,7 +151,7 @@ func (s *Server) handlePDF(
 		Format:          input.Format,
 	}
 
-	data, err := vibe.PDF(ctx, opts)
+	data, err := pilot.PDF(ctx, opts)
 	if err != nil {
 		return nil, PDFOutput{}, fmt.Errorf("pdf generation failed: %w", err)
 	}
@@ -172,12 +172,12 @@ func (s *Server) handleBringToFront(
 	req *mcp.CallToolRequest,
 	input BringToFrontInput,
 ) (*mcp.CallToolResult, BringToFrontOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, BringToFrontOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	err = vibe.BringToFront(ctx)
+	err = pilot.BringToFront(ctx)
 	if err != nil {
 		return nil, BringToFrontOutput{}, fmt.Errorf("bring to front failed: %w", err)
 	}
@@ -198,12 +198,12 @@ func (s *Server) handleClosePage(
 	req *mcp.CallToolRequest,
 	input ClosePageInput,
 ) (*mcp.CallToolResult, ClosePageOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, ClosePageOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	err = vibe.Close(ctx)
+	err = pilot.Close(ctx)
 	if err != nil {
 		return nil, ClosePageOutput{}, fmt.Errorf("close page failed: %w", err)
 	}
@@ -229,12 +229,12 @@ func (s *Server) handleGetFrames(
 	req *mcp.CallToolRequest,
 	input GetFramesInput,
 ) (*mcp.CallToolResult, GetFramesOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, GetFramesOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	frames, err := vibe.Frames(ctx)
+	frames, err := pilot.Frames(ctx)
 	if err != nil {
 		return nil, GetFramesOutput{}, fmt.Errorf("get frames failed: %w", err)
 	}
@@ -264,18 +264,18 @@ func (s *Server) handleSelectFrame(
 	req *mcp.CallToolRequest,
 	input SelectFrameInput,
 ) (*mcp.CallToolResult, SelectFrameOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, SelectFrameOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	frame, err := vibe.Frame(ctx, input.NameOrURL)
+	frame, err := pilot.Frame(ctx, input.NameOrURL)
 	if err != nil {
 		return nil, SelectFrameOutput{}, fmt.Errorf("frame not found: %w", err)
 	}
 
 	// Update the session to use this frame context
-	s.session.SetVibe(frame)
+	s.session.SetPilot(frame)
 
 	// Get frame info
 	url, _ := frame.URL(ctx)
@@ -301,14 +301,14 @@ func (s *Server) handleSelectMainFrame(
 	req *mcp.CallToolRequest,
 	input SelectMainFrameInput,
 ) (*mcp.CallToolResult, SelectMainFrameOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, SelectMainFrameOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
 	// MainFrame returns the main frame (self in our case)
-	mainFrame := vibe.MainFrame()
-	s.session.SetVibe(mainFrame)
+	mainFrame := pilot.MainFrame()
+	s.session.SetPilot(mainFrame)
 
 	return nil, SelectMainFrameOutput{
 		Message: "Switched to main frame",
@@ -335,12 +335,12 @@ func (s *Server) handleEmulateMedia(
 	req *mcp.CallToolRequest,
 	input EmulateMediaInput,
 ) (*mcp.CallToolResult, EmulateMediaOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, EmulateMediaOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	err = vibe.EmulateMedia(ctx, vibium.EmulateMediaOptions{
+	err = pilot.EmulateMedia(ctx, vibium.EmulateMediaOptions{
 		Media:         input.Media,
 		ColorScheme:   input.ColorScheme,
 		ReducedMotion: input.ReducedMotion,
@@ -392,12 +392,12 @@ func (s *Server) handleSetGeolocation(
 	req *mcp.CallToolRequest,
 	input SetGeolocationInput,
 ) (*mcp.CallToolResult, SetGeolocationOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, SetGeolocationOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	err = vibe.SetGeolocation(ctx, vibium.Geolocation{
+	err = pilot.SetGeolocation(ctx, vibium.Geolocation{
 		Latitude:  input.Latitude,
 		Longitude: input.Longitude,
 		Accuracy:  input.Accuracy,
@@ -424,12 +424,12 @@ func (s *Server) handleAddScript(
 	req *mcp.CallToolRequest,
 	input AddScriptInput,
 ) (*mcp.CallToolResult, AddScriptOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, AddScriptOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	err = vibe.AddScript(ctx, input.Source)
+	err = pilot.AddScript(ctx, input.Source)
 	if err != nil {
 		return nil, AddScriptOutput{}, fmt.Errorf("add script failed: %w", err)
 	}
@@ -452,12 +452,12 @@ func (s *Server) handleAddStyle(
 	req *mcp.CallToolRequest,
 	input AddStyleInput,
 ) (*mcp.CallToolResult, AddStyleOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, AddStyleOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	err = vibe.AddStyle(ctx, input.Source)
+	err = pilot.AddStyle(ctx, input.Source)
 	if err != nil {
 		return nil, AddStyleOutput{}, fmt.Errorf("add style failed: %w", err)
 	}
@@ -481,7 +481,7 @@ func (s *Server) handleWaitForURL(
 	req *mcp.CallToolRequest,
 	input WaitForURLInput,
 ) (*mcp.CallToolResult, WaitForURLOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, WaitForURLOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -491,7 +491,7 @@ func (s *Server) handleWaitForURL(
 	}
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
-	err = vibe.WaitForURL(ctx, input.Pattern, timeout)
+	err = pilot.WaitForURL(ctx, input.Pattern, timeout)
 	if err != nil {
 		return nil, WaitForURLOutput{}, fmt.Errorf("wait for URL failed: %w", err)
 	}
@@ -515,7 +515,7 @@ func (s *Server) handleWaitForLoad(
 	req *mcp.CallToolRequest,
 	input WaitForLoadInput,
 ) (*mcp.CallToolResult, WaitForLoadOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, WaitForLoadOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -525,7 +525,7 @@ func (s *Server) handleWaitForLoad(
 	}
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
-	err = vibe.WaitForLoad(ctx, input.State, timeout)
+	err = pilot.WaitForLoad(ctx, input.State, timeout)
 	if err != nil {
 		return nil, WaitForLoadOutput{}, fmt.Errorf("wait for load failed: %w", err)
 	}
@@ -549,7 +549,7 @@ func (s *Server) handleWaitForFunction(
 	req *mcp.CallToolRequest,
 	input WaitForFunctionInput,
 ) (*mcp.CallToolResult, WaitForFunctionOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, WaitForFunctionOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -559,7 +559,7 @@ func (s *Server) handleWaitForFunction(
 	}
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
-	err = vibe.WaitForFunction(ctx, input.Function, timeout)
+	err = pilot.WaitForFunction(ctx, input.Function, timeout)
 	if err != nil {
 		return nil, WaitForFunctionOutput{}, fmt.Errorf("wait for function failed: %w", err)
 	}
@@ -584,7 +584,7 @@ func (s *Server) handleWaitForText(
 	req *mcp.CallToolRequest,
 	input WaitForTextInput,
 ) (*mcp.CallToolResult, WaitForTextOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, WaitForTextOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -607,7 +607,7 @@ func (s *Server) handleWaitForText(
 		checkScript = fmt.Sprintf(`() => document.body.textContent.includes(%q)`, input.Text)
 	}
 
-	err = vibe.WaitForFunction(ctx, checkScript, timeout)
+	err = pilot.WaitForFunction(ctx, checkScript, timeout)
 	if err != nil {
 		return nil, WaitForTextOutput{}, fmt.Errorf("wait for text failed: %w", err)
 	}
@@ -631,7 +631,7 @@ func (s *Server) handleAccessibilitySnapshot(
 	req *mcp.CallToolRequest,
 	input AccessibilitySnapshotInput,
 ) (*mcp.CallToolResult, AccessibilitySnapshotOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, AccessibilitySnapshotOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -641,7 +641,7 @@ func (s *Server) handleAccessibilitySnapshot(
 		Root:            input.Root,
 	}
 
-	tree, err := vibe.A11yTree(ctx, opts)
+	tree, err := pilot.A11yTree(ctx, opts)
 	if err != nil {
 		return nil, AccessibilitySnapshotOutput{}, fmt.Errorf("accessibility snapshot failed: %w", err)
 	}
@@ -662,12 +662,12 @@ func (s *Server) handleBack(
 	req *mcp.CallToolRequest,
 	input BackInput,
 ) (*mcp.CallToolResult, BackOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, BackOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	err = vibe.Back(ctx)
+	err = pilot.Back(ctx)
 	if err != nil {
 		return nil, BackOutput{}, fmt.Errorf("back failed: %w", err)
 	}
@@ -688,12 +688,12 @@ func (s *Server) handleForward(
 	req *mcp.CallToolRequest,
 	input ForwardInput,
 ) (*mcp.CallToolResult, ForwardOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, ForwardOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	err = vibe.Forward(ctx)
+	err = pilot.Forward(ctx)
 	if err != nil {
 		return nil, ForwardOutput{}, fmt.Errorf("forward failed: %w", err)
 	}
@@ -714,12 +714,12 @@ func (s *Server) handleReload(
 	req *mcp.CallToolRequest,
 	input ReloadInput,
 ) (*mcp.CallToolResult, ReloadOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, ReloadOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	err = vibe.Reload(ctx)
+	err = pilot.Reload(ctx)
 	if err != nil {
 		return nil, ReloadOutput{}, fmt.Errorf("reload failed: %w", err)
 	}
@@ -744,7 +744,7 @@ func (s *Server) handleScroll(
 	req *mcp.CallToolRequest,
 	input ScrollInput,
 ) (*mcp.CallToolResult, ScrollOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, ScrollOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -754,7 +754,7 @@ func (s *Server) handleScroll(
 		opts = &vibium.ScrollOptions{Selector: input.Selector}
 	}
 
-	err = vibe.Scroll(ctx, input.Direction, input.Amount, opts)
+	err = pilot.Scroll(ctx, input.Direction, input.Amount, opts)
 	if err != nil {
 		return nil, ScrollOutput{}, fmt.Errorf("scroll failed: %w", err)
 	}

@@ -26,13 +26,13 @@ func (s *Server) handleLocalStorageGet(
 	req *mcp.CallToolRequest,
 	input LocalStorageGetInput,
 ) (*mcp.CallToolResult, LocalStorageGetOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, LocalStorageGetOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
 	script := fmt.Sprintf(`localStorage.getItem(%q)`, input.Key)
-	result, err := vibe.Evaluate(ctx, "return "+script)
+	result, err := pilot.Evaluate(ctx, "return "+script)
 	if err != nil {
 		return nil, LocalStorageGetOutput{}, fmt.Errorf("localStorage.getItem failed: %w", err)
 	}
@@ -63,13 +63,13 @@ func (s *Server) handleLocalStorageSet(
 	req *mcp.CallToolRequest,
 	input LocalStorageSetInput,
 ) (*mcp.CallToolResult, LocalStorageSetOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, LocalStorageSetOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
 	script := fmt.Sprintf(`localStorage.setItem(%q, %q)`, input.Key, input.Value)
-	_, err = vibe.Evaluate(ctx, script)
+	_, err = pilot.Evaluate(ctx, script)
 	if err != nil {
 		return nil, LocalStorageSetOutput{}, fmt.Errorf("localStorage.setItem failed: %w", err)
 	}
@@ -92,13 +92,13 @@ func (s *Server) handleLocalStorageDelete(
 	req *mcp.CallToolRequest,
 	input LocalStorageDeleteInput,
 ) (*mcp.CallToolResult, LocalStorageDeleteOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, LocalStorageDeleteOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
 	script := fmt.Sprintf(`localStorage.removeItem(%q)`, input.Key)
-	_, err = vibe.Evaluate(ctx, script)
+	_, err = pilot.Evaluate(ctx, script)
 	if err != nil {
 		return nil, LocalStorageDeleteOutput{}, fmt.Errorf("localStorage.removeItem failed: %w", err)
 	}
@@ -119,12 +119,12 @@ func (s *Server) handleLocalStorageClear(
 	req *mcp.CallToolRequest,
 	input LocalStorageClearInput,
 ) (*mcp.CallToolResult, LocalStorageClearOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, LocalStorageClearOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	_, err = vibe.Evaluate(ctx, "localStorage.clear()")
+	_, err = pilot.Evaluate(ctx, "localStorage.clear()")
 	if err != nil {
 		return nil, LocalStorageClearOutput{}, fmt.Errorf("localStorage.clear failed: %w", err)
 	}
@@ -146,7 +146,7 @@ func (s *Server) handleLocalStorageList(
 	req *mcp.CallToolRequest,
 	input LocalStorageListInput,
 ) (*mcp.CallToolResult, LocalStorageListOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, LocalStorageListOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -161,7 +161,7 @@ func (s *Server) handleLocalStorageList(
 			return JSON.stringify(items);
 		})()
 	`
-	result, err := vibe.Evaluate(ctx, script)
+	result, err := pilot.Evaluate(ctx, script)
 	if err != nil {
 		return nil, LocalStorageListOutput{}, fmt.Errorf("list localStorage failed: %w", err)
 	}
@@ -196,13 +196,13 @@ func (s *Server) handleSessionStorageGet(
 	req *mcp.CallToolRequest,
 	input SessionStorageGetInput,
 ) (*mcp.CallToolResult, SessionStorageGetOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, SessionStorageGetOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
 	script := fmt.Sprintf(`sessionStorage.getItem(%q)`, input.Key)
-	result, err := vibe.Evaluate(ctx, "return "+script)
+	result, err := pilot.Evaluate(ctx, "return "+script)
 	if err != nil {
 		return nil, SessionStorageGetOutput{}, fmt.Errorf("sessionStorage.getItem failed: %w", err)
 	}
@@ -233,13 +233,13 @@ func (s *Server) handleSessionStorageSet(
 	req *mcp.CallToolRequest,
 	input SessionStorageSetInput,
 ) (*mcp.CallToolResult, SessionStorageSetOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, SessionStorageSetOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
 	script := fmt.Sprintf(`sessionStorage.setItem(%q, %q)`, input.Key, input.Value)
-	_, err = vibe.Evaluate(ctx, script)
+	_, err = pilot.Evaluate(ctx, script)
 	if err != nil {
 		return nil, SessionStorageSetOutput{}, fmt.Errorf("sessionStorage.setItem failed: %w", err)
 	}
@@ -262,13 +262,13 @@ func (s *Server) handleSessionStorageDelete(
 	req *mcp.CallToolRequest,
 	input SessionStorageDeleteInput,
 ) (*mcp.CallToolResult, SessionStorageDeleteOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, SessionStorageDeleteOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
 	script := fmt.Sprintf(`sessionStorage.removeItem(%q)`, input.Key)
-	_, err = vibe.Evaluate(ctx, script)
+	_, err = pilot.Evaluate(ctx, script)
 	if err != nil {
 		return nil, SessionStorageDeleteOutput{}, fmt.Errorf("sessionStorage.removeItem failed: %w", err)
 	}
@@ -289,12 +289,12 @@ func (s *Server) handleSessionStorageClear(
 	req *mcp.CallToolRequest,
 	input SessionStorageClearInput,
 ) (*mcp.CallToolResult, SessionStorageClearOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, SessionStorageClearOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	_, err = vibe.Evaluate(ctx, "sessionStorage.clear()")
+	_, err = pilot.Evaluate(ctx, "sessionStorage.clear()")
 	if err != nil {
 		return nil, SessionStorageClearOutput{}, fmt.Errorf("sessionStorage.clear failed: %w", err)
 	}
@@ -316,7 +316,7 @@ func (s *Server) handleSessionStorageList(
 	req *mcp.CallToolRequest,
 	input SessionStorageListInput,
 ) (*mcp.CallToolResult, SessionStorageListOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, SessionStorageListOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -331,7 +331,7 @@ func (s *Server) handleSessionStorageList(
 			return JSON.stringify(items);
 		})()
 	`
-	result, err := vibe.Evaluate(ctx, script)
+	result, err := pilot.Evaluate(ctx, script)
 	if err != nil {
 		return nil, SessionStorageListOutput{}, fmt.Errorf("list sessionStorage failed: %w", err)
 	}

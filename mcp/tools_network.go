@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	vibium "github.com/plexusone/vibium-go"
+	vibium "github.com/plexusone/webpilot"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
@@ -37,12 +37,12 @@ func (s *Server) handleGetConsoleMessages(
 	req *mcp.CallToolRequest,
 	input GetConsoleMessagesInput,
 ) (*mcp.CallToolResult, GetConsoleMessagesOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, GetConsoleMessagesOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	messages, err := vibe.ConsoleMessages(ctx, input.Level)
+	messages, err := pilot.ConsoleMessages(ctx, input.Level)
 	if err != nil {
 		return nil, GetConsoleMessagesOutput{}, fmt.Errorf("failed to get console messages: %w", err)
 	}
@@ -61,7 +61,7 @@ func (s *Server) handleGetConsoleMessages(
 
 	// Clear messages if requested
 	if input.Clear {
-		_ = vibe.ClearConsoleMessages(ctx)
+		_ = pilot.ClearConsoleMessages(ctx)
 	}
 
 	return nil, GetConsoleMessagesOutput{
@@ -83,12 +83,12 @@ func (s *Server) handleClearConsoleMessages(
 	req *mcp.CallToolRequest,
 	input ClearConsoleMessagesInput,
 ) (*mcp.CallToolResult, ClearConsoleMessagesOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, ClearConsoleMessagesOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	err = vibe.ClearConsoleMessages(ctx)
+	err = pilot.ClearConsoleMessages(ctx)
 	if err != nil {
 		return nil, ClearConsoleMessagesOutput{}, fmt.Errorf("failed to clear console messages: %w", err)
 	}
@@ -127,7 +127,7 @@ func (s *Server) handleGetNetworkRequests(
 	req *mcp.CallToolRequest,
 	input GetNetworkRequestsInput,
 ) (*mcp.CallToolResult, GetNetworkRequestsOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, GetNetworkRequestsOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -141,7 +141,7 @@ func (s *Server) handleGetNetworkRequests(
 		}
 	}
 
-	requests, err := vibe.NetworkRequests(ctx, opts)
+	requests, err := pilot.NetworkRequests(ctx, opts)
 	if err != nil {
 		return nil, GetNetworkRequestsOutput{}, fmt.Errorf("failed to get network requests: %w", err)
 	}
@@ -161,7 +161,7 @@ func (s *Server) handleGetNetworkRequests(
 
 	// Clear requests if requested
 	if input.Clear {
-		_ = vibe.ClearNetworkRequests(ctx)
+		_ = pilot.ClearNetworkRequests(ctx)
 	}
 
 	return nil, GetNetworkRequestsOutput{
@@ -183,12 +183,12 @@ func (s *Server) handleClearNetworkRequests(
 	req *mcp.CallToolRequest,
 	input ClearNetworkRequestsInput,
 ) (*mcp.CallToolResult, ClearNetworkRequestsOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, ClearNetworkRequestsOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	err = vibe.ClearNetworkRequests(ctx)
+	err = pilot.ClearNetworkRequests(ctx)
 	if err != nil {
 		return nil, ClearNetworkRequestsOutput{}, fmt.Errorf("failed to clear network requests: %w", err)
 	}

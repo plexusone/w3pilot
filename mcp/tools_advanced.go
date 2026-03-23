@@ -8,8 +8,8 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	vibium "github.com/plexusone/vibium-go"
-	"github.com/plexusone/vibium-go/mcp/report"
+	vibium "github.com/plexusone/webpilot"
+	"github.com/plexusone/webpilot/mcp/report"
 )
 
 // DragTo tool
@@ -29,7 +29,7 @@ func (s *Server) handleDragTo(
 	req *mcp.CallToolRequest,
 	input DragToInput,
 ) (*mcp.CallToolResult, DragToOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, DragToOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -40,12 +40,12 @@ func (s *Server) handleDragTo(
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
 	start := time.Now()
-	source, err := vibe.Find(ctx, input.SourceSelector, &vibium.FindOptions{Timeout: timeout})
+	source, err := pilot.Find(ctx, input.SourceSelector, &vibium.FindOptions{Timeout: timeout})
 	if err != nil {
 		return nil, DragToOutput{}, fmt.Errorf("source element not found: %s", input.SourceSelector)
 	}
 
-	target, err := vibe.Find(ctx, input.TargetSelector, &vibium.FindOptions{Timeout: timeout})
+	target, err := pilot.Find(ctx, input.TargetSelector, &vibium.FindOptions{Timeout: timeout})
 	if err != nil {
 		return nil, DragToOutput{}, fmt.Errorf("target element not found: %s", input.TargetSelector)
 	}
@@ -93,7 +93,7 @@ func (s *Server) handleTap(
 	req *mcp.CallToolRequest,
 	input TapInput,
 ) (*mcp.CallToolResult, TapOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, TapOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -103,7 +103,7 @@ func (s *Server) handleTap(
 	}
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 	if err != nil {
 		return nil, TapOutput{}, fmt.Errorf("element not found: %s", input.Selector)
 	}
@@ -134,7 +134,7 @@ func (s *Server) handleDispatchEvent(
 	req *mcp.CallToolRequest,
 	input DispatchEventInput,
 ) (*mcp.CallToolResult, DispatchEventOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, DispatchEventOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -144,7 +144,7 @@ func (s *Server) handleDispatchEvent(
 	}
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 	if err != nil {
 		return nil, DispatchEventOutput{}, fmt.Errorf("element not found: %s", input.Selector)
 	}
@@ -174,7 +174,7 @@ func (s *Server) handleSetFiles(
 	req *mcp.CallToolRequest,
 	input SetFilesInput,
 ) (*mcp.CallToolResult, SetFilesOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, SetFilesOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -184,7 +184,7 @@ func (s *Server) handleSetFiles(
 	}
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 	if err != nil {
 		return nil, SetFilesOutput{}, fmt.Errorf("element not found: %s", input.Selector)
 	}
@@ -213,7 +213,7 @@ func (s *Server) handleElementScreenshot(
 	req *mcp.CallToolRequest,
 	input ElementScreenshotInput,
 ) (*mcp.CallToolResult, ElementScreenshotOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, ElementScreenshotOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -223,7 +223,7 @@ func (s *Server) handleElementScreenshot(
 	}
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 	if err != nil {
 		return nil, ElementScreenshotOutput{}, fmt.Errorf("element not found: %s", input.Selector)
 	}
@@ -253,7 +253,7 @@ func (s *Server) handleElementEval(
 	req *mcp.CallToolRequest,
 	input ElementEvalInput,
 ) (*mcp.CallToolResult, ElementEvalOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, ElementEvalOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -263,7 +263,7 @@ func (s *Server) handleElementEval(
 	}
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 	if err != nil {
 		return nil, ElementEvalOutput{}, fmt.Errorf("element not found: %s", input.Selector)
 	}

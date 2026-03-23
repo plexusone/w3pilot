@@ -22,12 +22,12 @@ func (s *Server) handleAddInitScript(
 	req *mcp.CallToolRequest,
 	input AddInitScriptInput,
 ) (*mcp.CallToolResult, AddInitScriptOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, AddInitScriptOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	if err := vibe.AddInitScript(ctx, input.Script); err != nil {
+	if err := pilot.AddInitScript(ctx, input.Script); err != nil {
 		return nil, AddInitScriptOutput{}, fmt.Errorf("failed to add init script: %w", err)
 	}
 

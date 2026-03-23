@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/plexusone/vibium-go/script"
+	"github.com/plexusone/webpilot/script"
 )
 
 // Recorder captures MCP tool calls and converts them to a script.

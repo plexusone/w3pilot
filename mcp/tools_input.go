@@ -6,7 +6,7 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	vibium "github.com/plexusone/vibium-go"
+	vibium "github.com/plexusone/webpilot"
 )
 
 // KeyboardPress tool
@@ -24,12 +24,12 @@ func (s *Server) handleKeyboardPress(
 	req *mcp.CallToolRequest,
 	input KeyboardPressInput,
 ) (*mcp.CallToolResult, KeyboardPressOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, KeyboardPressOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	keyboard, err := vibe.Keyboard(ctx)
+	keyboard, err := pilot.Keyboard(ctx)
 	if err != nil {
 		return nil, KeyboardPressOutput{}, fmt.Errorf("keyboard not available: %w", err)
 	}
@@ -57,12 +57,12 @@ func (s *Server) handleKeyboardDown(
 	req *mcp.CallToolRequest,
 	input KeyboardDownInput,
 ) (*mcp.CallToolResult, KeyboardDownOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, KeyboardDownOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	keyboard, err := vibe.Keyboard(ctx)
+	keyboard, err := pilot.Keyboard(ctx)
 	if err != nil {
 		return nil, KeyboardDownOutput{}, fmt.Errorf("keyboard not available: %w", err)
 	}
@@ -90,12 +90,12 @@ func (s *Server) handleKeyboardUp(
 	req *mcp.CallToolRequest,
 	input KeyboardUpInput,
 ) (*mcp.CallToolResult, KeyboardUpOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, KeyboardUpOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	keyboard, err := vibe.Keyboard(ctx)
+	keyboard, err := pilot.Keyboard(ctx)
 	if err != nil {
 		return nil, KeyboardUpOutput{}, fmt.Errorf("keyboard not available: %w", err)
 	}
@@ -123,12 +123,12 @@ func (s *Server) handleKeyboardType(
 	req *mcp.CallToolRequest,
 	input KeyboardTypeInput,
 ) (*mcp.CallToolResult, KeyboardTypeOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, KeyboardTypeOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	keyboard, err := vibe.Keyboard(ctx)
+	keyboard, err := pilot.Keyboard(ctx)
 	if err != nil {
 		return nil, KeyboardTypeOutput{}, fmt.Errorf("keyboard not available: %w", err)
 	}
@@ -159,12 +159,12 @@ func (s *Server) handleMouseClick(
 	req *mcp.CallToolRequest,
 	input MouseClickInput,
 ) (*mcp.CallToolResult, MouseClickOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, MouseClickOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	mouse, err := vibe.Mouse(ctx)
+	mouse, err := pilot.Mouse(ctx)
 	if err != nil {
 		return nil, MouseClickOutput{}, fmt.Errorf("mouse not available: %w", err)
 	}
@@ -201,12 +201,12 @@ func (s *Server) handleMouseMove(
 	req *mcp.CallToolRequest,
 	input MouseMoveInput,
 ) (*mcp.CallToolResult, MouseMoveOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, MouseMoveOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	mouse, err := vibe.Mouse(ctx)
+	mouse, err := pilot.Mouse(ctx)
 	if err != nil {
 		return nil, MouseMoveOutput{}, fmt.Errorf("mouse not available: %w", err)
 	}
@@ -234,12 +234,12 @@ func (s *Server) handleMouseDown(
 	req *mcp.CallToolRequest,
 	input MouseDownInput,
 ) (*mcp.CallToolResult, MouseDownOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, MouseDownOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	mouse, err := vibe.Mouse(ctx)
+	mouse, err := pilot.Mouse(ctx)
 	if err != nil {
 		return nil, MouseDownOutput{}, fmt.Errorf("mouse not available: %w", err)
 	}
@@ -268,12 +268,12 @@ func (s *Server) handleMouseUp(
 	req *mcp.CallToolRequest,
 	input MouseUpInput,
 ) (*mcp.CallToolResult, MouseUpOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, MouseUpOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	mouse, err := vibe.Mouse(ctx)
+	mouse, err := pilot.Mouse(ctx)
 	if err != nil {
 		return nil, MouseUpOutput{}, fmt.Errorf("mouse not available: %w", err)
 	}
@@ -303,12 +303,12 @@ func (s *Server) handleMouseWheel(
 	req *mcp.CallToolRequest,
 	input MouseWheelInput,
 ) (*mcp.CallToolResult, MouseWheelOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, MouseWheelOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	mouse, err := vibe.Mouse(ctx)
+	mouse, err := pilot.Mouse(ctx)
 	if err != nil {
 		return nil, MouseWheelOutput{}, fmt.Errorf("mouse not available: %w", err)
 	}
@@ -337,12 +337,12 @@ func (s *Server) handleTouchTap(
 	req *mcp.CallToolRequest,
 	input TouchTapInput,
 ) (*mcp.CallToolResult, TouchTapOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, TouchTapOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	touch, err := vibe.Touch(ctx)
+	touch, err := pilot.Touch(ctx)
 	if err != nil {
 		return nil, TouchTapOutput{}, fmt.Errorf("touch not available: %w", err)
 	}
@@ -373,12 +373,12 @@ func (s *Server) handleTouchSwipe(
 	req *mcp.CallToolRequest,
 	input TouchSwipeInput,
 ) (*mcp.CallToolResult, TouchSwipeOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, TouchSwipeOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	touch, err := vibe.Touch(ctx)
+	touch, err := pilot.Touch(ctx)
 	if err != nil {
 		return nil, TouchSwipeOutput{}, fmt.Errorf("touch not available: %w", err)
 	}
@@ -410,12 +410,12 @@ func (s *Server) handleMouseDrag(
 	req *mcp.CallToolRequest,
 	input MouseDragInput,
 ) (*mcp.CallToolResult, MouseDragOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, MouseDragOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	mouse, err := vibe.Mouse(ctx)
+	mouse, err := pilot.Mouse(ctx)
 	if err != nil {
 		return nil, MouseDragOutput{}, fmt.Errorf("mouse not available: %w", err)
 	}

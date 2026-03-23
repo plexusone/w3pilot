@@ -8,8 +8,8 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	vibium "github.com/plexusone/vibium-go"
-	"github.com/plexusone/vibium-go/mcp/report"
+	vibium "github.com/plexusone/webpilot"
+	"github.com/plexusone/webpilot/mcp/report"
 )
 
 // Fill tool
@@ -30,7 +30,7 @@ func (s *Server) handleFill(
 	req *mcp.CallToolRequest,
 	input FillInput,
 ) (*mcp.CallToolResult, FillOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, FillOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -42,7 +42,7 @@ func (s *Server) handleFill(
 
 	start := time.Now()
 	findOpts := input.SemanticSelector.toFindOptions(timeout)
-	elem, err := vibe.Find(ctx, input.Selector, findOpts)
+	elem, err := pilot.Find(ctx, input.Selector, findOpts)
 
 	result := report.StepResult{
 		ID:     s.session.NextStepID("fill"),
@@ -110,7 +110,7 @@ func (s *Server) handlePress(
 	req *mcp.CallToolRequest,
 	input PressInput,
 ) (*mcp.CallToolResult, PressOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, PressOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -122,7 +122,7 @@ func (s *Server) handlePress(
 
 	start := time.Now()
 	findOpts := input.SemanticSelector.toFindOptions(timeout)
-	elem, err := vibe.Find(ctx, input.Selector, findOpts)
+	elem, err := pilot.Find(ctx, input.Selector, findOpts)
 
 	result := report.StepResult{
 		ID:     s.session.NextStepID("press"),
@@ -184,7 +184,7 @@ func (s *Server) handleClear(
 	req *mcp.CallToolRequest,
 	input ClearInput,
 ) (*mcp.CallToolResult, ClearOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, ClearOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -195,7 +195,7 @@ func (s *Server) handleClear(
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
 	start := time.Now()
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 
 	result := report.StepResult{
 		ID:     s.session.NextStepID("clear"),
@@ -257,7 +257,7 @@ func (s *Server) handleCheck(
 	req *mcp.CallToolRequest,
 	input CheckInput,
 ) (*mcp.CallToolResult, CheckOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, CheckOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -268,7 +268,7 @@ func (s *Server) handleCheck(
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
 	start := time.Now()
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 
 	result := report.StepResult{
 		ID:     s.session.NextStepID("check"),
@@ -330,7 +330,7 @@ func (s *Server) handleUncheck(
 	req *mcp.CallToolRequest,
 	input UncheckInput,
 ) (*mcp.CallToolResult, UncheckOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, UncheckOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -341,7 +341,7 @@ func (s *Server) handleUncheck(
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
 	start := time.Now()
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 
 	result := report.StepResult{
 		ID:     s.session.NextStepID("uncheck"),
@@ -406,7 +406,7 @@ func (s *Server) handleSelectOption(
 	req *mcp.CallToolRequest,
 	input SelectOptionInput,
 ) (*mcp.CallToolResult, SelectOptionOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, SelectOptionOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -417,7 +417,7 @@ func (s *Server) handleSelectOption(
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
 	start := time.Now()
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 
 	result := report.StepResult{
 		ID:     s.session.NextStepID("select_option"),
@@ -490,7 +490,7 @@ func (s *Server) handleFocus(
 	req *mcp.CallToolRequest,
 	input FocusInput,
 ) (*mcp.CallToolResult, FocusOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, FocusOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -501,7 +501,7 @@ func (s *Server) handleFocus(
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
 	start := time.Now()
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 
 	result := report.StepResult{
 		ID:     s.session.NextStepID("focus"),
@@ -563,7 +563,7 @@ func (s *Server) handleHover(
 	req *mcp.CallToolRequest,
 	input HoverInput,
 ) (*mcp.CallToolResult, HoverOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, HoverOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -574,7 +574,7 @@ func (s *Server) handleHover(
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
 	start := time.Now()
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 
 	result := report.StepResult{
 		ID:     s.session.NextStepID("hover"),
@@ -636,7 +636,7 @@ func (s *Server) handleScrollIntoView(
 	req *mcp.CallToolRequest,
 	input ScrollIntoViewInput,
 ) (*mcp.CallToolResult, ScrollIntoViewOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, ScrollIntoViewOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -647,7 +647,7 @@ func (s *Server) handleScrollIntoView(
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
 	start := time.Now()
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 
 	result := report.StepResult{
 		ID:     s.session.NextStepID("scroll_into_view"),
@@ -709,7 +709,7 @@ func (s *Server) handleDblClick(
 	req *mcp.CallToolRequest,
 	input DblClickInput,
 ) (*mcp.CallToolResult, DblClickOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, DblClickOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -720,7 +720,7 @@ func (s *Server) handleDblClick(
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
 	start := time.Now()
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 
 	result := report.StepResult{
 		ID:     s.session.NextStepID("dblclick"),
@@ -790,7 +790,7 @@ func (s *Server) handleFillForm(
 	req *mcp.CallToolRequest,
 	input FillFormInput,
 ) (*mcp.CallToolResult, FillFormOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, FillFormOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -808,7 +808,7 @@ func (s *Server) handleFillForm(
 	var errors []string
 
 	for _, field := range input.Fields {
-		elem, err := vibe.Find(ctx, field.Selector, &vibium.FindOptions{Timeout: timeout})
+		elem, err := pilot.Find(ctx, field.Selector, &vibium.FindOptions{Timeout: timeout})
 		if err != nil {
 			errors = append(errors, fmt.Sprintf("%s: element not found", field.Selector))
 			continue

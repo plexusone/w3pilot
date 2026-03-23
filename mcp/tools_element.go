@@ -7,7 +7,7 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	vibium "github.com/plexusone/vibium-go"
+	vibium "github.com/plexusone/webpilot"
 )
 
 // elementOp performs a common element operation pattern:
@@ -15,7 +15,7 @@ import (
 // 2. Finds element by selector with timeout
 // 3. Calls the provided operation function on the element
 func (s *Server) elementOp(ctx context.Context, selector string, timeoutMS int, op func(*vibium.Element) (any, error)) (any, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("browser not available: %w", err)
 	}
@@ -25,7 +25,7 @@ func (s *Server) elementOp(ctx context.Context, selector string, timeoutMS int, 
 	}
 	timeout := time.Duration(timeoutMS) * time.Millisecond
 
-	elem, err := vibe.Find(ctx, selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, selector, &vibium.FindOptions{Timeout: timeout})
 	if err != nil {
 		return nil, fmt.Errorf("element not found: %s", selector)
 	}
@@ -175,7 +175,7 @@ func (s *Server) handleIsVisible(
 	req *mcp.CallToolRequest,
 	input IsVisibleInput,
 ) (*mcp.CallToolResult, IsVisibleOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, IsVisibleOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -185,7 +185,7 @@ func (s *Server) handleIsVisible(
 	}
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 	if err != nil {
 		return nil, IsVisibleOutput{Visible: false}, nil // Element not found = not visible
 	}
@@ -214,7 +214,7 @@ func (s *Server) handleIsHidden(
 	req *mcp.CallToolRequest,
 	input IsHiddenInput,
 ) (*mcp.CallToolResult, IsHiddenOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, IsHiddenOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -224,7 +224,7 @@ func (s *Server) handleIsHidden(
 	}
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 	if err != nil {
 		return nil, IsHiddenOutput{Hidden: true}, nil // Element not found = hidden
 	}
@@ -379,7 +379,7 @@ func (s *Server) handleWaitUntil(
 	req *mcp.CallToolRequest,
 	input WaitUntilInput,
 ) (*mcp.CallToolResult, WaitUntilOutput, error) {
-	vibe, err := s.session.Vibe(ctx)
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
 		return nil, WaitUntilOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
@@ -390,7 +390,7 @@ func (s *Server) handleWaitUntil(
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
 	// First find the element
-	elem, err := vibe.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
 	if err != nil {
 		// For "detached" state, not finding element is success
 		if input.State == "detached" {

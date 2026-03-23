@@ -88,7 +88,7 @@ func getVibe(_ context.Context) (*vibium.Vibe, error) {
 	}
 
 	// For now, we can't reconnect to an existing session
-	// The clicker process must be running from 'launch' command
+	// The browser process must be running from 'launch' command
 	return nil, fmt.Errorf("session exists but cannot reconnect (browser may have closed)")
 }
 

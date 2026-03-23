@@ -67,9 +67,9 @@
 //
 // # Requirements
 //
-// This client requires the Vibium clicker binary to be available. Install it via:
+// This client requires Chrome or Chromium. If Chrome is not found on your system,
+// it will automatically download Chrome for Testing from Google's official API.
 //
-//	npm install -g vibium
-//
-// Or set the VIBIUM_CLICKER_PATH environment variable to point to the binary.
+// You can also specify a custom Chrome path via the CHROME_PATH environment variable
+// or the ExecutablePath option in LaunchOptions.
 package vibium

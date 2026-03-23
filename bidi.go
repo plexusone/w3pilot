@@ -37,7 +37,7 @@ type BiDiEvent struct {
 // EventHandler is a callback for handling BiDi events.
 type EventHandler func(event *BiDiEvent)
 
-// BiDiClient manages WebSocket communication with the clicker server.
+// BiDiClient manages WebSocket communication with Chrome's BiDi server.
 type BiDiClient struct {
 	conn      *websocket.Conn
 	url       string
@@ -95,7 +95,7 @@ func (c *BiDiClient) dispatchEvent(event *BiDiEvent) {
 	}
 }
 
-// Connect establishes a WebSocket connection to the clicker server.
+// Connect establishes a WebSocket connection to Chrome's BiDi server.
 func (c *BiDiClient) Connect(ctx context.Context, url string) error {
 	dialer := websocket.Dialer{}
 	conn, _, err := dialer.DialContext(ctx, url, nil)

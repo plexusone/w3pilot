@@ -18,7 +18,7 @@ const testTimeout = 60 * time.Second
 
 // TestMain sets up the test environment.
 func TestMain(m *testing.M) {
-	// Could add global setup here (e.g., check clicker binary exists)
+	// Could add global setup here (e.g., check Chrome exists)
 	os.Exit(m.Run())
 }
 

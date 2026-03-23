@@ -1,22 +1,16 @@
 name: E2E Tests
 
 on:
-  # E2E tests require the clicker binary which is not yet publicly available.
-  # Only run on workflow_dispatch for now until clicker distribution is set up.
   workflow_dispatch:
     inputs:
       script:
         description: 'Specific script to run (optional)'
         required: false
         type: string
-      clicker_url:
-        description: 'URL to download clicker binary (required)'
-        required: true
-        type: string
 
 env:
-  VIBIUM_HEADLESS: "1"
-  VIBIUM_DEBUG: "0"
+  WEBPILOT_HEADLESS: "1"
+  WEBPILOT_DEBUG: "0"
 
 jobs:
   e2e:
@@ -33,23 +27,16 @@ jobs:
           go-version: '1.22'
           cache: true
 
-      - name: Download Clicker
+      - name: Download Chrome
         run: |
-          curl -L -o clicker "${{ github.event.inputs.clicker_url }}"
-          chmod +x clicker
-          echo "VIBIUM_CLICKER_PATH=$PWD/clicker" >> $GITHUB_ENV
-
-      - name: Verify Clicker
-        run: |
-          ./clicker --version || echo "Clicker version check (may not support --version)"
-          echo "Clicker binary ready at: $VIBIUM_CLICKER_PATH"
+          # Chrome will be auto-installed by WebPilot if needed
 
       - name: Build CLI
-        run: go build -o vibium ./cmd/vibium
+        run: go build -o webpilot ./cmd/webpilot
 
       - name: Run specific script
         if: ${{ github.event.inputs.script != '' }}
-        run: ./vibium run ${{ github.event.inputs.script }} --headless
+        run: ./webpilot run ${{ github.event.inputs.script }} --headless
 
       - name: Run all E2E tests
         if: ${{ github.event.inputs.script == '' }}
@@ -59,7 +46,7 @@ jobs:
               for script in "$dir"*.json; do
                 if [ -f "$script" ]; then
                   echo "Running: $script"
-                  ./vibium run "$script" --headless
+                  ./webpilot run "$script" --headless
                 fi
               done
             fi

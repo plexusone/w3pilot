@@ -16,7 +16,7 @@ var quitCmd = &cobra.Command{
 	Long: `Close the browser and cleanup resources.
 
 Examples:
-  vibium quit`,
+  webpilot quit`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, cancel := context.WithTimeout(context.Background(), quitTimeout)
 		defer cancel()

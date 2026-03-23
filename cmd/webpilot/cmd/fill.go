@@ -19,8 +19,8 @@ var fillCmd = &cobra.Command{
 Use 'type' command if you want to append to existing content.
 
 Examples:
-  vibium fill "#email" "user@example.com"
-  vibium fill "input[name='password']" "secret123"`,
+  webpilot fill "#email" "user@example.com"
+  webpilot fill "input[name='password']" "secret123"`,
 	Args: cobra.ExactArgs(2),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		selector := args[0]

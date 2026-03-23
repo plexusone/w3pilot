@@ -15,26 +15,26 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "vibium-rpa",
+	Use:   "webpilot-rpa",
 	Short: "RPA workflow automation tool",
-	Long: `vibium-rpa is a Robotic Process Automation tool that executes
+	Long: `webpilot-rpa is a Robotic Process Automation tool that executes
 YAML/JSON workflow definitions using browser automation.
 
 Examples:
   # Run a workflow
-  vibium-rpa run workflow.yaml
+  webpilot-rpa run workflow.yaml
 
   # Run in headless mode
-  vibium-rpa run workflow.yaml --headless
+  webpilot-rpa run workflow.yaml --headless
 
   # Run with variables
-  vibium-rpa run workflow.yaml --var username=admin --var password=secret
+  webpilot-rpa run workflow.yaml --var username=admin --var password=secret
 
   # Validate a workflow
-  vibium-rpa validate workflow.yaml
+  webpilot-rpa validate workflow.yaml
 
   # List available activities
-  vibium-rpa list activities
+  webpilot-rpa list activities
 `,
 }
 

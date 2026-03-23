@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/plexusone/vibium-go/cmd/vibium-rpa/cmd"
+	"github.com/plexusone/webpilot/cmd/webpilot-rpa/cmd"
 )
 
 func main() {

@@ -1,4 +1,4 @@
-// Command vibium-mcp provides an MCP server for browser automation.
+// Command webpilot-mcp provides an MCP server for browser automation.
 package main
 
 import (
@@ -11,7 +11,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/plexusone/vibium-go/mcp"
+	"github.com/plexusone/webpilot/mcp"
 )
 
 // stringSlice implements flag.Value for repeated string flags
@@ -28,7 +28,7 @@ func (s *stringSlice) Set(value string) error {
 
 func main() {
 	headless := flag.Bool("headless", true, "Run browser in headless mode")
-	project := flag.String("project", "vibium-tests", "Project name for reports")
+	project := flag.String("project", "webpilot-tests", "Project name for reports")
 	timeout := flag.Duration("timeout", 30*time.Second, "Default timeout for browser operations")
 
 	var initScriptPaths stringSlice

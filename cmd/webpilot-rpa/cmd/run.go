@@ -11,7 +11,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/plexusone/vibium-go/rpa"
+	"github.com/plexusone/webpilot/rpa"
 	"github.com/spf13/cobra"
 )
 
@@ -31,16 +31,16 @@ with browser automation, file operations, and HTTP requests.
 
 Examples:
   # Run a workflow
-  vibium-rpa run workflow.yaml
+  webpilot-rpa run workflow.yaml
 
   # Run in headless mode with variables
-  vibium-rpa run workflow.yaml --headless --var username=admin
+  webpilot-rpa run workflow.yaml --headless --var username=admin
 
   # Run and save results to JSON
-  vibium-rpa run workflow.yaml --output results.json
+  webpilot-rpa run workflow.yaml --output results.json
 
   # Dry run (validate without executing)
-  vibium-rpa run workflow.yaml --dry-run
+  webpilot-rpa run workflow.yaml --dry-run
 `,
 	Args: cobra.ExactArgs(1),
 	RunE: runWorkflow,

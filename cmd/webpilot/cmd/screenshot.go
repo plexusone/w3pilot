@@ -20,8 +20,8 @@ var screenshotCmd = &cobra.Command{
 	Long: `Capture a screenshot of the current page or a specific element.
 
 Examples:
-  vibium screenshot page.png
-  vibium screenshot element.png --selector "#main"`,
+  webpilot screenshot page.png
+  webpilot screenshot element.png --selector "#main"`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		filename := args[0]

@@ -19,8 +19,8 @@ var typeCmd = &cobra.Command{
 Use 'fill' command if you want to clear existing content first.
 
 Examples:
-  vibium type "#search" "hello world"
-  vibium type "input[name='query']" "search term"`,
+  webpilot type "#search" "hello world"
+  webpilot type "input[name='query']" "search term"`,
 	Args: cobra.ExactArgs(2),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		selector := args[0]

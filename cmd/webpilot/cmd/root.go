@@ -15,9 +15,9 @@ var (
 
 // rootCmd represents the base command
 var rootCmd = &cobra.Command{
-	Use:   "vibium",
+	Use:   "webpilot",
 	Short: "Browser automation CLI",
-	Long: `Vibium is a browser automation tool that provides:
+	Long: `WebPilot is a browser automation tool that provides:
 
   - MCP server for AI-assisted browser automation
   - CLI commands for scripted browser control
@@ -25,17 +25,17 @@ var rootCmd = &cobra.Command{
 
 Examples:
   # Start MCP server
-  vibium mcp --headless
+  webpilot mcp --headless
 
   # Launch browser and run commands
-  vibium launch --headless
-  vibium go https://example.com
-  vibium click "#submit"
-  vibium screenshot output.png
-  vibium quit
+  webpilot launch --headless
+  webpilot go https://example.com
+  webpilot click "#submit"
+  webpilot screenshot output.png
+  webpilot quit
 
   # Run a script file
-  vibium run test.yaml`,
+  webpilot run test.yaml`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -44,7 +44,7 @@ func Execute() error {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVar(&sessionFile, "session", "", "Session file path (default: ~/.vibium/session.json)")
+	rootCmd.PersistentFlags().StringVar(&sessionFile, "session", "", "Session file path (default: ~/.webpilot/session.json)")
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Verbose output")
 }
 
@@ -55,7 +55,7 @@ func getSessionPath() string {
 	}
 	home, err := os.UserHomeDir()
 	if err != nil {
-		return ".vibium-session.json"
+		return ".webpilot-session.json"
 	}
-	return fmt.Sprintf("%s/.vibium/session.json", home)
+	return fmt.Sprintf("%s/.webpilot/session.json", home)
 }

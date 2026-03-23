@@ -8,7 +8,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/plexusone/vibium-go/mcp"
+	"github.com/plexusone/webpilot/mcp"
 	"github.com/spf13/cobra"
 )
 
@@ -28,10 +28,10 @@ The MCP server provides browser automation tools for AI assistants.
 It communicates via stdio using the MCP protocol.
 
 Examples:
-  vibium mcp
-  vibium mcp --headless
-  vibium mcp --timeout 60s
-  vibium mcp --init-script ./mock-api.js`,
+  webpilot mcp
+  webpilot mcp --headless
+  webpilot mcp --timeout 60s
+  webpilot mcp --init-script ./mock-api.js`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()

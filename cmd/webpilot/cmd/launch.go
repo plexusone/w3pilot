@@ -20,12 +20,12 @@ var launchCmd = &cobra.Command{
 	Short: "Launch a browser instance",
 	Long: `Launch a new browser instance for automation.
 
-The browser will stay open until you run 'vibium quit' or press Ctrl+C.
+The browser will stay open until you run 'webpilot quit' or press Ctrl+C.
 
 Examples:
-  vibium launch              # Launch visible browser
-  vibium launch --headless   # Launch headless browser
-  vibium launch --init-script ./setup.js --init-script ./mock-api.js`,
+  webpilot launch              # Launch visible browser
+  webpilot launch --headless   # Launch headless browser
+  webpilot launch --init-script ./setup.js --init-script ./mock-api.js`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
@@ -61,7 +61,7 @@ Examples:
 		if len(launchInitScripts) > 0 {
 			fmt.Printf("Loaded %d init script(s)\n", len(launchInitScripts))
 		}
-		fmt.Println("Press Ctrl+C to quit or use 'vibium quit'")
+		fmt.Println("Press Ctrl+C to quit or use 'webpilot quit'")
 
 		// Wait for interrupt
 		<-sigCh

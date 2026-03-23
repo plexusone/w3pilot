@@ -16,8 +16,8 @@ var navigateCmd = &cobra.Command{
 	Long: `Navigate the browser to the specified URL.
 
 Examples:
-  vibium go https://example.com
-  vibium go https://google.com --timeout 30s`,
+  webpilot go https://example.com
+  webpilot go https://google.com --timeout 30s`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		url := args[0]

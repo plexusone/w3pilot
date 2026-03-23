@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/plexusone/vibium-go/rpa/activity"
+	"github.com/plexusone/webpilot/rpa/activity"
 	"github.com/spf13/cobra"
 )
 
@@ -17,10 +17,10 @@ var listCmd = &cobra.Command{
 
 Examples:
   # List all activities
-  vibium-rpa list activities
+  webpilot-rpa list activities
 
   # List activities in a category
-  vibium-rpa list activities --category browser
+  webpilot-rpa list activities --category browser
 `,
 }
 
@@ -33,10 +33,10 @@ Activities are grouped by category (e.g., browser, element, file, http, util).
 
 Examples:
   # List all activities
-  vibium-rpa list activities
+  webpilot-rpa list activities
 
   # List only browser activities
-  vibium-rpa list activities --category browser
+  webpilot-rpa list activities --category browser
 `,
 	RunE: listActivities,
 }
@@ -88,7 +88,7 @@ func listActivities(cmd *cobra.Command, args []string) error {
 		fmt.Println()
 	}
 
-	fmt.Println("Use 'vibium-rpa list activities --category <name>' to filter by category.")
+	fmt.Println("Use 'webpilot-rpa list activities --category <name>' to filter by category.")
 
 	return nil
 }

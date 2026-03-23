@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	vibium "github.com/plexusone/vibium-go"
-	"github.com/plexusone/vibium-go/script"
+	webpilot "github.com/plexusone/webpilot"
+	"github.com/plexusone/webpilot/script"
 	"github.com/spf13/cobra"
 	"gopkg.in/yaml.v3"
 )
@@ -56,9 +56,9 @@ Available actions:
   Other: eval, setViewport, keyboardPress, keyboardType
 
 Examples:
-  vibium run test.yaml
-  vibium run login.json --headless
-  vibium run a11y-check.yaml --headless`,
+  webpilot run test.yaml
+  webpilot run login.json --headless
+  webpilot run a11y-check.yaml --headless`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		scriptFile := args[0]
@@ -217,7 +217,7 @@ func describeStep(step script.Step) string {
 	}
 }
 
-func executeStep(ctx context.Context, vibe *vibium.Vibe, step script.Step) error {
+func executeStep(ctx context.Context, vibe *webpilot.Pilot, step script.Step) error {
 	switch step.Action {
 	case script.ActionNavigate, script.ActionGo:
 		return vibe.Go(ctx, step.URL)
@@ -300,7 +300,7 @@ func executeStep(ctx context.Context, vibe *vibium.Vibe, step script.Step) error
 		if err != nil {
 			return err
 		}
-		selectValues := vibium.SelectOptionValues{Values: []string{step.Value}}
+		selectValues := webpilot.SelectOptionValues{Values: []string{step.Value}}
 		return el.SelectOption(ctx, selectValues, nil)
 
 	case script.ActionHover:
@@ -388,7 +388,7 @@ func executeStep(ctx context.Context, vibe *vibium.Vibe, step script.Step) error
 		return vibe.WaitForLoad(ctx, state, timeout)
 
 	case script.ActionSetViewport:
-		viewport := vibium.Viewport{Width: step.Width, Height: step.Height}
+		viewport := webpilot.Viewport{Width: step.Width, Height: step.Height}
 		return vibe.SetViewport(ctx, viewport)
 
 	case script.ActionKeyboardPress:

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/plexusone/vibium-go/rpa"
+	"github.com/plexusone/webpilot/rpa"
 	"github.com/spf13/cobra"
 )
 
@@ -18,10 +18,10 @@ and checks that all referenced activities exist.
 
 Examples:
   # Validate a workflow
-  vibium-rpa validate workflow.yaml
+  webpilot-rpa validate workflow.yaml
 
   # Validate multiple workflows
-  vibium-rpa validate workflow1.yaml workflow2.yaml
+  webpilot-rpa validate workflow1.yaml workflow2.yaml
 `,
 	Args: cobra.MinimumNArgs(1),
 	RunE: validateWorkflow,

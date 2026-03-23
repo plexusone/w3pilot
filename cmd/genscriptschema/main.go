@@ -8,7 +8,7 @@ import (
 
 	"github.com/invopop/jsonschema"
 
-	"github.com/plexusone/vibium-go/script"
+	"github.com/plexusone/webpilot/script"
 )
 
 func main() {
@@ -16,9 +16,9 @@ func main() {
 	r.ExpandedStruct = true
 
 	schema := r.Reflect(&script.Script{})
-	schema.ID = "https://github.com/plexusone/vibium-go/script/vibium-script.schema.json"
-	schema.Title = "Vibium Test Script"
-	schema.Description = "Schema for Vibium browser automation test scripts"
+	schema.ID = "https://github.com/plexusone/webpilot/script/webpilot-script.schema.json"
+	schema.Title = "WebPilot Test Script"
+	schema.Description = "Schema for WebPilot browser automation test scripts"
 
 	data, err := json.MarshalIndent(schema, "", "  ")
 	if err != nil {

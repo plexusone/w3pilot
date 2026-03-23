@@ -1,4 +1,4 @@
-package vibium
+package webpilot
 
 import (
 	"context"
@@ -71,12 +71,12 @@ func (ws *WebSocketInfo) dispatchClose(code int, reason string) {
 }
 
 // OnWebSocket registers a handler that is called when the page opens a WebSocket connection.
-func (v *Vibe) OnWebSocket(ctx context.Context, handler WebSocketHandler) error {
-	if v.closed {
+func (p *Pilot) OnWebSocket(ctx context.Context, handler WebSocketHandler) error {
+	if p.closed {
 		return ErrConnectionClosed
 	}
 
-	browsingCtx, err := v.getContext(ctx)
+	browsingCtx, err := p.getContext(ctx)
 	if err != nil {
 		return err
 	}
@@ -86,7 +86,7 @@ func (v *Vibe) OnWebSocket(ctx context.Context, handler WebSocketHandler) error 
 	var socketsMu sync.RWMutex
 
 	// Register handler for WebSocket created events
-	v.client.OnEvent("network.webSocketCreated", func(event *BiDiEvent) {
+	p.client.OnEvent("network.webSocketCreated", func(event *BiDiEvent) {
 		var params struct {
 			SocketID string `json:"socketId"`
 			URL      string `json:"url"`
@@ -103,7 +103,7 @@ func (v *Vibe) OnWebSocket(ctx context.Context, handler WebSocketHandler) error 
 		}
 
 		ws := &WebSocketInfo{
-			client:   v.client,
+			client:   p.client,
 			context:  browsingCtx,
 			socketID: params.SocketID,
 			URL:      params.URL,
@@ -118,7 +118,7 @@ func (v *Vibe) OnWebSocket(ctx context.Context, handler WebSocketHandler) error 
 	})
 
 	// Register handler for WebSocket message events
-	v.client.OnEvent("network.webSocketFrameSent", func(event *BiDiEvent) {
+	p.client.OnEvent("network.webSocketFrameSent", func(event *BiDiEvent) {
 		var params struct {
 			SocketID string `json:"socketId"`
 			Data     string `json:"data"`
@@ -142,7 +142,7 @@ func (v *Vibe) OnWebSocket(ctx context.Context, handler WebSocketHandler) error 
 		}
 	})
 
-	v.client.OnEvent("network.webSocketFrameReceived", func(event *BiDiEvent) {
+	p.client.OnEvent("network.webSocketFrameReceived", func(event *BiDiEvent) {
 		var params struct {
 			SocketID string `json:"socketId"`
 			Data     string `json:"data"`
@@ -167,7 +167,7 @@ func (v *Vibe) OnWebSocket(ctx context.Context, handler WebSocketHandler) error 
 	})
 
 	// Register handler for WebSocket closed events
-	v.client.OnEvent("network.webSocketClosed", func(event *BiDiEvent) {
+	p.client.OnEvent("network.webSocketClosed", func(event *BiDiEvent) {
 		var params struct {
 			SocketID string `json:"socketId"`
 			Code     int    `json:"code"`
@@ -190,7 +190,7 @@ func (v *Vibe) OnWebSocket(ctx context.Context, handler WebSocketHandler) error 
 	})
 
 	// Subscribe to WebSocket network events
-	_, err = v.client.Send(ctx, "session.subscribe", map[string]interface{}{
+	_, err = p.client.Send(ctx, "session.subscribe", map[string]interface{}{
 		"events": []string{
 			"network.webSocketCreated",
 			"network.webSocketFrameSent",

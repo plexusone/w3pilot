@@ -1,4 +1,4 @@
-module github.com/plexusone/vibium-go
+module github.com/plexusone/webpilot
 
 go 1.25.0
 

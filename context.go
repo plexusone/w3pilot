@@ -1,10 +1,10 @@
-package vibium
+package webpilot
 
 import (
 	"context"
 	"encoding/json"
 
-	"github.com/plexusone/vibium-go/launcher"
+	"github.com/plexusone/webpilot/launcher"
 )
 
 // BrowserContext represents an isolated browser context (like an incognito window).
@@ -17,7 +17,7 @@ type BrowserContext struct {
 }
 
 // NewPage creates a new page in this browser context.
-func (c *BrowserContext) NewPage(ctx context.Context) (*Vibe, error) {
+func (c *BrowserContext) NewPage(ctx context.Context) (*Pilot, error) {
 	params := map[string]interface{}{
 		"userContext": c.userContext,
 	}
@@ -34,7 +34,7 @@ func (c *BrowserContext) NewPage(ctx context.Context) (*Vibe, error) {
 		return nil, err
 	}
 
-	return &Vibe{
+	return &Pilot{
 		client:          c.client,
 		browser:         c.browser,
 		browsingContext: resp.Context,

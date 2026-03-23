@@ -1,4 +1,4 @@
-package vibium
+package webpilot
 
 import (
 	"context"

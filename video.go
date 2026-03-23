@@ -1,4 +1,4 @@
-package vibium
+package webpilot
 
 import (
 	"context"
@@ -31,12 +31,12 @@ type Video struct {
 
 // StartVideo starts recording video of the page.
 // The video is saved when StopVideo is called or the browser closes.
-func (v *Vibe) StartVideo(ctx context.Context, opts *VideoOptions) (*Video, error) {
-	if v.closed {
+func (p *Pilot) StartVideo(ctx context.Context, opts *VideoOptions) (*Video, error) {
+	if p.closed {
 		return nil, ErrConnectionClosed
 	}
 
-	browsingCtx, err := v.getContext(ctx)
+	browsingCtx, err := p.getContext(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (v *Vibe) StartVideo(ctx context.Context, opts *VideoOptions) (*Video, erro
 		}
 	}
 
-	result, err := v.client.Send(ctx, "vibium:video.start", params)
+	result, err := p.client.Send(ctx, "vibium:video.start", params)
 	if err != nil {
 		return nil, fmt.Errorf("failed to start video: %w", err)
 	}
@@ -70,19 +70,19 @@ func (v *Vibe) StartVideo(ctx context.Context, opts *VideoOptions) (*Video, erro
 	}
 
 	return &Video{
-		client:   v.client,
+		client:   p.client,
 		context:  browsingCtx,
 		FilePath: resp.Path,
 	}, nil
 }
 
 // StopVideo stops video recording and returns the video path.
-func (v *Vibe) StopVideo(ctx context.Context) (string, error) {
-	if v.closed {
+func (p *Pilot) StopVideo(ctx context.Context) (string, error) {
+	if p.closed {
 		return "", ErrConnectionClosed
 	}
 
-	browsingCtx, err := v.getContext(ctx)
+	browsingCtx, err := p.getContext(ctx)
 	if err != nil {
 		return "", err
 	}
@@ -91,7 +91,7 @@ func (v *Vibe) StopVideo(ctx context.Context) (string, error) {
 		"context": browsingCtx,
 	}
 
-	result, err := v.client.Send(ctx, "vibium:video.stop", params)
+	result, err := p.client.Send(ctx, "vibium:video.stop", params)
 	if err != nil {
 		return "", fmt.Errorf("failed to stop video: %w", err)
 	}

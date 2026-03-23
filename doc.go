@@ -1,6 +1,6 @@
-// Package vibium provides a Go client for the Vibium browser automation platform.
+// Package webpilot provides a Go client for the WebPilot browser automation platform.
 //
-// Vibium is a browser automation platform built for AI agents that uses the
+// WebPilot is a browser automation platform built for AI agents that uses the
 // WebDriver BiDi protocol for bidirectional communication with the browser.
 //
 // # Quick Start
@@ -8,13 +8,13 @@
 // Launch a browser and navigate to a page:
 //
 //	ctx := context.Background()
-//	vibe, err := vibium.Launch(ctx)
+//	pilot, err := webpilot.Launch(ctx)
 //	if err != nil {
 //	    log.Fatal(err)
 //	}
-//	defer vibe.Quit(ctx)
+//	defer pilot.Quit(ctx)
 //
-//	if err := vibe.Go(ctx, "https://example.com"); err != nil {
+//	if err := pilot.Go(ctx, "https://example.com"); err != nil {
 //	    log.Fatal(err)
 //	}
 //
@@ -22,7 +22,7 @@
 //
 // Find elements using CSS selectors and interact with them:
 //
-//	link, err := vibe.Find(ctx, "a.my-link", nil)
+//	link, err := pilot.Find(ctx, "a.my-link", nil)
 //	if err != nil {
 //	    log.Fatal(err)
 //	}
@@ -33,7 +33,7 @@
 //
 // Type text into input fields:
 //
-//	input, err := vibe.Find(ctx, "input[name='search']", nil)
+//	input, err := pilot.Find(ctx, "input[name='search']", nil)
 //	if err != nil {
 //	    log.Fatal(err)
 //	}
@@ -46,7 +46,7 @@
 //
 // Capture screenshots as PNG data:
 //
-//	data, err := vibe.Screenshot(ctx)
+//	data, err := pilot.Screenshot(ctx)
 //	if err != nil {
 //	    log.Fatal(err)
 //	}
@@ -56,11 +56,11 @@
 //
 // Launch in headless mode for CI/server environments:
 //
-//	vibe, err := vibium.LaunchHeadless(ctx)
+//	pilot, err := webpilot.LaunchHeadless(ctx)
 //
 // Or with explicit options:
 //
-//	vibe, err := vibium.Browser.Launch(ctx, &vibium.LaunchOptions{
+//	pilot, err := webpilot.Browser.Launch(ctx, &webpilot.LaunchOptions{
 //	    Headless: true,
 //	    Port:     9515,
 //	})
@@ -72,4 +72,4 @@
 //
 // You can also specify a custom Chrome path via the CHROME_PATH environment variable
 // or the ExecutablePath option in LaunchOptions.
-package vibium
+package webpilot

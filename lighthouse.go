@@ -222,15 +222,3 @@ func findLighthouseBinary() (string, error) {
 
 	return "", fmt.Errorf("w3pilot: lighthouse CLI not found. Install with: npm install -g lighthouse")
 }
-
-// runLighthouseWithNpx runs lighthouse via npx.
-func runLighthouseWithNpx(ctx context.Context, args []string) ([]byte, error) {
-	npxPath, err := exec.LookPath("npx")
-	if err != nil {
-		return nil, fmt.Errorf("npx not found: %w", err)
-	}
-
-	fullArgs := append([]string{"lighthouse"}, args...)
-	cmd := exec.CommandContext(ctx, npxPath, fullArgs...)
-	return cmd.Output()
-}

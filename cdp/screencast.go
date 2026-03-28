@@ -55,11 +55,10 @@ type ScreencastFrameHandler func(frame *ScreencastFrame)
 
 // Screencast manages screencast capture.
 type Screencast struct {
-	client    *Client
-	mu        sync.RWMutex
-	running   bool
-	handler   ScreencastFrameHandler
-	sessionID int
+	client  *Client
+	mu      sync.RWMutex
+	running bool
+	handler ScreencastFrameHandler
 }
 
 // NewScreencast creates a new screencast manager.

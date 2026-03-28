@@ -21,8 +21,9 @@ const ClickerBinaryEnvVar = "CLICKER_BIN_PATH"
 func FindClickerBinary() (string, error) {
 	// 1. Check environment variable
 	if envPath := os.Getenv(ClickerBinaryEnvVar); envPath != "" {
-		if _, err := os.Stat(envPath); err == nil {
-			return envPath, nil
+		cleanPath := filepath.Clean(envPath)
+		if _, err := os.Stat(cleanPath); err == nil {
+			return cleanPath, nil
 		}
 		return "", fmt.Errorf("%s is set to %q but file does not exist", ClickerBinaryEnvVar, envPath)
 	}

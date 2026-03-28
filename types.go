@@ -24,21 +24,26 @@ type LaunchOptions struct {
 	// Headless runs the browser without a visible window.
 	Headless bool
 
-	// Port specifies the debugging port. If 0, an available port is auto-selected.
+	// UseWebSocket uses WebSocket transport instead of pipe (stdin/stdout).
+	// Default is false (use pipe mode for full vibium:* command support).
+	// Set to true for WebSocket mode (useful for multiple clients or debugging).
+	UseWebSocket bool
+
+	// Port specifies the WebSocket server port for clicker (WebSocket mode only).
+	// If 0, an available port is auto-selected.
 	Port int
 
-	// ExecutablePath specifies a custom Chrome executable path.
+	// ExecutablePath specifies a custom path to the clicker binary.
+	// If empty, it will be discovered automatically from PATH or standard locations.
 	ExecutablePath string
 
-	// UserDataDir specifies a custom user data directory.
-	// If empty, a temporary directory is used.
+	// Deprecated: UserDataDir is now handled by vibium.
 	UserDataDir string
 
-	// Args specifies additional command-line arguments for Chrome.
+	// Deprecated: Args is now handled by vibium.
 	Args []string
 
-	// AutoInstall automatically downloads Chrome for Testing if not found.
-	// Defaults to true (nil means true).
+	// Deprecated: AutoInstall is no longer used. Install vibium separately.
 	AutoInstall *bool
 }
 

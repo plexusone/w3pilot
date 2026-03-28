@@ -2,35 +2,47 @@
 
 ## System Architecture
 
+WebPilot uses a **dual-protocol architecture** connecting to a single Chrome browser via both WebDriver BiDi and Chrome DevTools Protocol (CDP):
+
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                              User Layer                                  │
 ├─────────────────┬─────────────────┬─────────────────┬──────────────────┤
 │    Go Client    │   MCP Server    │      CLI        │  Script Runner   │
-│      SDK        │   (75+ tools)   │    (vibium)     │  (webpilot run)    │
+│      SDK        │   (75+ tools)   │    (vibium)     │  (webpilot run)  │
 ├─────────────────┴─────────────────┴─────────────────┴──────────────────┤
 │                           webpilot Core                                │
 │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐     │
-│  │   Vibe   │ │ Element  │ │ Keyboard │ │  Mouse   │ │  Touch   │     │
+│  │  Pilot   │ │ Element  │ │ Keyboard │ │  Mouse   │ │  Touch   │     │
 │  │ (page)   │ │ (DOM)    │ │ (input)  │ │ (input)  │ │ (input)  │     │
 │  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └──────────┘     │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐                   │
-│  │ Context  │ │  Clock   │ │ Tracing  │ │  Route   │                   │
-│  │(session) │ │ (time)   │ │(capture) │ │(network) │                   │
-│  └──────────┘ └──────────┘ └──────────┘ └──────────┘                   │
+│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐     │
+│  │ Context  │ │  Clock   │ │ Tracing  │ │  Route   │ │   CDP    │     │
+│  │(session) │ │ (time)   │ │(capture) │ │(network) │ │(profiling)│    │
+│  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └──────────┘     │
 ├─────────────────────────────────────────────────────────────────────────┤
-│                        BiDi Client Layer                                │
-│           WebSocket connection to WebPilot Clicker                        │
-├─────────────────────────────────────────────────────────────────────────┤
-│                        WebPilot Clicker                                   │
-│          Custom commands (vibium:*) + WebDriver BiDi                    │
-├─────────────────────────────────────────────────────────────────────────┤
-│                   WebDriver BiDi Protocol                               │
-│               Bidirectional browser communication                       │
+│                      Dual Protocol Layer                                │
+│  ┌─────────────────────────────────┐  ┌────────────────────────────┐   │
+│  │        BiDi Client              │  │       CDP Client           │   │
+│  │  (page automation, DOM, events) │  │ (profiling, emulation)     │   │
+│  └─────────────────┬───────────────┘  └─────────────┬──────────────┘   │
+│                    │                                │                   │
+├────────────────────┼────────────────────────────────┼───────────────────┤
+│                    ▼                                ▼                   │
+│         VibiumDev Clicker                   Chrome DevTools             │
+│     (vibium:* + WebDriver BiDi)            (CDP WebSocket)              │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                    Chrome / Chromium                                    │
+│             (single browser instance)                                   │
 └─────────────────────────────────────────────────────────────────────────┘
 ```
+
+### Protocol Responsibilities
+
+| Protocol | Layer | Features |
+|----------|-------|----------|
+| **WebDriver BiDi** | Via clicker | Page automation, element interactions, screenshots, tracing, events |
+| **Chrome DevTools Protocol** | Direct | Heap profiling, network response bodies, CPU/network emulation |
 
 ## Component Descriptions
 
@@ -43,6 +55,16 @@ The core programmatic API for browser automation:
 - **Input Controllers**: Low-level keyboard, mouse, touch control
 - **Context**: Isolated browser sessions with separate cookies/storage
 - **Network**: Request interception and modification
+- **CDP**: Direct Chrome DevTools Protocol access for profiling and emulation
+
+### CDP Client
+
+Direct Chrome DevTools Protocol access for advanced features:
+
+- **Heap Profiler**: Capture V8 heap snapshots for memory analysis
+- **Network Emulation**: Simulate Slow 3G, Fast 3G, 4G, or custom conditions
+- **CPU Emulation**: Throttle CPU for performance testing (2x, 4x, 6x slowdown)
+- **Direct Commands**: Send any CDP command for advanced use cases
 
 ### MCP Server
 
@@ -121,13 +143,25 @@ Claude                    MCP Server              Recorder
 
 ## Key Design Decisions
 
-### WebDriver BiDi
+### Dual Protocol Architecture
 
-WebPilot uses WebDriver BiDi instead of Chrome DevTools Protocol (CDP) for:
+WebPilot uses **both** WebDriver BiDi and Chrome DevTools Protocol (CDP):
+
+**WebDriver BiDi (via VibiumDev clicker)** for:
 
 - Standardization across browsers
 - Bidirectional events (no polling)
 - Future-proof design
+- Page automation (navigation, DOM, interactions)
+
+**Chrome DevTools Protocol (CDP)** for:
+
+- Heap profiling (not available in BiDi)
+- Network response bodies (not exposed in BiDi)
+- CPU/network emulation presets
+- Any Chrome-specific DevTools feature
+
+Both protocols connect to the same Chrome browser instance, discovered via the `DevToolsActivePort` file in Chrome's user data directory.
 
 ### Custom Commands
 

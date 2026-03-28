@@ -71,6 +71,16 @@ func (v *Pilot) Touch() *Touch
 // Cleanup
 func (v *Pilot) Quit(ctx context.Context) error
 func (v *Pilot) IsClosed() bool
+
+// CDP Access
+func (v *Pilot) CDP() *cdp.Client
+func (v *Pilot) HasCDP() bool
+func (v *Pilot) CDPPort() int
+func (v *Pilot) TakeHeapSnapshot(ctx context.Context, path string) (*cdp.HeapSnapshot, error)
+func (v *Pilot) EmulateNetwork(ctx context.Context, conditions cdp.NetworkConditions) error
+func (v *Pilot) ClearNetworkEmulation(ctx context.Context) error
+func (v *Pilot) EmulateCPU(ctx context.Context, rate int) error
+func (v *Pilot) ClearCPUEmulation(ctx context.Context) error
 ```
 
 ### Element
@@ -143,6 +153,48 @@ type Config struct {
 func NewServer(config Config) *Server
 func (s *Server) Run(ctx context.Context) error
 func (s *Server) Close(ctx context.Context) error
+```
+
+## CDP Package
+
+Chrome DevTools Protocol client for advanced profiling and emulation.
+
+```go
+import "github.com/plexusone/webpilot/cdp"
+
+// Network condition presets
+var NetworkSlow3G = NetworkConditions{...}  // 400ms latency, 400 Kbps
+var NetworkFast3G = NetworkConditions{...}  // 150ms latency, 1.5 Mbps
+var Network4G = NetworkConditions{...}      // 50ms latency, 10 Mbps
+
+// CPU throttling rates
+const (
+    CPUNoThrottle = 1  // No throttling
+    CPU2xSlowdown = 2  // 2x slowdown
+    CPU4xSlowdown = 4  // 4x slowdown (mid-tier mobile)
+    CPU6xSlowdown = 6  // 6x slowdown (low-end mobile)
+)
+
+// Types
+type NetworkConditions struct {
+    Offline            bool
+    Latency            float64  // ms
+    DownloadThroughput float64  // bytes/s
+    UploadThroughput   float64  // bytes/s
+}
+
+type HeapSnapshot struct {
+    Path string
+    Size int64
+}
+
+// Client methods
+func (c *Client) Send(ctx context.Context, method string, params any) (json.RawMessage, error)
+func (c *Client) TakeHeapSnapshot(ctx context.Context, path string) (*HeapSnapshot, error)
+func (c *Client) SetNetworkConditions(ctx context.Context, conditions NetworkConditions) error
+func (c *Client) ClearNetworkConditions(ctx context.Context) error
+func (c *Client) SetCPUThrottlingRate(ctx context.Context, rate int) error
+func (c *Client) ClearCPUThrottling(ctx context.Context) error
 ```
 
 ## Script Types

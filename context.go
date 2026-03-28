@@ -3,15 +3,13 @@ package webpilot
 import (
 	"context"
 	"encoding/json"
-
-	"github.com/plexusone/webpilot/launcher"
 )
 
 // BrowserContext represents an isolated browser context (like an incognito window).
 // Each context has its own cookies, localStorage, and session storage.
 type BrowserContext struct {
 	client      *BiDiClient
-	browser     *launcher.Browser
+	clicker     *ClickerProcess
 	userContext string
 	tracing     *Tracing
 }
@@ -36,7 +34,7 @@ func (c *BrowserContext) NewPage(ctx context.Context) (*Pilot, error) {
 
 	return &Pilot{
 		client:          c.client,
-		browser:         c.browser,
+		clicker:         c.clicker,
 		browsingContext: resp.Context,
 	}, nil
 }

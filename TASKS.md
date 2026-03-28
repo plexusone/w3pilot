@@ -1,19 +1,293 @@
 # Feature Parity Tasks
 
-Tasks for achieving feature parity with Vibium clients (Java/JS/Python) and Playwright MCP.
+Tasks for achieving feature parity with Vibium clients (Java/JS/Python), Playwright MCP, and Chrome DevTools MCP.
 
 Reference: [Feature Comparison](docs/reference/comparison.md)
 
 ## Legend
 
 - [ ] Not started
+- [~] In progress
 - [x] Completed
 
 ---
 
 ## Open Tasks
 
-No open tasks remaining.
+### P0 - Critical (Chrome DevTools MCP Parity)
+
+Features that provide significant differentiation from other browser automation tools.
+
+#### Performance Insights ✅ (JS APIs available) - COMPLETED v0.5.2
+
+Core Web Vitals via JavaScript PerformanceObserver APIs - **no clicker changes needed**.
+
+- [x] `get_performance_metrics` MCP tool
+- [x] LCP via `PerformanceObserver('largest-contentful-paint')`
+- [x] CLS via `PerformanceObserver('layout-shift')`
+- [x] INP via `PerformanceObserver('event')` with interactionId
+- [x] Navigation timing via `performance.timing`
+- [x] SDK `Pilot.GetPerformanceMetrics()` method
+- [x] SDK `Pilot.ObserveWebVitals()` method (real-time)
+
+#### Memory Stats ✅ (JS APIs available) - COMPLETED v0.5.2
+
+Basic memory info via `performance.memory` - **no clicker changes needed**.
+
+- [x] `get_memory_stats` MCP tool (usedJSHeapSize, totalJSHeapSize, jsHeapSizeLimit)
+- [x] SDK `Pilot.GetMemoryStats()` method
+- [ ] Memory threshold alerts (optional)
+
+#### Lighthouse Integration ✅ (External CLI) - COMPLETED v0.5.2
+
+Run quality audits - requires **lighthouse CLI** (Node.js).
+
+- [x] `lighthouse_audit` MCP tool (categories: accessibility, seo, best-practices, performance)
+- [x] Shell to `npx lighthouse` or `lighthouse` CLI
+- [x] SDK `Pilot.LighthouseAudit()` method
+- [x] Return structured audit results with scores
+- [ ] Integration with a11y-lab test fixtures (stretch goal)
+
+#### Heap Snapshots ✅ (Direct CDP) - COMPLETED v0.5.2
+
+Full heap profiling via **direct CDP connection** to same browser session.
+
+- [x] Add `CDPClient` to Pilot struct (parallel to BiDi)
+- [x] Discover CDP port from Chrome's `DevToolsActivePort` file
+- [x] `take_heap_snapshot` MCP tool (returns .heapsnapshot file path)
+- [x] SDK `Pilot.TakeHeapSnapshot()` method
+- [x] CDP `HeapProfiler.takeHeapSnapshot` implementation
+- [ ] Memory diff between snapshots (stretch goal)
+
+### P1 - High Priority
+
+Features that improve debugging and testing capabilities.
+
+#### Network Request Bodies ✅ (Direct CDP) - COMPLETED v0.5.2
+
+Retrieve full request/response content via **direct CDP connection**.
+
+- [x] CDP `Network.enable` with response body capture
+- [x] CDP `Network.getResponseBody` implementation
+- [x] `get_network_request_body` MCP tool (request_id, save_to_file)
+- [x] SDK `Pilot.GetNetworkResponseBody()` method
+- [x] Support for binary content (images, etc.)
+
+#### Emulation Presets ✅ (Direct CDP) - COMPLETED v0.5.2
+
+Network/CPU throttling via **direct CDP connection**.
+
+- [x] CDP `Network.emulateNetworkConditions` implementation
+- [x] CDP `Emulation.setCPUThrottlingRate` implementation
+- [x] Network throttling presets (Slow 3G, Fast 3G, 4G, Offline)
+- [x] CPU throttling (1x, 2x, 4x, 6x slowdown)
+- [x] `emulate_network` MCP tool (preset or custom latency/bandwidth)
+- [x] `emulate_cpu` MCP tool (throttle factor)
+- [x] `clear_network_emulation` MCP tool
+- [x] `clear_cpu_emulation` MCP tool
+- [x] SDK `Pilot.EmulateNetwork()` / `Pilot.EmulateCPU()` methods
+
+#### Enhanced Console Debugging ✅ (Direct CDP) - COMPLETED v0.5.2
+
+Source-mapped stack traces via **direct CDP connection**.
+
+- [x] CDP `Runtime.enable` for console events
+- [x] CDP `Runtime.consoleAPICalled` events
+- [x] `enable_console_debugger` MCP tool
+- [x] `get_console_entries_with_stack` MCP tool (full stack traces)
+- [x] `get_browser_logs` MCP tool (deprecations, interventions, violations)
+- [x] `disable_console_debugger` MCP tool
+- [x] SDK methods: `EnableConsoleDebugger`, `ConsoleEntries`, `BrowserLogs`
+
+### P2 - Medium Priority
+
+Nice-to-have features for comprehensive tooling.
+
+#### File Upload ✅ (Clicker has CLI support) - COMPLETED
+
+Upload files - already implemented via `vibium:el.setFiles`.
+
+- [x] `set_files` MCP tool (selector, file_paths)
+- [x] SDK `Element.SetFiles()` method
+- [x] Multiple file support
+
+#### Drag and Drop ✅ (Clicker has CLI support) - COMPLETED
+
+Drag operations - already implemented via `vibium:dragTo`.
+
+- [x] `drag_to` MCP tool (source_selector, target_selector)
+- [x] SDK `Element.DragTo(target)` method
+
+#### Wait for Text ✅ (Already implemented)
+
+Wait for text - already exists in MCP tools (v0.5.0).
+
+- [x] `wait_for_text` MCP tool - **already implemented**
+- [ ] Regex pattern support (enhancement)
+- [ ] Case-insensitive option (enhancement)
+
+### P3 - Low Priority (Future)
+
+Features for specialized use cases.
+
+#### CrUX Integration
+
+Real User Experience data from Chrome UX Report.
+
+- [ ] `get_crux_data` MCP tool (url)
+- [ ] Origin-level metrics
+- [ ] Field data vs lab data comparison
+
+#### Coverage Analysis ✅ - COMPLETED v0.5.2
+
+Code coverage for JavaScript and CSS.
+
+- [x] `start_coverage` / `stop_coverage` MCP tools
+- [x] JS and CSS coverage reports
+- [x] Unused code detection (CSS usage percent)
+- [x] SDK methods: `StartCoverage`, `StopCoverage`, `StartJSCoverage`, `StartCSSCoverage`
+- [x] CDP `Profiler.startPreciseCoverage` / `CSS.startRuleUsageTracking`
+
+---
+
+## In Progress
+
+### v0.5.1 - Bug Fixes
+
+- [x] Fix clicker WebSocket transport (pipe.go → clicker.go + transport_ws.go)
+- [ ] Verify all `vibium:*` commands work with current clicker version
+
+### v0.6.0 - Chrome DevTools MCP Parity
+
+New features from Chrome DevTools MCP analysis.
+
+#### Screencast ✅ (P2) - COMPLETED v0.5.2
+
+Live screen streaming (from Chrome DevTools MCP).
+
+- [x] `start_screencast` MCP tool
+- [x] `stop_screencast` MCP tool
+- [x] SDK `Pilot.StartScreencast()` / `Pilot.StopScreencast()` methods
+- [x] SDK `Pilot.IsScreencasting()` status method
+- [x] CDP `Page.startScreencast` / `Page.stopScreencast` implementation
+
+#### Extensions Management ✅ (P3) - COMPLETED v0.5.2
+
+Browser extension control (from Chrome DevTools MCP).
+
+- [x] `install_extension` MCP tool (path)
+- [x] `uninstall_extension` MCP tool (id)
+- [x] `list_extensions` MCP tool
+- [ ] `trigger_extension_action` MCP tool (id) - stretch goal
+
+---
+
+## Completed - v0.5.2 (2026-03-24)
+
+### Lighthouse Integration
+
+Run quality audits via external lighthouse CLI.
+
+- [x] `lighthouse.go` - LighthouseAudit SDK method
+- [x] `LighthouseOptions` (Categories, Device, OutputDir, Port)
+- [x] `LighthouseResult` (URL, Scores, PassedAudits, FailedAudits, ReportPaths)
+- [x] `findLighthouseBinary()` - locate lighthouse/npx CLI
+- [x] `lighthouse_audit` MCP tool
+- [x] Support for desktop/mobile device emulation
+- [x] JSON and HTML report generation
+
+### Network Request Bodies MCP Tool
+
+- [x] `get_network_request_body` MCP tool
+- [x] Retrieve response body by request ID
+- [x] Optional save to file for binary content
+- [x] Base64 encoding indicator
+
+### Screencast
+
+- [x] `cdp/screencast.go` - Screencast CDP implementation
+- [x] `Pilot.StartScreencast()` / `Pilot.StopScreencast()` SDK methods
+- [x] `Pilot.IsScreencasting()` status method
+- [x] `start_screencast` / `stop_screencast` MCP tools
+- [x] Configurable format (jpeg/png), quality, dimensions
+
+### Extensions Management
+
+- [x] `cdp/extensions.go` - Extensions CDP implementation
+- [x] `Pilot.InstallExtension()` / `Pilot.UninstallExtension()` SDK methods
+- [x] `Pilot.ListExtensions()` SDK method
+- [x] `install_extension` / `uninstall_extension` / `list_extensions` MCP tools
+
+### Code Coverage
+
+- [x] `cdp/coverage.go` - Coverage CDP implementation (JS + CSS)
+- [x] `Pilot.StartCoverage()` / `Pilot.StopCoverage()` SDK methods
+- [x] `Pilot.StartJSCoverage()` / `Pilot.StartCSSCoverage()` SDK methods
+- [x] `start_coverage` / `stop_coverage` MCP tools
+- [x] Coverage summary with JS scripts, functions, and CSS usage percentage
+
+### Enhanced Console Debugging
+
+- [x] `cdp/debugger.go` - Console debugger CDP implementation
+- [x] `Pilot.EnableConsoleDebugger()` / `Pilot.DisableConsoleDebugger()` SDK methods
+- [x] `Pilot.ConsoleEntries()` / `Pilot.BrowserLogs()` SDK methods
+- [x] `enable_console_debugger` / `disable_console_debugger` MCP tools
+- [x] `get_console_entries_with_stack` / `get_browser_logs` MCP tools
+- [x] Full stack traces, deprecations, interventions, violations
+
+### CDP Client Infrastructure (Dual Protocol Architecture)
+
+Direct Chrome DevTools Protocol access alongside existing BiDi.
+
+#### CDP Client Package
+
+- [x] `cdp/client.go` - CDP WebSocket client with Send/OnEvent
+- [x] `cdp/protocol.go` - CDP message types, network presets, constants
+- [x] `cdp/discovery.go` - CDP port discovery from `DevToolsActivePort` file
+- [x] `cdp/process.go` - Chrome user-data-dir detection from running processes
+- [x] `cdp/heap.go` - HeapProfiler.takeHeapSnapshot implementation
+- [x] `cdp/network.go` - Network emulation and response body capture
+- [x] `cdp/emulation.go` - CPU throttling implementation
+
+#### Pilot Integration
+
+- [x] Add `cdpClient *cdp.Client` field to `Pilot` struct
+- [x] Auto-discover and connect CDP on `Launch()`
+- [x] `Pilot.CDP()` for direct CDP access
+- [x] `Pilot.HasCDP()` / `Pilot.CDPPort()` status methods
+- [x] Graceful degradation if CDP unavailable
+
+#### SDK Methods (CDP-based)
+
+- [x] `Pilot.TakeHeapSnapshot(ctx, path)` - Capture V8 heap snapshot
+- [x] `Pilot.EmulateNetwork(ctx, conditions)` - Network throttling (Slow3G, Fast3G, 4G)
+- [x] `Pilot.ClearNetworkEmulation(ctx)` - Remove network throttling
+- [x] `Pilot.EmulateCPU(ctx, rate)` - CPU throttling (2x, 4x, 6x slowdown)
+- [x] `Pilot.ClearCPUEmulation(ctx)` - Remove CPU throttling
+
+#### Network Presets
+
+- [x] `cdp.NetworkSlow3G` - 400ms latency, 400 Kbps
+- [x] `cdp.NetworkFast3G` - 150ms latency, 1.5 Mbps
+- [x] `cdp.Network4G` - 50ms latency, 4 Mbps
+- [x] `cdp.NetworkWifi` - 10ms latency, 30 Mbps
+- [x] `cdp.NetworkOffline` - Offline mode
+
+#### CPU Presets
+
+- [x] `cdp.CPUNoThrottle` (1x)
+- [x] `cdp.CPU2xSlowdown`
+- [x] `cdp.CPU4xSlowdown` (mid-tier mobile)
+- [x] `cdp.CPU6xSlowdown` (low-end mobile)
+
+#### Documentation
+
+- [x] README.md - Architecture diagram, CDP features section
+- [x] docs/architecture/overview.md - Dual-protocol architecture
+- [x] docs/reference/api.md - CDP methods and types
+- [x] docs/reference/comparison.md - CDP features comparison
+- [x] docs/guide/cdp.md - Comprehensive CDP guide (new)
+- [x] mkdocs.yml - Navigation updated
 
 ---
 
@@ -239,5 +513,116 @@ Per-context initialization scripts that run before page scripts.
 
 ## Notes
 
-- All feature parity tasks are complete as of v0.5.0
-- Future work can focus on performance optimization, additional platform support, or new features
+- All Vibium/Playwright parity tasks complete as of v0.5.0
+- Chrome DevTools MCP analysis added 2026-03-24 (see P0-P3 tasks above)
+- Reference: `/Users/johnwang/go/src/github.com/ChromeDevTools/chrome-devtools-mcp`
+- Goal: WebPilot as superset of VibiumCLI-MCP, Playwright MCP, and Chrome DevTools MCP
+
+## Implementation Approach (2026-03-24)
+
+### Dual-Protocol Architecture
+
+**Key Discovery**: BiDi (via clicker) and CDP can connect to the **same browser session**.
+
+Chrome exposes both protocols simultaneously:
+- **BiDi**: Via chromedriver WebSocket (clicker uses this)
+- **CDP**: Via Chrome's DevTools port (found in `DevToolsActivePort` file)
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      Chrome Browser                          │
+│                   (launched by clicker)                      │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  BiDi WebSocket ◄──── clicker ◄──── WebPilot (existing)     │
+│  (chromedriver)       (serve)       - Semantic selectors     │
+│                                     - Navigation, clicks     │
+│                                     - Screenshots, a11y      │
+│                                                              │
+│  CDP WebSocket  ◄──── WebPilot (new CDPClient)              │
+│  (DevTools port)      - Heap snapshots                       │
+│                       - Network bodies                       │
+│                       - CPU/Network throttling               │
+│                       - Coverage analysis                    │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Feature Implementation Map
+
+| Feature | Protocol | Implementation |
+|---------|----------|----------------|
+| Performance Metrics | JS | `Pilot.Evaluate()` with PerformanceObserver |
+| Memory Stats | JS | `Pilot.Evaluate()` with `performance.memory` |
+| Lighthouse | External | Shell to `npx lighthouse` CLI |
+| Heap Snapshots | **CDP** | `HeapProfiler.takeHeapSnapshot` |
+| Network Bodies | **CDP** | `Network.getResponseBody` |
+| Emulation Presets | **CDP** | `Network.emulateNetworkConditions`, `Emulation.setCPUThrottlingRate` |
+| Console Debugging | **CDP** | `Debugger.enable`, `Runtime.consoleAPICalled` |
+| Coverage | **CDP** | `Profiler.startPreciseCoverage` |
+| File Upload | BiDi | Existing `clicker upload` |
+| Drag and Drop | BiDi | Existing `clicker drag` |
+
+### CDP Connection Discovery
+
+When clicker launches Chrome, CDP port is available via:
+
+```
+/path/to/user-data-dir/DevToolsActivePort
+```
+
+Contents:
+```
+59726                                              ← CDP port
+/devtools/browser/59b41735-8eaa-4112-bd09-...     ← Browser endpoint
+```
+
+WebPilot can read this file to establish parallel CDP connection.
+
+### Interface Design
+
+```go
+// Pilot provides unified access to both protocols
+type Pilot struct {
+    bidi    *BiDiClient    // Via clicker (semantic selectors, navigation)
+    cdp     *CDPClient     // Direct to Chrome (profiling, debugging)
+    cdpPort int            // Discovered from DevToolsActivePort
+}
+
+// BiDi operations (existing)
+pilot.Find(ctx, "button", &FindOptions{Role: "button"})
+pilot.Click(ctx, selector)
+pilot.Screenshot(ctx)
+
+// CDP operations (new)
+pilot.TakeHeapSnapshot(ctx)           // CDP HeapProfiler
+pilot.GetNetworkResponseBody(ctx, id) // CDP Network
+pilot.EmulateNetwork(ctx, Slow3G)     // CDP Network
+pilot.EmulateCPU(ctx, 4)              // CDP Emulation
+```
+
+### No Clicker Enhancements Required
+
+Previous approach required adding CDP passthrough to clicker. With dual-protocol:
+- ✅ WebPilot connects directly to Chrome's CDP endpoint
+- ✅ Same browser session, no coordination issues
+- ✅ No upstream dependency for new features
+- ✅ Enhancement requests in `docs/enhancement-requests/` are now optional
+
+## Architecture Comparison
+
+| Tool | Protocol | Transport | Strengths |
+|------|----------|-----------|-----------|
+| WebPilot | **BiDi + CDP** | Dual WebSocket | Best of both: semantic selectors + full debugging |
+| Chrome DevTools MCP | CDP only | Puppeteer | Performance insights, memory profiling |
+| Playwright MCP | CDP only | Playwright | Cross-browser, codegen, fixtures |
+| VibiumCLI | BiDi only | clicker | Semantic selectors, RPA |
+
+**WebPilot advantage**: Unified interface to both protocols on single browser.
+
+## Priority Rationale
+
+- **P0**: Unique Chrome DevTools features that provide significant value (Lighthouse, memory, perf insights)
+- **P1**: Debugging improvements that enhance developer experience
+- **P2**: Quality-of-life features already available in other tools
+- **P3**: Specialized features for advanced use cases

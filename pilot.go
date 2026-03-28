@@ -7,21 +7,35 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/plexusone/webpilot/launcher"
+	"github.com/plexusone/webpilot/cdp"
 )
 
 // Pilot is the main browser control interface.
 type Pilot struct {
 	client          *BiDiClient
-	browser         *launcher.Browser
+	pipeTransport   *pipeTransport  // Used in pipe mode (default)
+	clicker         *ClickerProcess // Used in WebSocket mode
 	browsingContext string
 	closed          bool
+
+	// CDP client for direct Chrome DevTools Protocol access
+	cdpClient *cdp.Client
+	cdpPort   int
 
 	// Input controllers (lazy-initialized)
 	keyboard *Keyboard
 	mouse    *Mouse
 	touch    *Touch
 	clock    *Clock
+
+	// CDP screencast manager (lazy-initialized)
+	screencast *cdp.Screencast
+
+	// CDP coverage manager (lazy-initialized)
+	coverage *cdp.Coverage
+
+	// CDP console debugger (lazy-initialized)
+	consoleDebugger *cdp.ConsoleDebugger
 }
 
 // Browser provides browser launching capabilities.
@@ -38,37 +52,98 @@ func (b *browserLauncher) Launch(ctx context.Context, opts *LaunchOptions) (*Pil
 	// Set up debug logging if enabled
 	if logger := NewDebugLogger(); logger != nil {
 		ctx = ContextWithLogger(ctx, logger)
-		debugLog(ctx, "launching browser", "headless", opts.Headless, "port", opts.Port)
+		debugLog(ctx, "launching browser", "headless", opts.Headless, "websocket", opts.UseWebSocket)
 	}
 
-	// Start browser process
-	launchOpts := &launcher.Options{
+	if opts.UseWebSocket {
+		// WebSocket mode (clicker serve) - for multiple clients or debugging
+		return b.launchWebSocket(ctx, opts)
+	}
+
+	// Pipe mode (clicker pipe) - default, full vibium:* command support
+	return b.launchPipe(ctx, opts)
+}
+
+// launchPipe starts the browser using pipe (stdin/stdout) transport.
+func (b *browserLauncher) launchPipe(ctx context.Context, opts *LaunchOptions) (*Pilot, error) {
+	transport := newPipeTransport()
+	pipeOpts := &PipeOptions{
+		Headless:       opts.Headless,
+		ExecutablePath: opts.ExecutablePath,
+	}
+
+	if err := transport.Start(ctx, pipeOpts); err != nil {
+		return nil, err
+	}
+	debugLog(ctx, "clicker pipe started")
+
+	client := NewBiDiClient(transport)
+
+	pilot := &Pilot{
+		client:        client,
+		pipeTransport: transport,
+	}
+
+	connectCDP(ctx, pilot)
+	return pilot, nil
+}
+
+// launchWebSocket starts the browser using WebSocket transport.
+func (b *browserLauncher) launchWebSocket(ctx context.Context, opts *LaunchOptions) (*Pilot, error) {
+	clicker, err := StartClicker(ctx, LaunchOptions{
 		Headless:       opts.Headless,
 		Port:           opts.Port,
 		ExecutablePath: opts.ExecutablePath,
-		UserDataDir:    opts.UserDataDir,
-		Args:           opts.Args,
-		AutoInstall:    opts.AutoInstall,
-	}
-
-	browser, err := launcher.Launch(ctx, launchOpts)
+	})
 	if err != nil {
 		return nil, err
 	}
-	debugLog(ctx, "browser started", "url", browser.WebSocketURL())
+	debugLog(ctx, "clicker started", "url", clicker.WebSocketURL())
 
-	// Connect BiDi client
-	client := NewBiDiClient()
-	if err := client.Connect(ctx, browser.WebSocketURL()); err != nil {
-		_ = browser.Stop()
+	// Connect WebSocket transport for BiDi
+	wsTransport := newWSTransport()
+	if err := wsTransport.Connect(ctx, clicker.WebSocketURL()); err != nil {
+		_ = clicker.Stop()
 		return nil, err
 	}
-	debugLog(ctx, "BiDi client connected")
 
-	return &Pilot{
+	// Wait for browser to be ready
+	if err := wsTransport.WaitForReady(ctx, 30*time.Second); err != nil {
+		_ = wsTransport.Close()
+		_ = clicker.Stop()
+		return nil, fmt.Errorf("browser not ready: %w", err)
+	}
+	debugLog(ctx, "browser ready")
+
+	client := NewBiDiClient(wsTransport)
+
+	pilot := &Pilot{
 		client:  client,
-		browser: browser,
-	}, nil
+		clicker: clicker,
+	}
+
+	connectCDP(ctx, pilot)
+	return pilot, nil
+}
+
+// connectCDP discovers and connects the CDP client (best-effort).
+func connectCDP(ctx context.Context, pilot *Pilot) {
+	// Give Chrome a moment to start and write DevToolsActivePort
+	time.Sleep(500 * time.Millisecond)
+
+	cdpPort, wsEndpoint, err := cdp.DiscoverFromRunningChrome()
+	if err == nil {
+		cdpClient := cdp.NewClient()
+		if err := cdpClient.Connect(ctx, wsEndpoint); err == nil {
+			pilot.cdpClient = cdpClient
+			pilot.cdpPort = cdpPort
+			debugLog(ctx, "CDP client connected", "port", cdpPort)
+		} else {
+			debugLog(ctx, "CDP connection failed (continuing without CDP)", "error", err)
+		}
+	} else {
+		debugLog(ctx, "CDP discovery failed (continuing without CDP)", "error", err)
+	}
 }
 
 // Launch is a convenience function that launches a browser with default options.
@@ -288,7 +363,7 @@ func (p *Pilot) Find(ctx context.Context, selector string, opts *FindOptions) (*
 		}
 	}
 
-	result, err := p.client.Send(ctx, "vibium:find", params)
+	result, err := p.client.Send(ctx, "vibium:page.find", params)
 	if err != nil {
 		return nil, err
 	}
@@ -357,7 +432,7 @@ func (p *Pilot) FindAll(ctx context.Context, selector string, opts *FindOptions)
 		}
 	}
 
-	result, err := p.client.Send(ctx, "vibium:findAll", params)
+	result, err := p.client.Send(ctx, "vibium:page.findAll", params)
 	if err != nil {
 		return nil, err
 	}
@@ -506,20 +581,27 @@ func (p *Pilot) Quit(ctx context.Context) error {
 	}
 	p.closed = true
 
-	// Close BiDi connection
-	var clientErr error
+	// Close the CDP client connection
+	if p.cdpClient != nil {
+		_ = p.cdpClient.Close()
+	}
+
+	// Close the BiDi client connection
 	if p.client != nil {
-		clientErr = p.client.Close()
+		_ = p.client.Close()
 	}
 
-	// Stop browser process
-	if p.browser != nil {
-		if err := p.browser.Stop(); err != nil {
-			return err
-		}
+	// Stop the clicker process (WebSocket mode)
+	if p.clicker != nil {
+		return p.clicker.Stop()
 	}
 
-	return clientErr
+	// Close pipe transport (pipe mode)
+	if p.pipeTransport != nil {
+		return p.pipeTransport.Close()
+	}
+
+	return nil
 }
 
 // IsClosed returns whether the browser has been closed.
@@ -530,6 +612,290 @@ func (p *Pilot) IsClosed() bool {
 // BrowsingContext returns the browsing context ID for this page.
 func (p *Pilot) BrowsingContext() string {
 	return p.browsingContext
+}
+
+// CDP returns the Chrome DevTools Protocol client, or nil if not available.
+// Use HasCDP() to check availability before calling CDP methods.
+func (p *Pilot) CDP() *cdp.Client {
+	return p.cdpClient
+}
+
+// HasCDP returns true if the CDP client is connected and available.
+func (p *Pilot) HasCDP() bool {
+	return p.cdpClient != nil && p.cdpClient.IsConnected()
+}
+
+// CDPPort returns the CDP port, or 0 if CDP is not available.
+func (p *Pilot) CDPPort() int {
+	return p.cdpPort
+}
+
+// TakeHeapSnapshot captures a V8 heap snapshot and saves it to a file.
+// Requires CDP connection. Returns error if CDP is not available.
+func (p *Pilot) TakeHeapSnapshot(ctx context.Context, path string) (*cdp.HeapSnapshot, error) {
+	if !p.HasCDP() {
+		return nil, fmt.Errorf("CDP not available")
+	}
+	return p.cdpClient.TakeHeapSnapshot(ctx, path)
+}
+
+// GetNetworkResponseBody retrieves the body of a network response.
+// Requires CDP connection. Returns error if CDP is not available.
+func (p *Pilot) GetNetworkResponseBody(ctx context.Context, requestID string, saveTo string) (*cdp.ResponseBody, error) {
+	if !p.HasCDP() {
+		return nil, fmt.Errorf("CDP not available")
+	}
+	return p.cdpClient.GetResponseBody(ctx, requestID, saveTo)
+}
+
+// EmulateNetwork sets network throttling conditions.
+// Use cdp.NetworkSlow3G, cdp.NetworkFast3G, cdp.Network4G, etc.
+// Requires CDP connection. Returns error if CDP is not available.
+func (p *Pilot) EmulateNetwork(ctx context.Context, conditions cdp.NetworkConditions) error {
+	if !p.HasCDP() {
+		return fmt.Errorf("CDP not available")
+	}
+	return p.cdpClient.SetNetworkConditions(ctx, conditions)
+}
+
+// ClearNetworkEmulation clears network throttling.
+// Requires CDP connection. Returns error if CDP is not available.
+func (p *Pilot) ClearNetworkEmulation(ctx context.Context) error {
+	if !p.HasCDP() {
+		return fmt.Errorf("CDP not available")
+	}
+	return p.cdpClient.ClearNetworkConditions(ctx)
+}
+
+// EmulateCPU sets CPU throttling.
+// rate=1 means no throttling, rate=4 means 4x slowdown.
+// Use cdp.CPU4xSlowdown, cdp.CPU6xSlowdown, etc.
+// Requires CDP connection. Returns error if CDP is not available.
+func (p *Pilot) EmulateCPU(ctx context.Context, rate int) error {
+	if !p.HasCDP() {
+		return fmt.Errorf("CDP not available")
+	}
+	return p.cdpClient.SetCPUThrottlingRate(ctx, rate)
+}
+
+// ClearCPUEmulation clears CPU throttling.
+// Requires CDP connection. Returns error if CDP is not available.
+func (p *Pilot) ClearCPUEmulation(ctx context.Context) error {
+	if !p.HasCDP() {
+		return fmt.Errorf("CDP not available")
+	}
+	return p.cdpClient.ClearCPUThrottling(ctx)
+}
+
+// ScreencastFrameHandler is called for each captured screencast frame.
+type ScreencastFrameHandler func(frame *cdp.ScreencastFrame)
+
+// StartScreencast begins capturing screen frames.
+// The handler is called for each captured frame with base64-encoded image data.
+// Requires CDP connection. Returns error if CDP is not available.
+func (p *Pilot) StartScreencast(ctx context.Context, opts *cdp.ScreencastOptions, handler ScreencastFrameHandler) error {
+	if !p.HasCDP() {
+		return fmt.Errorf("CDP not available")
+	}
+	if p.screencast == nil {
+		p.screencast = cdp.NewScreencast(p.cdpClient)
+	}
+	return p.screencast.Start(ctx, opts, func(frame *cdp.ScreencastFrame) {
+		if handler != nil {
+			handler(frame)
+		}
+	})
+}
+
+// StopScreencast stops capturing screen frames.
+// Requires CDP connection. Returns error if CDP is not available.
+func (p *Pilot) StopScreencast(ctx context.Context) error {
+	if !p.HasCDP() {
+		return fmt.Errorf("CDP not available")
+	}
+	if p.screencast == nil {
+		return nil
+	}
+	return p.screencast.Stop(ctx)
+}
+
+// IsScreencasting returns whether screencast is active.
+func (p *Pilot) IsScreencasting() bool {
+	if p.screencast == nil {
+		return false
+	}
+	return p.screencast.IsRunning()
+}
+
+// ExtensionInfo contains information about a browser extension.
+type ExtensionInfo = cdp.ExtensionInfo
+
+// InstallExtension loads an unpacked extension from a directory.
+// Returns the extension ID if successful.
+// Requires CDP connection. Returns error if CDP is not available.
+func (p *Pilot) InstallExtension(ctx context.Context, path string) (string, error) {
+	if !p.HasCDP() {
+		return "", fmt.Errorf("CDP not available")
+	}
+	return p.cdpClient.LoadUnpackedExtension(ctx, path)
+}
+
+// UninstallExtension removes an extension by ID.
+// Requires CDP connection. Returns error if CDP is not available.
+func (p *Pilot) UninstallExtension(ctx context.Context, id string) error {
+	if !p.HasCDP() {
+		return fmt.Errorf("CDP not available")
+	}
+	return p.cdpClient.UninstallExtension(ctx, id)
+}
+
+// ListExtensions returns all installed extensions.
+// Requires CDP connection. Returns error if CDP is not available.
+func (p *Pilot) ListExtensions(ctx context.Context) ([]ExtensionInfo, error) {
+	if !p.HasCDP() {
+		return nil, fmt.Errorf("CDP not available")
+	}
+	return p.cdpClient.GetAllExtensions(ctx)
+}
+
+// CoverageReport is an alias for cdp.CoverageReport.
+type CoverageReport = cdp.CoverageReport
+
+// CoverageSummary is an alias for cdp.CoverageSummary.
+type CoverageSummary = cdp.CoverageSummary
+
+// StartCoverage begins collecting JS and CSS coverage data.
+// Requires CDP connection. Returns error if CDP is not available.
+func (p *Pilot) StartCoverage(ctx context.Context) error {
+	if !p.HasCDP() {
+		return fmt.Errorf("CDP not available")
+	}
+	if p.coverage == nil {
+		p.coverage = cdp.NewCoverage(p.cdpClient)
+	}
+	return p.coverage.Start(ctx)
+}
+
+// StartJSCoverage begins collecting JavaScript coverage data.
+// callCount: collect execution counts per block
+// detailed: collect block-level coverage (vs function-level)
+// Requires CDP connection. Returns error if CDP is not available.
+func (p *Pilot) StartJSCoverage(ctx context.Context, callCount, detailed bool) error {
+	if !p.HasCDP() {
+		return fmt.Errorf("CDP not available")
+	}
+	if p.coverage == nil {
+		p.coverage = cdp.NewCoverage(p.cdpClient)
+	}
+	return p.coverage.StartJS(ctx, callCount, detailed)
+}
+
+// StartCSSCoverage begins collecting CSS coverage data.
+// Requires CDP connection. Returns error if CDP is not available.
+func (p *Pilot) StartCSSCoverage(ctx context.Context) error {
+	if !p.HasCDP() {
+		return fmt.Errorf("CDP not available")
+	}
+	if p.coverage == nil {
+		p.coverage = cdp.NewCoverage(p.cdpClient)
+	}
+	return p.coverage.StartCSS(ctx)
+}
+
+// StopCoverage stops coverage collection and returns the results.
+// Requires CDP connection. Returns error if CDP is not available.
+func (p *Pilot) StopCoverage(ctx context.Context) (*CoverageReport, error) {
+	if !p.HasCDP() {
+		return nil, fmt.Errorf("CDP not available")
+	}
+	if p.coverage == nil {
+		return nil, fmt.Errorf("coverage not started")
+	}
+	return p.coverage.Stop(ctx)
+}
+
+// IsCoverageRunning returns whether coverage collection is active.
+func (p *Pilot) IsCoverageRunning() bool {
+	if p.coverage == nil {
+		return false
+	}
+	return p.coverage.IsRunning()
+}
+
+// ConsoleEntry is an alias for cdp.ConsoleEntry.
+type ConsoleEntry = cdp.ConsoleEntry
+
+// ExceptionDetails is an alias for cdp.ExceptionDetails.
+type ExceptionDetails = cdp.ExceptionDetails
+
+// LogEntry is an alias for cdp.LogEntry.
+type LogEntry = cdp.LogEntry
+
+// EnableConsoleDebugger starts capturing console messages with full stack traces.
+// This uses CDP Runtime domain for enhanced debugging compared to BiDi console events.
+// Requires CDP connection. Returns error if CDP is not available.
+func (p *Pilot) EnableConsoleDebugger(ctx context.Context) error {
+	if !p.HasCDP() {
+		return fmt.Errorf("CDP not available")
+	}
+	if p.consoleDebugger == nil {
+		p.consoleDebugger = cdp.NewConsoleDebugger(p.cdpClient)
+	}
+	return p.consoleDebugger.Enable(ctx)
+}
+
+// DisableConsoleDebugger stops capturing console messages.
+// Requires CDP connection. Returns error if CDP is not available.
+func (p *Pilot) DisableConsoleDebugger(ctx context.Context) error {
+	if !p.HasCDP() {
+		return fmt.Errorf("CDP not available")
+	}
+	if p.consoleDebugger == nil {
+		return nil
+	}
+	return p.consoleDebugger.Disable(ctx)
+}
+
+// ConsoleEntries returns all captured console entries with stack traces.
+// Call EnableConsoleDebugger first to start capturing.
+func (p *Pilot) ConsoleEntries() []ConsoleEntry {
+	if p.consoleDebugger == nil {
+		return nil
+	}
+	return p.consoleDebugger.Entries()
+}
+
+// ConsoleExceptions returns all captured JavaScript exceptions.
+// Call EnableConsoleDebugger first to start capturing.
+func (p *Pilot) ConsoleExceptions() []ExceptionDetails {
+	if p.consoleDebugger == nil {
+		return nil
+	}
+	return p.consoleDebugger.Errors()
+}
+
+// BrowserLogs returns all captured browser log entries (deprecations, interventions).
+// Call EnableConsoleDebugger first to start capturing.
+func (p *Pilot) BrowserLogs() []LogEntry {
+	if p.consoleDebugger == nil {
+		return nil
+	}
+	return p.consoleDebugger.Logs()
+}
+
+// ClearConsoleDebugger clears all captured console entries, exceptions, and logs.
+func (p *Pilot) ClearConsoleDebugger() {
+	if p.consoleDebugger != nil {
+		p.consoleDebugger.Clear()
+	}
+}
+
+// IsConsoleDebuggerEnabled returns whether the console debugger is active.
+func (p *Pilot) IsConsoleDebuggerEnabled() bool {
+	if p.consoleDebugger == nil {
+		return false
+	}
+	return p.consoleDebugger.IsEnabled()
 }
 
 // Keyboard returns the keyboard controller for this page.
@@ -920,7 +1286,7 @@ func (p *Pilot) Frame(ctx context.Context, nameOrURL string) (*Pilot, error) {
 
 	return &Pilot{
 		client:          p.client,
-		browser:         p.browser,
+		clicker:         p.clicker,
 		browsingContext: resp.Context,
 	}, nil
 }
@@ -1657,7 +2023,7 @@ func (p *Pilot) OnPage(ctx context.Context, handler PageHandler) error {
 		// Create a new Pilot instance for the new page
 		newPage := &Pilot{
 			client:          p.client,
-			browser:         p.browser,
+				clicker:         p.clicker,
 			browsingContext: params.Context,
 		}
 		handler(newPage)
@@ -1698,7 +2064,7 @@ func (p *Pilot) OnPopup(ctx context.Context, handler PopupHandler) error {
 		// Create a new Pilot instance for the popup
 		popup := &Pilot{
 			client:          p.client,
-			browser:         p.browser,
+				clicker:         p.clicker,
 			browsingContext: params.Context,
 		}
 		handler(popup)
@@ -1744,7 +2110,7 @@ func (p *Pilot) NewPage(ctx context.Context) (*Pilot, error) {
 
 	return &Pilot{
 		client:          p.client,
-		browser:         p.browser,
+		clicker:         p.clicker,
 		browsingContext: resp.Context,
 	}, nil
 }
@@ -1769,7 +2135,7 @@ func (p *Pilot) NewContext(ctx context.Context) (*BrowserContext, error) {
 
 	return &BrowserContext{
 		client:      p.client,
-		browser:     p.browser,
+		clicker:     p.clicker,
 		userContext: resp.UserContext,
 	}, nil
 }
@@ -1798,7 +2164,7 @@ func (p *Pilot) Pages(ctx context.Context) ([]*Pilot, error) {
 	for i, c := range tree.Contexts {
 		pages[i] = &Pilot{
 			client:          p.client,
-			browser:         p.browser,
+				clicker:         p.clicker,
 			browsingContext: c.Context,
 		}
 	}

@@ -1,6 +1,72 @@
 # MCP Tools Reference
 
-Complete reference for all 80+ MCP tools.
+Complete reference for all **159 MCP tools across 20 namespaces**.
+
+## Naming Convention
+
+All tool names follow the pattern: `{namespace}_{verb}_{target}`
+
+**Naming Principles:**
+
+1. **Explicit verbs**: `element_get_text` not `element_text`
+2. **No abbreviations**: `wait_for_function` not `wait_fn`
+3. **Full words**: `human_pause` not `hitl_pause`, `accessibility_snapshot` not `a11y_snapshot`
+4. **Consistent verb patterns**: get/set, start/stop, is/has
+
+| Namespace | Purpose | Count |
+|-----------|---------|------:|
+| `accessibility_` | Accessibility tree | 1 |
+| `browser_` | Browser lifecycle | 2 |
+| `cdp_` | Chrome DevTools Protocol | 20 |
+| `config_` | Configuration | 1 |
+| `console_` | Console messages | 2 |
+| `dialog_` | Dialog handling | 2 |
+| `element_` | Element interactions and state | 33 |
+| `frame_` | Frame selection | 2 |
+| `human_` | Human-in-the-loop | 1 |
+| `input_` | Low-level keyboard/mouse/touch | 12 |
+| `js_` | JavaScript execution | 4 |
+| `network_` | Network requests and mocking | 6 |
+| `page_` | Page navigation, state, screenshots, emulation | 19 |
+| `record_` | Script recording | 5 |
+| `storage_` | Cookies, localStorage, sessionStorage | 17 |
+| `tab_` | Tab management | 3 |
+| `test_` | Assertions, verification, reporting | 15 |
+| `trace_` | Tracing | 6 |
+| `video_` | Video recording | 2 |
+| `wait_` | Waiting operations | 6 |
+
+## Machine-Readable Format
+
+For programmatic access, use:
+
+```bash
+# Export as JSON
+webpilot mcp --list-tools > mcp-tools.json
+
+# Or via the standalone binary
+webpilot-mcp --list-tools
+```
+
+The JSON format follows the MCP protocol structure:
+
+```json
+{
+  "tools": [
+    {
+      "name": "tool_name",
+      "description": "Tool description",
+      "category": "Category Name"
+    }
+  ],
+  "categories": {
+    "Category Name": 5
+  },
+  "total": 159
+}
+```
+
+A pre-generated version is available at [mcp-tools.json](mcp-tools.json).
 
 ## Browser Management
 
@@ -32,7 +98,7 @@ Close the browser.
 
 ## Navigation
 
-### navigate
+### page_navigate
 
 Navigate to a URL.
 
@@ -49,19 +115,19 @@ Navigate to a URL.
 | `url` | string | Current URL |
 | `title` | string | Page title |
 
-### back
+### page_go_back
 
 Navigate back in history.
 
-### forward
+### page_go_forward
 
 Navigate forward in history.
 
-### reload
+### page_reload
 
 Reload the current page.
 
-### scroll
+### page_scroll
 
 Scroll the page or a specific element.
 
@@ -81,7 +147,7 @@ Scroll the page or a specific element.
 
 ## Element Interactions
 
-### click
+### element_click
 
 Click an element.
 
@@ -92,7 +158,7 @@ Click an element.
 | `selector` | string | ✅ | CSS selector |
 | `timeout_ms` | integer | | Timeout (default: 5000) |
 
-### dblclick
+### element_double_click
 
 Double-click an element.
 
@@ -103,7 +169,7 @@ Double-click an element.
 | `selector` | string | ✅ | CSS selector |
 | `timeout_ms` | integer | | Timeout |
 
-### type
+### element_type
 
 Type text into an element (appends).
 
@@ -115,7 +181,7 @@ Type text into an element (appends).
 | `text` | string | ✅ | Text to type |
 | `timeout_ms` | integer | | Timeout |
 
-### fill
+### element_fill
 
 Fill an input (replaces content).
 
@@ -127,7 +193,7 @@ Fill an input (replaces content).
 | `value` | string | ✅ | Value to fill |
 | `timeout_ms` | integer | | Timeout |
 
-### fill_form
+### element_fill_form
 
 Fill multiple form fields at once.
 
@@ -146,7 +212,7 @@ Fill multiple form fields at once.
 | `filled` | integer | Number of fields filled |
 | `errors` | array | Any errors encountered |
 
-### clear
+### element_clear
 
 Clear an input element.
 
@@ -156,7 +222,7 @@ Clear an input element.
 |-------|------|----------|-------------|
 | `selector` | string | ✅ | CSS selector |
 
-### press
+### element_press
 
 Press a key on an element.
 
@@ -169,7 +235,7 @@ Press a key on an element.
 
 ## Form Controls
 
-### check
+### element_check
 
 Check a checkbox.
 
@@ -179,7 +245,7 @@ Check a checkbox.
 |-------|------|----------|-------------|
 | `selector` | string | ✅ | CSS selector |
 
-### uncheck
+### element_uncheck
 
 Uncheck a checkbox.
 
@@ -189,7 +255,7 @@ Uncheck a checkbox.
 |-------|------|----------|-------------|
 | `selector` | string | ✅ | CSS selector |
 
-### select_option
+### element_select
 
 Select dropdown option(s).
 
@@ -202,7 +268,7 @@ Select dropdown option(s).
 | `labels` | array | | Option labels |
 | `indexes` | array | | Option indexes |
 
-### set_files
+### element_set_files
 
 Set files on a file input.
 
@@ -215,7 +281,7 @@ Set files on a file input.
 
 ## Element State
 
-### get_text
+### element_get_text
 
 Get element text content.
 
@@ -231,15 +297,15 @@ Get element text content.
 |-------|------|-------------|
 | `text` | string | Text content |
 
-### get_value
+### element_get_value
 
 Get input element value.
 
-### get_inner_html
+### element_get_inner_html
 
 Get element innerHTML.
 
-### get_outer_html
+### element_get_outer_html
 
 Get element outerHTML (including the element itself).
 
@@ -255,11 +321,11 @@ Get element outerHTML (including the element itself).
 |-------|------|-------------|
 | `html` | string | Element's outer HTML |
 
-### get_inner_text
+### element_get_inner_text
 
 Get element innerText.
 
-### get_attribute
+### element_get_attribute
 
 Get element attribute.
 
@@ -270,7 +336,7 @@ Get element attribute.
 | `selector` | string | ✅ | CSS selector |
 | `name` | string | ✅ | Attribute name |
 
-### get_bounding_box
+### element_get_bounding_box
 
 Get element bounding box.
 
@@ -283,7 +349,7 @@ Get element bounding box.
 | `width` | number | Width |
 | `height` | number | Height |
 
-### is_visible
+### element_is_visible
 
 Check if element is visible.
 
@@ -293,33 +359,33 @@ Check if element is visible.
 |-------|------|-------------|
 | `visible` | boolean | Visibility state |
 
-### is_hidden
+### element_is_hidden
 
 Check if element is hidden.
 
-### is_enabled
+### element_is_enabled
 
 Check if element is enabled.
 
-### is_checked
+### element_is_checked
 
 Check if checkbox/radio is checked.
 
-### is_editable
+### element_is_editable
 
 Check if element is editable.
 
-### get_role
+### element_get_role
 
 Get ARIA role.
 
-### get_label
+### element_get_label
 
 Get accessible label.
 
 ## Page State
 
-### get_title
+### page_get_title
 
 Get page title.
 
@@ -329,7 +395,7 @@ Get page title.
 |-------|------|-------------|
 | `title` | string | Page title |
 
-### get_url
+### page_get_url
 
 Get current URL.
 
@@ -339,19 +405,19 @@ Get current URL.
 |-------|------|-------------|
 | `url` | string | Current URL |
 
-### get_content
+### page_get_content
 
 Get page HTML content.
 
-### set_content
+### page_set_content
 
 Set page HTML content.
 
-### get_viewport
+### page_get_viewport
 
 Get viewport dimensions.
 
-### set_viewport
+### page_set_viewport
 
 Set viewport dimensions.
 
@@ -364,7 +430,7 @@ Set viewport dimensions.
 
 ## Screenshots & PDF
 
-### screenshot
+### page_screenshot
 
 Capture page screenshot.
 
@@ -384,13 +450,13 @@ Capture page screenshot.
 
 Capture element screenshot.
 
-### pdf
+### page_pdf
 
 Generate PDF.
 
 ## JavaScript
 
-### evaluate
+### js_evaluate
 
 Execute JavaScript.
 
@@ -406,21 +472,21 @@ Execute JavaScript.
 |-------|------|-------------|
 | `result` | any | Evaluation result |
 
-### element_eval
+### element_evaluate
 
 Evaluate JavaScript with element.
 
-### add_script
+### js_add_script
 
 Inject JavaScript.
 
-### add_style
+### js_add_style
 
 Inject CSS.
 
 ## Waiting
 
-### wait_until
+### wait_for_state
 
 Wait for element state.
 
@@ -457,51 +523,51 @@ Wait for JavaScript function.
 
 ## Input Controllers
 
-### keyboard_press
+### input_keyboard_press
 
 Press a key.
 
-### keyboard_down
+### input_keyboard_down
 
 Hold a key.
 
-### keyboard_up
+### input_keyboard_up
 
 Release a key.
 
-### keyboard_type
+### input_keyboard_type
 
 Type text via keyboard.
 
-### mouse_click
+### input_mouse_click
 
 Click at coordinates.
 
-### mouse_move
+### input_mouse_move
 
 Move mouse.
 
-### mouse_down
+### input_mouse_down
 
 Press mouse button.
 
-### mouse_up
+### input_mouse_up
 
 Release mouse button.
 
-### mouse_wheel
+### input_mouse_wheel
 
 Scroll mouse wheel.
 
-### touch_tap
+### input_touch_tap
 
 Tap at coordinates.
 
-### touch_swipe
+### input_touch_swipe
 
 Swipe gesture.
 
-### mouse_drag
+### input_mouse_drag
 
 Drag from one point to another using the mouse.
 
@@ -517,25 +583,25 @@ Drag from one point to another using the mouse.
 
 ## Page Management
 
-### new_page
+### page_new
 
 Create new page/tab.
 
-### get_pages
+### page_get_count
 
 Get page count.
 
-### close_page
+### page_close
 
 Close current page.
 
-### bring_to_front
+### page_bring_to_front
 
 Activate page.
 
 ## Emulation
 
-### emulate_media
+### page_emulate_media
 
 Emulate CSS media features for accessibility testing.
 
@@ -563,7 +629,7 @@ Emulate CSS media features for accessibility testing.
 - **forced_colors**: Test Windows High Contrast Mode compatibility
 - **contrast**: Test increased/decreased contrast for users with low vision
 
-### set_geolocation
+### page_set_geolocation
 
 Set the browser's geolocation.
 
@@ -577,7 +643,7 @@ Set the browser's geolocation.
 
 ## Tab Management
 
-### list_tabs
+### tab_list
 
 List all open browser tabs.
 
@@ -589,7 +655,7 @@ List all open browser tabs.
 | `count` | integer | Number of open tabs |
 | `current_tab` | integer | Index of the current tab |
 
-### select_tab
+### tab_select
 
 Switch to a specific tab.
 
@@ -598,9 +664,9 @@ Switch to a specific tab.
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `index` | integer | | Tab index (0-based) |
-| `id` | string | | Tab ID from list_tabs |
+| `id` | string | | Tab ID from tab_list |
 
-### close_tab
+### tab_close
 
 Close a specific tab.
 
@@ -613,7 +679,7 @@ Close a specific tab.
 
 ## Dialog Handling
 
-### handle_dialog
+### dialog_handle
 
 Handle a browser dialog (alert, confirm, prompt, beforeunload).
 
@@ -624,7 +690,7 @@ Handle a browser dialog (alert, confirm, prompt, beforeunload).
 | `action` | string | Yes | Action: "accept" or "dismiss" |
 | `prompt_text` | string | | Text for prompt dialogs |
 
-### get_dialog
+### dialog_get
 
 Get information about the current dialog.
 
@@ -639,7 +705,7 @@ Get information about the current dialog.
 
 ## Console Messages
 
-### get_console_messages
+### console_get_messages
 
 Get console messages from the page.
 
@@ -667,13 +733,13 @@ Each message contains:
 | `url` | string | Source URL |
 | `line` | integer | Source line number |
 
-### clear_console_messages
+### console_clear
 
 Clear all buffered console messages.
 
 ## Network Requests
 
-### get_network_requests
+### network_get_requests
 
 Get captured network requests.
 
@@ -704,13 +770,13 @@ Each request contains:
 | `status_text` | string | Response status text |
 | `response_size` | integer | Response size in bytes |
 
-### clear_network_requests
+### network_clear
 
 Clear all buffered network requests.
 
 ## Network Mocking
 
-### route
+### network_route
 
 Register a mock response for requests matching a URL pattern.
 
@@ -731,7 +797,7 @@ Register a mock response for requests matching a URL pattern.
 | `message` | string | Status message |
 | `pattern` | string | Registered pattern |
 
-### route_list
+### network_list_routes
 
 List all active route handlers.
 
@@ -750,7 +816,7 @@ Each route contains:
 | `status` | integer | Response status code |
 | `content_type` | string | Content-Type header |
 
-### unroute
+### network_unroute
 
 Remove a previously registered route handler.
 
@@ -766,7 +832,7 @@ Remove a previously registered route handler.
 |-------|------|-------------|
 | `message` | string | Status message |
 
-### network_state_set
+### network_set_offline
 
 Set the browser's network state for offline mode testing.
 
@@ -785,21 +851,21 @@ Set the browser's network state for offline mode testing.
 
 ## Cookies & Storage
 
-### get_cookies
+### storage_get_cookies
 
 Get browser cookies.
 
-### set_cookies
+### storage_set_cookies
 
 Set browser cookies.
 
-### clear_cookies
+### storage_clear_cookies
 
 Clear all cookies.
 
-### get_storage_state
+### storage_get_state
 
-Get complete browser storage state including cookies, localStorage, and sessionStorage as JSON. This can be saved to a file and later restored using `set_storage_state` to resume a session.
+Get complete browser storage state including cookies, localStorage, and sessionStorage as JSON. This can be saved to a file and later restored using `storage_set_state` to resume a session.
 
 **Output:**
 
@@ -811,23 +877,23 @@ Returns JSON containing:
   - `localStorage`: Key-value map of localStorage items
   - `sessionStorage`: Key-value map of sessionStorage items (for current page's origin)
 
-### set_storage_state
+### storage_set_state
 
-Restore browser storage from JSON (output of `get_storage_state`). Restores cookies, localStorage, and sessionStorage.
+Restore browser storage from JSON (output of `storage_get_state`). Restores cookies, localStorage, and sessionStorage.
 
 **Input:**
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `state` | string | Yes | JSON from get_storage_state |
+| `state` | string | Yes | JSON from storage_get_state |
 
-### clear_storage
+### storage_clear_all
 
 Clear all browser storage including cookies, localStorage, and sessionStorage.
 
 ## LocalStorage
 
-### localstorage_get
+### storage_local_get
 
 Get a value from localStorage by key.
 
@@ -844,7 +910,7 @@ Get a value from localStorage by key.
 | `key` | string | The key |
 | `value` | string | The value (null if not found) |
 
-### localstorage_set
+### storage_local_set
 
 Set a value in localStorage.
 
@@ -855,7 +921,7 @@ Set a value in localStorage.
 | `key` | string | Yes | Key to set |
 | `value` | string | Yes | Value to store |
 
-### localstorage_delete
+### storage_local_delete
 
 Delete a key from localStorage.
 
@@ -865,11 +931,11 @@ Delete a key from localStorage.
 |-------|------|----------|-------------|
 | `key` | string | Yes | Key to delete |
 
-### localstorage_clear
+### storage_local_clear
 
 Clear all localStorage data for the current origin.
 
-### localstorage_list
+### storage_local_list
 
 List all keys and values in localStorage.
 
@@ -882,7 +948,7 @@ List all keys and values in localStorage.
 
 ## SessionStorage
 
-### sessionstorage_get
+### storage_session_get
 
 Get a value from sessionStorage by key.
 
@@ -899,7 +965,7 @@ Get a value from sessionStorage by key.
 | `key` | string | The key |
 | `value` | string | The value (null if not found) |
 
-### sessionstorage_set
+### storage_session_set
 
 Set a value in sessionStorage.
 
@@ -910,7 +976,7 @@ Set a value in sessionStorage.
 | `key` | string | Yes | Key to set |
 | `value` | string | Yes | Value to store |
 
-### sessionstorage_delete
+### storage_session_delete
 
 Delete a key from sessionStorage.
 
@@ -920,11 +986,11 @@ Delete a key from sessionStorage.
 |-------|------|----------|-------------|
 | `key` | string | Yes | Key to delete |
 
-### sessionstorage_clear
+### storage_session_clear
 
 Clear all sessionStorage data for the current origin.
 
-### sessionstorage_list
+### storage_session_list
 
 List all keys and values in sessionStorage.
 
@@ -937,7 +1003,7 @@ List all keys and values in sessionStorage.
 
 ## Script Recording
 
-### start_recording
+### record_start
 
 Begin recording actions.
 
@@ -949,7 +1015,7 @@ Begin recording actions.
 | `description` | string | Description |
 | `baseUrl` | string | Base URL |
 
-### stop_recording
+### record_stop
 
 Stop recording.
 
@@ -959,7 +1025,7 @@ Stop recording.
 |-------|------|-------------|
 | `stepCount` | integer | Steps recorded |
 
-### export_script
+### record_export
 
 Export recorded script.
 
@@ -971,11 +1037,11 @@ Export recorded script.
 | `stepCount` | integer | Steps |
 | `format` | string | Output format |
 
-### recording_status
+### record_get_status
 
 Check recording state.
 
-### clear_recording
+### record_clear
 
 Clear recorded steps.
 
@@ -983,7 +1049,7 @@ Clear recorded steps.
 
 Tools for recording detailed execution traces for debugging and analysis. Traces include screenshots, DOM snapshots, and network activity. View traces with `npx playwright show-trace <trace.zip>`.
 
-### start_trace
+### trace_start
 
 Start trace recording with screenshots and DOM snapshots.
 
@@ -1004,7 +1070,7 @@ Start trace recording with screenshots and DOM snapshots.
 | `message` | string | Status message |
 | `name` | string | Trace name |
 
-### stop_trace
+### trace_stop
 
 Stop trace recording and save or return the trace data.
 
@@ -1024,7 +1090,7 @@ Stop trace recording and save or return the trace data.
 | `size_kb` | integer | Trace size in KB |
 | `view_hint` | string | Command to view trace |
 
-### start_trace_chunk
+### trace_chunk_start
 
 Start a new trace chunk within an active trace for segmenting recordings.
 
@@ -1035,7 +1101,7 @@ Start a new trace chunk within an active trace for segmenting recordings.
 | `name` | string | | Chunk name |
 | `title` | string | | Chunk title shown in trace viewer |
 
-### stop_trace_chunk
+### trace_chunk_stop
 
 Stop the current trace chunk.
 
@@ -1054,7 +1120,7 @@ Stop the current trace chunk.
 | `data` | string | Base64-encoded ZIP if no path |
 | `size_kb` | integer | Chunk size in KB |
 
-### start_trace_group
+### trace_group_start
 
 Start a trace group for logical grouping of actions in the trace viewer.
 
@@ -1065,13 +1131,13 @@ Start a trace group for logical grouping of actions in the trace viewer.
 | `name` | string | ✅ | Group name |
 | `location` | string | | Source location to associate |
 
-### stop_trace_group
+### trace_group_stop
 
 Stop the current trace group.
 
 ## Init Scripts
 
-### add_init_script
+### js_init_script
 
 Add JavaScript that runs before page scripts on every navigation. Useful for mocking APIs, injecting test helpers, or setting up authentication.
 
@@ -1111,7 +1177,7 @@ window.testHelpers = {
 
 ## Assertions
 
-### assert_text
+### test_assert_text
 
 Assert text exists.
 
@@ -1122,7 +1188,7 @@ Assert text exists.
 | `text` | string | ✅ | Expected text |
 | `selector` | string | | Limit to element |
 
-### assert_element
+### test_assert_element
 
 Assert element exists.
 
@@ -1134,7 +1200,7 @@ Assert element exists.
 
 ## Testing Tools
 
-### verify_value
+### test_verify_value
 
 Verify that an input element has the expected value.
 
@@ -1154,7 +1220,7 @@ Verify that an input element has the expected value.
 | `actual` | string | The actual value found |
 | `message` | string | Status message |
 
-### verify_list_visible
+### test_verify_list
 
 Verify that a list of text items are all visible on the page.
 
@@ -1175,7 +1241,7 @@ Verify that a list of text items are all visible on the page.
 | `missing` | array | Items that were not found |
 | `message` | string | Status message |
 
-### generate_locator
+### test_generate_locator
 
 Generate a locator string for a given element using a specific strategy.
 
@@ -1197,21 +1263,21 @@ Generate a locator string for a given element using a specific strategy.
 
 ## Test Reporting
 
-### get_test_report
+### test_get_report
 
 Get test execution report.
 
-### reset_session
+### test_reset
 
 Clear test results.
 
-### set_target
+### test_set_target
 
 Set test target description.
 
 ## Configuration
 
-### get_config
+### config_get
 
 Get the resolved MCP server configuration.
 
@@ -1223,3 +1289,248 @@ Get the resolved MCP server configuration.
 | `project` | string | Project name for reports |
 | `default_timeout_ms` | integer | Default timeout in milliseconds |
 | `browser_launched` | boolean | Whether browser has been launched |
+
+---
+
+## CDP Tools (Chrome DevTools Protocol)
+
+These tools use direct CDP connection for advanced browser profiling and debugging that isn't available through WebDriver BiDi.
+
+### Performance & Profiling
+
+#### cdp_get_performance_metrics
+
+Get Core Web Vitals (LCP, CLS, INP) and navigation timing metrics.
+
+**Output:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `lcp` | object | Largest Contentful Paint data |
+| `cls` | number | Cumulative Layout Shift score |
+| `inp` | object | Interaction to Next Paint data |
+| `navigation` | object | Navigation timing metrics |
+
+#### cdp_get_memory_stats
+
+Get JavaScript heap memory statistics.
+
+**Output:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `usedJSHeapSize` | integer | Used heap size in bytes |
+| `totalJSHeapSize` | integer | Total heap size in bytes |
+| `jsHeapSizeLimit` | integer | Maximum heap size in bytes |
+
+#### cdp_take_heap_snapshot
+
+Capture a V8 heap snapshot for memory profiling.
+
+**Input:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `path` | string | | File path to save snapshot (default: auto-generated) |
+
+**Output:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `path` | string | Path to saved .heapsnapshot file |
+| `size` | integer | Snapshot size in bytes |
+
+### Network Emulation (CDP)
+
+#### cdp_emulate_network
+
+Emulate network conditions.
+
+**Input:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `preset` | string | | Preset: "slow3g", "fast3g", "4g", "wifi", "offline" |
+| `latency` | number | | Custom latency in ms |
+| `download` | number | | Custom download throughput in bytes/sec |
+| `upload` | number | | Custom upload throughput in bytes/sec |
+
+#### cdp_emulate_cpu
+
+Emulate CPU throttling.
+
+**Input:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `rate` | number | ✅ | Throttling rate (2, 4, or 6 for 2x, 4x, 6x slowdown) |
+
+#### cdp_clear_network_emulation
+
+Clear network emulation and restore normal conditions.
+
+#### cdp_clear_cpu_emulation
+
+Clear CPU emulation and restore normal speed.
+
+### Quality Auditing
+
+#### cdp_run_lighthouse
+
+Run Lighthouse audit for performance, accessibility, SEO, and best practices.
+
+**Input:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `categories` | array | | Categories: "performance", "accessibility", "seo", "best-practices" |
+| `device` | string | | Device: "desktop" or "mobile" (default: desktop) |
+| `output_dir` | string | | Directory for HTML/JSON reports |
+
+**Output:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `url` | string | Audited URL |
+| `scores` | object | Scores by category (0-100) |
+| `passed_audits` | integer | Number of passing audits |
+| `failed_audits` | integer | Number of failing audits |
+| `report_paths` | object | Paths to generated reports |
+
+### Code Coverage (CDP)
+
+#### cdp_start_coverage
+
+Start collecting JavaScript and CSS code coverage.
+
+**Input:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `js` | boolean | | Include JavaScript coverage (default: true) |
+| `css` | boolean | | Include CSS coverage (default: true) |
+| `call_count` | boolean | | Include call counts for JS functions |
+| `detailed` | boolean | | Include detailed block coverage |
+
+#### cdp_stop_coverage
+
+Stop coverage collection and return the coverage report.
+
+**Output:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `js` | object | JavaScript coverage summary |
+| `css` | object | CSS coverage summary |
+| `scripts` | array | Detailed script coverage |
+
+### Console Debugging (CDP)
+
+#### cdp_enable_console_debugger
+
+Enable enhanced console debugging with stack traces.
+
+#### cdp_get_console_entries
+
+Get console messages with full stack traces.
+
+**Output:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `entries` | array | Console entries with type, args, stack trace |
+| `count` | integer | Number of entries |
+
+#### cdp_get_browser_logs
+
+Get browser logs including deprecations, interventions, and violations.
+
+**Output:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `logs` | array | Log entries with source, level, text |
+| `count` | integer | Number of logs |
+
+#### cdp_disable_console_debugger
+
+Disable enhanced console debugging.
+
+### Screencast (CDP)
+
+#### cdp_start_screencast
+
+Start streaming screen frames.
+
+**Input:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `format` | string | | Image format: "jpeg" or "png" (default: jpeg) |
+| `quality` | integer | | Image quality 0-100 (default: 80) |
+| `max_width` | integer | | Maximum width in pixels |
+| `max_height` | integer | | Maximum height in pixels |
+
+#### cdp_stop_screencast
+
+Stop screen streaming.
+
+### Extensions Management (CDP)
+
+#### cdp_install_extension
+
+Install a Chrome extension from a local path.
+
+**Input:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `path` | string | ✅ | Path to unpacked extension directory |
+
+**Output:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | string | Installed extension ID |
+
+#### cdp_uninstall_extension
+
+Uninstall a Chrome extension by ID.
+
+**Input:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `id` | string | ✅ | Extension ID to uninstall |
+
+#### cdp_list_extensions
+
+List all installed Chrome extensions.
+
+**Output:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `extensions` | array | Extension info (id, name, enabled) |
+| `count` | integer | Number of extensions |
+
+### Network Request Bodies (CDP)
+
+#### cdp_get_response_body
+
+Get the response body for a specific network request by ID.
+
+**Input:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `request_id` | string | ✅ | Network request ID from network_get_requests |
+| `save_to_file` | string | | Optional file path to save binary content |
+
+**Output:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `body` | string | Response body content |
+| `base64_encoded` | boolean | Whether body is base64 encoded |
+| `path` | string | File path if saved to file |

@@ -53,7 +53,7 @@ func (e *Element) Click(ctx context.Context, opts *ActionOptions) error {
 		"timeout":  timeout.Milliseconds(),
 	}
 
-	_, err := e.client.Send(ctx, "vibium:click", params)
+	_, err := e.client.Send(ctx, "vibium:element.click", params)
 	return err
 }
 
@@ -75,7 +75,7 @@ func (e *Element) Type(ctx context.Context, text string, opts *ActionOptions) er
 		"timeout":  timeout.Milliseconds(),
 	}
 
-	_, err := e.client.Send(ctx, "vibium:type", params)
+	_, err := e.client.Send(ctx, "vibium:element.type", params)
 	return err
 }
 
@@ -86,7 +86,7 @@ func (e *Element) Text(ctx context.Context) (string, error) {
 		"selector": e.selector,
 	}
 
-	result, err := e.client.Send(ctx, "vibium:el.text", params)
+	result, err := e.client.Send(ctx, "vibium:element.text", params)
 	if err != nil {
 		return "", err
 	}
@@ -109,7 +109,7 @@ func (e *Element) GetAttribute(ctx context.Context, name string) (string, error)
 		"name":     name,
 	}
 
-	result, err := e.client.Send(ctx, "vibium:el.attr", params)
+	result, err := e.client.Send(ctx, "vibium:element.attr", params)
 	if err != nil {
 		return "", err
 	}
@@ -134,7 +134,7 @@ func (e *Element) BoundingBox(ctx context.Context) (BoundingBox, error) {
 		"selector": e.selector,
 	}
 
-	result, err := e.client.Send(ctx, "vibium:el.bounds", params)
+	result, err := e.client.Send(ctx, "vibium:element.bounds", params)
 	if err != nil {
 		return BoundingBox{}, err
 	}
@@ -226,7 +226,7 @@ func (e *Element) Fill(ctx context.Context, value string, opts *ActionOptions) e
 		"timeout":  timeout.Milliseconds(),
 	}
 
-	_, err := e.client.Send(ctx, "vibium:fill", params)
+	_, err := e.client.Send(ctx, "vibium:element.fill", params)
 	return err
 }
 
@@ -248,7 +248,7 @@ func (e *Element) Press(ctx context.Context, key string, opts *ActionOptions) er
 		"timeout":  timeout.Milliseconds(),
 	}
 
-	_, err := e.client.Send(ctx, "vibium:press", params)
+	_, err := e.client.Send(ctx, "vibium:element.press", params)
 	return err
 }
 
@@ -268,7 +268,7 @@ func (e *Element) Clear(ctx context.Context, opts *ActionOptions) error {
 		"timeout":  timeout.Milliseconds(),
 	}
 
-	_, err := e.client.Send(ctx, "vibium:clear", params)
+	_, err := e.client.Send(ctx, "vibium:element.clear", params)
 	return err
 }
 
@@ -289,7 +289,7 @@ func (e *Element) Check(ctx context.Context, opts *ActionOptions) error {
 		"timeout":  timeout.Milliseconds(),
 	}
 
-	_, err := e.client.Send(ctx, "vibium:check", params)
+	_, err := e.client.Send(ctx, "vibium:element.check", params)
 	return err
 }
 
@@ -310,7 +310,7 @@ func (e *Element) Uncheck(ctx context.Context, opts *ActionOptions) error {
 		"timeout":  timeout.Milliseconds(),
 	}
 
-	_, err := e.client.Send(ctx, "vibium:uncheck", params)
+	_, err := e.client.Send(ctx, "vibium:element.uncheck", params)
 	return err
 }
 
@@ -340,7 +340,7 @@ func (e *Element) SelectOption(ctx context.Context, values SelectOptionValues, o
 		params["indexes"] = values.Indexes
 	}
 
-	_, err := e.client.Send(ctx, "vibium:selectOption", params)
+	_, err := e.client.Send(ctx, "vibium:element.selectOption", params)
 	return err
 }
 
@@ -360,7 +360,7 @@ func (e *Element) Focus(ctx context.Context, opts *ActionOptions) error {
 		"timeout":  timeout.Milliseconds(),
 	}
 
-	_, err := e.client.Send(ctx, "vibium:focus", params)
+	_, err := e.client.Send(ctx, "vibium:element.focus", params)
 	return err
 }
 
@@ -380,7 +380,7 @@ func (e *Element) Hover(ctx context.Context, opts *ActionOptions) error {
 		"timeout":  timeout.Milliseconds(),
 	}
 
-	_, err := e.client.Send(ctx, "vibium:hover", params)
+	_, err := e.client.Send(ctx, "vibium:element.hover", params)
 	return err
 }
 
@@ -400,7 +400,7 @@ func (e *Element) ScrollIntoView(ctx context.Context, opts *ActionOptions) error
 		"timeout":  timeout.Milliseconds(),
 	}
 
-	_, err := e.client.Send(ctx, "vibium:scrollIntoView", params)
+	_, err := e.client.Send(ctx, "vibium:element.scrollIntoView", params)
 	return err
 }
 
@@ -420,7 +420,7 @@ func (e *Element) DblClick(ctx context.Context, opts *ActionOptions) error {
 		"timeout":  timeout.Milliseconds(),
 	}
 
-	_, err := e.client.Send(ctx, "vibium:dblclick", params)
+	_, err := e.client.Send(ctx, "vibium:element.dblclick", params)
 	return err
 }
 
@@ -431,7 +431,7 @@ func (e *Element) Value(ctx context.Context) (string, error) {
 		"selector": e.selector,
 	}
 
-	result, err := e.client.Send(ctx, "vibium:el.value", params)
+	result, err := e.client.Send(ctx, "vibium:element.value", params)
 	if err != nil {
 		return "", err
 	}
@@ -453,7 +453,7 @@ func (e *Element) InnerHTML(ctx context.Context) (string, error) {
 		"selector": e.selector,
 	}
 
-	result, err := e.client.Send(ctx, "vibium:el.html", params)
+	result, err := e.client.Send(ctx, "vibium:element.html", params)
 	if err != nil {
 		return "", err
 	}
@@ -475,7 +475,7 @@ func (e *Element) HTML(ctx context.Context) (string, error) {
 		"selector": e.selector,
 	}
 
-	result, err := e.client.Send(ctx, "vibium:el.outerHTML", params)
+	result, err := e.client.Send(ctx, "vibium:element.outerHTML", params)
 	if err != nil {
 		return "", err
 	}
@@ -497,7 +497,7 @@ func (e *Element) InnerText(ctx context.Context) (string, error) {
 		"selector": e.selector,
 	}
 
-	result, err := e.client.Send(ctx, "vibium:el.innerText", params)
+	result, err := e.client.Send(ctx, "vibium:element.innerText", params)
 	if err != nil {
 		return "", err
 	}
@@ -519,7 +519,7 @@ func (e *Element) IsVisible(ctx context.Context) (bool, error) {
 		"selector": e.selector,
 	}
 
-	result, err := e.client.Send(ctx, "vibium:el.isVisible", params)
+	result, err := e.client.Send(ctx, "vibium:element.isVisible", params)
 	if err != nil {
 		return false, err
 	}
@@ -541,7 +541,7 @@ func (e *Element) IsHidden(ctx context.Context) (bool, error) {
 		"selector": e.selector,
 	}
 
-	result, err := e.client.Send(ctx, "vibium:el.isHidden", params)
+	result, err := e.client.Send(ctx, "vibium:element.isHidden", params)
 	if err != nil {
 		return false, err
 	}
@@ -563,7 +563,7 @@ func (e *Element) IsEnabled(ctx context.Context) (bool, error) {
 		"selector": e.selector,
 	}
 
-	result, err := e.client.Send(ctx, "vibium:el.isEnabled", params)
+	result, err := e.client.Send(ctx, "vibium:element.isEnabled", params)
 	if err != nil {
 		return false, err
 	}
@@ -585,7 +585,7 @@ func (e *Element) IsChecked(ctx context.Context) (bool, error) {
 		"selector": e.selector,
 	}
 
-	result, err := e.client.Send(ctx, "vibium:el.isChecked", params)
+	result, err := e.client.Send(ctx, "vibium:element.isChecked", params)
 	if err != nil {
 		return false, err
 	}
@@ -607,7 +607,7 @@ func (e *Element) IsEditable(ctx context.Context) (bool, error) {
 		"selector": e.selector,
 	}
 
-	result, err := e.client.Send(ctx, "vibium:el.isEditable", params)
+	result, err := e.client.Send(ctx, "vibium:element.isEditable", params)
 	if err != nil {
 		return false, err
 	}
@@ -629,7 +629,7 @@ func (e *Element) Role(ctx context.Context) (string, error) {
 		"selector": e.selector,
 	}
 
-	result, err := e.client.Send(ctx, "vibium:el.role", params)
+	result, err := e.client.Send(ctx, "vibium:element.role", params)
 	if err != nil {
 		return "", err
 	}
@@ -651,7 +651,7 @@ func (e *Element) Label(ctx context.Context) (string, error) {
 		"selector": e.selector,
 	}
 
-	result, err := e.client.Send(ctx, "vibium:el.label", params)
+	result, err := e.client.Send(ctx, "vibium:element.label", params)
 	if err != nil {
 		return "", err
 	}
@@ -683,7 +683,7 @@ func (e *Element) WaitUntil(ctx context.Context, state string, timeout time.Dura
 		"timeout":  timeout.Milliseconds(),
 	}
 
-	_, err := e.client.Send(ctx, "vibium:el.waitFor", params)
+	_, err := e.client.Send(ctx, "vibium:element.waitFor", params)
 	return err
 }
 
@@ -704,7 +704,7 @@ func (e *Element) DragTo(ctx context.Context, target *Element, opts *ActionOptio
 		"timeout":        timeout.Milliseconds(),
 	}
 
-	_, err := e.client.Send(ctx, "vibium:dragTo", params)
+	_, err := e.client.Send(ctx, "vibium:element.dragTo", params)
 	return err
 }
 
@@ -724,7 +724,7 @@ func (e *Element) Tap(ctx context.Context, opts *ActionOptions) error {
 		"timeout":  timeout.Milliseconds(),
 	}
 
-	_, err := e.client.Send(ctx, "vibium:tap", params)
+	_, err := e.client.Send(ctx, "vibium:element.tap", params)
 	return err
 }
 
@@ -740,7 +740,7 @@ func (e *Element) DispatchEvent(ctx context.Context, eventType string, eventInit
 		params["eventInit"] = eventInit
 	}
 
-	_, err := e.client.Send(ctx, "vibium:dispatchEvent", params)
+	_, err := e.client.Send(ctx, "vibium:element.dispatchEvent", params)
 	return err
 }
 
@@ -761,7 +761,7 @@ func (e *Element) SetFiles(ctx context.Context, paths []string, opts *ActionOpti
 		"timeout":  timeout.Milliseconds(),
 	}
 
-	_, err := e.client.Send(ctx, "vibium:el.setFiles", params)
+	_, err := e.client.Send(ctx, "vibium:element.setFiles", params)
 	return err
 }
 
@@ -772,7 +772,7 @@ func (e *Element) Screenshot(ctx context.Context) ([]byte, error) {
 		"selector": e.selector,
 	}
 
-	result, err := e.client.Send(ctx, "vibium:el.screenshot", params)
+	result, err := e.client.Send(ctx, "vibium:element.screenshot", params)
 	if err != nil {
 		return nil, err
 	}
@@ -801,7 +801,7 @@ func (e *Element) Eval(ctx context.Context, fn string, args ...interface{}) (int
 		params["args"] = args
 	}
 
-	result, err := e.client.Send(ctx, "vibium:el.eval", params)
+	result, err := e.client.Send(ctx, "vibium:element.eval", params)
 	if err != nil {
 		return nil, err
 	}
@@ -864,7 +864,7 @@ func (e *Element) Find(ctx context.Context, selector string, opts *FindOptions) 
 		}
 	}
 
-	result, err := e.client.Send(ctx, "vibium:find", params)
+	result, err := e.client.Send(ctx, "vibium:element.find", params)
 	if err != nil {
 		return nil, err
 	}
@@ -922,7 +922,7 @@ func (e *Element) FindAll(ctx context.Context, selector string, opts *FindOption
 		}
 	}
 
-	result, err := e.client.Send(ctx, "vibium:findAll", params)
+	result, err := e.client.Send(ctx, "vibium:element.findAll", params)
 	if err != nil {
 		return nil, err
 	}
@@ -974,7 +974,7 @@ func (e *Element) Highlight(ctx context.Context, opts *HighlightOptions) error {
 		}
 	}
 
-	_, err := e.client.Send(ctx, "vibium:el.highlight", params)
+	_, err := e.client.Send(ctx, "vibium:element.highlight", params)
 	return err
 }
 

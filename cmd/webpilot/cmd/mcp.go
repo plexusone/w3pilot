@@ -17,6 +17,7 @@ var (
 	mcpDefaultTimeout time.Duration
 	mcpProject        string
 	mcpInitScripts    []string
+	mcpListTools      bool
 )
 
 var mcpCmd = &cobra.Command{
@@ -33,6 +34,16 @@ Examples:
   webpilot mcp --timeout 60s
   webpilot mcp --init-script ./mock-api.js`,
 	RunE: func(cmd *cobra.Command, args []string) error {
+		// If --list-tools is specified, output tools and exit
+		if mcpListTools {
+			data, err := mcp.ListToolsJSON()
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(data))
+			return nil
+		}
+
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 
@@ -93,4 +104,5 @@ func init() {
 	mcpCmd.Flags().DurationVar(&mcpDefaultTimeout, "timeout", 30*time.Second, "Default timeout for operations")
 	mcpCmd.Flags().StringVar(&mcpProject, "project", "", "Project name for test reports")
 	mcpCmd.Flags().StringArrayVar(&mcpInitScripts, "init-script", nil, "JavaScript file to inject before page scripts (can be repeated)")
+	mcpCmd.Flags().BoolVar(&mcpListTools, "list-tools", false, "Output tool definitions as JSON and exit")
 }

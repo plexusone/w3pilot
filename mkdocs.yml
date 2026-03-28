@@ -1,5 +1,5 @@
 site_name: WebPilot
-site_description: Go browser automation library using WebDriver BiDi
+site_description: Go browser automation library using WebDriver BiDi and Chrome DevTools Protocol
 site_url: https://plexusone.github.io/webpilot/
 repo_url: https://github.com/plexusone/webpilot
 repo_name: plexusone/webpilot
@@ -47,6 +47,7 @@ nav:
   - User Guide:
     - Go Client SDK: guide/sdk.md
     - MCP Server: guide/mcp-server.md
+    - CDP Features: guide/cdp.md
     - Human-in-the-Loop: guide/hitl.md
     - CLI Reference: guide/cli.md
     - Script Runner: guide/scripts.md

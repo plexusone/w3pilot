@@ -30,11 +30,22 @@ func main() {
 	headless := flag.Bool("headless", true, "Run browser in headless mode")
 	project := flag.String("project", "webpilot-tests", "Project name for reports")
 	timeout := flag.Duration("timeout", 30*time.Second, "Default timeout for browser operations")
+	listTools := flag.Bool("list-tools", false, "Output tool definitions as JSON and exit")
 
 	var initScriptPaths stringSlice
 	flag.Var(&initScriptPaths, "init-script", "JavaScript file to inject before page scripts (can be repeated)")
 
 	flag.Parse()
+
+	// If --list-tools is specified, output tools and exit
+	if *listTools {
+		data, err := mcp.ListToolsJSON()
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(string(data))
+		return
+	}
 
 	// Load init scripts from files
 	var initScripts []string

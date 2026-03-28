@@ -264,6 +264,15 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 |------|:---------:|:---------:|:--------------:|
 | Emulate media | `emulate_media` | :x: | :x: |
 | Set geolocation | `set_geolocation` | :x: | :x: |
+| Network throttling | `emulate_network` (CDP) | :x: | :x: |
+| CPU throttling | `emulate_cpu` (CDP) | :x: | :x: |
+
+#### Profiling (CDP)
+
+| Tool | webpilot | VibiumDev | Playwright MCP |
+|------|:---------:|:---------:|:--------------:|
+| Heap snapshot | `take_heap_snapshot` (CDP) | :x: | :x: |
+| Direct CDP access | `cdp_send` | :x: | :x: |
 
 #### Recording & Tracing
 
@@ -332,6 +341,10 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 | Verification Tools | `verify_*` tools with detailed output |
 | Frame Selection | `select_frame`/`select_main_frame` |
 | Trace Chunks/Groups | Fine-grained trace control |
+| **CDP Integration** | Direct Chrome DevTools Protocol access |
+| - Heap Snapshots | V8 memory profiling |
+| - Network Emulation | Slow 3G, Fast 3G, 4G presets |
+| - CPU Throttling | Simulate slower CPUs |
 
 #### Playwright MCP Only
 
@@ -520,11 +533,11 @@ Compare webpilot SDK with VibiumDev client libraries.
 
 ┌────────────────────────────────────────────────────────────────────┐
 │                    plexusone/webpilot                              │
-│                    (independent project)                           │
+│              (dual-protocol architecture)                          │
 │                                                                    │
 │   ┌────────────────────────────────────────────────────────────┐   │
 │   │                    webpilot SDK                            │   │
-│   │         Native Chrome launcher + BiDi client               │   │
+│   │         BiDi client (automation) + CDP client (profiling)  │   │
 │   └────────────────────────┬───────────────────────────────────┘   │
 │                            │                                       │
 │         ┌──────────────────┼──────────────────┐                    │
@@ -533,14 +546,19 @@ Compare webpilot SDK with VibiumDev client libraries.
 │    webpilot-mcp         webpilot run        Direct SDK             │
 │         │                  │                  │                    │
 │         └──────────────────┼──────────────────┘                    │
-│                            │ BiDi                                  │
+│                    ┌───────┴───────┐                               │
+│                    │               │                               │
+│                    ▼               ▼                               │
+│               BiDi (clicker)    CDP (direct)                       │
+│                    │               │                               │
+│                    └───────┬───────┘                               │
 │                            ▼                                       │
 │                         Chrome                                     │
-│                   (auto-downloaded)                                │
+│                  (single browser instance)                         │
 └────────────────────────────────────────────────────────────────────┘
 ```
 
-**Key point**: webpilot is a completely independent implementation. It has its own native Chrome launcher that auto-downloads and manages the browser. The BiDi communication, MCP server, and all SDK functionality are implemented in Go with no external dependencies on VibiumDev.
+**Key point**: webpilot uses clicker (from VibiumDev) for BiDi automation commands via pipe mode, and direct CDP for profiling features. This dual-protocol architecture provides comprehensive automation with advanced performance profiling capabilities.
 
 ---
 

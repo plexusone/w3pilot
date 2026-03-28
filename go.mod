@@ -1,6 +1,6 @@
 module github.com/plexusone/w3pilot
 
-go 1.26
+go 1.25.0
 
 require (
 	github.com/gorilla/websocket v1.5.3

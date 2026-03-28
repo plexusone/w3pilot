@@ -742,6 +742,7 @@ type StopScreencastOutput struct {
 	Message string `json:"message"`
 }
 
+//nolint:dupl // Handler pattern intentionally similar to other CDP tool handlers
 func (s *Server) handleStopScreencast(
 	ctx context.Context,
 	req *mcp.CallToolRequest,
@@ -1164,6 +1165,7 @@ type EnableConsoleDebuggerOutput struct {
 	Message string `json:"message"`
 }
 
+//nolint:dupl // Handler pattern intentionally similar to other CDP tool handlers
 func (s *Server) handleEnableConsoleDebugger(
 	ctx context.Context,
 	req *mcp.CallToolRequest,

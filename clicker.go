@@ -26,15 +26,17 @@ type ClickerProcess struct {
 func findClickerBinary(customPath string) (string, error) {
 	// 1. Check custom path
 	if customPath != "" {
-		if _, err := os.Stat(customPath); err == nil {
-			return customPath, nil
+		cleanPath := filepath.Clean(customPath)
+		if _, err := os.Stat(cleanPath); err == nil {
+			return cleanPath, nil
 		}
 	}
 
 	// 2. Check VIBIUM_CLICKER_PATH environment variable
 	if envPath := os.Getenv("VIBIUM_CLICKER_PATH"); envPath != "" {
-		if _, err := os.Stat(envPath); err == nil {
-			return envPath, nil
+		cleanPath := filepath.Clean(envPath)
+		if _, err := os.Stat(cleanPath); err == nil {
+			return cleanPath, nil
 		}
 	}
 

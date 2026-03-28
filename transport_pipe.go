@@ -1,4 +1,4 @@
-package webpilot
+package w3pilot
 
 import (
 	"bufio"

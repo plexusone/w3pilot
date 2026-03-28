@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/plexusone/webpilot"
+	"github.com/plexusone/w3pilot"
 )
 
 // NavigateActivity navigates to a URL.
@@ -47,14 +47,14 @@ func (a *ClickActivity) Execute(ctx context.Context, params map[string]any, env 
 	}
 
 	timeout := time.Duration(GetIntDefault(params, "timeout", 30000)) * time.Millisecond
-	opts := &webpilot.FindOptions{Timeout: timeout}
+	opts := &w3pilot.FindOptions{Timeout: timeout}
 
 	el, err := env.Pilot.Find(ctx, selector, opts)
 	if err != nil {
 		return nil, fmt.Errorf("element not found: %w", err)
 	}
 
-	actionOpts := &webpilot.ActionOptions{Timeout: timeout}
+	actionOpts := &w3pilot.ActionOptions{Timeout: timeout}
 	if err := el.Click(ctx, actionOpts); err != nil {
 		return nil, fmt.Errorf("click failed: %w", err)
 	}
@@ -76,14 +76,14 @@ func (a *FillActivity) Execute(ctx context.Context, params map[string]any, env *
 	value := GetString(params, "value")
 
 	timeout := time.Duration(GetIntDefault(params, "timeout", 30000)) * time.Millisecond
-	opts := &webpilot.FindOptions{Timeout: timeout}
+	opts := &w3pilot.FindOptions{Timeout: timeout}
 
 	el, err := env.Pilot.Find(ctx, selector, opts)
 	if err != nil {
 		return nil, fmt.Errorf("element not found: %w", err)
 	}
 
-	actionOpts := &webpilot.ActionOptions{Timeout: timeout}
+	actionOpts := &w3pilot.ActionOptions{Timeout: timeout}
 	if err := el.Fill(ctx, value, actionOpts); err != nil {
 		return nil, fmt.Errorf("fill failed: %w", err)
 	}
@@ -108,14 +108,14 @@ func (a *TypeActivity) Execute(ctx context.Context, params map[string]any, env *
 	}
 
 	timeout := time.Duration(GetIntDefault(params, "timeout", 30000)) * time.Millisecond
-	opts := &webpilot.FindOptions{Timeout: timeout}
+	opts := &w3pilot.FindOptions{Timeout: timeout}
 
 	el, err := env.Pilot.Find(ctx, selector, opts)
 	if err != nil {
 		return nil, fmt.Errorf("element not found: %w", err)
 	}
 
-	actionOpts := &webpilot.ActionOptions{Timeout: timeout}
+	actionOpts := &w3pilot.ActionOptions{Timeout: timeout}
 	if err := el.Type(ctx, text, actionOpts); err != nil {
 		return nil, fmt.Errorf("type failed: %w", err)
 	}
@@ -135,14 +135,14 @@ func (a *SelectOptionActivity) Execute(ctx context.Context, params map[string]an
 	}
 
 	timeout := time.Duration(GetIntDefault(params, "timeout", 30000)) * time.Millisecond
-	opts := &webpilot.FindOptions{Timeout: timeout}
+	opts := &w3pilot.FindOptions{Timeout: timeout}
 
 	el, err := env.Pilot.Find(ctx, selector, opts)
 	if err != nil {
 		return nil, fmt.Errorf("element not found: %w", err)
 	}
 
-	selectOpts := webpilot.SelectOptionValues{}
+	selectOpts := w3pilot.SelectOptionValues{}
 	if value := GetString(params, "value"); value != "" {
 		selectOpts.Values = []string{value}
 	}
@@ -153,7 +153,7 @@ func (a *SelectOptionActivity) Execute(ctx context.Context, params map[string]an
 		selectOpts.Indexes = []int{index}
 	}
 
-	actionOpts := &webpilot.ActionOptions{Timeout: timeout}
+	actionOpts := &w3pilot.ActionOptions{Timeout: timeout}
 	if err := el.SelectOption(ctx, selectOpts, actionOpts); err != nil {
 		return nil, fmt.Errorf("select failed: %w", err)
 	}
@@ -173,14 +173,14 @@ func (a *CheckActivity) Execute(ctx context.Context, params map[string]any, env 
 	}
 
 	timeout := time.Duration(GetIntDefault(params, "timeout", 30000)) * time.Millisecond
-	opts := &webpilot.FindOptions{Timeout: timeout}
+	opts := &w3pilot.FindOptions{Timeout: timeout}
 
 	el, err := env.Pilot.Find(ctx, selector, opts)
 	if err != nil {
 		return nil, fmt.Errorf("element not found: %w", err)
 	}
 
-	actionOpts := &webpilot.ActionOptions{Timeout: timeout}
+	actionOpts := &w3pilot.ActionOptions{Timeout: timeout}
 	if err := el.Check(ctx, actionOpts); err != nil {
 		return nil, fmt.Errorf("check failed: %w", err)
 	}
@@ -200,14 +200,14 @@ func (a *UncheckActivity) Execute(ctx context.Context, params map[string]any, en
 	}
 
 	timeout := time.Duration(GetIntDefault(params, "timeout", 30000)) * time.Millisecond
-	opts := &webpilot.FindOptions{Timeout: timeout}
+	opts := &w3pilot.FindOptions{Timeout: timeout}
 
 	el, err := env.Pilot.Find(ctx, selector, opts)
 	if err != nil {
 		return nil, fmt.Errorf("element not found: %w", err)
 	}
 
-	actionOpts := &webpilot.ActionOptions{Timeout: timeout}
+	actionOpts := &w3pilot.ActionOptions{Timeout: timeout}
 	if err := el.Uncheck(ctx, actionOpts); err != nil {
 		return nil, fmt.Errorf("uncheck failed: %w", err)
 	}
@@ -226,13 +226,13 @@ func (a *ScrollActivity) Execute(ctx context.Context, params map[string]any, env
 	timeout := time.Duration(GetIntDefault(params, "timeout", 30000)) * time.Millisecond
 
 	if selector != "" {
-		opts := &webpilot.FindOptions{Timeout: timeout}
+		opts := &w3pilot.FindOptions{Timeout: timeout}
 		el, err := env.Pilot.Find(ctx, selector, opts)
 		if err != nil {
 			return nil, fmt.Errorf("element not found: %w", err)
 		}
 
-		actionOpts := &webpilot.ActionOptions{Timeout: timeout}
+		actionOpts := &w3pilot.ActionOptions{Timeout: timeout}
 		if err := el.ScrollIntoView(ctx, actionOpts); err != nil {
 			return nil, fmt.Errorf("scroll failed: %w", err)
 		}
@@ -262,7 +262,7 @@ func (a *ScreenshotActivity) Execute(ctx context.Context, params map[string]any,
 
 	if selector != "" {
 		timeout := time.Duration(GetIntDefault(params, "timeout", 30000)) * time.Millisecond
-		opts := &webpilot.FindOptions{Timeout: timeout}
+		opts := &w3pilot.FindOptions{Timeout: timeout}
 		el, findErr := env.Pilot.Find(ctx, selector, opts)
 		if findErr != nil {
 			return nil, fmt.Errorf("element not found: %w", findErr)
@@ -286,7 +286,7 @@ type PDFActivity struct{}
 func (a *PDFActivity) Name() string { return "browser.pdf" }
 
 func (a *PDFActivity) Execute(ctx context.Context, params map[string]any, env *Environment) (any, error) {
-	opts := &webpilot.PDFOptions{
+	opts := &w3pilot.PDFOptions{
 		PrintBackground: GetBool(params, "printBackground"),
 		Landscape:       GetBool(params, "landscape"),
 		DisplayHeader:   GetBool(params, "displayHeader"),

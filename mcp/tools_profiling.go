@@ -7,9 +7,9 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	webpilot "github.com/plexusone/webpilot"
-	"github.com/plexusone/webpilot/cdp"
-	"github.com/plexusone/webpilot/mcp/report"
+	w3pilot "github.com/plexusone/w3pilot"
+	"github.com/plexusone/w3pilot/cdp"
+	"github.com/plexusone/w3pilot/mcp/report"
 )
 
 // GetPerformanceMetrics tool - get Core Web Vitals and navigation timing
@@ -482,8 +482,8 @@ func (s *Server) handleLighthouseAudit(
 		return nil, LighthouseAuditOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	// Import webpilot package types
-	opts := &webpilot.LighthouseOptions{
+	// Import w3pilot package types
+	opts := &w3pilot.LighthouseOptions{
 		OutputDir: input.OutputDir,
 	}
 
@@ -491,22 +491,22 @@ func (s *Server) handleLighthouseAudit(
 	for _, cat := range input.Categories {
 		switch cat {
 		case "performance":
-			opts.Categories = append(opts.Categories, webpilot.LighthousePerformance)
+			opts.Categories = append(opts.Categories, w3pilot.LighthousePerformance)
 		case "accessibility":
-			opts.Categories = append(opts.Categories, webpilot.LighthouseAccessibility)
+			opts.Categories = append(opts.Categories, w3pilot.LighthouseAccessibility)
 		case "best-practices":
-			opts.Categories = append(opts.Categories, webpilot.LighthouseBestPractices)
+			opts.Categories = append(opts.Categories, w3pilot.LighthouseBestPractices)
 		case "seo":
-			opts.Categories = append(opts.Categories, webpilot.LighthouseSEO)
+			opts.Categories = append(opts.Categories, w3pilot.LighthouseSEO)
 		}
 	}
 
 	// Parse device
 	switch input.Device {
 	case "mobile":
-		opts.Device = webpilot.LighthouseMobile
+		opts.Device = w3pilot.LighthouseMobile
 	case "desktop", "":
-		opts.Device = webpilot.LighthouseDesktop
+		opts.Device = w3pilot.LighthouseDesktop
 	}
 
 	start := time.Now()
@@ -1252,7 +1252,7 @@ func (s *Server) handleGetConsoleEntriesWithStack(
 
 	// Filter by type if specified
 	if input.Type != "" {
-		filtered := make([]webpilot.ConsoleEntry, 0)
+		filtered := make([]w3pilot.ConsoleEntry, 0)
 		for _, e := range entries {
 			if string(e.Type) == input.Type {
 				filtered = append(filtered, e)
@@ -1335,7 +1335,7 @@ func (s *Server) handleGetBrowserLogs(
 
 	// Filter by source
 	if input.Source != "" {
-		filtered := make([]webpilot.LogEntry, 0)
+		filtered := make([]w3pilot.LogEntry, 0)
 		for _, l := range logs {
 			if l.Source == input.Source {
 				filtered = append(filtered, l)
@@ -1346,7 +1346,7 @@ func (s *Server) handleGetBrowserLogs(
 
 	// Filter by level
 	if input.Level != "" {
-		filtered := make([]webpilot.LogEntry, 0)
+		filtered := make([]w3pilot.LogEntry, 0)
 		for _, l := range logs {
 			if l.Level == input.Level {
 				filtered = append(filtered, l)

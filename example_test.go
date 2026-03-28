@@ -1,4 +1,4 @@
-package webpilot_test
+package w3pilot_test
 
 import (
 	"context"
@@ -6,14 +6,14 @@ import (
 	"log"
 	"os"
 
-	"github.com/plexusone/webpilot"
+	"github.com/plexusone/w3pilot"
 )
 
 func Example() {
 	ctx := context.Background()
 
 	// Launch browser
-	pilot, err := webpilot.Launch(ctx)
+	pilot, err := w3pilot.Launch(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -46,7 +46,7 @@ func Example_headless() {
 	ctx := context.Background()
 
 	// Launch headless browser
-	pilot, err := webpilot.LaunchHeadless(ctx)
+	pilot, err := w3pilot.LaunchHeadless(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -72,7 +72,7 @@ func Example_headless() {
 func Example_formInteraction() {
 	ctx := context.Background()
 
-	pilot, err := webpilot.Browser.Launch(ctx, &webpilot.LaunchOptions{
+	pilot, err := w3pilot.Browser.Launch(ctx, &w3pilot.LaunchOptions{
 		Headless: true,
 	})
 	if err != nil {

@@ -2,7 +2,7 @@ package script
 
 import _ "embed"
 
-//go:embed webpilot-script.schema.json
+//go:embed w3pilot-script.schema.json
 var SchemaJSON []byte
 
 // Schema returns the JSON Schema for WebPilot test scripts.

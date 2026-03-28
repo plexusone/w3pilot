@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/plexusone/webpilot"
+	"github.com/plexusone/w3pilot"
 )
 
 // FindActivity finds an element by selector.
@@ -20,7 +20,7 @@ func (a *FindActivity) Execute(ctx context.Context, params map[string]any, env *
 	}
 
 	timeout := time.Duration(GetIntDefault(params, "timeout", 30000)) * time.Millisecond
-	opts := &webpilot.FindOptions{Timeout: timeout}
+	opts := &w3pilot.FindOptions{Timeout: timeout}
 
 	// Add semantic selector options
 	if role := GetString(params, "role"); role != "" {
@@ -91,7 +91,7 @@ func (a *GetTextActivity) Execute(ctx context.Context, params map[string]any, en
 	}
 
 	timeout := time.Duration(GetIntDefault(params, "timeout", 30000)) * time.Millisecond
-	opts := &webpilot.FindOptions{Timeout: timeout}
+	opts := &w3pilot.FindOptions{Timeout: timeout}
 
 	el, err := env.Pilot.Find(ctx, selector, opts)
 	if err != nil {
@@ -118,7 +118,7 @@ func (a *GetValueActivity) Execute(ctx context.Context, params map[string]any, e
 	}
 
 	timeout := time.Duration(GetIntDefault(params, "timeout", 30000)) * time.Millisecond
-	opts := &webpilot.FindOptions{Timeout: timeout}
+	opts := &w3pilot.FindOptions{Timeout: timeout}
 
 	el, err := env.Pilot.Find(ctx, selector, opts)
 	if err != nil {
@@ -150,7 +150,7 @@ func (a *GetAttributeActivity) Execute(ctx context.Context, params map[string]an
 	}
 
 	timeout := time.Duration(GetIntDefault(params, "timeout", 30000)) * time.Millisecond
-	opts := &webpilot.FindOptions{Timeout: timeout}
+	opts := &w3pilot.FindOptions{Timeout: timeout}
 
 	el, err := env.Pilot.Find(ctx, selector, opts)
 	if err != nil {
@@ -178,7 +178,7 @@ func (a *WaitForActivity) Execute(ctx context.Context, params map[string]any, en
 
 	state := GetStringDefault(params, "state", "visible")
 	timeout := time.Duration(GetIntDefault(params, "timeout", 30000)) * time.Millisecond
-	opts := &webpilot.FindOptions{Timeout: timeout}
+	opts := &w3pilot.FindOptions{Timeout: timeout}
 
 	el, err := env.Pilot.Find(ctx, selector, opts)
 	if err != nil {
@@ -204,7 +204,7 @@ func (a *IsVisibleActivity) Execute(ctx context.Context, params map[string]any, 
 	}
 
 	timeout := time.Duration(GetIntDefault(params, "timeout", 30000)) * time.Millisecond
-	opts := &webpilot.FindOptions{Timeout: timeout}
+	opts := &w3pilot.FindOptions{Timeout: timeout}
 
 	el, err := env.Pilot.Find(ctx, selector, opts)
 	if err != nil {

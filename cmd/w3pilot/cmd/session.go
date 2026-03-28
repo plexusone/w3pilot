@@ -7,7 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
-	webpilot "github.com/plexusone/webpilot"
+	w3pilot "github.com/plexusone/w3pilot"
 )
 
 // SessionInfo stores information about a running browser session
@@ -48,7 +48,7 @@ func loadSession() (*SessionInfo, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return nil, fmt.Errorf("no active session (run 'webpilot launch' first)")
+			return nil, fmt.Errorf("no active session (run 'w3pilot launch' first)")
 		}
 		return nil, fmt.Errorf("failed to read session file: %w", err)
 	}
@@ -71,12 +71,12 @@ func clearSession() error {
 }
 
 // Global vibe instance for the session
-var globalVibe *webpilot.Pilot
+var globalVibe *w3pilot.Pilot
 
 // getVibe returns a connected Vibe instance, launching if necessary
 //
 //nolint:unused // scaffolding for future session reconnection feature
-func getVibe(_ context.Context) (*webpilot.Pilot, error) {
+func getVibe(_ context.Context) (*w3pilot.Pilot, error) {
 	if globalVibe != nil && !globalVibe.IsClosed() {
 		return globalVibe, nil
 	}
@@ -93,12 +93,12 @@ func getVibe(_ context.Context) (*webpilot.Pilot, error) {
 }
 
 // launchBrowser launches a new browser and saves the session
-func launchBrowser(ctx context.Context, headless bool) (*webpilot.Pilot, error) {
-	opts := &webpilot.LaunchOptions{
+func launchBrowser(ctx context.Context, headless bool) (*w3pilot.Pilot, error) {
+	opts := &w3pilot.LaunchOptions{
 		Headless: headless,
 	}
 
-	vibe, err := webpilot.Browser.Launch(ctx, opts)
+	vibe, err := w3pilot.Browser.Launch(ctx, opts)
 	if err != nil {
 		return nil, fmt.Errorf("failed to launch browser: %w", err)
 	}
@@ -133,11 +133,11 @@ func quitBrowser(ctx context.Context) error {
 }
 
 // mustGetVibe returns a Vibe or exits with an error
-func mustGetVibe(_ context.Context) *webpilot.Pilot {
+func mustGetVibe(_ context.Context) *w3pilot.Pilot {
 	if globalVibe != nil && !globalVibe.IsClosed() {
 		return globalVibe
 	}
-	fmt.Fprintln(os.Stderr, "Error: no active browser session (run 'webpilot launch' first)")
+	fmt.Fprintln(os.Stderr, "Error: no active browser session (run 'w3pilot launch' first)")
 	os.Exit(1)
 	return nil
 }

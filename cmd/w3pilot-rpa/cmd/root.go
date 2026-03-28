@@ -15,26 +15,26 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "webpilot-rpa",
+	Use:   "w3pilot-rpa",
 	Short: "RPA workflow automation tool",
-	Long: `webpilot-rpa is a Robotic Process Automation tool that executes
+	Long: `w3pilot-rpa is a Robotic Process Automation tool that executes
 YAML/JSON workflow definitions using browser automation.
 
 Examples:
   # Run a workflow
-  webpilot-rpa run workflow.yaml
+  w3pilot-rpa run workflow.yaml
 
   # Run in headless mode
-  webpilot-rpa run workflow.yaml --headless
+  w3pilot-rpa run workflow.yaml --headless
 
   # Run with variables
-  webpilot-rpa run workflow.yaml --var username=admin --var password=secret
+  w3pilot-rpa run workflow.yaml --var username=admin --var password=secret
 
   # Validate a workflow
-  webpilot-rpa validate workflow.yaml
+  w3pilot-rpa validate workflow.yaml
 
   # List available activities
-  webpilot-rpa list activities
+  w3pilot-rpa list activities
 `,
 }
 

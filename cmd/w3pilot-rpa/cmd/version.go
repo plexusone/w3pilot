@@ -17,9 +17,9 @@ var (
 var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Print version information",
-	Long:  "Print the version, build date, and git commit of webpilot-rpa.",
+	Long:  "Print the version, build date, and git commit of w3pilot-rpa.",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Printf("webpilot-rpa version %s\n", Version)
+		fmt.Printf("w3pilot-rpa version %s\n", Version)
 		fmt.Printf("  Git commit: %s\n", GitCommit)
 		fmt.Printf("  Build date: %s\n", BuildDate)
 		fmt.Printf("  Go version: %s\n", runtime.Version())

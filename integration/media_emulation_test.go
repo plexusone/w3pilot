@@ -5,7 +5,7 @@ package integration
 import (
 	"testing"
 
-	"github.com/plexusone/webpilot"
+	"github.com/plexusone/w3pilot"
 )
 
 // TestEmulateMediaColorScheme tests color scheme emulation.
@@ -29,7 +29,7 @@ body { background: var(--bg); color: var(--fg); }
 </html>`)
 
 	// Test dark mode
-	err := bt.pilot.EmulateMedia(bt.ctx, webpilot.EmulateMediaOptions{
+	err := bt.pilot.EmulateMedia(bt.ctx, w3pilot.EmulateMediaOptions{
 		ColorScheme: "dark",
 	})
 	if err != nil {
@@ -46,7 +46,7 @@ body { background: var(--bg); color: var(--fg); }
 	}
 
 	// Test light mode
-	err = bt.pilot.EmulateMedia(bt.ctx, webpilot.EmulateMediaOptions{
+	err = bt.pilot.EmulateMedia(bt.ctx, w3pilot.EmulateMediaOptions{
 		ColorScheme: "light",
 	})
 	if err != nil {
@@ -81,7 +81,7 @@ func TestEmulateMediaReducedMotion(t *testing.T) {
 </html>`)
 
 	// Enable reduced motion
-	err := bt.pilot.EmulateMedia(bt.ctx, webpilot.EmulateMediaOptions{
+	err := bt.pilot.EmulateMedia(bt.ctx, w3pilot.EmulateMediaOptions{
 		ReducedMotion: "reduce",
 	})
 	if err != nil {
@@ -97,7 +97,7 @@ func TestEmulateMediaReducedMotion(t *testing.T) {
 	}
 
 	// Disable reduced motion
-	err = bt.pilot.EmulateMedia(bt.ctx, webpilot.EmulateMediaOptions{
+	err = bt.pilot.EmulateMedia(bt.ctx, w3pilot.EmulateMediaOptions{
 		ReducedMotion: "no-preference",
 	})
 	if err != nil {
@@ -132,7 +132,7 @@ func TestEmulateMediaPrint(t *testing.T) {
 </html>`)
 
 	// Enable print media
-	err := bt.pilot.EmulateMedia(bt.ctx, webpilot.EmulateMediaOptions{
+	err := bt.pilot.EmulateMedia(bt.ctx, w3pilot.EmulateMediaOptions{
 		Media: "print",
 	})
 	if err != nil {
@@ -148,7 +148,7 @@ func TestEmulateMediaPrint(t *testing.T) {
 	}
 
 	// Switch back to screen
-	err = bt.pilot.EmulateMedia(bt.ctx, webpilot.EmulateMediaOptions{
+	err = bt.pilot.EmulateMedia(bt.ctx, w3pilot.EmulateMediaOptions{
 		Media: "screen",
 	})
 	if err != nil {
@@ -183,7 +183,7 @@ func TestEmulateMediaForcedColors(t *testing.T) {
 </html>`)
 
 	// Enable forced colors
-	err := bt.pilot.EmulateMedia(bt.ctx, webpilot.EmulateMediaOptions{
+	err := bt.pilot.EmulateMedia(bt.ctx, w3pilot.EmulateMediaOptions{
 		ForcedColors: "active",
 	})
 	if err != nil {
@@ -221,7 +221,7 @@ func TestEmulateMediaContrast(t *testing.T) {
 </html>`)
 
 	// Enable high contrast
-	err := bt.pilot.EmulateMedia(bt.ctx, webpilot.EmulateMediaOptions{
+	err := bt.pilot.EmulateMedia(bt.ctx, w3pilot.EmulateMediaOptions{
 		Contrast: "more",
 	})
 	if err != nil {
@@ -255,7 +255,7 @@ func TestEmulateMediaCombined(t *testing.T) {
 </html>`)
 
 	// Set multiple options
-	err := bt.pilot.EmulateMedia(bt.ctx, webpilot.EmulateMediaOptions{
+	err := bt.pilot.EmulateMedia(bt.ctx, w3pilot.EmulateMediaOptions{
 		ColorScheme:   "dark",
 		ReducedMotion: "reduce",
 	})

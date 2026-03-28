@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/plexusone/webpilot"
+	"github.com/plexusone/w3pilot"
 )
 
 // testPageStorage is an HTML page for testing storage operations.
@@ -123,8 +123,8 @@ func TestStorageStateRestore(t *testing.T) {
 
 	t.Run("SetStorageState", func(t *testing.T) {
 		// Create a storage state to restore
-		state := &webpilot.StorageState{
-			Cookies: []webpilot.Cookie{
+		state := &w3pilot.StorageState{
+			Cookies: []w3pilot.Cookie{
 				{
 					Name:   "test_cookie",
 					Value:  "cookie_value",
@@ -132,7 +132,7 @@ func TestStorageStateRestore(t *testing.T) {
 					Path:   "/",
 				},
 			},
-			Origins: []webpilot.StorageStateOrigin{
+			Origins: []w3pilot.StorageStateOrigin{
 				{
 					Origin: "https://example.com",
 					LocalStorage: map[string]string{
@@ -227,7 +227,7 @@ func TestStorageStateRestore(t *testing.T) {
 		}
 
 		// Deserialize and restore
-		var restoredState webpilot.StorageState
+		var restoredState w3pilot.StorageState
 		if err := json.Unmarshal(jsonData, &restoredState); err != nil {
 			t.Fatalf("Failed to unmarshal state: %v", err)
 		}
@@ -322,7 +322,7 @@ func TestStorageStateWithCookies(t *testing.T) {
 		}
 
 		// Set a cookie
-		err = browserCtx.SetCookies(bt.ctx, []webpilot.SetCookieParam{
+		err = browserCtx.SetCookies(bt.ctx, []w3pilot.SetCookieParam{
 			{
 				Name:   "test_cookie",
 				Value:  "cookie_value",
@@ -355,8 +355,8 @@ func TestStorageStateWithCookies(t *testing.T) {
 	})
 
 	t.Run("RestoreCookies", func(t *testing.T) {
-		state := &webpilot.StorageState{
-			Cookies: []webpilot.Cookie{
+		state := &w3pilot.StorageState{
+			Cookies: []w3pilot.Cookie{
 				{
 					Name:   "restored_cookie",
 					Value:  "restored_value",
@@ -364,7 +364,7 @@ func TestStorageStateWithCookies(t *testing.T) {
 					Path:   "/",
 				},
 			},
-			Origins: []webpilot.StorageStateOrigin{},
+			Origins: []w3pilot.StorageStateOrigin{},
 		}
 
 		bt.go_("https://example.com")
@@ -407,8 +407,8 @@ func TestStorageStateMultipleOrigins(t *testing.T) {
 
 	t.Run("MultipleOriginsInState", func(t *testing.T) {
 		// Create state with multiple origins
-		state := &webpilot.StorageState{
-			Origins: []webpilot.StorageStateOrigin{
+		state := &w3pilot.StorageState{
+			Origins: []w3pilot.StorageStateOrigin{
 				{
 					Origin: "https://example.com",
 					LocalStorage: map[string]string{

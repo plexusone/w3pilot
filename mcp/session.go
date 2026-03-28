@@ -7,14 +7,14 @@ import (
 	"sync"
 	"time"
 
-	"github.com/plexusone/webpilot"
-	"github.com/plexusone/webpilot/mcp/report"
+	"github.com/plexusone/w3pilot"
+	"github.com/plexusone/w3pilot/mcp/report"
 )
 
 // Session manages a browser session and collects test results.
 type Session struct {
 	mu            sync.Mutex
-	pilot         *webpilot.Pilot
+	pilot         *w3pilot.Pilot
 	activeContext string // Active browsing context ID for tab management
 	config        SessionConfig
 	results       []report.StepResult
@@ -37,7 +37,7 @@ func NewSession(config SessionConfig) *Session {
 		config.DefaultTimeout = 30 * time.Second
 	}
 	if config.Project == "" {
-		config.Project = "webpilot-tests"
+		config.Project = "w3pilot-tests"
 	}
 	return &Session{
 		config:   config,
@@ -62,9 +62,9 @@ func (s *Session) LaunchIfNeeded(ctx context.Context) error {
 
 	var err error
 	if s.config.Headless {
-		s.pilot, err = webpilot.LaunchHeadless(ctx)
+		s.pilot, err = w3pilot.LaunchHeadless(ctx)
 	} else {
-		s.pilot, err = webpilot.Launch(ctx)
+		s.pilot, err = w3pilot.Launch(ctx)
 	}
 	if err != nil {
 		return err
@@ -82,7 +82,7 @@ func (s *Session) LaunchIfNeeded(ctx context.Context) error {
 
 // Pilot returns the browser controller, launching if needed.
 // If an active context is set (via SetActiveContext), returns the page for that context.
-func (s *Session) Pilot(ctx context.Context) (*webpilot.Pilot, error) {
+func (s *Session) Pilot(ctx context.Context) (*w3pilot.Pilot, error) {
 	if err := s.LaunchIfNeeded(ctx); err != nil {
 		return nil, err
 	}
@@ -203,7 +203,7 @@ func (s *Session) ActiveContext() string {
 
 // SetPilot sets the active Pilot instance (page or frame).
 // This is used for frame selection.
-func (s *Session) SetPilot(p *webpilot.Pilot) {
+func (s *Session) SetPilot(p *w3pilot.Pilot) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	s.pilot = p

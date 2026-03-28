@@ -5,7 +5,7 @@ package integration
 import (
 	"testing"
 
-	"github.com/plexusone/webpilot"
+	"github.com/plexusone/w3pilot"
 )
 
 // TestScrollDown tests scrolling down the page.
@@ -97,7 +97,7 @@ func TestScrollInElement(t *testing.T) {
 </body></html>`)
 
 	// Scroll within the container
-	err := bt.pilot.Scroll(bt.ctx, "down", 300, &webpilot.ScrollOptions{
+	err := bt.pilot.Scroll(bt.ctx, "down", 300, &w3pilot.ScrollOptions{
 		Selector: "#container",
 	})
 	if err != nil {
@@ -305,7 +305,7 @@ document.addEventListener('mouseup', () => { dragging = false; });
 	}
 
 	// Mouse down, move, mouse up
-	err = mouse.Down(bt.ctx, webpilot.MouseButtonLeft)
+	err = mouse.Down(bt.ctx, w3pilot.MouseButtonLeft)
 	if err != nil {
 		t.Fatalf("Failed mouse down: %v", err)
 	}
@@ -315,7 +315,7 @@ document.addEventListener('mouseup', () => { dragging = false; });
 		t.Fatalf("Failed to drag: %v", err)
 	}
 
-	err = mouse.Up(bt.ctx, webpilot.MouseButtonLeft)
+	err = mouse.Up(bt.ctx, w3pilot.MouseButtonLeft)
 	if err != nil {
 		t.Fatalf("Failed mouse up: %v", err)
 	}

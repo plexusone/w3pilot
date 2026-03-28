@@ -8,8 +8,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/plexusone/webpilot"
-	"github.com/plexusone/webpilot/rpa/activity"
+	"github.com/plexusone/w3pilot"
+	"github.com/plexusone/w3pilot/rpa/activity"
 )
 
 // ExecutorConfig configures the workflow executor.
@@ -107,8 +107,8 @@ func (e *Executor) RunWorkflow(ctx context.Context, wf *Workflow) (*WorkflowResu
 
 	// Launch browser
 	e.logger.Info("launching browser", "headless", headless)
-	launchOpts := &webpilot.LaunchOptions{Headless: headless}
-	vibe, err := webpilot.Browser.Launch(ctx, launchOpts)
+	launchOpts := &w3pilot.LaunchOptions{Headless: headless}
+	vibe, err := w3pilot.Browser.Launch(ctx, launchOpts)
 	if err != nil {
 		result.Complete(StatusFailure, fmt.Errorf("failed to launch browser: %w", err))
 		return result, nil

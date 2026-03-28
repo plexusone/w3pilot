@@ -8,8 +8,8 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	vibium "github.com/plexusone/webpilot"
-	"github.com/plexusone/webpilot/mcp/report"
+	vibium "github.com/plexusone/w3pilot"
+	"github.com/plexusone/w3pilot/mcp/report"
 )
 
 // DragTo tool

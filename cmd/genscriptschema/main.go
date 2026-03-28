@@ -8,7 +8,7 @@ import (
 
 	"github.com/invopop/jsonschema"
 
-	"github.com/plexusone/webpilot/script"
+	"github.com/plexusone/w3pilot/script"
 )
 
 func main() {
@@ -16,7 +16,7 @@ func main() {
 	r.ExpandedStruct = true
 
 	schema := r.Reflect(&script.Script{})
-	schema.ID = "https://github.com/plexusone/webpilot/script/webpilot-script.schema.json"
+	schema.ID = "https://github.com/plexusone/w3pilot/script/w3pilot-script.schema.json"
 	schema.Title = "WebPilot Test Script"
 	schema.Description = "Schema for WebPilot browser automation test scripts"
 

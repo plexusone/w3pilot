@@ -6,7 +6,7 @@ import (
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	vibium "github.com/plexusone/webpilot"
+	vibium "github.com/plexusone/w3pilot"
 )
 
 // Route tool - register a mock response for a URL pattern

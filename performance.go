@@ -1,4 +1,4 @@
-package webpilot
+package w3pilot
 
 import (
 	"context"
@@ -81,18 +81,18 @@ func (p *Pilot) GetPerformanceMetrics(ctx context.Context) (*PerformanceMetrics,
 
 	result, err := p.Evaluate(ctx, script)
 	if err != nil {
-		return nil, fmt.Errorf("webpilot: failed to get performance metrics: %w", err)
+		return nil, fmt.Errorf("w3pilot: failed to get performance metrics: %w", err)
 	}
 
 	// Convert result to JSON and unmarshal
 	jsonBytes, err := json.Marshal(result)
 	if err != nil {
-		return nil, fmt.Errorf("webpilot: failed to marshal performance metrics: %w", err)
+		return nil, fmt.Errorf("w3pilot: failed to marshal performance metrics: %w", err)
 	}
 
 	var metrics PerformanceMetrics
 	if err := json.Unmarshal(jsonBytes, &metrics); err != nil {
-		return nil, fmt.Errorf("webpilot: failed to parse performance metrics: %w", err)
+		return nil, fmt.Errorf("w3pilot: failed to parse performance metrics: %w", err)
 	}
 
 	return &metrics, nil
@@ -116,22 +116,22 @@ func (p *Pilot) GetMemoryStats(ctx context.Context) (*MemoryStats, error) {
 
 	result, err := p.Evaluate(ctx, script)
 	if err != nil {
-		return nil, fmt.Errorf("webpilot: failed to get memory stats: %w", err)
+		return nil, fmt.Errorf("w3pilot: failed to get memory stats: %w", err)
 	}
 
 	if result == nil {
-		return nil, fmt.Errorf("webpilot: performance.memory not available (requires --enable-precise-memory-info)")
+		return nil, fmt.Errorf("w3pilot: performance.memory not available (requires --enable-precise-memory-info)")
 	}
 
 	// Convert result to JSON and unmarshal
 	jsonBytes, err := json.Marshal(result)
 	if err != nil {
-		return nil, fmt.Errorf("webpilot: failed to marshal memory stats: %w", err)
+		return nil, fmt.Errorf("w3pilot: failed to marshal memory stats: %w", err)
 	}
 
 	var stats MemoryStats
 	if err := json.Unmarshal(jsonBytes, &stats); err != nil {
-		return nil, fmt.Errorf("webpilot: failed to parse memory stats: %w", err)
+		return nil, fmt.Errorf("w3pilot: failed to parse memory stats: %w", err)
 	}
 
 	return &stats, nil
@@ -143,20 +143,20 @@ func (p *Pilot) GetMemoryStats(ctx context.Context) (*MemoryStats, error) {
 func (p *Pilot) ObserveWebVitals(ctx context.Context) (<-chan *PerformanceMetrics, func(), error) {
 	// Inject the observer script
 	observerScript := `
-window.__webpilotMetrics = window.__webpilotMetrics || { lcp: 0, cls: 0, inp: 0, fid: 0 };
+window.__w3pilotMetrics = window.__w3pilotMetrics || { lcp: 0, cls: 0, inp: 0, fid: 0 };
 
 // LCP Observer
 new PerformanceObserver((list) => {
 	const entries = list.getEntries();
 	const lastEntry = entries[entries.length - 1];
-	window.__webpilotMetrics.lcp = lastEntry.startTime;
+	window.__w3pilotMetrics.lcp = lastEntry.startTime;
 }).observe({ type: 'largest-contentful-paint', buffered: true });
 
 // CLS Observer
 new PerformanceObserver((list) => {
 	for (const entry of list.getEntries()) {
 		if (!entry.hadRecentInput) {
-			window.__webpilotMetrics.cls += entry.value;
+			window.__w3pilotMetrics.cls += entry.value;
 		}
 	}
 }).observe({ type: 'layout-shift', buffered: true });
@@ -165,7 +165,7 @@ new PerformanceObserver((list) => {
 new PerformanceObserver((list) => {
 	const firstEntry = list.getEntries()[0];
 	if (firstEntry) {
-		window.__webpilotMetrics.fid = firstEntry.processingStart - firstEntry.startTime;
+		window.__w3pilotMetrics.fid = firstEntry.processingStart - firstEntry.startTime;
 	}
 }).observe({ type: 'first-input', buffered: true });
 
@@ -177,7 +177,7 @@ new PerformanceObserver((list) => {
 			const duration = entry.duration;
 			if (duration > maxINP) {
 				maxINP = duration;
-				window.__webpilotMetrics.inp = duration;
+				window.__w3pilotMetrics.inp = duration;
 			}
 		}
 	}
@@ -187,7 +187,7 @@ true
 `
 
 	if _, err := p.Evaluate(ctx, observerScript); err != nil {
-		return nil, nil, fmt.Errorf("webpilot: failed to start web vitals observer: %w", err)
+		return nil, nil, fmt.Errorf("w3pilot: failed to start web vitals observer: %w", err)
 	}
 
 	// Create channel and start polling
@@ -204,7 +204,7 @@ true
 				return
 			default:
 				// Poll metrics
-				result, err := p.Evaluate(ctx, "window.__webpilotMetrics")
+				result, err := p.Evaluate(ctx, "window.__w3pilotMetrics")
 				if err == nil && result != nil {
 					jsonBytes, err := json.Marshal(result)
 					if err == nil {

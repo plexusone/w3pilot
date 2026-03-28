@@ -17,9 +17,9 @@ var evalCmd = &cobra.Command{
 	Long: `Execute JavaScript on the page and print the result.
 
 Examples:
-  webpilot eval "document.title"
-  webpilot eval "document.querySelectorAll('a').length"
-  webpilot eval "window.location.href"`,
+  w3pilot eval "document.title"
+  w3pilot eval "document.querySelectorAll('a').length"
+  w3pilot eval "window.location.href"`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		script := args[0]

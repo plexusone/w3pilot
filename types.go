@@ -1,6 +1,6 @@
-// Package webpilot provides a Go client for browser automation using the WebDriver BiDi protocol.
+// Package w3pilot provides a Go client for browser automation using the WebDriver BiDi protocol.
 // It launches Chrome with BiDi support and communicates over WebSocket.
-package webpilot
+package w3pilot
 
 import "time"
 

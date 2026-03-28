@@ -1,4 +1,4 @@
-package webpilot
+package w3pilot
 
 import (
 	"bytes"
@@ -75,7 +75,7 @@ func (p *Pilot) LighthouseAudit(ctx context.Context, opts *LighthouseOptions) (*
 	// Get current URL
 	currentURL, err := p.URL(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("webpilot: failed to get current URL: %w", err)
+		return nil, fmt.Errorf("w3pilot: failed to get current URL: %w", err)
 	}
 
 	// Set defaults
@@ -139,18 +139,18 @@ func (p *Pilot) LighthouseAudit(ctx context.Context, opts *LighthouseOptions) (*
 	cmd.Stderr = &stderr
 
 	if err := cmd.Run(); err != nil {
-		return nil, fmt.Errorf("webpilot: lighthouse failed: %w\nstderr: %s", err, stderr.String())
+		return nil, fmt.Errorf("w3pilot: lighthouse failed: %w\nstderr: %s", err, stderr.String())
 	}
 
 	// Parse JSON report
 	jsonData, err := os.ReadFile(jsonPath)
 	if err != nil {
-		return nil, fmt.Errorf("webpilot: failed to read lighthouse report: %w", err)
+		return nil, fmt.Errorf("w3pilot: failed to read lighthouse report: %w", err)
 	}
 
 	var lhr lighthouseReport
 	if err := json.Unmarshal(jsonData, &lhr); err != nil {
-		return nil, fmt.Errorf("webpilot: failed to parse lighthouse report: %w", err)
+		return nil, fmt.Errorf("w3pilot: failed to parse lighthouse report: %w", err)
 	}
 
 	// Build result
@@ -220,7 +220,7 @@ func findLighthouseBinary() (string, error) {
 		}
 	}
 
-	return "", fmt.Errorf("webpilot: lighthouse CLI not found. Install with: npm install -g lighthouse")
+	return "", fmt.Errorf("w3pilot: lighthouse CLI not found. Install with: npm install -g lighthouse")
 }
 
 // runLighthouseWithNpx runs lighthouse via npx.

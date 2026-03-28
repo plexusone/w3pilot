@@ -27,7 +27,7 @@ func NewServer(config Config) *Server {
 
 	s.mcpServer = mcp.NewServer(
 		&mcp.Implementation{
-			Name:    "webpilot-mcp",
+			Name:    "w3pilot-mcp",
 			Version: "0.2.0",
 		},
 		nil,
@@ -723,7 +723,7 @@ func (s *Server) registerTools() {
 
 	mcp.AddTool(s.mcpServer, &mcp.Tool{
 		Name:        "record_export",
-		Description: "Export recorded actions as a JSON test script that can be run with 'webpilot run'.",
+		Description: "Export recorded actions as a JSON test script that can be run with 'w3pilot run'.",
 	}, s.handleExportScript)
 
 	mcp.AddTool(s.mcpServer, &mcp.Tool{

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	vibium "github.com/plexusone/webpilot"
+	vibium "github.com/plexusone/w3pilot"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )

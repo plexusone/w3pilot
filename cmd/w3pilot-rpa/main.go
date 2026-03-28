@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"github.com/plexusone/webpilot/cmd/webpilot-rpa/cmd"
+	"github.com/plexusone/w3pilot/cmd/w3pilot-rpa/cmd"
 )
 
 func main() {

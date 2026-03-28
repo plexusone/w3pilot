@@ -23,7 +23,7 @@ type Config struct {
 func DefaultConfig() Config {
 	return Config{
 		Headless:       true,
-		Project:        "webpilot-tests",
+		Project:        "w3pilot-tests",
 		DefaultTimeout: 30 * time.Second,
 	}
 }

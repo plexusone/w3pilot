@@ -1,4 +1,4 @@
-module github.com/plexusone/webpilot
+module github.com/plexusone/w3pilot
 
 go 1.26
 

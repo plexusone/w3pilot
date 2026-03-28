@@ -15,7 +15,7 @@ var (
 
 // rootCmd represents the base command
 var rootCmd = &cobra.Command{
-	Use:   "webpilot",
+	Use:   "w3pilot",
 	Short: "Browser automation CLI",
 	Long: `WebPilot is a browser automation tool that provides:
 
@@ -25,17 +25,17 @@ var rootCmd = &cobra.Command{
 
 Examples:
   # Start MCP server
-  webpilot mcp --headless
+  w3pilot mcp --headless
 
   # Launch browser and run commands
-  webpilot launch --headless
-  webpilot go https://example.com
-  webpilot click "#submit"
-  webpilot screenshot output.png
-  webpilot quit
+  w3pilot launch --headless
+  w3pilot go https://example.com
+  w3pilot click "#submit"
+  w3pilot screenshot output.png
+  w3pilot quit
 
   # Run a script file
-  webpilot run test.yaml`,
+  w3pilot run test.yaml`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -44,7 +44,7 @@ func Execute() error {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVar(&sessionFile, "session", "", "Session file path (default: ~/.webpilot/session.json)")
+	rootCmd.PersistentFlags().StringVar(&sessionFile, "session", "", "Session file path (default: ~/.w3pilot/session.json)")
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Verbose output")
 }
 
@@ -55,7 +55,7 @@ func getSessionPath() string {
 	}
 	home, err := os.UserHomeDir()
 	if err != nil {
-		return ".webpilot-session.json"
+		return ".w3pilot-session.json"
 	}
-	return fmt.Sprintf("%s/.webpilot/session.json", home)
+	return fmt.Sprintf("%s/.w3pilot/session.json", home)
 }

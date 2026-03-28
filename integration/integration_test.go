@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/plexusone/webpilot"
+	"github.com/plexusone/w3pilot"
 )
 
 // testTimeout is the default timeout for test operations.
@@ -25,7 +25,7 @@ func TestMain(m *testing.M) {
 // browserTest is a helper for running browser tests.
 type browserTest struct {
 	t        *testing.T
-	pilot    *webpilot.Pilot
+	pilot    *w3pilot.Pilot
 	ctx      context.Context
 	cancel   context.CancelFunc
 	headless bool
@@ -40,7 +40,7 @@ func newBrowserTest(t *testing.T) *browserTest {
 	// Use headless mode in CI, visible mode locally for debugging
 	headless := os.Getenv("CI") != "" || os.Getenv("WEBPILOT_HEADLESS") == "1"
 
-	pilot, err := webpilot.Browser.Launch(ctx, &webpilot.LaunchOptions{
+	pilot, err := w3pilot.Browser.Launch(ctx, &w3pilot.LaunchOptions{
 		Headless: headless,
 	})
 	if err != nil {
@@ -76,7 +76,7 @@ func (bt *browserTest) go_(url string) {
 }
 
 // find finds an element by selector.
-func (bt *browserTest) find(selector string) *webpilot.Element {
+func (bt *browserTest) find(selector string) *w3pilot.Element {
 	bt.t.Helper()
 	elem, err := bt.pilot.Find(bt.ctx, selector, nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func (bt *browserTest) find(selector string) *webpilot.Element {
 }
 
 // findAll finds all elements matching the selector.
-func (bt *browserTest) findAll(selector string) []*webpilot.Element {
+func (bt *browserTest) findAll(selector string) []*w3pilot.Element {
 	bt.t.Helper()
 	elements, err := bt.pilot.FindAll(bt.ctx, selector, nil)
 	if err != nil {

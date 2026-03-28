@@ -8,7 +8,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/plexusone/webpilot/mcp"
+	"github.com/plexusone/w3pilot/mcp"
 	"github.com/spf13/cobra"
 )
 
@@ -29,10 +29,10 @@ The MCP server provides browser automation tools for AI assistants.
 It communicates via stdio using the MCP protocol.
 
 Examples:
-  webpilot mcp
-  webpilot mcp --headless
-  webpilot mcp --timeout 60s
-  webpilot mcp --init-script ./mock-api.js`,
+  w3pilot mcp
+  w3pilot mcp --headless
+  w3pilot mcp --timeout 60s
+  w3pilot mcp --init-script ./mock-api.js`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// If --list-tools is specified, output tools and exit
 		if mcpListTools {

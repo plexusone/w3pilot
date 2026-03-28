@@ -5,7 +5,7 @@ import (
 	"context"
 	"log/slog"
 
-	"github.com/plexusone/webpilot"
+	"github.com/plexusone/w3pilot"
 )
 
 // Activity represents an executable RPA action.
@@ -20,7 +20,7 @@ type Activity interface {
 // Environment provides execution context to activities.
 type Environment struct {
 	// Pilot is the browser automation interface.
-	Pilot *webpilot.Pilot
+	Pilot *w3pilot.Pilot
 
 	// Variables contains workflow and step variables.
 	Variables map[string]any
@@ -36,7 +36,7 @@ type Environment struct {
 }
 
 // NewEnvironment creates a new Environment with initialized fields.
-func NewEnvironment(pilot *webpilot.Pilot, workDir string, logger *slog.Logger) *Environment {
+func NewEnvironment(pilot *w3pilot.Pilot, workDir string, logger *slog.Logger) *Environment {
 	return &Environment{
 		Pilot:     pilot,
 		Variables: make(map[string]any),

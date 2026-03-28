@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/plexusone/webpilot/rpa"
+	"github.com/plexusone/w3pilot/rpa"
 	"github.com/spf13/cobra"
 )
 
@@ -18,10 +18,10 @@ and checks that all referenced activities exist.
 
 Examples:
   # Validate a workflow
-  webpilot-rpa validate workflow.yaml
+  w3pilot-rpa validate workflow.yaml
 
   # Validate multiple workflows
-  webpilot-rpa validate workflow1.yaml workflow2.yaml
+  w3pilot-rpa validate workflow1.yaml workflow2.yaml
 `,
 	Args: cobra.MinimumNArgs(1),
 	RunE: validateWorkflow,

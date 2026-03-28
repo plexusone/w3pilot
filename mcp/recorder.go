@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/plexusone/webpilot/script"
+	"github.com/plexusone/w3pilot/script"
 )
 
 // Recorder captures MCP tool calls and converts them to a script.

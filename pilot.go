@@ -1,4 +1,4 @@
-package webpilot
+package w3pilot
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/plexusone/webpilot/cdp"
+	"github.com/plexusone/w3pilot/cdp"
 )
 
 // Pilot is the main browser control interface.

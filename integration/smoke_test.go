@@ -7,12 +7,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/plexusone/webpilot"
+	"github.com/plexusone/w3pilot"
 )
 
 // TestSmoke_BasicProtocol is a minimal test that verifies the vibium:* command
 // protocol works end-to-end. If this test fails, the basic communication
-// between webpilot and the vibium clicker is broken.
+// between w3pilot and the vibium clicker is broken.
 //
 // This test specifically exercises:
 // - Browser launch via pipe transport
@@ -24,7 +24,7 @@ func TestSmoke_BasicProtocol(t *testing.T) {
 	defer cancel()
 
 	// Launch browser - this tests pipe client startup and lifecycle.ready
-	pilot, err := webpilot.Browser.Launch(ctx, &webpilot.LaunchOptions{
+	pilot, err := w3pilot.Browser.Launch(ctx, &w3pilot.LaunchOptions{
 		Headless: true,
 	})
 	if err != nil {
@@ -64,7 +64,7 @@ func TestSmoke_ElementInteraction(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	pilot, err := webpilot.Browser.Launch(ctx, &webpilot.LaunchOptions{
+	pilot, err := w3pilot.Browser.Launch(ctx, &w3pilot.LaunchOptions{
 		Headless: true,
 	})
 	if err != nil {
@@ -119,7 +119,7 @@ func TestSmoke_PageContent(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	pilot, err := webpilot.Browser.Launch(ctx, &webpilot.LaunchOptions{
+	pilot, err := w3pilot.Browser.Launch(ctx, &w3pilot.LaunchOptions{
 		Headless: true,
 	})
 	if err != nil {
@@ -159,7 +159,7 @@ func TestSmoke_SemanticSelector(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	pilot, err := webpilot.Browser.Launch(ctx, &webpilot.LaunchOptions{
+	pilot, err := w3pilot.Browser.Launch(ctx, &w3pilot.LaunchOptions{
 		Headless: true,
 	})
 	if err != nil {
@@ -176,7 +176,7 @@ func TestSmoke_SemanticSelector(t *testing.T) {
 	}
 
 	// Find by role (button)
-	btn, err := pilot.Find(ctx, "", &webpilot.FindOptions{
+	btn, err := pilot.Find(ctx, "", &w3pilot.FindOptions{
 		Role: "button",
 		Text: "Submit",
 	})
@@ -189,7 +189,7 @@ func TestSmoke_SemanticSelector(t *testing.T) {
 	}
 
 	// Find by role (link)
-	link, err := pilot.Find(ctx, "", &webpilot.FindOptions{
+	link, err := pilot.Find(ctx, "", &w3pilot.FindOptions{
 		Role: "link",
 		Text: "Learn",
 	})

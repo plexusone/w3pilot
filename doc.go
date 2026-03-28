@@ -1,4 +1,4 @@
-// Package webpilot provides a Go client for the WebPilot browser automation platform.
+// Package w3pilot provides a Go client for the WebPilot browser automation platform.
 //
 // WebPilot is a browser automation platform built for AI agents that uses the
 // WebDriver BiDi protocol for bidirectional communication with the browser.
@@ -8,7 +8,7 @@
 // Launch a browser and navigate to a page:
 //
 //	ctx := context.Background()
-//	pilot, err := webpilot.Launch(ctx)
+//	pilot, err := w3pilot.Launch(ctx)
 //	if err != nil {
 //	    log.Fatal(err)
 //	}
@@ -56,11 +56,11 @@
 //
 // Launch in headless mode for CI/server environments:
 //
-//	pilot, err := webpilot.LaunchHeadless(ctx)
+//	pilot, err := w3pilot.LaunchHeadless(ctx)
 //
 // Or with explicit options:
 //
-//	pilot, err := webpilot.Browser.Launch(ctx, &webpilot.LaunchOptions{
+//	pilot, err := w3pilot.Browser.Launch(ctx, &w3pilot.LaunchOptions{
 //	    Headless: true,
 //	    Port:     9515,
 //	})
@@ -72,4 +72,4 @@
 //
 // You can also specify a custom Chrome path via the CHROME_PATH environment variable
 // or the ExecutablePath option in LaunchOptions.
-package webpilot
+package w3pilot

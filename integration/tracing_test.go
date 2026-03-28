@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/plexusone/webpilot"
+	"github.com/plexusone/w3pilot"
 )
 
 // TestTracingBasic tests basic tracing functionality.
@@ -22,7 +22,7 @@ func TestTracingBasic(t *testing.T) {
 		}
 
 		// Start tracing
-		err := tracing.Start(bt.ctx, &webpilot.TracingStartOptions{
+		err := tracing.Start(bt.ctx, &w3pilot.TracingStartOptions{
 			Screenshots: true,
 			Snapshots:   true,
 			Title:       "Test Trace",
@@ -55,7 +55,7 @@ func TestTracingBasic(t *testing.T) {
 	t.Run("StartWithOptions", func(t *testing.T) {
 		tracing := bt.pilot.Tracing()
 
-		err := tracing.Start(bt.ctx, &webpilot.TracingStartOptions{
+		err := tracing.Start(bt.ctx, &w3pilot.TracingStartOptions{
 			Name:        "custom-trace",
 			Screenshots: true,
 			Snapshots:   true,
@@ -110,7 +110,7 @@ func TestTracingChunks(t *testing.T) {
 		tracing := bt.pilot.Tracing()
 
 		// Start main trace
-		err := tracing.Start(bt.ctx, &webpilot.TracingStartOptions{
+		err := tracing.Start(bt.ctx, &w3pilot.TracingStartOptions{
 			Screenshots: true,
 			Title:       "Chunked Trace",
 		})
@@ -123,7 +123,7 @@ func TestTracingChunks(t *testing.T) {
 		time.Sleep(300 * time.Millisecond)
 
 		// Start chunk
-		err = tracing.StartChunk(bt.ctx, &webpilot.TracingChunkOptions{
+		err = tracing.StartChunk(bt.ctx, &w3pilot.TracingChunkOptions{
 			Name:  "chunk1",
 			Title: "First Chunk",
 		})
@@ -158,7 +158,7 @@ func TestTracingChunks(t *testing.T) {
 	t.Run("MultipleChunks", func(t *testing.T) {
 		tracing := bt.pilot.Tracing()
 
-		err := tracing.Start(bt.ctx, &webpilot.TracingStartOptions{
+		err := tracing.Start(bt.ctx, &w3pilot.TracingStartOptions{
 			Screenshots: true,
 		})
 		if err != nil {
@@ -168,7 +168,7 @@ func TestTracingChunks(t *testing.T) {
 		bt.go_("https://example.com")
 
 		// First chunk
-		err = tracing.StartChunk(bt.ctx, &webpilot.TracingChunkOptions{Name: "chunk1"})
+		err = tracing.StartChunk(bt.ctx, &w3pilot.TracingChunkOptions{Name: "chunk1"})
 		if err != nil {
 			t.Fatalf("Failed to start chunk 1: %v", err)
 		}
@@ -179,7 +179,7 @@ func TestTracingChunks(t *testing.T) {
 		}
 
 		// Second chunk
-		err = tracing.StartChunk(bt.ctx, &webpilot.TracingChunkOptions{Name: "chunk2"})
+		err = tracing.StartChunk(bt.ctx, &w3pilot.TracingChunkOptions{Name: "chunk2"})
 		if err != nil {
 			t.Fatalf("Failed to start chunk 2: %v", err)
 		}
@@ -209,7 +209,7 @@ func TestTracingGroups(t *testing.T) {
 	t.Run("GroupRecording", func(t *testing.T) {
 		tracing := bt.pilot.Tracing()
 
-		err := tracing.Start(bt.ctx, &webpilot.TracingStartOptions{
+		err := tracing.Start(bt.ctx, &w3pilot.TracingStartOptions{
 			Screenshots: true,
 			Title:       "Grouped Trace",
 		})
@@ -220,7 +220,7 @@ func TestTracingGroups(t *testing.T) {
 		bt.go_("https://example.com")
 
 		// Start a group
-		err = tracing.StartGroup(bt.ctx, "Login Flow", &webpilot.TracingGroupOptions{
+		err = tracing.StartGroup(bt.ctx, "Login Flow", &w3pilot.TracingGroupOptions{
 			Location: "test_file.go:123",
 		})
 		if err != nil {
@@ -310,7 +310,7 @@ func TestTracingFromContext(t *testing.T) {
 			t.Fatal("BrowserContext.Tracing() returned nil")
 		}
 
-		err = tracing.Start(bt.ctx, &webpilot.TracingStartOptions{
+		err = tracing.Start(bt.ctx, &w3pilot.TracingStartOptions{
 			Title: "Context Trace",
 		})
 		if err != nil {

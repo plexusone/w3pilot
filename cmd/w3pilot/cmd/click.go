@@ -16,9 +16,9 @@ var clickCmd = &cobra.Command{
 	Long: `Click an element identified by CSS selector.
 
 Examples:
-  webpilot click "#submit"
-  webpilot click "button.login"
-  webpilot click "[data-testid='submit-btn']"`,
+  w3pilot click "#submit"
+  w3pilot click "button.login"
+  w3pilot click "[data-testid='submit-btn']"`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		selector := args[0]

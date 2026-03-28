@@ -11,7 +11,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/plexusone/webpilot/rpa"
+	"github.com/plexusone/w3pilot/rpa"
 	"github.com/spf13/cobra"
 )
 
@@ -31,16 +31,16 @@ with browser automation, file operations, and HTTP requests.
 
 Examples:
   # Run a workflow
-  webpilot-rpa run workflow.yaml
+  w3pilot-rpa run workflow.yaml
 
   # Run in headless mode with variables
-  webpilot-rpa run workflow.yaml --headless --var username=admin
+  w3pilot-rpa run workflow.yaml --headless --var username=admin
 
   # Run and save results to JSON
-  webpilot-rpa run workflow.yaml --output results.json
+  w3pilot-rpa run workflow.yaml --output results.json
 
   # Dry run (validate without executing)
-  webpilot-rpa run workflow.yaml --dry-run
+  w3pilot-rpa run workflow.yaml --dry-run
 `,
 	Args: cobra.ExactArgs(1),
 	RunE: runWorkflow,

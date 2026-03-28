@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/plexusone/webpilot"
+	"github.com/plexusone/w3pilot"
 )
 
 // ScrapeTableActivity extracts data from an HTML table.
@@ -21,7 +21,7 @@ func (a *ScrapeTableActivity) Execute(ctx context.Context, params map[string]any
 	}
 
 	timeout := time.Duration(GetIntDefault(params, "timeout", 30000)) * time.Millisecond
-	opts := &webpilot.FindOptions{Timeout: timeout}
+	opts := &w3pilot.FindOptions{Timeout: timeout}
 
 	// Find the table element
 	el, err := env.Pilot.Find(ctx, selector, opts)

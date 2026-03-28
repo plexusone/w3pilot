@@ -1,0 +1,822 @@
+{
+  "tools": [
+    {
+      "name": "accessibility_snapshot",
+      "description": "Get accessibility tree snapshot.",
+      "category": "accessibility"
+    },
+    {
+      "name": "browser_launch",
+      "description": "Launch a browser instance. Call this before any other browser operations.",
+      "category": "browser"
+    },
+    {
+      "name": "browser_quit",
+      "description": "Close the browser and cleanup resources.",
+      "category": "browser"
+    },
+    {
+      "name": "cdp_clear_cpu_emulation",
+      "description": "Clear CPU emulation and restore normal speed.",
+      "category": "cdp"
+    },
+    {
+      "name": "cdp_clear_network_emulation",
+      "description": "Clear network emulation and restore normal conditions.",
+      "category": "cdp"
+    },
+    {
+      "name": "cdp_disable_console_debugger",
+      "description": "Disable enhanced console debugging.",
+      "category": "cdp"
+    },
+    {
+      "name": "cdp_emulate_cpu",
+      "description": "Emulate CPU throttling (2x, 4x, 6x slowdown).",
+      "category": "cdp"
+    },
+    {
+      "name": "cdp_emulate_network",
+      "description": "Emulate network conditions (Slow 3G, Fast 3G, 4G, Offline, or custom).",
+      "category": "cdp"
+    },
+    {
+      "name": "cdp_enable_console_debugger",
+      "description": "Enable enhanced console debugging with stack traces.",
+      "category": "cdp"
+    },
+    {
+      "name": "cdp_get_browser_logs",
+      "description": "Get browser logs including deprecations, interventions, and violations.",
+      "category": "cdp"
+    },
+    {
+      "name": "cdp_get_console_entries",
+      "description": "Get console messages with full stack traces.",
+      "category": "cdp"
+    },
+    {
+      "name": "cdp_get_memory_stats",
+      "description": "Get JavaScript heap memory statistics.",
+      "category": "cdp"
+    },
+    {
+      "name": "cdp_get_performance_metrics",
+      "description": "Get Core Web Vitals (LCP, CLS, INP) and navigation timing metrics.",
+      "category": "cdp"
+    },
+    {
+      "name": "cdp_get_response_body",
+      "description": "Get the response body for a specific network request by ID.",
+      "category": "cdp"
+    },
+    {
+      "name": "cdp_install_extension",
+      "description": "Install a Chrome extension from a local path.",
+      "category": "cdp"
+    },
+    {
+      "name": "cdp_list_extensions",
+      "description": "List all installed Chrome extensions.",
+      "category": "cdp"
+    },
+    {
+      "name": "cdp_run_lighthouse",
+      "description": "Run Lighthouse audit for performance, accessibility, SEO, and best practices.",
+      "category": "cdp"
+    },
+    {
+      "name": "cdp_start_coverage",
+      "description": "Start collecting JavaScript and CSS code coverage.",
+      "category": "cdp"
+    },
+    {
+      "name": "cdp_start_screencast",
+      "description": "Start streaming screen frames.",
+      "category": "cdp"
+    },
+    {
+      "name": "cdp_stop_coverage",
+      "description": "Stop coverage collection and return the coverage report.",
+      "category": "cdp"
+    },
+    {
+      "name": "cdp_stop_screencast",
+      "description": "Stop screen streaming.",
+      "category": "cdp"
+    },
+    {
+      "name": "cdp_take_heap_snapshot",
+      "description": "Capture a V8 heap snapshot for memory profiling.",
+      "category": "cdp"
+    },
+    {
+      "name": "cdp_uninstall_extension",
+      "description": "Uninstall a Chrome extension by ID.",
+      "category": "cdp"
+    },
+    {
+      "name": "config_get",
+      "description": "Get the resolved MCP server configuration.",
+      "category": "config"
+    },
+    {
+      "name": "console_clear",
+      "description": "Clear all buffered console messages.",
+      "category": "console"
+    },
+    {
+      "name": "console_get_messages",
+      "description": "Get console messages from the page.",
+      "category": "console"
+    },
+    {
+      "name": "dialog_get",
+      "description": "Get information about the current dialog.",
+      "category": "dialog"
+    },
+    {
+      "name": "dialog_handle",
+      "description": "Handle a browser dialog (alert, confirm, prompt, beforeunload).",
+      "category": "dialog"
+    },
+    {
+      "name": "element_check",
+      "description": "Check a checkbox element.",
+      "category": "element"
+    },
+    {
+      "name": "element_clear",
+      "description": "Clear the content of an input element.",
+      "category": "element"
+    },
+    {
+      "name": "element_click",
+      "description": "Click an element by CSS selector.",
+      "category": "element"
+    },
+    {
+      "name": "element_dispatch_event",
+      "description": "Dispatch a DOM event on an element.",
+      "category": "element"
+    },
+    {
+      "name": "element_double_click",
+      "description": "Double-click an element by CSS selector.",
+      "category": "element"
+    },
+    {
+      "name": "element_drag_to",
+      "description": "Drag an element to another element.",
+      "category": "element"
+    },
+    {
+      "name": "element_evaluate",
+      "description": "Evaluate JavaScript with an element context.",
+      "category": "element"
+    },
+    {
+      "name": "element_fill",
+      "description": "Clear an input and fill it with text (replaces existing content).",
+      "category": "element"
+    },
+    {
+      "name": "element_fill_form",
+      "description": "Fill multiple form fields at once.",
+      "category": "element"
+    },
+    {
+      "name": "element_focus",
+      "description": "Focus an element.",
+      "category": "element"
+    },
+    {
+      "name": "element_get_attribute",
+      "description": "Get an attribute value from an element.",
+      "category": "element"
+    },
+    {
+      "name": "element_get_bounding_box",
+      "description": "Get the bounding box of an element.",
+      "category": "element"
+    },
+    {
+      "name": "element_get_inner_html",
+      "description": "Get the innerHTML of an element.",
+      "category": "element"
+    },
+    {
+      "name": "element_get_inner_text",
+      "description": "Get the innerText of an element.",
+      "category": "element"
+    },
+    {
+      "name": "element_get_label",
+      "description": "Get the accessible label of an element.",
+      "category": "element"
+    },
+    {
+      "name": "element_get_outer_html",
+      "description": "Get the outerHTML of an element.",
+      "category": "element"
+    },
+    {
+      "name": "element_get_role",
+      "description": "Get the ARIA role of an element.",
+      "category": "element"
+    },
+    {
+      "name": "element_get_text",
+      "description": "Get the text content of an element.",
+      "category": "element"
+    },
+    {
+      "name": "element_get_value",
+      "description": "Get the value of an input element.",
+      "category": "element"
+    },
+    {
+      "name": "element_hover",
+      "description": "Hover over an element.",
+      "category": "element"
+    },
+    {
+      "name": "element_is_checked",
+      "description": "Check if a checkbox/radio is checked.",
+      "category": "element"
+    },
+    {
+      "name": "element_is_editable",
+      "description": "Check if an element is editable.",
+      "category": "element"
+    },
+    {
+      "name": "element_is_enabled",
+      "description": "Check if an element is enabled.",
+      "category": "element"
+    },
+    {
+      "name": "element_is_hidden",
+      "description": "Check if an element is hidden.",
+      "category": "element"
+    },
+    {
+      "name": "element_is_visible",
+      "description": "Check if an element is visible.",
+      "category": "element"
+    },
+    {
+      "name": "element_press",
+      "description": "Press a key on an element (e.g., Enter, Tab, ArrowDown).",
+      "category": "element"
+    },
+    {
+      "name": "element_screenshot",
+      "description": "Capture an element screenshot.",
+      "category": "element"
+    },
+    {
+      "name": "element_scroll_into_view",
+      "description": "Scroll an element into view.",
+      "category": "element"
+    },
+    {
+      "name": "element_select",
+      "description": "Select option(s) in a \u003cselect\u003e element.",
+      "category": "element"
+    },
+    {
+      "name": "element_set_files",
+      "description": "Set files on a file input element.",
+      "category": "element"
+    },
+    {
+      "name": "element_tap",
+      "description": "Tap an element (touch gesture).",
+      "category": "element"
+    },
+    {
+      "name": "element_type",
+      "description": "Type text into an input element (appends to existing content).",
+      "category": "element"
+    },
+    {
+      "name": "element_uncheck",
+      "description": "Uncheck a checkbox element.",
+      "category": "element"
+    },
+    {
+      "name": "frame_select",
+      "description": "Switch to a frame by name or URL pattern.",
+      "category": "frame"
+    },
+    {
+      "name": "frame_select_main",
+      "description": "Switch back to the main frame.",
+      "category": "frame"
+    },
+    {
+      "name": "human_pause",
+      "description": "Pause automation for human interaction (CAPTCHA, login, etc.).",
+      "category": "human"
+    },
+    {
+      "name": "input_keyboard_down",
+      "description": "Hold a key down.",
+      "category": "input"
+    },
+    {
+      "name": "input_keyboard_press",
+      "description": "Press a key.",
+      "category": "input"
+    },
+    {
+      "name": "input_keyboard_type",
+      "description": "Type text via keyboard.",
+      "category": "input"
+    },
+    {
+      "name": "input_keyboard_up",
+      "description": "Release a key.",
+      "category": "input"
+    },
+    {
+      "name": "input_mouse_click",
+      "description": "Click at coordinates.",
+      "category": "input"
+    },
+    {
+      "name": "input_mouse_down",
+      "description": "Press mouse button.",
+      "category": "input"
+    },
+    {
+      "name": "input_mouse_drag",
+      "description": "Drag from one point to another.",
+      "category": "input"
+    },
+    {
+      "name": "input_mouse_move",
+      "description": "Move mouse to coordinates.",
+      "category": "input"
+    },
+    {
+      "name": "input_mouse_up",
+      "description": "Release mouse button.",
+      "category": "input"
+    },
+    {
+      "name": "input_mouse_wheel",
+      "description": "Scroll mouse wheel.",
+      "category": "input"
+    },
+    {
+      "name": "input_touch_swipe",
+      "description": "Swipe gesture.",
+      "category": "input"
+    },
+    {
+      "name": "input_touch_tap",
+      "description": "Tap at coordinates.",
+      "category": "input"
+    },
+    {
+      "name": "js_add_script",
+      "description": "Inject JavaScript into the page.",
+      "category": "js"
+    },
+    {
+      "name": "js_add_style",
+      "description": "Inject CSS styles into the page.",
+      "category": "js"
+    },
+    {
+      "name": "js_evaluate",
+      "description": "Execute JavaScript code.",
+      "category": "js"
+    },
+    {
+      "name": "js_init_script",
+      "description": "Add JavaScript that runs before page scripts on every navigation.",
+      "category": "js"
+    },
+    {
+      "name": "network_clear",
+      "description": "Clear all buffered network requests.",
+      "category": "network"
+    },
+    {
+      "name": "network_get_requests",
+      "description": "Get captured network requests.",
+      "category": "network"
+    },
+    {
+      "name": "network_list_routes",
+      "description": "List all active route handlers.",
+      "category": "network"
+    },
+    {
+      "name": "network_route",
+      "description": "Register a mock response for requests matching a URL pattern.",
+      "category": "network"
+    },
+    {
+      "name": "network_set_offline",
+      "description": "Set the browser's network state for offline mode testing.",
+      "category": "network"
+    },
+    {
+      "name": "network_unroute",
+      "description": "Remove a previously registered route handler.",
+      "category": "network"
+    },
+    {
+      "name": "page_bring_to_front",
+      "description": "Activate the page.",
+      "category": "page"
+    },
+    {
+      "name": "page_close",
+      "description": "Close the current page.",
+      "category": "page"
+    },
+    {
+      "name": "page_emulate_media",
+      "description": "Emulate CSS media features (colorScheme, reducedMotion, forcedColors, contrast).",
+      "category": "page"
+    },
+    {
+      "name": "page_get_content",
+      "description": "Get the page HTML content.",
+      "category": "page"
+    },
+    {
+      "name": "page_get_count",
+      "description": "Get the page count.",
+      "category": "page"
+    },
+    {
+      "name": "page_get_title",
+      "description": "Get the page title.",
+      "category": "page"
+    },
+    {
+      "name": "page_get_url",
+      "description": "Get the current URL.",
+      "category": "page"
+    },
+    {
+      "name": "page_get_viewport",
+      "description": "Get the viewport dimensions.",
+      "category": "page"
+    },
+    {
+      "name": "page_go_back",
+      "description": "Navigate back in browser history.",
+      "category": "page"
+    },
+    {
+      "name": "page_go_forward",
+      "description": "Navigate forward in browser history.",
+      "category": "page"
+    },
+    {
+      "name": "page_navigate",
+      "description": "Navigate to a URL.",
+      "category": "page"
+    },
+    {
+      "name": "page_new",
+      "description": "Create a new page/tab.",
+      "category": "page"
+    },
+    {
+      "name": "page_pdf",
+      "description": "Generate a PDF of the page.",
+      "category": "page"
+    },
+    {
+      "name": "page_reload",
+      "description": "Reload the current page.",
+      "category": "page"
+    },
+    {
+      "name": "page_screenshot",
+      "description": "Capture a page screenshot.",
+      "category": "page"
+    },
+    {
+      "name": "page_scroll",
+      "description": "Scroll the page or a specific element in a direction.",
+      "category": "page"
+    },
+    {
+      "name": "page_set_content",
+      "description": "Set the page HTML content.",
+      "category": "page"
+    },
+    {
+      "name": "page_set_geolocation",
+      "description": "Set the browser's geolocation.",
+      "category": "page"
+    },
+    {
+      "name": "page_set_viewport",
+      "description": "Set the viewport dimensions.",
+      "category": "page"
+    },
+    {
+      "name": "record_clear",
+      "description": "Clear recorded steps.",
+      "category": "record"
+    },
+    {
+      "name": "record_export",
+      "description": "Export recorded script.",
+      "category": "record"
+    },
+    {
+      "name": "record_get_status",
+      "description": "Check recording state.",
+      "category": "record"
+    },
+    {
+      "name": "record_start",
+      "description": "Begin recording actions.",
+      "category": "record"
+    },
+    {
+      "name": "record_stop",
+      "description": "Stop recording.",
+      "category": "record"
+    },
+    {
+      "name": "storage_clear_all",
+      "description": "Clear all browser storage.",
+      "category": "storage"
+    },
+    {
+      "name": "storage_clear_cookies",
+      "description": "Clear all cookies.",
+      "category": "storage"
+    },
+    {
+      "name": "storage_delete_cookie",
+      "description": "Delete a specific cookie by name.",
+      "category": "storage"
+    },
+    {
+      "name": "storage_get_cookies",
+      "description": "Get browser cookies.",
+      "category": "storage"
+    },
+    {
+      "name": "storage_get_state",
+      "description": "Get complete browser storage state.",
+      "category": "storage"
+    },
+    {
+      "name": "storage_local_clear",
+      "description": "Clear all localStorage data.",
+      "category": "storage"
+    },
+    {
+      "name": "storage_local_delete",
+      "description": "Delete a key from localStorage.",
+      "category": "storage"
+    },
+    {
+      "name": "storage_local_get",
+      "description": "Get a value from localStorage by key.",
+      "category": "storage"
+    },
+    {
+      "name": "storage_local_list",
+      "description": "List all keys and values in localStorage.",
+      "category": "storage"
+    },
+    {
+      "name": "storage_local_set",
+      "description": "Set a value in localStorage.",
+      "category": "storage"
+    },
+    {
+      "name": "storage_session_clear",
+      "description": "Clear all sessionStorage data.",
+      "category": "storage"
+    },
+    {
+      "name": "storage_session_delete",
+      "description": "Delete a key from sessionStorage.",
+      "category": "storage"
+    },
+    {
+      "name": "storage_session_get",
+      "description": "Get a value from sessionStorage by key.",
+      "category": "storage"
+    },
+    {
+      "name": "storage_session_list",
+      "description": "List all keys and values in sessionStorage.",
+      "category": "storage"
+    },
+    {
+      "name": "storage_session_set",
+      "description": "Set a value in sessionStorage.",
+      "category": "storage"
+    },
+    {
+      "name": "storage_set_cookies",
+      "description": "Set browser cookies.",
+      "category": "storage"
+    },
+    {
+      "name": "storage_set_state",
+      "description": "Restore browser storage from JSON.",
+      "category": "storage"
+    },
+    {
+      "name": "tab_close",
+      "description": "Close a specific tab.",
+      "category": "tab"
+    },
+    {
+      "name": "tab_list",
+      "description": "List all open browser tabs.",
+      "category": "tab"
+    },
+    {
+      "name": "tab_select",
+      "description": "Switch to a specific tab.",
+      "category": "tab"
+    },
+    {
+      "name": "test_assert_element",
+      "description": "Assert element exists.",
+      "category": "test"
+    },
+    {
+      "name": "test_assert_text",
+      "description": "Assert text exists.",
+      "category": "test"
+    },
+    {
+      "name": "test_assert_url",
+      "description": "Assert URL matches.",
+      "category": "test"
+    },
+    {
+      "name": "test_generate_locator",
+      "description": "Generate a locator string for a given element.",
+      "category": "test"
+    },
+    {
+      "name": "test_get_report",
+      "description": "Get test execution report.",
+      "category": "test"
+    },
+    {
+      "name": "test_reset",
+      "description": "Clear test results.",
+      "category": "test"
+    },
+    {
+      "name": "test_set_target",
+      "description": "Set test target description.",
+      "category": "test"
+    },
+    {
+      "name": "test_verify_checked",
+      "description": "Verify checkbox/radio is checked.",
+      "category": "test"
+    },
+    {
+      "name": "test_verify_disabled",
+      "description": "Verify element is disabled.",
+      "category": "test"
+    },
+    {
+      "name": "test_verify_enabled",
+      "description": "Verify element is enabled.",
+      "category": "test"
+    },
+    {
+      "name": "test_verify_hidden",
+      "description": "Verify element is hidden.",
+      "category": "test"
+    },
+    {
+      "name": "test_verify_list",
+      "description": "Verify that a list of text items are all visible.",
+      "category": "test"
+    },
+    {
+      "name": "test_verify_text",
+      "description": "Verify element text matches expected value.",
+      "category": "test"
+    },
+    {
+      "name": "test_verify_value",
+      "description": "Verify that an input element has the expected value.",
+      "category": "test"
+    },
+    {
+      "name": "test_verify_visible",
+      "description": "Verify element is visible.",
+      "category": "test"
+    },
+    {
+      "name": "trace_chunk_start",
+      "description": "Start a new trace chunk within an active trace.",
+      "category": "trace"
+    },
+    {
+      "name": "trace_chunk_stop",
+      "description": "Stop the current trace chunk.",
+      "category": "trace"
+    },
+    {
+      "name": "trace_group_start",
+      "description": "Start a trace group for logical grouping of actions.",
+      "category": "trace"
+    },
+    {
+      "name": "trace_group_stop",
+      "description": "Stop the current trace group.",
+      "category": "trace"
+    },
+    {
+      "name": "trace_start",
+      "description": "Start trace recording with screenshots and DOM snapshots.",
+      "category": "trace"
+    },
+    {
+      "name": "trace_stop",
+      "description": "Stop trace recording and save or return the trace data.",
+      "category": "trace"
+    },
+    {
+      "name": "video_start",
+      "description": "Start video recording.",
+      "category": "video"
+    },
+    {
+      "name": "video_stop",
+      "description": "Stop video recording and save the file.",
+      "category": "video"
+    },
+    {
+      "name": "wait_for_function",
+      "description": "Wait for a JavaScript function to return truthy.",
+      "category": "wait"
+    },
+    {
+      "name": "wait_for_load",
+      "description": "Wait for a load state (load, domcontentloaded, networkidle).",
+      "category": "wait"
+    },
+    {
+      "name": "wait_for_selector",
+      "description": "Wait for element to appear/disappear with state option.",
+      "category": "wait"
+    },
+    {
+      "name": "wait_for_state",
+      "description": "Wait for an element to reach a state (visible, hidden, attached, detached).",
+      "category": "wait"
+    },
+    {
+      "name": "wait_for_text",
+      "description": "Wait for text to appear on the page.",
+      "category": "wait"
+    },
+    {
+      "name": "wait_for_url",
+      "description": "Wait for URL to match a pattern.",
+      "category": "wait"
+    }
+  ],
+  "categories": {
+    "accessibility": 1,
+    "browser": 2,
+    "cdp": 20,
+    "config": 1,
+    "console": 2,
+    "dialog": 2,
+    "element": 33,
+    "frame": 2,
+    "human": 1,
+    "input": 12,
+    "js": 4,
+    "network": 6,
+    "page": 19,
+    "record": 5,
+    "storage": 17,
+    "tab": 3,
+    "test": 15,
+    "trace": 6,
+    "video": 2,
+    "wait": 6
+  },
+  "total": 159
+}

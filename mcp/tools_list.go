@@ -14,9 +14,9 @@ type ToolInfo struct {
 
 // ToolList represents the complete list of MCP tools.
 type ToolList struct {
-	Tools      []ToolInfo        `json:"tools"`
-	Categories map[string]int    `json:"categories"`
-	Total      int               `json:"total"`
+	Tools      []ToolInfo     `json:"tools"`
+	Categories map[string]int `json:"categories"`
+	Total      int            `json:"total"`
 }
 
 // toolDefinitions contains all tool definitions organized by category.
@@ -24,10 +24,10 @@ type ToolList struct {
 // Naming convention: {namespace}_{verb}_{target}
 //
 // Principles:
-//   1. Keep verbs explicit: element_get_text not element_text
-//   2. Avoid abbreviations: wait_for_function not wait_fn
-//   3. Use full words: human_pause not hitl_pause
-//   4. Consistent verb patterns: get/set, start/stop, is/has
+//  1. Keep verbs explicit: element_get_text not element_text
+//  2. Avoid abbreviations: wait_for_function not wait_fn
+//  3. Use full words: human_pause not hitl_pause
+//  4. Consistent verb patterns: get/set, start/stop, is/has
 var toolDefinitions = []struct {
 	category string
 	tools    []ToolInfo

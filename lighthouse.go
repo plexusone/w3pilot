@@ -15,10 +15,10 @@ import (
 type LighthouseCategory string
 
 const (
-	LighthousePerformance    LighthouseCategory = "performance"
-	LighthouseAccessibility  LighthouseCategory = "accessibility"
-	LighthouseBestPractices  LighthouseCategory = "best-practices"
-	LighthouseSEO            LighthouseCategory = "seo"
+	LighthousePerformance   LighthouseCategory = "performance"
+	LighthouseAccessibility LighthouseCategory = "accessibility"
+	LighthouseBestPractices LighthouseCategory = "best-practices"
+	LighthouseSEO           LighthouseCategory = "seo"
 )
 
 // LighthouseDevice represents the device to emulate.

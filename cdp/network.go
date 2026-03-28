@@ -56,7 +56,7 @@ func (c *Client) GetResponseBody(ctx context.Context, requestID string, saveTo s
 			return nil, fmt.Errorf("cdp: failed to create directory: %w", err)
 		}
 
-		if err := os.WriteFile(saveTo, data, 0644); err != nil {
+		if err := os.WriteFile(saveTo, data, 0600); err != nil {
 			return nil, fmt.Errorf("cdp: failed to write response body: %w", err)
 		}
 
@@ -70,8 +70,8 @@ func (c *Client) GetResponseBody(ctx context.Context, requestID string, saveTo s
 // EnableNetwork enables the Network domain with response body capture.
 func (c *Client) EnableNetwork(ctx context.Context) error {
 	_, err := c.Send(ctx, NetworkEnable, map[string]interface{}{
-		"maxResourceBufferSize": 10 * 1024 * 1024,  // 10MB per resource
-		"maxTotalBufferSize":    50 * 1024 * 1024,  // 50MB total
+		"maxResourceBufferSize": 10 * 1024 * 1024, // 10MB per resource
+		"maxTotalBufferSize":    50 * 1024 * 1024, // 50MB total
 	})
 	if err != nil {
 		return fmt.Errorf("cdp: failed to enable Network: %w", err)

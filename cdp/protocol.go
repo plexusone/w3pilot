@@ -38,26 +38,26 @@ type EventHandler func(params json.RawMessage)
 // Common CDP domains and methods used by WebPilot.
 const (
 	// HeapProfiler domain
-	HeapProfilerEnable             = "HeapProfiler.enable"
-	HeapProfilerDisable            = "HeapProfiler.disable"
-	HeapProfilerTakeHeapSnapshot   = "HeapProfiler.takeHeapSnapshot"
+	HeapProfilerEnable               = "HeapProfiler.enable"
+	HeapProfilerDisable              = "HeapProfiler.disable"
+	HeapProfilerTakeHeapSnapshot     = "HeapProfiler.takeHeapSnapshot"
 	HeapProfilerAddHeapSnapshotChunk = "HeapProfiler.addHeapSnapshotChunk"
 
 	// Network domain
-	NetworkEnable          = "Network.enable"
-	NetworkDisable         = "Network.disable"
-	NetworkGetResponseBody = "Network.getResponseBody"
+	NetworkEnable            = "Network.enable"
+	NetworkDisable           = "Network.disable"
+	NetworkGetResponseBody   = "Network.getResponseBody"
 	NetworkEmulateConditions = "Network.emulateNetworkConditions"
 
 	// Emulation domain
 	EmulationSetCPUThrottlingRate = "Emulation.setCPUThrottlingRate"
 
 	// Profiler domain (for coverage)
-	ProfilerEnable                = "Profiler.enable"
-	ProfilerDisable               = "Profiler.disable"
-	ProfilerStartPreciseCoverage  = "Profiler.startPreciseCoverage"
-	ProfilerStopPreciseCoverage   = "Profiler.stopPreciseCoverage"
-	ProfilerTakePreciseCoverage   = "Profiler.takePreciseCoverage"
+	ProfilerEnable               = "Profiler.enable"
+	ProfilerDisable              = "Profiler.disable"
+	ProfilerStartPreciseCoverage = "Profiler.startPreciseCoverage"
+	ProfilerStopPreciseCoverage  = "Profiler.stopPreciseCoverage"
+	ProfilerTakePreciseCoverage  = "Profiler.takePreciseCoverage"
 
 	// Debugger domain (for source maps)
 	DebuggerEnable  = "Debugger.enable"
@@ -75,9 +75,9 @@ const (
 // NetworkConditions represents network throttling settings.
 type NetworkConditions struct {
 	Offline            bool    `json:"offline"`
-	Latency            float64 `json:"latency"`              // ms
-	DownloadThroughput float64 `json:"downloadThroughput"`   // bytes/sec
-	UploadThroughput   float64 `json:"uploadThroughput"`     // bytes/sec
+	Latency            float64 `json:"latency"`            // ms
+	DownloadThroughput float64 `json:"downloadThroughput"` // bytes/sec
+	UploadThroughput   float64 `json:"uploadThroughput"`   // bytes/sec
 	ConnectionType     string  `json:"connectionType,omitempty"`
 }
 
@@ -93,7 +93,7 @@ var (
 	NetworkSlow3G = NetworkConditions{
 		Offline:            false,
 		Latency:            400,
-		DownloadThroughput: 400 * 1024 / 8,  // 400 Kbps
+		DownloadThroughput: 400 * 1024 / 8, // 400 Kbps
 		UploadThroughput:   400 * 1024 / 8,
 		ConnectionType:     "cellular3g",
 	}

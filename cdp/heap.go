@@ -90,7 +90,7 @@ func (c *Client) TakeHeapSnapshot(ctx context.Context, path string) (*HeapSnapsh
 	}
 
 	// Write to file
-	if err := os.WriteFile(path, []byte(data), 0644); err != nil {
+	if err := os.WriteFile(path, []byte(data), 0600); err != nil {
 		return nil, fmt.Errorf("cdp: failed to write heap snapshot: %w", err)
 	}
 

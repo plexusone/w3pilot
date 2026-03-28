@@ -9,10 +9,10 @@ import (
 
 // Screencast domain methods.
 const (
-	PageStartScreencast     = "Page.startScreencast"
-	PageStopScreencast      = "Page.stopScreencast"
-	PageScreencastFrameAck  = "Page.screencastFrameAck"
-	PageScreencastFrame     = "Page.screencastFrame"
+	PageStartScreencast    = "Page.startScreencast"
+	PageStopScreencast     = "Page.stopScreencast"
+	PageScreencastFrameAck = "Page.screencastFrameAck"
+	PageScreencastFrame    = "Page.screencastFrame"
 )
 
 // ScreencastFormat represents the image format for screencast.
@@ -25,18 +25,18 @@ const (
 
 // ScreencastOptions configures screencast capture.
 type ScreencastOptions struct {
-	Format      ScreencastFormat `json:"format,omitempty"`      // Image format (jpeg or png)
-	Quality     int              `json:"quality,omitempty"`     // Image quality (0-100, jpeg only)
-	MaxWidth    int              `json:"maxWidth,omitempty"`    // Maximum width
-	MaxHeight   int              `json:"maxHeight,omitempty"`   // Maximum height
-	EveryNthFrame int            `json:"everyNthFrame,omitempty"` // Skip frames (1 = every frame)
+	Format        ScreencastFormat `json:"format,omitempty"`        // Image format (jpeg or png)
+	Quality       int              `json:"quality,omitempty"`       // Image quality (0-100, jpeg only)
+	MaxWidth      int              `json:"maxWidth,omitempty"`      // Maximum width
+	MaxHeight     int              `json:"maxHeight,omitempty"`     // Maximum height
+	EveryNthFrame int              `json:"everyNthFrame,omitempty"` // Skip frames (1 = every frame)
 }
 
 // ScreencastFrame represents a captured frame.
 type ScreencastFrame struct {
-	Data       string            `json:"data"`       // Base64-encoded image data
-	Metadata   ScreencastMetadata `json:"metadata"`
-	SessionID  int               `json:"sessionId"`
+	Data      string             `json:"data"` // Base64-encoded image data
+	Metadata  ScreencastMetadata `json:"metadata"`
+	SessionID int                `json:"sessionId"`
 }
 
 // ScreencastMetadata contains frame metadata.

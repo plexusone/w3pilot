@@ -2023,7 +2023,7 @@ func (p *Pilot) OnPage(ctx context.Context, handler PageHandler) error {
 		// Create a new Pilot instance for the new page
 		newPage := &Pilot{
 			client:          p.client,
-				clicker:         p.clicker,
+			clicker:         p.clicker,
 			browsingContext: params.Context,
 		}
 		handler(newPage)
@@ -2064,7 +2064,7 @@ func (p *Pilot) OnPopup(ctx context.Context, handler PopupHandler) error {
 		// Create a new Pilot instance for the popup
 		popup := &Pilot{
 			client:          p.client,
-				clicker:         p.clicker,
+			clicker:         p.clicker,
 			browsingContext: params.Context,
 		}
 		handler(popup)
@@ -2164,7 +2164,7 @@ func (p *Pilot) Pages(ctx context.Context) ([]*Pilot, error) {
 	for i, c := range tree.Contexts {
 		pages[i] = &Pilot{
 			client:          p.client,
-				clicker:         p.clicker,
+			clicker:         p.clicker,
 			browsingContext: c.Context,
 		}
 	}

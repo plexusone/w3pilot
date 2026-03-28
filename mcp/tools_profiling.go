@@ -96,13 +96,13 @@ func (s *Server) handleGetPerformanceMetrics(
 type GetMemoryStatsInput struct{}
 
 type GetMemoryStatsOutput struct {
-	UsedJSHeapSize  int64  `json:"usedJSHeapSize"`      // Used JS heap size in bytes
-	TotalJSHeapSize int64  `json:"totalJSHeapSize"`     // Total JS heap size in bytes
-	JSHeapSizeLimit int64  `json:"jsHeapSizeLimit"`     // JS heap size limit in bytes
-	UsedMB          string `json:"usedMB"`              // Human-readable used size
-	TotalMB         string `json:"totalMB"`             // Human-readable total size
-	LimitMB         string `json:"limitMB"`             // Human-readable limit
-	UsagePercent    string `json:"usagePercent"`        // Usage percentage
+	UsedJSHeapSize  int64  `json:"usedJSHeapSize"`  // Used JS heap size in bytes
+	TotalJSHeapSize int64  `json:"totalJSHeapSize"` // Total JS heap size in bytes
+	JSHeapSizeLimit int64  `json:"jsHeapSizeLimit"` // JS heap size limit in bytes
+	UsedMB          string `json:"usedMB"`          // Human-readable used size
+	TotalMB         string `json:"totalMB"`         // Human-readable total size
+	LimitMB         string `json:"limitMB"`         // Human-readable limit
+	UsagePercent    string `json:"usagePercent"`    // Usage percentage
 }
 
 func (s *Server) handleGetMemoryStats(
@@ -467,8 +467,8 @@ type LighthouseAuditOutput struct {
 }
 
 type LighthouseScoreOut struct {
-	Title   string `json:"title"`
-	Score   int    `json:"score"`   // 0-100
+	Title    string  `json:"title"`
+	Score    int     `json:"score"`    // 0-100
 	RawScore float64 `json:"rawScore"` // 0-1
 }
 
@@ -578,10 +578,10 @@ type GetNetworkRequestBodyInput struct {
 }
 
 type GetNetworkRequestBodyOutput struct {
-	Body          string `json:"body,omitempty"`           // Text body (if not binary or saved to file)
-	Base64Encoded bool   `json:"base64Encoded"`            // Whether body is base64 encoded
-	SavedToFile   string `json:"savedToFile,omitempty"`    // File path if saved
-	Size          int    `json:"size"`                     // Body size in bytes
+	Body          string `json:"body,omitempty"`        // Text body (if not binary or saved to file)
+	Base64Encoded bool   `json:"base64Encoded"`         // Whether body is base64 encoded
+	SavedToFile   string `json:"savedToFile,omitempty"` // File path if saved
+	Size          int    `json:"size"`                  // Body size in bytes
 	Message       string `json:"message"`
 }
 
@@ -1077,10 +1077,10 @@ func (s *Server) handleStartCoverage(
 type StopCoverageInput struct{}
 
 type StopCoverageOutput struct {
-	Summary     CoverageSummaryOutput `json:"summary"`
-	JSScripts   int                   `json:"jsScripts"`
-	CSSRules    int                   `json:"cssRules"`
-	Message     string                `json:"message"`
+	Summary   CoverageSummaryOutput `json:"summary"`
+	JSScripts int                   `json:"jsScripts"`
+	CSSRules  int                   `json:"cssRules"`
+	Message   string                `json:"message"`
 }
 
 type CoverageSummaryOutput struct {

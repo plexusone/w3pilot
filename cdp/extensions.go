@@ -8,9 +8,9 @@ import (
 
 // Extensions domain methods.
 const (
-	ExtensionsLoadUnpacked  = "Extensions.loadUnpacked"
-	ExtensionsUninstall     = "Extensions.uninstall"
-	ExtensionsGetAll        = "Extensions.getAll"
+	ExtensionsLoadUnpacked = "Extensions.loadUnpacked"
+	ExtensionsUninstall    = "Extensions.uninstall"
+	ExtensionsGetAll       = "Extensions.getAll"
 )
 
 // ExtensionInfo contains information about a browser extension.

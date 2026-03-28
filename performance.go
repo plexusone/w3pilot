@@ -9,11 +9,11 @@ import (
 // PerformanceMetrics contains Core Web Vitals and navigation timing.
 type PerformanceMetrics struct {
 	// Core Web Vitals
-	LCP float64 `json:"lcp,omitempty"` // Largest Contentful Paint (ms)
-	CLS float64 `json:"cls,omitempty"` // Cumulative Layout Shift
-	INP float64 `json:"inp,omitempty"` // Interaction to Next Paint (ms)
-	FID float64 `json:"fid,omitempty"` // First Input Delay (ms)
-	FCP float64 `json:"fcp,omitempty"` // First Contentful Paint (ms)
+	LCP  float64 `json:"lcp,omitempty"`  // Largest Contentful Paint (ms)
+	CLS  float64 `json:"cls,omitempty"`  // Cumulative Layout Shift
+	INP  float64 `json:"inp,omitempty"`  // Interaction to Next Paint (ms)
+	FID  float64 `json:"fid,omitempty"`  // First Input Delay (ms)
+	FCP  float64 `json:"fcp,omitempty"`  // First Contentful Paint (ms)
 	TTFB float64 `json:"ttfb,omitempty"` // Time to First Byte (ms)
 
 	// Navigation Timing

@@ -69,15 +69,15 @@ type ConsoleEntry struct {
 
 // ExceptionDetails contains information about an exception.
 type ExceptionDetails struct {
-	ExceptionID        int          `json:"exceptionId"`
-	Text               string       `json:"text"`
-	LineNumber         int          `json:"lineNumber"`
-	ColumnNumber       int          `json:"columnNumber"`
-	ScriptID           string       `json:"scriptId,omitempty"`
-	URL                string       `json:"url,omitempty"`
-	StackTrace         *StackTrace  `json:"stackTrace,omitempty"`
+	ExceptionID        int           `json:"exceptionId"`
+	Text               string        `json:"text"`
+	LineNumber         int           `json:"lineNumber"`
+	ColumnNumber       int           `json:"columnNumber"`
+	ScriptID           string        `json:"scriptId,omitempty"`
+	URL                string        `json:"url,omitempty"`
+	StackTrace         *StackTrace   `json:"stackTrace,omitempty"`
 	Exception          *RemoteObject `json:"exception,omitempty"`
-	ExecutionContextID int          `json:"executionContextId,omitempty"`
+	ExecutionContextID int           `json:"executionContextId,omitempty"`
 }
 
 // LogEntry represents a browser log entry (deprecations, interventions, etc).

@@ -7,10 +7,10 @@ import (
 
 // CPU throttling rate presets.
 const (
-	CPUNoThrottle   = 1 // No throttling
-	CPU2xSlowdown   = 2 // 2x slowdown
-	CPU4xSlowdown   = 4 // 4x slowdown (mid-tier mobile)
-	CPU6xSlowdown   = 6 // 6x slowdown (low-end mobile)
+	CPUNoThrottle = 1 // No throttling
+	CPU2xSlowdown = 2 // 2x slowdown
+	CPU4xSlowdown = 4 // 4x slowdown (mid-tier mobile)
+	CPU6xSlowdown = 6 // 6x slowdown (low-end mobile)
 )
 
 // SetCPUThrottlingRate sets CPU throttling.

@@ -59,7 +59,77 @@ Full heap profiling via **direct CDP connection** to same browser session.
 - [x] CDP `HeapProfiler.takeHeapSnapshot` implementation
 - [ ] Memory diff between snapshots (stretch goal)
 
-### P1 - High Priority
+### P1 - High Priority (AI Agent Ergonomics) - COMPLETED v0.6.0
+
+Features that make w3pilot easier for AI agents to use effectively.
+
+#### Page Inspection ✅
+
+Single-call overview of interactive elements for AI decision-making.
+
+- [x] `page_inspect` MCP tool - returns structured page overview
+  - Buttons: text, selector, enabled state
+  - Links: text, href, selector
+  - Form fields: type, label, name, current value, selector
+  - Headings: level, text, selector (for page structure)
+- [x] SDK `Pilot.Inspect()` method
+- [x] `w3pilot page inspect` CLI command with `--format json` output
+
+#### JSON Output Mode for CLI ✅
+
+Machine-readable output for scripting and AI tool use.
+
+- [x] Global `--format` flag on root command (text, json)
+- [x] `--format json` on all read commands (title, url, text, attr, etc.)
+- [x] Structured JSON output with consistent schema
+- [x] Error responses in JSON format when `--format json` enabled
+
+#### Better Error Context ✅
+
+Provide actionable context when operations fail.
+
+- [x] Include current page URL in element errors
+- [x] Include page title in navigation errors
+- [x] Show visible text near expected selector location
+- [x] Suggest alternative selectors when element not found
+- [x] `ElementNotFoundError` includes `PageContext`
+
+#### Selector Validation Tool ✅
+
+Pre-validate selectors before running actions.
+
+- [x] `test_validate_selectors` MCP tool (accepts array of selectors)
+- [x] Returns: found/not found, count, visible state for each
+- [x] SDK `Pilot.ValidateSelectors()` method
+- [x] `w3pilot test validate-selectors` CLI command
+
+#### Workflow Recipes ✅
+
+Pre-built patterns for common automation tasks.
+
+- [x] `workflow_login` MCP tool (username_selector, password_selector, submit_selector, credentials)
+- [x] `workflow_extract_table` MCP tool (table_selector) → JSON array of rows
+- [ ] `workflow_fill_form` MCP tool (fields array with label-based matching) - future
+- [x] SDK `Pilot.Login()`, `Pilot.ExtractTable()` methods
+- [x] Documentation with common workflow examples
+
+#### Named State Snapshots ✅
+
+Save/restore named browser states for session management.
+
+- [x] `w3pilot state save <name>` CLI command
+- [x] `w3pilot state load <name>` CLI command
+- [x] `w3pilot state list` CLI command
+- [x] `w3pilot state delete <name>` CLI command
+- [x] `state_save` MCP tool (name) - saves to ~/.w3pilot/states/
+- [x] `state_load` MCP tool (name) - restores from saved state
+- [x] `state_list` MCP tool - list available named states
+- [x] `state_delete` MCP tool - delete named state
+- [x] State management via `state.Manager`
+
+---
+
+### P1 - High Priority (Debugging)
 
 Features that improve debugging and testing capabilities.
 

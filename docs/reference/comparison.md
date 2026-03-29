@@ -1,14 +1,15 @@
 # Feature Comparison
 
-This document compares webpilot against VibiumDev clients (Java/JS/Python), the VibiumDev MCP server, and Playwright MCP.
+This document compares w3pilot against VibiumDev clients (Java/JS/Python), the VibiumDev MCP server, Playwright MCP, and ChromeDevTools MCP.
 
 ## Overview
 
 | Project | Language | Type | Repository |
 |---------|----------|------|------------|
-| **webpilot** | Go | SDK + MCP Server | [plexusone/webpilot](https://github.com/plexusone/webpilot) |
+| **w3pilot** | Go | SDK + MCP Server | [plexusone/w3pilot](https://github.com/plexusone/w3pilot) |
 | **VibiumDev** | Go + JS/Python/Java | Daemon + MCP + Clients | [VibiumDev/vibium](https://github.com/VibiumDev/vibium) |
 | **Playwright MCP** | TypeScript | MCP Server | [microsoft/playwright-mcp](https://github.com/microsoft/playwright-mcp) |
+| **ChromeDevTools MCP** | TypeScript | MCP Server | [ChromeDevTools/chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp) |
 
 ---
 
@@ -19,38 +20,38 @@ Compare the three MCP servers for LLM agent integration.
 ### Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────────┐
-│                         webpilot MCP                               │
-├─────────────────────────────────────────────────────────────────────┤
-│  webpilot-mcp ──► webpilot SDK ──► BiDi Client ──► Chrome            │
-│       │                                                             │
-│       └── Uses official Go MCP SDK                                  │
-│       └── 100+ tools, comprehensive automation                      │
-└─────────────────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────────┐
+│                             w3pilot MCP                           │
+├───────────────────────────────────────────────────────────────────┤
+│  w3pilot-mcp ──► w3pilot SDK ──► BiDi Client ──► Chrome           │
+│       │                                                           │
+│       └── Uses official Go MCP SDK                                │
+│       └── 100+ tools, comprehensive automation                    │
+└───────────────────────────────────────────────────────────────────┘
 
-┌─────────────────────────────────────────────────────────────────────┐
-│                        VibiumDev MCP                                │
-├─────────────────────────────────────────────────────────────────────┤
-│  vibium mcp ──► clicker ──► BiDi Client ──► Chrome                  │
-│       │                                                             │
-│       └── Hand-rolled JSON-RPC                                      │
-│       └── ~25 tools, core automation                                │
-└─────────────────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────────┐
+│                           VibiumDev MCP                           │
+├───────────────────────────────────────────────────────────────────┤
+│  vibium mcp ──► clicker ──► BiDi Client ──► Chrome                │
+│       │                                                           │
+│       └── Hand-rolled JSON-RPC                                    │
+│       └── ~25 tools, core automation                              │
+└───────────────────────────────────────────────────────────────────┘
 
-┌─────────────────────────────────────────────────────────────────────┐
-│                       Playwright MCP                                │
-├─────────────────────────────────────────────────────────────────────┤
-│  @playwright/mcp ──► Playwright ──► CDP/BiDi ──► Chromium           │
-│       │                                                             │
-│       └── Official TS MCP SDK                                       │
-│       └── ~45 tools (with opt-in caps)                              │
-│       └── Snapshot-based (accessibility tree)                       │
-└─────────────────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────────┐
+│                          Playwright MCP                           │
+├───────────────────────────────────────────────────────────────────┤
+│  @playwright/mcp ──► Playwright ──► CDP/BiDi ──► Chromium         │
+│       │                                                           │
+│       └── Official TS MCP SDK                                     │
+│       └── ~45 tools (with opt-in caps)                            │
+│       └── Snapshot-based (accessibility tree)                     │
+└───────────────────────────────────────────────────────────────────┘
 ```
 
 ### Implementation Details
 
-| Aspect | webpilot | VibiumDev | Playwright MCP |
+| Aspect | w3pilot | VibiumDev | Playwright MCP |
 |--------|-----------|-----------|----------------|
 | Language | Go | Go | TypeScript |
 | MCP SDK | Official Go SDK | Hand-rolled | Official TS SDK |
@@ -65,7 +66,7 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 #### Browser Management
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Launch browser | `browser_launch` | `browser_start` | (auto-launch) |
 | Quit browser | `browser_quit` | `browser_stop` | `browser_close` |
@@ -74,7 +75,7 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 #### Navigation
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Navigate | `navigate` | `browser_navigate` | `browser_navigate` |
 | Back | `back` | :x: | `browser_navigate_back` |
@@ -84,7 +85,7 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 #### Element Interaction
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Click | `click` | `browser_click` | `browser_click` |
 | Double-click | `dblclick` | :x: | `browser_click` (doubleClick) |
@@ -104,7 +105,7 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 #### Element State
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Get text | `get_text` | `browser_get_text` | `browser_snapshot` |
 | Get value | `get_value` | :x: | :x: |
@@ -123,7 +124,7 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 #### Page State
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Get title | `get_title` | `browser_get_title` | :x: |
 | Get URL | `get_url` | `browser_get_url` | :x: |
@@ -133,7 +134,7 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 #### Screenshots & PDF
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Screenshot | `screenshot` | `browser_screenshot` | `browser_take_screenshot` |
 | Full page screenshot | `screenshot` (fullPage) | :x: | `browser_take_screenshot` (fullPage) |
@@ -142,7 +143,7 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 #### JavaScript
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Evaluate | `evaluate` | `browser_evaluate` | `browser_evaluate` |
 | Element eval | `element_eval` | :x: | `browser_evaluate` (ref) |
@@ -152,7 +153,7 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 #### Waiting
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Wait for element state | `wait_until` | `browser_wait` | `browser_wait_for` |
 | Wait for selector | `wait_for_selector` | :x: | :x: |
@@ -164,7 +165,7 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 #### Input Controllers
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Keyboard press | `keyboard_press` | `browser_keys` | `browser_press_key` |
 | Keyboard down/up | `keyboard_down`, `keyboard_up` | :x: | :x: |
@@ -179,7 +180,7 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 #### Tab/Page Management
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | New page | `new_page` | `browser_new_page` | `browser_tabs` (new) |
 | List pages | `get_pages`, `list_tabs` | `browser_list_pages` | `browser_tabs` (list) |
@@ -189,7 +190,7 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 #### Frame Management
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Get frames | `get_frames` | :x: | :x: |
 | Select frame | `select_frame` | :x: | :x: |
@@ -197,7 +198,7 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 #### Cookie Management
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Get cookies | `get_cookies` | :x: | `browser_cookie_list` (opt) |
 | Get cookie | :x: | :x: | `browser_cookie_get` (opt) |
@@ -207,7 +208,7 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 #### LocalStorage
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Get item | `localstorage_get` | :x: | `browser_localstorage_get` (opt) |
 | Set item | `localstorage_set` | :x: | `browser_localstorage_set` (opt) |
@@ -217,7 +218,7 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 #### SessionStorage
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Get item | `sessionstorage_get` | :x: | `browser_sessionstorage_get` (opt) |
 | Set item | `sessionstorage_set` | :x: | `browser_sessionstorage_set` (opt) |
@@ -227,7 +228,7 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 #### Storage State
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Get storage state | `get_storage_state` | :x: | `browser_storage_state` (opt) |
 | Set storage state | `set_storage_state` | :x: | `browser_set_storage_state` (opt) |
@@ -235,7 +236,7 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 #### Network
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Route (mock) | `route` | :x: | `browser_route` (opt) |
 | Route list | `route_list` | :x: | `browser_route_list` (opt) |
@@ -246,21 +247,21 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 #### Console
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Get console messages | `get_console_messages` | :x: | `browser_console_messages` |
 | Clear console | `clear_console_messages` | :x: | :x: |
 
 #### Dialogs
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Handle dialog | `handle_dialog` | :x: | `browser_handle_dialog` |
 | Get dialog info | `get_dialog` | :x: | :x: |
 
 #### Emulation
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Emulate media | `emulate_media` | :x: | :x: |
 | Set geolocation | `set_geolocation` | :x: | :x: |
@@ -269,14 +270,14 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 #### Profiling (CDP)
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Heap snapshot | `take_heap_snapshot` (CDP) | :x: | :x: |
 | Direct CDP access | `cdp_send` | :x: | :x: |
 
 #### Recording & Tracing
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Start recording | `start_recording` | :x: | :x: |
 | Stop recording | `stop_recording` | :x: | :x: |
@@ -290,7 +291,7 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 #### Testing & Assertions
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Assert text | `assert_text` | :x: | :x: |
 | Assert element | `assert_element` | :x: | :x: |
@@ -309,13 +310,13 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 #### Human-in-the-Loop
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Pause for human | `pause_for_human` | :x: | :x: |
 
 #### Configuration
 
-| Tool | webpilot | VibiumDev | Playwright MCP |
+| Tool | w3pilot | VibiumDev | Playwright MCP |
 |------|:---------:|:---------:|:--------------:|
 | Get config | `get_config` | :x: | `browser_get_config` (opt) |
 | Add init script | `add_init_script` | :x: | :x: |
@@ -324,17 +325,17 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 | MCP Server | Core Tools | Opt-in Tools | Total |
 |------------|:----------:|:------------:|:-----:|
-| **webpilot** | 100+ | - | **100+** |
+| **w3pilot** | 100+ | - | **100+** |
 | Playwright MCP | ~20 | ~25 | ~45 |
 | VibiumDev | ~25 | - | ~25 |
 
 ### Unique Features by Server
 
-#### webpilot Only
+#### w3pilot Only
 
 | Feature | Description |
 |---------|-------------|
-| Script Runner | YAML/JSON test execution via `webpilot run` |
+| Script Runner | YAML/JSON test execution via `w3pilot run` |
 | Session Recording | Capture actions as replayable scripts |
 | Human-in-the-Loop | `pause_for_human` for SSO, CAPTCHA, 2FA |
 | Test Reports | Structured reports (box, diagnostic, JSON) |
@@ -364,13 +365,97 @@ Legend: :white_check_mark: = Supported, :x: = Not supported, (opt) = Requires op
 
 ---
 
+## ChromeDevTools MCP Comparison
+
+[ChromeDevTools MCP](https://github.com/ChromeDevTools/chrome-devtools-mcp) is an official Chrome DevTools MCP server with 29 tools. W3Pilot provides equivalent functionality plus additional features.
+
+### Tool Mapping
+
+| ChromeDevTools MCP (29 tools) | W3Pilot Equivalent | Notes |
+|-------------------------------|-------------------|-------|
+| **Input Automation** | | |
+| `click` | `element_click` | ✅ |
+| `drag` | `element_drag_to` | ✅ |
+| `fill` | `element_fill` | ✅ |
+| `fill_form` | Multiple `element_fill` | Use multiple calls |
+| `handle_dialog` | `dialog_handle` | ✅ |
+| `hover` | `element_hover` | ✅ |
+| `press_key` | `input_keyboard_press` | ✅ |
+| `type_text` | `element_type` | ✅ |
+| `upload_file` | `element_set_files` | ✅ |
+| **Navigation** | | |
+| `close_page` | `tab_close` | ✅ |
+| `list_pages` | `tab_list` | ✅ |
+| `navigate_page` | `page_navigate`, `page_go_back`, `page_go_forward`, `page_reload` | ✅ Split into specific tools |
+| `new_page` | `page_new` | ✅ |
+| `select_page` | `tab_select` | ✅ |
+| `wait_for` | `wait_for_text`, `wait_for_selector` | ✅ Multiple wait tools |
+| **Emulation** | | |
+| `emulate` | `page_emulate_media`, `cdp_emulate_network`, `cdp_emulate_cpu` | ✅ Split into specific tools |
+| `resize_page` | `page_set_viewport` | ✅ |
+| **Performance** | | |
+| `performance_start_trace` | `trace_start` | ✅ |
+| `performance_stop_trace` | `trace_stop` | ✅ |
+| `performance_analyze_insight` | `cdp_get_performance_metrics` | Core Web Vitals (LCP, CLS, INP) |
+| `take_memory_snapshot` | `cdp_take_heap_snapshot` | ✅ |
+| **Network** | | |
+| `list_network_requests` | `network_get_requests` | ✅ |
+| `get_network_request` | `cdp_get_response_body` | ✅ |
+| **Debugging** | | |
+| `evaluate_script` | `js_evaluate` | ✅ |
+| `list_console_messages` | `console_get_messages` | ✅ |
+| `get_console_message` | `console_get_messages` | ✅ Filter by ID |
+| `lighthouse_audit` | `cdp_run_lighthouse` | ✅ |
+| `take_screenshot` | `page_screenshot` | ✅ |
+| `take_snapshot` | `accessibility_snapshot` | ✅ |
+
+### Additional W3Pilot Features (not in ChromeDevTools MCP)
+
+| Category | W3Pilot Tools |
+|----------|---------------|
+| **Session Recording** | `record_start`, `record_stop`, `record_export`, `record_status`, `record_clear` |
+| **Video Capture** | `video_start`, `video_stop` |
+| **Storage Management** | `storage_get_cookies`, `storage_set_cookies`, `storage_local_get`, `storage_local_set`, `storage_session_get`, `storage_session_set`, `storage_get_state`, `storage_set_state`, `storage_clear_all` |
+| **Network Interception** | `network_route`, `network_unroute`, `network_route_list`, `network_set_offline` |
+| **Code Coverage** | `cdp_start_coverage`, `cdp_stop_coverage` |
+| **Test Assertions** | `test_assert_text`, `test_assert_element`, `test_verify_value`, `test_verify_visible`, `test_verify_enabled`, `test_verify_checked`, `test_generate_locator`, `test_get_report` |
+| **Semantic Selectors** | Find by role, label, placeholder, testid, alt, title, xpath, near |
+| **Frame Navigation** | `frame_select`, `frame_select_main`, `frame_list` |
+| **Human-in-the-Loop** | `human_pause` |
+| **Init Scripts** | `js_init_script`, `js_add_script`, `js_add_style` |
+| **Trace Control** | `trace_chunk_start`, `trace_chunk_stop`, `trace_group_start`, `trace_group_stop` |
+| **Clock Control** | Time manipulation for testing |
+| **Geolocation** | Location spoofing |
+
+### Tool Count Comparison
+
+| MCP Server | Tools |
+|------------|:-----:|
+| **W3Pilot** | **159** |
+| ChromeDevTools MCP | 29 |
+| Playwright MCP | ~45 |
+| VibiumDev MCP | ~25 |
+
+### When to Use Which
+
+| Use Case | Recommendation |
+|----------|----------------|
+| Comprehensive automation | W3Pilot (159 tools) |
+| Simple debugging tasks | ChromeDevTools MCP |
+| Performance tracing only | ChromeDevTools MCP |
+| Test automation with assertions | W3Pilot |
+| Session recording & export | W3Pilot |
+| Storage/cookie management | W3Pilot |
+
+---
+
 ## Part 2: Client Library Comparison
 
-Compare webpilot SDK with VibiumDev client libraries.
+Compare w3pilot SDK with VibiumDev client libraries.
 
 ### Language & Integration
 
-| Aspect | webpilot | vibium-js | vibium-py | vibium-java |
+| Aspect | w3pilot | vibium-js | vibium-py | vibium-java |
 |--------|-----------|-----------|-----------|-------------|
 | Language | Go | JavaScript/TS | Python | Java |
 | Async model | Context-based | Promises | async/await | CompletableFuture |
@@ -380,7 +465,7 @@ Compare webpilot SDK with VibiumDev client libraries.
 
 ### Core Features
 
-| Feature | webpilot | vibium-js | vibium-py | vibium-java |
+| Feature | w3pilot | vibium-js | vibium-py | vibium-java |
 |---------|:---------:|:---------:|:---------:|:-----------:|
 | Launch browser | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | Headless mode | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
@@ -389,7 +474,7 @@ Compare webpilot SDK with VibiumDev client libraries.
 
 ### Element Finding
 
-| Feature | webpilot | vibium-js | vibium-py | vibium-java |
+| Feature | w3pilot | vibium-js | vibium-py | vibium-java |
 |---------|:---------:|:---------:|:---------:|:-----------:|
 | CSS selector | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | **Semantic selectors** | | | | |
@@ -407,7 +492,7 @@ Compare webpilot SDK with VibiumDev client libraries.
 
 ### Interactions
 
-| Feature | webpilot | vibium-js | vibium-py | vibium-java |
+| Feature | w3pilot | vibium-js | vibium-py | vibium-java |
 |---------|:---------:|:---------:|:---------:|:-----------:|
 | Click/Type/Fill | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | Check/Uncheck | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
@@ -419,7 +504,7 @@ Compare webpilot SDK with VibiumDev client libraries.
 
 ### Input Controllers
 
-| Feature | webpilot | vibium-js | vibium-py | vibium-java |
+| Feature | w3pilot | vibium-js | vibium-py | vibium-java |
 |---------|:---------:|:---------:|:---------:|:-----------:|
 | Keyboard | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | Mouse | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
@@ -427,7 +512,7 @@ Compare webpilot SDK with VibiumDev client libraries.
 
 ### Event Listeners
 
-| Feature | webpilot | vibium-js | vibium-py | vibium-java |
+| Feature | w3pilot | vibium-js | vibium-py | vibium-java |
 |---------|:---------:|:---------:|:---------:|:-----------:|
 | onConsole | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | onError | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
@@ -439,7 +524,7 @@ Compare webpilot SDK with VibiumDev client libraries.
 
 ### Recording/Tracing
 
-| Feature | webpilot | vibium-js | vibium-py | vibium-java |
+| Feature | w3pilot | vibium-js | vibium-py | vibium-java |
 |---------|:---------:|:---------:|:---------:|:-----------:|
 | Trace recording | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | Trace chunks | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
@@ -448,7 +533,7 @@ Compare webpilot SDK with VibiumDev client libraries.
 
 ### Storage
 
-| Feature | webpilot | vibium-js | vibium-py | vibium-java |
+| Feature | w3pilot | vibium-js | vibium-py | vibium-java |
 |---------|:---------:|:---------:|:---------:|:-----------:|
 | Cookies | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | LocalStorage | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
@@ -459,7 +544,7 @@ Compare webpilot SDK with VibiumDev client libraries.
 
 ### Network
 
-| Feature | webpilot | vibium-js | vibium-py | vibium-java |
+| Feature | w3pilot | vibium-js | vibium-py | vibium-java |
 |---------|:---------:|:---------:|:---------:|:-----------:|
 | Route/mock | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | Offline mode | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
@@ -467,7 +552,7 @@ Compare webpilot SDK with VibiumDev client libraries.
 
 ### Clock Control
 
-| Feature | webpilot | vibium-js | vibium-py | vibium-java |
+| Feature | w3pilot | vibium-js | vibium-py | vibium-java |
 |---------|:---------:|:---------:|:---------:|:-----------:|
 | Install/fastForward | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | pauseAt/resume | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
@@ -476,7 +561,7 @@ Compare webpilot SDK with VibiumDev client libraries.
 
 ### Accessibility
 
-| Feature | webpilot | vibium-js | vibium-py | vibium-java |
+| Feature | w3pilot | vibium-js | vibium-py | vibium-java |
 |---------|:---------:|:---------:|:---------:|:-----------:|
 | a11yTree | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 | interestingOnly option | :white_check_mark: | :white_check_mark: | :white_check_mark: | :white_check_mark: |
@@ -490,22 +575,22 @@ Compare webpilot SDK with VibiumDev client libraries.
 
 | Use Case | Recommendation |
 |----------|----------------|
-| **Comprehensive LLM automation** | webpilot MCP (100+ tools) |
+| **Comprehensive LLM automation** | w3pilot MCP (100+ tools) |
 | **Simple browser control** | VibiumDev MCP or Playwright MCP |
 | **Accessibility-focused** | Playwright MCP (`browser_snapshot`) |
-| **Human-in-the-loop flows** | webpilot MCP (`pause_for_human`) |
-| **Test automation with reports** | webpilot MCP (verification + reports) |
+| **Human-in-the-loop flows** | w3pilot MCP (`pause_for_human`) |
+| **Test automation with reports** | w3pilot MCP (verification + reports) |
 | **Multi-browser support** | Playwright MCP |
 
 ### Client Library Selection
 
 | Use Case | Recommendation |
 |----------|----------------|
-| **Go application** | webpilot SDK |
+| **Go application** | w3pilot SDK |
 | **JavaScript/TypeScript app** | vibium-js |
 | **Python application** | vibium-py |
 | **Java/JVM application** | vibium-java |
-| **Script-based automation** | webpilot (`webpilot run`) |
+| **Script-based automation** | w3pilot (`w3pilot run`) |
 
 ---
 
@@ -532,18 +617,18 @@ Compare webpilot SDK with VibiumDev client libraries.
 └────────────────────────────────────────────────────────────────────┘
 
 ┌────────────────────────────────────────────────────────────────────┐
-│                    plexusone/webpilot                              │
+│                    plexusone/w3pilot                              │
 │              (dual-protocol architecture)                          │
 │                                                                    │
 │   ┌────────────────────────────────────────────────────────────┐   │
-│   │                    webpilot SDK                            │   │
+│   │                    w3pilot SDK                            │   │
 │   │         BiDi client (automation) + CDP client (profiling)  │   │
 │   └────────────────────────┬───────────────────────────────────┘   │
 │                            │                                       │
 │         ┌──────────────────┼──────────────────┐                    │
 │         │                  │                  │                    │
 │         ▼                  ▼                  ▼                    │
-│    webpilot-mcp         webpilot run        Direct SDK             │
+│    w3pilot-mcp         w3pilot run        Direct SDK             │
 │         │                  │                  │                    │
 │         └──────────────────┼──────────────────┘                    │
 │                    ┌───────┴───────┐                               │
@@ -558,7 +643,7 @@ Compare webpilot SDK with VibiumDev client libraries.
 └────────────────────────────────────────────────────────────────────┘
 ```
 
-**Key point**: webpilot uses clicker (from VibiumDev) for BiDi automation commands via pipe mode, and direct CDP for profiling features. This dual-protocol architecture provides comprehensive automation with advanced performance profiling capabilities.
+**Key point**: w3pilot uses clicker (from VibiumDev) for BiDi automation commands via pipe mode, and direct CDP for profiling features. This dual-protocol architecture provides comprehensive automation with advanced performance profiling capabilities.
 
 ---
 

@@ -27,6 +27,26 @@ jobs:
           go-version: '1.22'
           cache: true
 
+      - name: Install Chrome Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libnss3 \
+            libnspr4 \
+            libatk1.0-0 \
+            libatk-bridge2.0-0 \
+            libcups2 \
+            libdrm2 \
+            libxkbcommon0 \
+            libxcomposite1 \
+            libxdamage1 \
+            libxfixes3 \
+            libxrandr2 \
+            libgbm1 \
+            libasound2 \
+            libpango-1.0-0 \
+            libcairo2
+
       - name: Install Clicker Binary
         run: |
           git clone --depth 1 https://github.com/VibiumDev/vibium.git /tmp/vibium
@@ -42,7 +62,9 @@ jobs:
           key: vibium-browser-${{ runner.os }}
 
       - name: Ensure Browser Installed
-        run: clicker install
+        run: |
+          clicker install
+          clicker paths
 
       - name: Build CLI
         run: go build -o w3pilot ./cmd/w3pilot

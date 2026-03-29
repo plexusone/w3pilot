@@ -17,7 +17,7 @@ var (
 var rootCmd = &cobra.Command{
 	Use:   "w3pilot",
 	Short: "Browser automation CLI",
-	Long: `WebPilot is a browser automation tool that provides:
+	Long: `W3Pilot is a browser automation tool that provides:
 
   - MCP server for AI-assisted browser automation
   - CLI commands for scripted browser control
@@ -27,12 +27,27 @@ Examples:
   # Start MCP server
   w3pilot mcp --headless
 
-  # Launch browser and run commands
-  w3pilot launch --headless
-  w3pilot go https://example.com
-  w3pilot click "#submit"
-  w3pilot screenshot output.png
-  w3pilot quit
+  # Browser lifecycle (grouped commands)
+  w3pilot browser launch --headless
+  w3pilot browser quit
+
+  # Page navigation and management
+  w3pilot page navigate https://example.com
+  w3pilot page back
+  w3pilot page screenshot output.png
+  w3pilot page title
+
+  # Element interactions
+  w3pilot element click "#submit"
+  w3pilot element fill "#email" "test@example.com"
+  w3pilot element text "#result"
+
+  # Wait conditions
+  w3pilot wait selector "#modal"
+  w3pilot wait url "**/success"
+
+  # JavaScript execution
+  w3pilot js eval "document.title"
 
   # Run a script file
   w3pilot run test.yaml`,

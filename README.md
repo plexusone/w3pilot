@@ -188,6 +188,31 @@ func main() {
 }
 ```
 
+### Session Management
+
+Manage persistent browser sessions that can be reused across CLI commands:
+
+```go
+import "github.com/plexusone/w3pilot/session"
+
+// Create session manager
+mgr := session.NewManager(session.Config{
+    AutoReconnect: true,
+})
+
+// Get browser (launches if needed, reconnects if possible)
+pilot, err := mgr.Pilot(ctx)
+
+// Detach without closing browser
+mgr.Detach()
+
+// Later: reconnect to same browser
+pilot, err = mgr.Pilot(ctx)
+
+// When done: close browser
+mgr.Close(ctx)
+```
+
 ### MCP Server
 
 Start the MCP server for AI assistant integration:
@@ -292,6 +317,7 @@ Script format (JSON or YAML):
 | **MCP Server** | 159 tools across 20 namespaces for AI-assisted automation |
 | **CLI** | `w3pilot` command with subcommands |
 | **Script Runner** | Execute JSON/YAML test scripts |
+| **Session Management** | Persistent browser sessions with reconnection support |
 | **Session Recording** | Capture MCP actions as replayable scripts |
 | **JSON Schema** | Validated script format |
 | **Test Reporting** | Structured test results with diagnostics |

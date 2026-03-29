@@ -7,6 +7,32 @@
   "maintainers": ["plexusone"],
   "releases": [
     {
+      "version": "v0.8.0",
+      "date": "2026-03-29",
+      "highlights": [
+        { "description": "Session management SDK for live browser sessions" },
+        { "description": "Browser reconnection support for persistent sessions" },
+        { "description": "Foundation for CLI live session mode" }
+      ],
+      "added": [
+        { "description": "`session` package for shared browser session management", "commit": "66aeb81" },
+        { "description": "`session.Manager` with `LaunchIfNeeded()`, `Reconnect()`, `Detach()`, `Close()` methods", "commit": "66aeb81" },
+        { "description": "`session.Info` type for persisting session data to `~/.w3pilot/session.json`", "commit": "66aeb81" },
+        { "description": "`session.Config` type for session configuration options", "commit": "66aeb81" },
+        { "description": "`w3pilot.Connect(ctx, wsURL)` function to connect to existing browser", "commit": "431116a" },
+        { "description": "`Pilot.Clicker()` method to access clicker process info", "commit": "431116a" },
+        { "description": "`ClickerProcess.Process()` method to access underlying os.Process", "commit": "431116a" }
+      ],
+      "documentation": [
+        { "description": "v0.8.0 release notes with session management guide" },
+        { "description": "Updated TASKS.md with live session mode progress", "commit": "61c74b7" }
+      ],
+      "tests": [
+        { "description": "Unit tests for session persistence (Save, Load, Clear, Exists)", "commit": "66aeb81" },
+        { "description": "Unit tests for session manager configuration", "commit": "66aeb81" }
+      ]
+    },
+    {
       "version": "v0.7.0",
       "date": "2026-03-29",
       "highlights": [

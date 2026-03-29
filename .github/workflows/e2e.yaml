@@ -28,7 +28,7 @@ jobs:
           cache: true
 
       - name: Install Clicker Binary
-        run: go install github.com/VibiumDev/vibium/clicker/cmd/clicker@latest
+        run: go install github.com/vibium/clicker/cmd/clicker@latest
 
       - name: Cache Browser
         uses: actions/cache@v4

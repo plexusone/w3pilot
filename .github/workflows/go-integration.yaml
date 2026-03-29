@@ -64,6 +64,7 @@ jobs:
         run: |
           git clone --depth 1 https://github.com/VibiumDev/vibium.git /tmp/vibium
           cd /tmp/vibium/clicker/cmd/clicker
+          touch SKILL.md  # Required for go:embed
           go build -o $HOME/go/bin/clicker .
           rm -rf /tmp/vibium
 

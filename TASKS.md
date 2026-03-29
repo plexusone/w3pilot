@@ -235,17 +235,29 @@ SDK sends wrong command names that clicker doesn't recognize:
 | `HandleDialog()` | `vibium:dialog.handle` | `dialog.accept`, `dialog.dismiss` | [x] Split into two calls |
 | `SetExtraHTTPHeaders()` | `vibium:network.setHeaders` | `vibium:page.setHeaders` | [x] Fix command name |
 
-#### Not Implemented in Clicker
+#### Protocol-Agnostic SDK (BiDi first, CDP fallback)
 
-SDK methods that send commands clicker doesn't implement at all:
+SDK methods try BiDi first, fall back to CDP when BiDi doesn't support the command:
 
-| SDK Method | Sends | Status |
-|------------|-------|--------|
-| `NetworkRequests()` | `vibium:network.requests` | [ ] Return "not supported" error |
-| `ClearNetworkRequests()` | `vibium:network.clearRequests` | [ ] Return "not supported" error |
-| `SetOffline()` | `vibium:network.setOffline` | [ ] Return "not supported" error |
-| `ConsoleMessages()` | `vibium:console.messages` | [ ] Return "not supported" error |
-| `ClearConsoleMessages()` | `vibium:console.clear` | [ ] Return "not supported" error |
+| SDK Method | BiDi Command | CDP Fallback | Status |
+|------------|--------------|--------------|--------|
+| `SetOffline()` | `vibium:network.setOffline` | `EmulateNetwork(NetworkOffline)` | [x] Implemented |
+| `ConsoleMessages()` | `vibium:console.messages` | `ConsoleEntries()` | [x] Implemented |
+| `ClearConsoleMessages()` | `vibium:console.clear` | `consoleDebugger.Clear()` | [x] Implemented |
+| `NetworkRequests()` | `vibium:network.requests` | *(needs CDP impl)* | [ ] TODO |
+| `ClearNetworkRequests()` | `vibium:network.clearRequests` | *(needs CDP impl)* | [ ] TODO |
+
+#### CDP-Only Features (no BiDi equivalent)
+
+These features only work via CDP and are documented as such:
+
+| Feature | CDP Method | Notes |
+|---------|------------|-------|
+| `EmulateNetwork()` | `Network.emulateNetworkConditions` | Fine-grained latency/bandwidth control |
+| `EmulateCPU()` | `Emulation.setCPUThrottlingRate` | CPU throttling |
+| `TakeHeapSnapshot()` | `HeapProfiler.takeHeapSnapshot` | Memory profiling |
+| `ConsoleEntries()` | `Runtime.consoleAPICalled` | Full stack traces (richer than ConsoleMessages) |
+| Coverage, Screencast, Extensions | Various | See CDP guide |
 
 #### Working but Flaky
 
@@ -262,9 +274,13 @@ Features that exist in clicker but have issues:
 
 - [x] Fix `HandleDialog()` to use `dialog.accept`/`dialog.dismiss`
 - [x] Fix `SetExtraHTTPHeaders()` command name
-- [ ] Add "not supported" errors for unimplemented features
+- [x] Make SDK protocol-agnostic (BiDi first, CDP fallback)
+- [x] Implement `SetOffline()` with CDP fallback
+- [x] Implement `ConsoleMessages()` with CDP fallback
+- [x] Implement `ClearConsoleMessages()` with CDP fallback
+- [x] Re-enable integration tests for CDP-backed features
+- [ ] Implement `NetworkRequests()` with CDP fallback
 - [ ] Document SDK/clicker compatibility matrix
-- [ ] Update integration tests to reflect actual capabilities
 
 ---
 

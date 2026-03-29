@@ -101,20 +101,32 @@ W3Pilot combines two complementary protocols for complete browser control:
 
 Both protocols connect to the **same Chrome browser instance**, allowing you to automate with BiDi while profiling with CDP simultaneously.
 
+### Protocol-Agnostic API
+
+The SDK automatically handles protocol selection. Some methods try BiDi first and fall back to CDP when BiDi doesn't support the feature:
+
+| Method | Tries First | Falls Back To |
+|--------|-------------|---------------|
+| `SetOffline()` | BiDi | CDP network emulation |
+| `ConsoleMessages()` | BiDi | CDP console debugger |
+| `ClearConsoleMessages()` | BiDi | CDP console debugger |
+
+Users call the same method regardless of which protocol is used internally. When BiDi support is added upstream, the SDK will automatically use it without requiring code changes.
+
 ## Prerequisites
 
-W3Pilot requires the **Clicker** binary, a WebDriver BiDi browser launcher from the [Vibium](https://github.com/anthropics/vibium) project.
+W3Pilot requires the **Clicker** binary, a WebDriver BiDi browser launcher from the [Vibium](https://github.com/VibiumDev/vibium) project.
 
 ### Install Clicker
 
 **Option 1: Download from GitHub Releases**
 
-Download the latest release for your platform from [vibium/releases](https://github.com/anthropics/vibium/releases) and add it to your PATH.
+Download the latest release for your platform from [vibium/releases](https://github.com/VibiumDev/vibium/releases) and add it to your PATH.
 
 **Option 2: Build from Source**
 
 ```bash
-git clone https://github.com/anthropics/vibium.git
+git clone https://github.com/VibiumDev/vibium.git
 cd vibium/clicker
 go build -o clicker .
 mv clicker /usr/local/bin/  # or add to PATH

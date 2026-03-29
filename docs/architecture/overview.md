@@ -163,6 +163,49 @@ W3Pilot uses **both** WebDriver BiDi and Chrome DevTools Protocol (CDP):
 
 Both protocols connect to the same Chrome browser instance, discovered via the `DevToolsActivePort` file in Chrome's user data directory.
 
+### Protocol-Agnostic Methods
+
+Some SDK methods are **protocol-agnostic** - they try BiDi first and automatically fall back to CDP when BiDi doesn't support the feature:
+
+```
+User calls SetOffline(true)
+    │
+    ▼
+┌─────────────────────────────┐
+│ Try BiDi command            │
+│ vibium:network.setOffline   │
+└─────────────┬───────────────┘
+              │
+              ▼ (fails: "unknown command")
+┌─────────────────────────────┐
+│ Detect unsupported command  │
+│ IsUnsupportedCommand(err)   │
+└─────────────┬───────────────┘
+              │
+              ▼
+┌─────────────────────────────┐
+│ Fall back to CDP            │
+│ EmulateNetwork(Offline)     │
+└─────────────┬───────────────┘
+              │
+              ▼
+         Success
+```
+
+**Protocol-agnostic methods:**
+
+| Method | BiDi Command | CDP Fallback |
+|--------|--------------|--------------|
+| `SetOffline()` | `vibium:network.setOffline` | `EmulateNetwork(NetworkOffline)` |
+| `ConsoleMessages()` | `vibium:console.messages` | `ConsoleEntries()` |
+| `ClearConsoleMessages()` | `vibium:console.clear` | `consoleDebugger.Clear()` |
+
+This design ensures:
+
+- **Stable API** - Users don't need to change code when BiDi support is added
+- **Best available backend** - Automatically uses the most capable implementation
+- **Graceful degradation** - Clear errors when neither protocol supports the feature
+
 ### Custom Commands
 
 W3Pilot extends BiDi with `vibium:*` commands for:

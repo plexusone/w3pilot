@@ -30,6 +30,18 @@ W3Pilot connects to a single Chrome browser using **both** protocols:
 | **BiDi** | Page automation, element interactions, screenshots, tracing |
 | **CDP** | Heap profiling, network response bodies, CPU/network emulation |
 
+## Protocol-Agnostic Methods
+
+Some SDK methods automatically use CDP as a fallback when BiDi doesn't support a feature:
+
+| Method | BiDi (primary) | CDP (fallback) |
+|--------|----------------|----------------|
+| `SetOffline()` | `vibium:network.setOffline` | `EmulateNetwork(NetworkOffline)` |
+| `ConsoleMessages()` | `vibium:console.messages` | `ConsoleEntries()` |
+| `ClearConsoleMessages()` | `vibium:console.clear` | `consoleDebugger.Clear()` |
+
+You don't need to handle this manually - the SDK detects unsupported BiDi commands and falls back automatically. When BiDi support is added upstream, your code will use it without changes.
+
 ## Checking CDP Availability
 
 CDP is automatically connected when launching a browser:

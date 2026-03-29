@@ -7,6 +7,40 @@
   "maintainers": ["plexusone"],
   "releases": [
     {
+      "version": "v0.6.0",
+      "date": "2026-03-28",
+      "highlights": [
+        { "description": "AI Agent Ergonomics features for improved agent-browser interaction" },
+        { "description": "Page inspection to discover interactive elements without prior knowledge" },
+        { "description": "Selector validation with suggestions for alternatives" },
+        { "description": "High-level workflow recipes for login and table extraction" },
+        { "description": "Named state snapshots for saving and restoring browser state" }
+      ],
+      "added": [
+        { "description": "`Pilot.Inspect()` method to discover buttons, links, inputs, selects, headings, and images on a page" },
+        { "description": "`Pilot.ValidateSelectors()` and `Pilot.ValidateSelector()` methods to verify selectors before use" },
+        { "description": "`Pilot.Login()` workflow for automated login with credentials and success verification" },
+        { "description": "`Pilot.ExtractTable()` workflow to extract HTML table data to structured JSON" },
+        { "description": "`state.Manager` for saving and loading named state snapshots to `~/.w3pilot/states/`" },
+        { "description": "`page_inspect` MCP tool for AI agents to discover page elements" },
+        { "description": "`test_validate_selectors` MCP tool for validating CSS selectors with suggestions" },
+        { "description": "`workflow_login` MCP tool for automated login workflow" },
+        { "description": "`workflow_extract_table` MCP tool for extracting table data" },
+        { "description": "`state_save`, `state_load`, `state_list`, `state_delete` MCP tools for named state management" },
+        { "description": "`w3pilot page inspect` CLI command for page inspection" },
+        { "description": "`w3pilot test validate-selectors` CLI command for selector validation" },
+        { "description": "`w3pilot state save/load/list/delete` CLI commands for state management" },
+        { "description": "`--format` / `-o` global CLI flag for JSON output mode" },
+        { "description": "`PageContext` struct added to error types for enhanced error context" },
+        { "description": "`Suggestions` field added to `ElementNotFoundError` and `TimeoutError`" }
+      ],
+      "documentation": [
+        { "description": "AI Agent Ergonomics guide with inspection, validation, workflows, and state management" },
+        { "description": "v0.6.0 release notes" },
+        { "description": "Updated MCP tools reference with new tools" }
+      ]
+    },
+    {
       "version": "v0.5.0",
       "date": "2026-03-23",
       "highlights": [

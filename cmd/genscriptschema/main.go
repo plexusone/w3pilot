@@ -17,8 +17,8 @@ func main() {
 
 	schema := r.Reflect(&script.Script{})
 	schema.ID = "https://github.com/plexusone/w3pilot/script/w3pilot-script.schema.json"
-	schema.Title = "WebPilot Test Script"
-	schema.Description = "Schema for WebPilot browser automation test scripts"
+	schema.Title = "W3Pilot Test Script"
+	schema.Description = "Schema for W3Pilot browser automation test scripts"
 
 	data, err := json.MarshalIndent(schema, "", "  ")
 	if err != nil {

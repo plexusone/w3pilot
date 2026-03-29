@@ -6,7 +6,7 @@ import (
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
-// Server is the WebPilot MCP server.
+// Server is the W3Pilot MCP server.
 type Server struct {
 	session   *Session
 	mcpServer *mcp.Server

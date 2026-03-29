@@ -1,10 +1,10 @@
-# WebPilot
+# W3Pilot
 
 Go browser automation library using WebDriver BiDi and Chrome DevTools Protocol for real-time bidirectional communication with browsers.
 
-## What is WebPilot?
+## What is W3Pilot?
 
-WebPilot is a browser automation library built for AI agents. It uses a **dual-protocol architecture** connecting to Chrome via both WebDriver BiDi and CDP:
+W3Pilot is a browser automation library built for AI agents. It uses a **dual-protocol architecture** connecting to Chrome via both WebDriver BiDi and CDP:
 
 - **Instant feedback** - No polling, real-time events
 - **AI-native** - Designed for LLM tool use
@@ -25,10 +25,10 @@ WebPilot is a browser automation library built for AI agents. It uses a **dual-p
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                         webpilot                                │
+│                         w3pilot                                │
 ├─────────────┬─────────────┬─────────────┬──────────────────────┤
 │  Go Client  │ MCP Server  │    CLI      │   Script Runner      │
-│    SDK      │ (159 tools) │  (webpilot) │   (webpilot run)     │
+│    SDK      │ (159 tools) │  (w3pilot) │   (w3pilot run)     │
 ├─────────────┴─────────────┴─────────────┴──────────────────────┤
 │                       Pilot Core                               │
 │     ┌─────────────────────┐    ┌─────────────────────┐         │
@@ -46,7 +46,7 @@ WebPilot is a browser automation library built for AI agents. It uses a **dual-p
 
 ## Why Dual-Protocol?
 
-WebPilot combines two complementary protocols for complete browser control:
+W3Pilot combines two complementary protocols for complete browser control:
 
 | Protocol | Purpose | Use Cases |
 |----------|---------|-----------|

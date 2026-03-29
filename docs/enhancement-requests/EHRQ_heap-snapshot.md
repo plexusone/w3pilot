@@ -19,7 +19,7 @@ Chrome DevTools MCP provides `take_memory_snapshot` which enables:
 - Memory regression testing
 - Production debugging
 
-WebPilot needs this for feature parity and to support accessibility testing tools that may have memory leaks.
+W3Pilot needs this for feature parity and to support accessibility testing tools that may have memory leaks.
 
 ## Current State
 
@@ -89,7 +89,7 @@ fs.writeFileSync(path, snapshot);
 3. **Performance testing**: Track memory growth over time
 4. **CI/CD integration**: Fail builds on memory regression
 
-## WebPilot Integration
+## W3Pilot Integration
 
 Once available in clicker:
 

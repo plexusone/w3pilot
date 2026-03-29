@@ -42,10 +42,10 @@ For programmatic access, use:
 
 ```bash
 # Export as JSON
-webpilot mcp --list-tools > mcp-tools.json
+w3pilot mcp --list-tools > mcp-tools.json
 
 # Or via the standalone binary
-webpilot-mcp --list-tools
+w3pilot-mcp --list-tools
 ```
 
 The JSON format follows the MCP protocol structure:

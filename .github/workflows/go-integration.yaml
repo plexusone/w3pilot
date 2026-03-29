@@ -26,8 +26,8 @@ on:
   workflow_dispatch:
 
 env:
-  WEBPILOT_HEADLESS: "1"
-  WEBPILOT_DEBUG: "0"
+  W3PILOT_HEADLESS: "1"
+  W3PILOT_DEBUG: "0"
 
 jobs:
   unit-tests:

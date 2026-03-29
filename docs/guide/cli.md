@@ -5,7 +5,7 @@ The `vibium` CLI provides command-line browser automation.
 ## Installation
 
 ```bash
-go install github.com/grokify/webpilot/cmd/vibium@latest
+go install github.com/grokify/w3pilot/cmd/vibium@latest
 ```
 
 ## Global Flags
@@ -22,7 +22,7 @@ go install github.com/grokify/webpilot/cmd/vibium@latest
 Launch a browser instance.
 
 ```bash
-webpilot launch [flags]
+w3pilot launch [flags]
 ```
 
 **Flags:**
@@ -34,7 +34,7 @@ webpilot launch [flags]
 **Example:**
 
 ```bash
-webpilot launch --headless
+w3pilot launch --headless
 ```
 
 ### go
@@ -42,7 +42,7 @@ webpilot launch --headless
 Navigate to a URL.
 
 ```bash
-webpilot go <url> [flags]
+w3pilot go <url> [flags]
 ```
 
 **Flags:**
@@ -54,7 +54,7 @@ webpilot go <url> [flags]
 **Example:**
 
 ```bash
-webpilot go https://example.com
+w3pilot go https://example.com
 ```
 
 ### click
@@ -62,7 +62,7 @@ webpilot go https://example.com
 Click an element.
 
 ```bash
-webpilot click <selector> [flags]
+w3pilot click <selector> [flags]
 ```
 
 **Flags:**
@@ -74,8 +74,8 @@ webpilot click <selector> [flags]
 **Example:**
 
 ```bash
-webpilot click "#submit"
-webpilot click "button.login"
+w3pilot click "#submit"
+w3pilot click "button.login"
 ```
 
 ### type
@@ -97,13 +97,13 @@ vibium type "#search" "hello world"
 Fill an input (replaces existing content).
 
 ```bash
-webpilot fill <selector> <text> [flags]
+w3pilot fill <selector> <text> [flags]
 ```
 
 **Example:**
 
 ```bash
-webpilot fill "#email" "user@example.com"
+w3pilot fill "#email" "user@example.com"
 ```
 
 ### screenshot
@@ -111,7 +111,7 @@ webpilot fill "#email" "user@example.com"
 Capture a screenshot.
 
 ```bash
-webpilot screenshot <filename> [flags]
+w3pilot screenshot <filename> [flags]
 ```
 
 **Flags:**
@@ -124,8 +124,8 @@ webpilot screenshot <filename> [flags]
 **Example:**
 
 ```bash
-webpilot screenshot page.png
-webpilot screenshot button.png --selector "#submit"
+w3pilot screenshot page.png
+w3pilot screenshot button.png --selector "#submit"
 ```
 
 ### eval
@@ -148,7 +148,7 @@ vibium eval "document.querySelectorAll('a').length"
 Close the browser.
 
 ```bash
-webpilot quit
+w3pilot quit
 ```
 
 ### mcp
@@ -156,7 +156,7 @@ webpilot quit
 Start MCP server.
 
 ```bash
-webpilot mcp [flags]
+w3pilot mcp [flags]
 ```
 
 **Flags:**
@@ -172,7 +172,7 @@ webpilot mcp [flags]
 Run a YAML/JSON script.
 
 ```bash
-webpilot run <script> [flags]
+w3pilot run <script> [flags]
 ```
 
 **Flags:**
@@ -185,8 +185,8 @@ webpilot run <script> [flags]
 **Example:**
 
 ```bash
-webpilot run test.yaml
-webpilot run login.json --headless
+w3pilot run test.yaml
+w3pilot run login.json --headless
 ```
 
 ## Session Management
@@ -194,11 +194,11 @@ webpilot run login.json --headless
 The CLI maintains session state in `~/.vibium/session.json`. This allows running commands across multiple invocations:
 
 ```bash
-webpilot launch
-webpilot go https://example.com
+w3pilot launch
+w3pilot go https://example.com
 # ... later ...
-webpilot screenshot result.png
-webpilot quit
+w3pilot screenshot result.png
+w3pilot quit
 ```
 
 ## Examples
@@ -206,23 +206,23 @@ webpilot quit
 ### Login Flow
 
 ```bash
-webpilot launch --headless
-webpilot go https://example.com/login
-webpilot fill "#email" "user@example.com"
-webpilot fill "#password" "secret123"
-webpilot click "#submit"
-webpilot screenshot dashboard.png
-webpilot quit
+w3pilot launch --headless
+w3pilot go https://example.com/login
+w3pilot fill "#email" "user@example.com"
+w3pilot fill "#password" "secret123"
+w3pilot click "#submit"
+w3pilot screenshot dashboard.png
+w3pilot quit
 ```
 
 ### Form Automation
 
 ```bash
-webpilot launch
-webpilot go https://example.com/form
-webpilot fill "#name" "John Doe"
-webpilot fill "#email" "john@example.com"
-webpilot click "input[type='checkbox']"
-webpilot click "#submit"
-webpilot quit
+w3pilot launch
+w3pilot go https://example.com/form
+w3pilot fill "#name" "John Doe"
+w3pilot fill "#email" "john@example.com"
+w3pilot click "input[type='checkbox']"
+w3pilot click "#submit"
+w3pilot quit
 ```

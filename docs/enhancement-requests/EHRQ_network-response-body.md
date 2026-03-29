@@ -19,7 +19,7 @@ Chrome DevTools MCP provides `get_network_request` which enables:
 - Response validation
 - Binary content inspection (images, files)
 
-Current WebPilot network tools only capture metadata, not response bodies.
+Current W3Pilot network tools only capture metadata, not response bodies.
 
 ## Current State
 
@@ -106,7 +106,7 @@ Network interception must be enabled to capture response bodies. This may requir
 3. **Validation**: Verify response content matches expected
 4. **Binary inspection**: Check downloaded images/files
 
-## WebPilot Integration
+## W3Pilot Integration
 
 Once available in clicker:
 

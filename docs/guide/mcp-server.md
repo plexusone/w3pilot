@@ -9,13 +9,13 @@ The MCP server can be run two ways:
 1. **Standalone binary** (recommended for MCP clients):
 
    ```bash
-   go install github.com/plexusone/webpilot/cmd/webpilot-mcp@latest
+   go install github.com/plexusone/w3pilot/cmd/w3pilot-mcp@latest
    ```
 
 2. **Via the vibium CLI**:
 
    ```bash
-   go install github.com/plexusone/webpilot/cmd/vibium@latest
+   go install github.com/plexusone/w3pilot/cmd/vibium@latest
    ```
 
 ## Starting the Server
@@ -24,26 +24,26 @@ The MCP server can be run two ways:
 
 ```bash
 # Default (headless browser)
-webpilot-mcp
+w3pilot-mcp
 
 # Visible browser (for debugging)
-webpilot-mcp -headless=false
+w3pilot-mcp -headless=false
 
 # Custom timeout
-webpilot-mcp -timeout=60s
+w3pilot-mcp -timeout=60s
 ```
 
 ### Via CLI
 
 ```bash
 # Default (visible browser)
-webpilot mcp
+w3pilot mcp
 
 # Headless mode
-webpilot mcp --headless
+w3pilot mcp --headless
 
 # Custom timeout
-webpilot mcp --timeout 60s
+w3pilot mcp --timeout 60s
 ```
 
 ## Client Configuration
@@ -58,8 +58,8 @@ Edit the config file:
 ```json
 {
   "mcpServers": {
-    "webpilot": {
-      "command": "webpilot-mcp",
+    "w3pilot": {
+      "command": "w3pilot-mcp",
       "args": ["-headless=false"]
     }
   }
@@ -73,8 +73,8 @@ Add to your Claude Code MCP settings:
 ```json
 {
   "mcpServers": {
-    "webpilot": {
-      "command": "webpilot-mcp",
+    "w3pilot": {
+      "command": "w3pilot-mcp",
       "args": ["-headless=false"]
     }
   }
@@ -84,13 +84,13 @@ Add to your Claude Code MCP settings:
 Or use the CLI command:
 
 ```bash
-claude mcp add vibium webpilot-mcp -- -headless=false
+claude mcp add vibium w3pilot-mcp -- -headless=false
 ```
 
 ### Kiro CLI
 
 ```bash
-kiro-cli mcp add --name vibium --command webpilot-mcp --args "-headless=false"
+kiro-cli mcp add --name vibium --command w3pilot-mcp --args "-headless=false"
 ```
 
 ### Cursor
@@ -100,8 +100,8 @@ Edit `.cursor/mcp.json` in your project or home directory:
 ```json
 {
   "mcpServers": {
-    "webpilot": {
-      "command": "webpilot-mcp",
+    "w3pilot": {
+      "command": "w3pilot-mcp",
       "args": ["-headless=false"]
     }
   }
@@ -115,8 +115,8 @@ Edit the MCP configuration in Windsurf settings:
 ```json
 {
   "mcpServers": {
-    "webpilot": {
-      "command": "webpilot-mcp",
+    "w3pilot": {
+      "command": "w3pilot-mcp",
       "args": ["-headless=false"]
     }
   }
@@ -127,7 +127,7 @@ Edit the MCP configuration in Windsurf settings:
 
 For any MCP-compatible client, use:
 
-- **Command**: `webpilot-mcp`
+- **Command**: `w3pilot-mcp`
 - **Args**: `["-headless=false"]` (visible browser) or `[]` (headless)
 
 ## Command-Line Options
@@ -144,7 +144,7 @@ For any MCP-compatible client, use:
 Inject JavaScript that runs before any page scripts on every navigation:
 
 ```bash
-webpilot-mcp -init-script=./mock-api.js -init-script=./test-helpers.js
+w3pilot-mcp -init-script=./mock-api.js -init-script=./test-helpers.js
 ```
 
 Use cases:
@@ -158,8 +158,8 @@ Use cases:
 
 | Variable | Description |
 |----------|-------------|
-| `WEBPILOT_DEBUG` | Enable debug logging |
-| `WEBPILOT_CLICKER_PATH` | Path to clicker binary |
+| `W3PILOT_DEBUG` | Enable debug logging |
+| `W3PILOT_CLICKER_PATH` | Path to clicker binary |
 
 ## Tool Categories
 
@@ -306,4 +306,4 @@ Record your actions for deterministic replay:
 [Calls export_script]
 ```
 
-The exported JSON can be run with `webpilot run`.
+The exported JSON can be run with `w3pilot run`.

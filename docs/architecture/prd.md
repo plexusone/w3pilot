@@ -1,8 +1,8 @@
-# Product Requirements Document: WebPilot MCP Server
+# Product Requirements Document: W3Pilot MCP Server
 
 ## Overview
 
-WebPilot MCP Server enables AI assistants (Claude Code, ChatGPT, etc.) to perform browser automation and testing through the Model Context Protocol (MCP). It exposes browser control primitives as MCP tools, allowing agents to navigate websites, interact with elements, and execute test plans.
+W3Pilot MCP Server enables AI assistants (Claude Code, ChatGPT, etc.) to perform browser automation and testing through the Model Context Protocol (MCP). It exposes browser control primitives as MCP tools, allowing agents to navigate websites, interact with elements, and execute test plans.
 
 ## Vision
 
@@ -252,7 +252,7 @@ Two report formats for different consumers:
 
 ## Dependencies
 
-- WebPilot-Go client library (this repo)
+- W3Pilot-Go client library (this repo)
 - Clicker binary (external)
 - multi-agent-spec SDK (for report rendering)
 - MCP Go SDK (for protocol handling)
@@ -261,4 +261,4 @@ Two report formats for different consumers:
 
 - [Model Context Protocol](https://modelcontextprotocol.io/)
 - [multi-agent-spec](https://github.com/agentplexus/multi-agent-spec)
-- [WebPilot Clicker](https://github.com/aspect-build/aspect-cli) (example)
+- [W3Pilot Clicker](https://github.com/aspect-build/aspect-cli) (example)

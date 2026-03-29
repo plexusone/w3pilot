@@ -35,7 +35,7 @@ type Event struct {
 // EventHandler is a callback for CDP events.
 type EventHandler func(params json.RawMessage)
 
-// Common CDP domains and methods used by WebPilot.
+// Common CDP domains and methods used by W3Pilot.
 const (
 	// HeapProfiler domain
 	HeapProfilerEnable               = "HeapProfiler.enable"

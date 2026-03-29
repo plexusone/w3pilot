@@ -3,10 +3,10 @@
 ## Sentinel Errors
 
 ```go
-import webpilot "github.com/grokify/webpilot"
+import w3pilot "github.com/grokify/w3pilot"
 
 // Check specific error types
-if errors.Is(err, webpilot.ErrElementNotFound) {
+if errors.Is(err, w3pilot.ErrElementNotFound) {
     // Element not found
 }
 ```
@@ -38,7 +38,7 @@ func (e ElementNotFoundError) Is(target error) bool
 ```go
 elem, err := pilot.Find(ctx, "#missing", nil)
 if err != nil {
-    var notFound webpilot.ElementNotFoundError
+    var notFound w3pilot.ElementNotFoundError
     if errors.As(err, &notFound) {
         fmt.Printf("Selector not found: %s\n", notFound.Selector)
     }
@@ -61,9 +61,9 @@ func (e TimeoutError) Is(target error) bool
 **Example:**
 
 ```go
-err := elem.Click(ctx, &webpilot.ActionOptions{Timeout: time.Second})
+err := elem.Click(ctx, &w3pilot.ActionOptions{Timeout: time.Second})
 if err != nil {
-    var timeout webpilot.TimeoutError
+    var timeout w3pilot.TimeoutError
     if errors.As(err, &timeout) {
         fmt.Printf("Timed out after %v: %s\n", timeout.Timeout, timeout.Reason)
     }
@@ -115,7 +115,7 @@ func (e BiDiError) Error() string
 ```go
 elem, err := pilot.Find(ctx, selector, nil)
 if err != nil {
-    if errors.Is(err, webpilot.ErrElementNotFound) {
+    if errors.Is(err, w3pilot.ErrElementNotFound) {
         // Try alternative selector
         elem, err = pilot.Find(ctx, altSelector, nil)
     }
@@ -130,7 +130,7 @@ if err != nil {
 ```go
 err := elem.Click(ctx, nil)
 if err != nil {
-    var timeout webpilot.TimeoutError
+    var timeout w3pilot.TimeoutError
     if errors.As(err, &timeout) {
         log.Printf("Click timed out on %s after %v",
             timeout.Selector, timeout.Timeout)
@@ -142,14 +142,14 @@ if err != nil {
 ### Retry on Timeout
 
 ```go
-func clickWithRetry(ctx context.Context, elem *webpilot.Element, attempts int) error {
+func clickWithRetry(ctx context.Context, elem *w3pilot.Element, attempts int) error {
     var err error
     for i := 0; i < attempts; i++ {
         err = elem.Click(ctx, nil)
         if err == nil {
             return nil
         }
-        if !errors.Is(err, webpilot.ErrTimeout) {
+        if !errors.Is(err, w3pilot.ErrTimeout) {
             return err // Don't retry non-timeout errors
         }
         time.Sleep(time.Second)
@@ -161,12 +161,12 @@ func clickWithRetry(ctx context.Context, elem *webpilot.Element, attempts int) e
 ### Handle Connection Issues
 
 ```go
-pilot, err := webpilot.Launch(ctx)
+pilot, err := w3pilot.Launch(ctx)
 if err != nil {
-    if errors.Is(err, webpilot.ErrClickerNotFound) {
+    if errors.Is(err, w3pilot.ErrClickerNotFound) {
         return fmt.Errorf("install vibium: npm install -g vibium")
     }
-    if errors.Is(err, webpilot.ErrConnectionFailed) {
+    if errors.Is(err, w3pilot.ErrConnectionFailed) {
         return fmt.Errorf("browser failed to start")
     }
     return err

@@ -1,12 +1,12 @@
 # API Reference
 
-Full API documentation is available at [pkg.go.dev](https://pkg.go.dev/github.com/grokify/webpilot).
+Full API documentation is available at [pkg.go.dev](https://pkg.go.dev/github.com/grokify/w3pilot).
 
 ## Package Structure
 
 ```
-github.com/grokify/webpilot
-├── webpilot.go       # Main Vibe type, browser control
+github.com/grokify/w3pilot
+├── w3pilot.go       # Main Vibe type, browser control
 ├── element.go      # Element interactions
 ├── types.go        # Options and configuration
 ├── errors.go       # Error types
@@ -142,7 +142,7 @@ type ActionOptions struct {
 ## MCP Server
 
 ```go
-import "github.com/grokify/webpilot/mcp"
+import "github.com/grokify/w3pilot/mcp"
 
 type Config struct {
     Headless       bool
@@ -160,7 +160,7 @@ func (s *Server) Close(ctx context.Context) error
 Chrome DevTools Protocol client for advanced profiling and emulation.
 
 ```go
-import "github.com/plexusone/webpilot/cdp"
+import "github.com/plexusone/w3pilot/cdp"
 
 // Network condition presets
 var NetworkSlow3G = NetworkConditions{...}  // 400ms latency, 400 Kbps
@@ -200,7 +200,7 @@ func (c *Client) ClearCPUThrottling(ctx context.Context) error
 ## Script Types
 
 ```go
-import "github.com/grokify/webpilot/script"
+import "github.com/grokify/w3pilot/script"
 
 type Script struct {
     Name        string

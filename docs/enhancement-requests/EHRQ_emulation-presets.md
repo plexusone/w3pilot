@@ -26,7 +26,7 @@ Essential for accessibility testing where users may have older devices or slow c
 **Available**:
 ```go
 // Media emulation only
-pilot.EmulateMedia(ctx, webpilot.EmulateMediaOptions{
+pilot.EmulateMedia(ctx, w3pilot.EmulateMediaOptions{
     ColorScheme: "dark",
     ReducedMotion: "reduce",
 })
@@ -130,15 +130,15 @@ await cdp.send('Emulation.setCPUThrottlingRate', {
 3. **Accessibility**: Test for users with slow connections
 4. **CI/CD**: Automated performance regression testing
 
-## WebPilot Integration
+## W3Pilot Integration
 
 Once available in clicker:
 
 ```go
 // SDK - Network
-err := pilot.EmulateNetwork(ctx, webpilot.NetworkPresetSlow3G)
+err := pilot.EmulateNetwork(ctx, w3pilot.NetworkPresetSlow3G)
 // or
-err := pilot.EmulateNetwork(ctx, webpilot.NetworkConditions{
+err := pilot.EmulateNetwork(ctx, w3pilot.NetworkConditions{
     Latency: 150,
     DownloadThroughput: 1500000,
 })

@@ -5,8 +5,8 @@ Execute deterministic test scripts in JSON or YAML format.
 ## Running Scripts
 
 ```bash
-webpilot run test.json
-webpilot run test.yaml --headless
+w3pilot run test.json
+w3pilot run test.yaml --headless
 ```
 
 ## Script Format

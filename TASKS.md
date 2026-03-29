@@ -516,7 +516,7 @@ Per-context initialization scripts that run before page scripts.
 - All Vibium/Playwright parity tasks complete as of v0.5.0
 - Chrome DevTools MCP analysis added 2026-03-24 (see P0-P3 tasks above)
 - Reference: `/Users/johnwang/go/src/github.com/ChromeDevTools/chrome-devtools-mcp`
-- Goal: WebPilot as superset of VibiumCLI-MCP, Playwright MCP, and Chrome DevTools MCP
+- Goal: W3Pilot as superset of VibiumCLI-MCP, Playwright MCP, and Chrome DevTools MCP
 
 ## Implementation Approach (2026-03-24)
 
@@ -534,12 +534,12 @@ Chrome exposes both protocols simultaneously:
 │                   (launched by clicker)                      │
 ├─────────────────────────────────────────────────────────────┤
 │                                                              │
-│  BiDi WebSocket ◄──── clicker ◄──── WebPilot (existing)     │
+│  BiDi WebSocket ◄──── clicker ◄──── W3Pilot (existing)     │
 │  (chromedriver)       (serve)       - Semantic selectors     │
 │                                     - Navigation, clicks     │
 │                                     - Screenshots, a11y      │
 │                                                              │
-│  CDP WebSocket  ◄──── WebPilot (new CDPClient)              │
+│  CDP WebSocket  ◄──── W3Pilot (new CDPClient)              │
 │  (DevTools port)      - Heap snapshots                       │
 │                       - Network bodies                       │
 │                       - CPU/Network throttling               │
@@ -577,7 +577,7 @@ Contents:
 /devtools/browser/59b41735-8eaa-4112-bd09-...     ← Browser endpoint
 ```
 
-WebPilot can read this file to establish parallel CDP connection.
+W3Pilot can read this file to establish parallel CDP connection.
 
 ### Interface Design
 
@@ -604,7 +604,7 @@ pilot.EmulateCPU(ctx, 4)              // CDP Emulation
 ### No Clicker Enhancements Required
 
 Previous approach required adding CDP passthrough to clicker. With dual-protocol:
-- ✅ WebPilot connects directly to Chrome's CDP endpoint
+- ✅ W3Pilot connects directly to Chrome's CDP endpoint
 - ✅ Same browser session, no coordination issues
 - ✅ No upstream dependency for new features
 - ✅ Enhancement requests in `docs/enhancement-requests/` are now optional
@@ -613,12 +613,12 @@ Previous approach required adding CDP passthrough to clicker. With dual-protocol
 
 | Tool | Protocol | Transport | Strengths |
 |------|----------|-----------|-----------|
-| WebPilot | **BiDi + CDP** | Dual WebSocket | Best of both: semantic selectors + full debugging |
+| W3Pilot | **BiDi + CDP** | Dual WebSocket | Best of both: semantic selectors + full debugging |
 | Chrome DevTools MCP | CDP only | Puppeteer | Performance insights, memory profiling |
 | Playwright MCP | CDP only | Playwright | Cross-browser, codegen, fixtures |
 | VibiumCLI | BiDi only | clicker | Semantic selectors, RPA |
 
-**WebPilot advantage**: Unified interface to both protocols on single browser.
+**W3Pilot advantage**: Unified interface to both protocols on single browser.
 
 ## Priority Rationale
 

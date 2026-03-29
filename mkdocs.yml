@@ -1,8 +1,8 @@
-site_name: WebPilot
+site_name: W3Pilot
 site_description: Go browser automation library using WebDriver BiDi and Chrome DevTools Protocol
-site_url: https://plexusone.github.io/webpilot/
-repo_url: https://github.com/plexusone/webpilot
-repo_name: plexusone/webpilot
+site_url: https://plexusone.github.io/w3pilot/
+repo_url: https://github.com/plexusone/w3pilot
+repo_name: plexusone/w3pilot
 
 theme:
   name: material
@@ -77,4 +77,4 @@ nav:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/plexusone/webpilot
+      link: https://github.com/plexusone/w3pilot

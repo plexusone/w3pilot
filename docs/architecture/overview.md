@@ -2,16 +2,16 @@
 
 ## System Architecture
 
-WebPilot uses a **dual-protocol architecture** connecting to a single Chrome browser via both WebDriver BiDi and Chrome DevTools Protocol (CDP):
+W3Pilot uses a **dual-protocol architecture** connecting to a single Chrome browser via both WebDriver BiDi and Chrome DevTools Protocol (CDP):
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
 │                              User Layer                                  │
 ├─────────────────┬─────────────────┬─────────────────┬──────────────────┤
 │    Go Client    │   MCP Server    │      CLI        │  Script Runner   │
-│      SDK        │   (75+ tools)   │    (vibium)     │  (webpilot run)  │
+│      SDK        │   (75+ tools)   │    (vibium)     │  (w3pilot run)  │
 ├─────────────────┴─────────────────┴─────────────────┴──────────────────┤
-│                           webpilot Core                                │
+│                           w3pilot Core                                │
 │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐     │
 │  │  Pilot   │ │ Element  │ │ Keyboard │ │  Mouse   │ │  Touch   │     │
 │  │ (page)   │ │ (DOM)    │ │ (input)  │ │ (input)  │ │ (input)  │     │
@@ -79,7 +79,7 @@ Model Context Protocol server for AI assistant integration:
 
 Command-line interface for scripted automation:
 
-- Subcommand structure (`webpilot launch`, `webpilot click`, etc.)
+- Subcommand structure (`w3pilot launch`, `w3pilot click`, etc.)
 - Session persistence between commands
 - YAML/JSON script execution
 
@@ -145,7 +145,7 @@ Claude                    MCP Server              Recorder
 
 ### Dual Protocol Architecture
 
-WebPilot uses **both** WebDriver BiDi and Chrome DevTools Protocol (CDP):
+W3Pilot uses **both** WebDriver BiDi and Chrome DevTools Protocol (CDP):
 
 **WebDriver BiDi (via VibiumDev clicker)** for:
 
@@ -165,7 +165,7 @@ Both protocols connect to the same Chrome browser instance, discovered via the `
 
 ### Custom Commands
 
-WebPilot extends BiDi with `vibium:*` commands for:
+W3Pilot extends BiDi with `vibium:*` commands for:
 
 - High-level actions (fill, check, selectOption)
 - Actionability checks (wait for visible, enabled, stable)

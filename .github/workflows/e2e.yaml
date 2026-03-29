@@ -9,8 +9,8 @@ on:
         type: string
 
 env:
-  WEBPILOT_HEADLESS: "1"
-  WEBPILOT_DEBUG: "0"
+  W3PILOT_HEADLESS: "1"
+  W3PILOT_DEBUG: "0"
 
 jobs:
   e2e:
@@ -29,14 +29,14 @@ jobs:
 
       - name: Download Chrome
         run: |
-          # Chrome will be auto-installed by WebPilot if needed
+          # Chrome will be auto-installed by W3Pilot if needed
 
       - name: Build CLI
-        run: go build -o webpilot ./cmd/webpilot
+        run: go build -o w3pilot ./cmd/w3pilot
 
       - name: Run specific script
         if: ${{ github.event.inputs.script != '' }}
-        run: ./webpilot run ${{ github.event.inputs.script }} --headless
+        run: ./w3pilot run ${{ github.event.inputs.script }} --headless
 
       - name: Run all E2E tests
         if: ${{ github.event.inputs.script == '' }}
@@ -46,7 +46,7 @@ jobs:
               for script in "$dir"*.json; do
                 if [ -f "$script" ]; then
                   echo "Running: $script"
-                  ./webpilot run "$script" --headless
+                  ./w3pilot run "$script" --headless
                 fi
               done
             fi

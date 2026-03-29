@@ -5,7 +5,7 @@
 Install the Go module:
 
 ```bash
-go get github.com/grokify/webpilot
+go get github.com/grokify/w3pilot
 ```
 
 ## CLI Tool
@@ -13,36 +13,36 @@ go get github.com/grokify/webpilot
 Build and install the CLI:
 
 ```bash
-go install github.com/grokify/webpilot/cmd/vibium@latest
+go install github.com/grokify/w3pilot/cmd/vibium@latest
 ```
 
 Or build from source:
 
 ```bash
-git clone https://github.com/grokify/webpilot
-cd webpilot
+git clone https://github.com/grokify/w3pilot
+cd w3pilot
 go build -o vibium ./cmd/vibium
 ```
 
 ## Prerequisites
 
-### WebPilot Clicker Binary
+### W3Pilot Clicker Binary
 
-The Go client requires the WebPilot clicker binary. Install via npm:
+The Go client requires the W3Pilot clicker binary. Install via npm:
 
 ```bash
 npm install -g vibium
 ```
 
-Or download from [WebPilot releases](https://github.com/WebPilotDev/vibium/releases).
+Or download from [W3Pilot releases](https://github.com/W3PilotDev/vibium/releases).
 
 ### Environment Variables
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `WEBPILOT_CLICKER_PATH` | Path to clicker binary | Auto-detected |
-| `WEBPILOT_DEBUG` | Enable debug logging | `false` |
-| `WEBPILOT_HEADLESS` | Run headless by default | `false` |
+| `W3PILOT_CLICKER_PATH` | Path to clicker binary | Auto-detected |
+| `W3PILOT_DEBUG` | Enable debug logging | `false` |
+| `W3PILOT_HEADLESS` | Run headless by default | `false` |
 
 ## Verify Installation
 
@@ -51,5 +51,5 @@ Or download from [WebPilot releases](https://github.com/WebPilotDev/vibium/relea
 vibium --help
 
 # Check clicker
-webpilot mcp --help
+w3pilot mcp --help
 ```

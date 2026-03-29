@@ -1331,7 +1331,7 @@ func (p *Pilot) A11yTree(ctx context.Context, opts *A11yTreeOptions) (interface{
 
 // MainFrame returns the main frame of the page.
 // Since Pilot represents both page and frame in this SDK, it returns itself.
-// This method exists for API compatibility with other WebPilot clients.
+// This method exists for API compatibility with other W3Pilot clients.
 func (p *Pilot) MainFrame() *Pilot {
 	return p
 }

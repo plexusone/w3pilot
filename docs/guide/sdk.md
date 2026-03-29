@@ -5,7 +5,7 @@ The Go client SDK provides programmatic browser control with full feature parity
 ## Installation
 
 ```bash
-go get github.com/plexusone/webpilot
+go get github.com/plexusone/w3pilot
 ```
 
 ## Basic Usage
@@ -17,14 +17,14 @@ import (
     "context"
     "log"
 
-    webpilot "github.com/plexusone/webpilot"
+    w3pilot "github.com/plexusone/w3pilot"
 )
 
 func main() {
     ctx := context.Background()
 
     // Launch browser
-    pilot, err := webpilot.Launch(ctx)
+    pilot, err := w3pilot.Launch(ctx)
     if err != nil {
         log.Fatal(err)
     }
@@ -43,13 +43,13 @@ func main() {
 
 ```go
 // Default launch (visible browser)
-pilot, err := webpilot.Launch(ctx)
+pilot, err := w3pilot.Launch(ctx)
 
 // Headless launch
-pilot, err := webpilot.LaunchHeadless(ctx)
+pilot, err := w3pilot.LaunchHeadless(ctx)
 
 // Custom options
-pilot, err := webpilot.Browser.Launch(ctx, &webpilot.LaunchOptions{
+pilot, err := w3pilot.Browser.Launch(ctx, &w3pilot.LaunchOptions{
     Headless:       true,
     Port:           9515,
     ExecutablePath: "/path/to/clicker",
@@ -104,7 +104,7 @@ err := pilot.WaitForLoad(ctx, "networkidle", nil)
 elem, err := pilot.Find(ctx, "button.submit", nil)
 
 // Find with timeout
-elem, err := pilot.Find(ctx, "button.submit", &webpilot.FindOptions{
+elem, err := pilot.Find(ctx, "button.submit", &w3pilot.FindOptions{
     Timeout: 10 * time.Second,
 })
 
@@ -129,43 +129,43 @@ Semantic selectors find elements by accessibility attributes instead of brittle 
 
 ```go
 // Find by ARIA role and text
-elem, err := pilot.Find(ctx, "", &webpilot.FindOptions{
+elem, err := pilot.Find(ctx, "", &w3pilot.FindOptions{
     Role: "button",
     Text: "Submit",
 })
 
 // Find by associated label (great for form inputs)
-elem, err := pilot.Find(ctx, "", &webpilot.FindOptions{
+elem, err := pilot.Find(ctx, "", &w3pilot.FindOptions{
     Label: "Email address",
 })
 
 // Find by placeholder text
-elem, err := pilot.Find(ctx, "", &webpilot.FindOptions{
+elem, err := pilot.Find(ctx, "", &w3pilot.FindOptions{
     Placeholder: "Enter your email",
 })
 
 // Find by data-testid (recommended for testing)
-elem, err := pilot.Find(ctx, "", &webpilot.FindOptions{
+elem, err := pilot.Find(ctx, "", &w3pilot.FindOptions{
     TestID: "login-button",
 })
 
 // Find by image alt text
-elem, err := pilot.Find(ctx, "", &webpilot.FindOptions{
+elem, err := pilot.Find(ctx, "", &w3pilot.FindOptions{
     Alt: "Company logo",
 })
 
 // Find by title attribute
-elem, err := pilot.Find(ctx, "", &webpilot.FindOptions{
+elem, err := pilot.Find(ctx, "", &w3pilot.FindOptions{
     Title: "Close dialog",
 })
 
 // Find by XPath
-elem, err := pilot.Find(ctx, "", &webpilot.FindOptions{
+elem, err := pilot.Find(ctx, "", &w3pilot.FindOptions{
     XPath: "//button[@type='submit']",
 })
 
 // Find element near another element
-elem, err := pilot.Find(ctx, "", &webpilot.FindOptions{
+elem, err := pilot.Find(ctx, "", &w3pilot.FindOptions{
     Role: "button",
     Near: "#username-input",
 })
@@ -177,13 +177,13 @@ You can combine CSS selectors with semantic filtering:
 
 ```go
 // Find within a form, then filter by role and label
-elem, err := pilot.Find(ctx, "form.login", &webpilot.FindOptions{
+elem, err := pilot.Find(ctx, "form.login", &w3pilot.FindOptions{
     Role:  "textbox",
     Label: "Password",
 })
 
 // Find all buttons within a specific container
-buttons, err := pilot.FindAll(ctx, ".dialog-footer", &webpilot.FindOptions{
+buttons, err := pilot.FindAll(ctx, ".dialog-footer", &w3pilot.FindOptions{
     Role: "button",
 })
 ```
@@ -211,12 +211,12 @@ Find elements within a parent element:
 form, err := pilot.Find(ctx, "form.signup", nil)
 
 // Then find within it
-emailInput, err := form.Find(ctx, "", &webpilot.FindOptions{
+emailInput, err := form.Find(ctx, "", &w3pilot.FindOptions{
     Label: "Email",
 })
 
 // Find all checkboxes within the form
-checkboxes, err := form.FindAll(ctx, "", &webpilot.FindOptions{
+checkboxes, err := form.FindAll(ctx, "", &w3pilot.FindOptions{
     Role: "checkbox",
 })
 ```
@@ -230,7 +230,7 @@ checkboxes, err := form.FindAll(ctx, "", &webpilot.FindOptions{
 err := elem.Click(ctx, nil)
 
 // Click with timeout
-err := elem.Click(ctx, &webpilot.ActionOptions{
+err := elem.Click(ctx, &w3pilot.ActionOptions{
     Timeout: 5 * time.Second,
 })
 
@@ -262,7 +262,7 @@ err := elem.Check(ctx, nil)
 err := elem.Uncheck(ctx, nil)
 
 // Select dropdown
-err := elem.SelectOption(ctx, webpilot.SelectOptionValues{
+err := elem.SelectOption(ctx, w3pilot.SelectOptionValues{
     Values: []string{"option1"},
 }, nil)
 
@@ -449,7 +449,7 @@ jsonBytes, _ := json.Marshal(state)
 os.WriteFile("storage.json", jsonBytes, 0600)
 
 // Restore storage state from JSON
-var savedState webpilot.StorageState
+var savedState w3pilot.StorageState
 json.Unmarshal(jsonBytes, &savedState)
 err := pilot.SetStorageState(ctx, &savedState)
 
@@ -514,7 +514,7 @@ Record browser actions with screenshots and DOM snapshots:
 tracing := pilot.Tracing()
 
 // Start with options
-err := tracing.Start(ctx, &webpilot.TracingStartOptions{
+err := tracing.Start(ctx, &w3pilot.TracingStartOptions{
     Name:        "login-test",
     Screenshots: true,
     Snapshots:   true,
@@ -532,7 +532,7 @@ data, err := tracing.Stop(ctx, nil)
 os.WriteFile("trace.zip", data, 0600)
 
 // Use chunks for segmented recording
-err := tracing.StartChunk(ctx, &webpilot.TracingChunkOptions{
+err := tracing.StartChunk(ctx, &w3pilot.TracingChunkOptions{
     Name: "step-1",
 })
 // ... actions ...
@@ -548,19 +548,19 @@ err := tracing.StopGroup(ctx)
 
 ```go
 // Viewport
-err := pilot.SetViewport(ctx, webpilot.Viewport{
+err := pilot.SetViewport(ctx, w3pilot.Viewport{
     Width:  1920,
     Height: 1080,
 })
 
 // Media emulation
-err := pilot.EmulateMedia(ctx, &webpilot.EmulateMediaOptions{
+err := pilot.EmulateMedia(ctx, &w3pilot.EmulateMediaOptions{
     Media:       "print",
     ColorScheme: "dark",
 })
 
 // Geolocation
-err := pilot.SetGeolocation(ctx, &webpilot.Geolocation{
+err := pilot.SetGeolocation(ctx, &w3pilot.Geolocation{
     Latitude:  37.7749,
     Longitude: -122.4194,
 })
@@ -573,10 +573,10 @@ import "errors"
 
 elem, err := pilot.Find(ctx, "#missing", nil)
 if err != nil {
-    if errors.Is(err, webpilot.ErrElementNotFound) {
+    if errors.Is(err, w3pilot.ErrElementNotFound) {
         // Element not found
     }
-    if errors.Is(err, webpilot.ErrTimeout) {
+    if errors.Is(err, w3pilot.ErrTimeout) {
         // Timeout
     }
 }
@@ -585,16 +585,16 @@ if err != nil {
 ## Debug Logging
 
 ```bash
-WEBPILOT_DEBUG=1 go run main.go
+W3PILOT_DEBUG=1 go run main.go
 ```
 
 ```go
 // Check debug mode
-if webpilot.Debug() {
+if w3pilot.Debug() {
     // ...
 }
 
 // Custom logger
-logger := webpilot.NewDebugLogger()
-ctx = webpilot.ContextWithLogger(ctx, logger)
+logger := w3pilot.NewDebugLogger()
+ctx = w3pilot.ContextWithLogger(ctx, logger)
 ```

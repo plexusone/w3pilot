@@ -10,9 +10,9 @@ import (
 // debugKey is the context key for the debug logger.
 type debugKey struct{}
 
-// Debug returns true if debug logging is enabled via WEBPILOT_DEBUG environment variable.
+// Debug returns true if debug logging is enabled via W3PILOT_DEBUG environment variable.
 func Debug() bool {
-	val := os.Getenv("WEBPILOT_DEBUG")
+	val := os.Getenv("W3PILOT_DEBUG")
 	return val == "1" || strings.EqualFold(val, "true")
 }
 

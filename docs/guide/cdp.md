@@ -1,14 +1,14 @@
 # CDP Features (Chrome DevTools Protocol)
 
-WebPilot provides direct access to Chrome DevTools Protocol (CDP) for advanced profiling and emulation features not available through WebDriver BiDi.
+W3Pilot provides direct access to Chrome DevTools Protocol (CDP) for advanced profiling and emulation features not available through WebDriver BiDi.
 
 ## Dual-Protocol Architecture
 
-WebPilot connects to a single Chrome browser using **both** protocols:
+W3Pilot connects to a single Chrome browser using **both** protocols:
 
 ```
 ┌──────────────────────────────────────────────────────────┐
-│                     webpilot                              │
+│                     w3pilot                              │
 │  ┌─────────────────┐    ┌─────────────────┐              │
 │  │   BiDi Client   │    │   CDP Client    │              │
 │  │  (automation)   │    │  (profiling)    │              │
@@ -35,7 +35,7 @@ WebPilot connects to a single Chrome browser using **both** protocols:
 CDP is automatically connected when launching a browser:
 
 ```go
-pilot, err := webpilot.Launch(ctx)
+pilot, err := w3pilot.Launch(ctx)
 if err != nil {
     log.Fatal(err)
 }
@@ -77,7 +77,7 @@ Simulate various network conditions for testing performance under degraded netwo
 ### Using Presets
 
 ```go
-import "github.com/plexusone/webpilot/cdp"
+import "github.com/plexusone/w3pilot/cdp"
 
 // Slow 3G: 400ms latency, 400 Kbps download, 400 Kbps upload
 err := pilot.EmulateNetwork(ctx, cdp.NetworkSlow3G)
@@ -121,7 +121,7 @@ Throttle CPU to simulate lower-powered devices for performance testing.
 ### Using Presets
 
 ```go
-import "github.com/plexusone/webpilot/cdp"
+import "github.com/plexusone/w3pilot/cdp"
 
 // 2x slowdown
 err := pilot.EmulateCPU(ctx, cdp.CPU2xSlowdown)
@@ -190,7 +190,7 @@ cdpClient.Send(ctx, "Network.enable", nil)
 A typical performance testing workflow combining CDP features:
 
 ```go
-func runPerformanceTest(ctx context.Context, pilot *webpilot.Pilot, url string) error {
+func runPerformanceTest(ctx context.Context, pilot *w3pilot.Pilot, url string) error {
     // 1. Set network conditions
     if err := pilot.EmulateNetwork(ctx, cdp.NetworkSlow3G); err != nil {
         return err
@@ -239,7 +239,7 @@ If `HasCDP()` returns false:
 If CDP connection fails:
 
 ```go
-pilot, err := webpilot.Launch(ctx)
+pilot, err := w3pilot.Launch(ctx)
 if err != nil {
     // Check error for CDP-specific issues
     if strings.Contains(err.Error(), "cdp") {

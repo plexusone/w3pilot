@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/plexusone/webpilot/script/webpilot-script.schema.json",
+  "$id": "https://github.com/plexusone/w3pilot/script/w3pilot-script.schema.json",
   "$defs": {
     "A11yOptions": {
       "properties": {

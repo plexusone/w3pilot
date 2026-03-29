@@ -1,4 +1,4 @@
-# Technical Requirements Document: WebPilot MCP Server
+# Technical Requirements Document: W3Pilot MCP Server
 
 ## Architecture Overview
 
@@ -12,13 +12,13 @@
                                │ JSON-RPC 2.0
                                ▼
 ┌────────────────────────────────────────────────────────────────────┐
-│  cmd/webpilot-mcp/main.go                                           │
+│  cmd/w3pilot-mcp/main.go                                           │
 │  └─► mcp.NewServer(config).Run()                                  │
 └────────────────────────────────────────────────────────────────────┘
                                │
                                ▼
 ┌────────────────────────────────────────────────────────────────────┐
-│  mcp/  (github.com/grokify/webpilot/mcp)                         │
+│  mcp/  (github.com/grokify/w3pilot/mcp)                         │
 │                                                                    │
 │  ├── server.go      MCP protocol handling, tool dispatch          │
 │  ├── tools.go       Tool definitions and handlers                 │
@@ -33,9 +33,9 @@
                                │ imports
                                ▼
 ┌────────────────────────────────────────────────────────────────────┐
-│  vibium (github.com/grokify/webpilot)  [PUBLIC API]              │
+│  vibium (github.com/grokify/w3pilot)  [PUBLIC API]              │
 │                                                                    │
-│  webpilot.go     Launch(ctx) / LaunchHeadless(ctx)                  │
+│  w3pilot.go     Launch(ctx) / LaunchHeadless(ctx)                  │
 │  pilot.go       Vibe.Go() / Find() / Screenshot() / Evaluate()     │
 │  element.go    Element.Click() / Type() / Text()                  │
 │  options.go    LaunchOptions / FindOptions / ActionOptions        │
@@ -63,12 +63,12 @@
 ## Directory Structure
 
 ```
-webpilot/
+w3pilot/
 ├── go.mod
 ├── go.sum
 ├── doc.go
 │
-├── webpilot.go                   # Public entry: Launch, LaunchHeadless
+├── w3pilot.go                   # Public entry: Launch, LaunchHeadless
 ├── pilot.go                     # Vibe browser controller
 ├── element.go                  # Element interaction
 ├── options.go                  # LaunchOptions, FindOptions, ActionOptions
@@ -97,7 +97,7 @@ webpilot/
 │       └── render.go           # Format selection & rendering
 │
 ├── cmd/
-│   └── webpilot-mcp/             # MCP server executable
+│   └── w3pilot-mcp/             # MCP server executable
 │       └── main.go
 │
 ├── testplans/                  # Example test plans
@@ -117,7 +117,7 @@ webpilot/
 ### go.mod
 
 ```go
-module github.com/grokify/webpilot
+module github.com/grokify/w3pilot
 
 go 1.22
 
@@ -484,7 +484,7 @@ func groupStepsIntoTeams(steps []StepResult) []masreport.TeamSection {
 
 type Session struct {
     mu       sync.Mutex
-    vibe     *webpilot.Vibe
+    vibe     *w3pilot.Vibe
     config   SessionConfig
     results  []StepResult
     console  []ConsoleEntry
@@ -507,9 +507,9 @@ func (s *Session) LaunchIfNeeded(ctx context.Context) error {
 
     var err error
     if s.config.Headless {
-        s.pilot, err = webpilot.LaunchHeadless(ctx)
+        s.pilot, err = w3pilot.LaunchHeadless(ctx)
     } else {
-        s.pilot, err = webpilot.Launch(ctx)
+        s.pilot, err = w3pilot.Launch(ctx)
     }
     return err
 }
@@ -573,7 +573,7 @@ func NewServer(config Config) *Server {
 
     s.mcpServer = mcp.NewServer(
         &mcp.Implementation{
-            Name:    "webpilot-mcp",
+            Name:    "w3pilot-mcp",
             Version: "0.2.0",
         },
         nil,
@@ -760,7 +760,7 @@ func (s *Server) handleClick(
     timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
     start := time.Now()
-    elem, err := s.session.pilot.Find(ctx, input.Selector, webpilot.FindOptions{Timeout: timeout})
+    elem, err := s.session.pilot.Find(ctx, input.Selector, w3pilot.FindOptions{Timeout: timeout})
 
     result := StepResult{
         ID:     fmt.Sprintf("click-%d", len(s.session.results)),
@@ -785,7 +785,7 @@ func (s *Server) handleClick(
         return nil, ClickOutput{}, err
     }
 
-    err = elem.Click(ctx, webpilot.ActionOptions{Timeout: timeout})
+    err = elem.Click(ctx, w3pilot.ActionOptions{Timeout: timeout})
     result.DurationMS = time.Since(start).Milliseconds()
 
     if err != nil {
@@ -947,7 +947,7 @@ func (s *Server) captureScreenshot(ctx context.Context) *ScreenshotRef {
 ## CLI Entry Point
 
 ```go
-// cmd/webpilot-mcp/main.go
+// cmd/w3pilot-mcp/main.go
 
 package main
 
@@ -956,7 +956,7 @@ import (
     "log"
     "os"
 
-    "github.com/grokify/webpilot/mcp"
+    "github.com/grokify/w3pilot/mcp"
 )
 
 func main() {
@@ -985,8 +985,8 @@ func main() {
 ```json
 {
   "mcpServers": {
-    "webpilot": {
-      "command": "webpilot-mcp",
+    "w3pilot": {
+      "command": "w3pilot-mcp",
       "args": ["--headless", "--project", "my-app"]
     }
   }
@@ -998,10 +998,10 @@ func main() {
 ```json
 {
   "mcpServers": {
-    "webpilot": {
+    "w3pilot": {
       "command": "go",
-      "args": ["run", "./cmd/webpilot-mcp", "--headless"],
-      "cwd": "/path/to/webpilot"
+      "args": ["run", "./cmd/w3pilot-mcp", "--headless"],
+      "cwd": "/path/to/w3pilot"
     }
   }
 }
@@ -1015,7 +1015,7 @@ func main() {
 2. Create `mcp/` package structure
 3. Implement `mcp/server.go` with MCP protocol handling
 4. Implement `mcp/session.go` for browser lifecycle
-5. Create `cmd/webpilot-mcp/main.go` entry point
+5. Create `cmd/w3pilot-mcp/main.go` entry point
 
 ### Phase 2: Core Tools
 
@@ -1065,11 +1065,11 @@ func main() {
 
 ```bash
 # Build and run
-go build -o webpilot-mcp ./cmd/webpilot-mcp
-./webpilot-mcp
+go build -o w3pilot-mcp ./cmd/w3pilot-mcp
+./w3pilot-mcp
 
 # Test with MCP inspector
-npx @anthropic-ai/mcp-inspector webpilot-mcp
+npx @anthropic-ai/mcp-inspector w3pilot-mcp
 ```
 
 ## Error Handling

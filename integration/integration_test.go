@@ -38,7 +38,7 @@ func newBrowserTest(t *testing.T) *browserTest {
 	ctx, cancel := context.WithTimeout(context.Background(), testTimeout)
 
 	// Use headless mode in CI, visible mode locally for debugging
-	headless := os.Getenv("CI") != "" || os.Getenv("WEBPILOT_HEADLESS") == "1"
+	headless := os.Getenv("CI") != "" || os.Getenv("W3PILOT_HEADLESS") == "1"
 
 	pilot, err := w3pilot.Browser.Launch(ctx, &w3pilot.LaunchOptions{
 		Headless: headless,

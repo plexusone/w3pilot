@@ -1,7 +1,7 @@
 {
   "irVersion": "1.0",
-  "project": "webpilot",
-  "repository": "https://github.com/plexusone/webpilot",
+  "project": "w3pilot",
+  "repository": "https://github.com/plexusone/w3pilot",
   "versioning": "semver",
   "commitConvention": "conventional",
   "maintainers": ["plexusone"],
@@ -10,17 +10,17 @@
       "version": "v0.5.0",
       "date": "2026-03-23",
       "highlights": [
-        { "description": "Project renamed from vibium-go to webpilot with new module path and CLI" },
+        { "description": "Project renamed from vibium-go to w3pilot with new module path and CLI" },
         { "description": "Native Chrome launcher replaces external clicker dependency" },
         { "description": "Video recording and WebSocket monitoring support" },
         { "description": "Page event listeners and accessibility snapshot" }
       ],
       "breaking": [
-        { "description": "Module path changed from `github.com/plexusone/vibium-go` to `github.com/plexusone/webpilot`", "commit": "3e7b47d" },
-        { "description": "Package renamed from `vibium` to `webpilot`", "commit": "3e7b47d" },
+        { "description": "Module path changed from `github.com/plexusone/vibium-go` to `github.com/plexusone/w3pilot`", "commit": "3e7b47d" },
+        { "description": "Package renamed from `vibium` to `w3pilot`", "commit": "3e7b47d" },
         { "description": "Core type renamed from `*Vibe` to `*Pilot`", "commit": "3e7b47d" },
-        { "description": "CLI renamed from `vibium` to `webpilot`, `vibium-mcp` to `webpilot-mcp`, `vibium-rpa` to `webpilot-rpa`", "commit": "3422023" },
-        { "description": "Environment variables renamed from `VIBIUM_*` to `WEBPILOT_*` (DEBUG, HEADLESS, SKIP_BROWSER_DOWNLOAD)", "commit": "658103b" }
+        { "description": "CLI renamed from `vibium` to `w3pilot`, `vibium-mcp` to `w3pilot-mcp`, `vibium-rpa` to `w3pilot-rpa`", "commit": "3422023" },
+        { "description": "Environment variables renamed from `VIBIUM_*` to `W3PILOT_*` (DEBUG, HEADLESS, SKIP_BROWSER_DOWNLOAD)", "commit": "658103b" }
       ],
       "added": [
         { "description": "Native Chrome launcher - browser is now bundled and auto-installed, removing need for external clicker binary", "commit": "27c4ce3" },
@@ -45,15 +45,15 @@
         { "description": "Integration tests for MCP tools and page methods", "commit": "06a0742" }
       ],
       "documentation": [
-        { "description": "VibiumDev vs webpilot feature comparison", "commit": "418a547" },
+        { "description": "VibiumDev vs w3pilot feature comparison", "commit": "418a547" },
         { "description": "Consolidated comparison documentation with Playwright MCP", "commit": "155da81" },
-        { "description": "Updated all documentation for webpilot rename", "commit": "3cef949" },
+        { "description": "Updated all documentation for w3pilot rename", "commit": "3cef949" },
         { "description": "Updated references from clicker to Chrome native launcher", "commit": "a33e96c" }
       ],
       "infrastructure": [
-        { "description": "Update CI/CD workflows for webpilot rename", "commit": "9c562e4" },
-        { "description": "Update cache directories from `vibium` to `webpilot`", "commit": "658103b" },
-        { "description": "Update MCP server name from `vibium-mcp` to `webpilot-mcp`", "commit": "658103b" }
+        { "description": "Update CI/CD workflows for w3pilot rename", "commit": "9c562e4" },
+        { "description": "Update cache directories from `vibium` to `w3pilot`", "commit": "658103b" },
+        { "description": "Update MCP server name from `vibium-mcp` to `w3pilot-mcp`", "commit": "658103b" }
       ]
     },
     {

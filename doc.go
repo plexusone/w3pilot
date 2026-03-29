@@ -1,6 +1,6 @@
-// Package w3pilot provides a Go client for the WebPilot browser automation platform.
+// Package w3pilot provides a Go client for the W3Pilot browser automation platform.
 //
-// WebPilot is a browser automation platform built for AI agents that uses the
+// W3Pilot is a browser automation platform built for AI agents that uses the
 // WebDriver BiDi protocol for bidirectional communication with the browser.
 //
 // # Quick Start

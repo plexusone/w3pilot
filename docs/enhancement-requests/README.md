@@ -2,7 +2,7 @@
 
 This directory contains enhancement requests for upstream dependencies (primarily VibiumDev/vibium clicker).
 
-> **Note (2026-03-24)**: These requests are now **optional**. WebPilot will implement dual-protocol
+> **Note (2026-03-24)**: These requests are now **optional**. W3Pilot will implement dual-protocol
 > support (BiDi + CDP) connecting directly to Chrome's CDP endpoint alongside clicker's BiDi connection.
 > See [TASKS.md](../../TASKS.md) for the dual-protocol architecture.
 
@@ -13,7 +13,7 @@ This directory contains enhancement requests for upstream dependencies (primaril
 - **Submitted**: PR/Issue created in upstream repo
 - **Accepted**: Upstream has agreed to implement
 - **Implemented**: Available in upstream release
-- **Integrated**: Integrated into WebPilot
+- **Integrated**: Integrated into W3Pilot
 
 ## Current Requests
 
@@ -33,11 +33,11 @@ This directory contains enhancement requests for upstream dependencies (primaril
 │                   (launched by clicker)                      │
 ├─────────────────────────────────────────────────────────────┤
 │  BiDi WebSocket ◄──── clicker (existing)                    │
-│  CDP WebSocket  ◄──── WebPilot CDPClient (new)              │
+│  CDP WebSocket  ◄──── W3Pilot CDPClient (new)              │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-WebPilot can connect directly to Chrome's CDP port (discovered via `DevToolsActivePort` file)
+W3Pilot can connect directly to Chrome's CDP port (discovered via `DevToolsActivePort` file)
 without requiring clicker modifications.
 
 ## When to Revisit
@@ -67,10 +67,10 @@ All enhancement requests require CDP (Chrome DevTools Protocol) access. Clicker 
 
 1. Add CDP passthrough in clicker's BiDi proxy
 2. Expose as `vibium:*` commands following existing patterns
-3. WebPilot integrates via existing transport
+3. W3Pilot integrates via existing transport
 
 ### Current Approach (Dual Protocol)
 
-1. WebPilot establishes direct CDP connection to Chrome
+1. W3Pilot establishes direct CDP connection to Chrome
 2. Manage two connections (BiDi via clicker + CDP direct)
 3. No upstream dependency for CDP features

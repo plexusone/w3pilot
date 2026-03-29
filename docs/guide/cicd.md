@@ -3,7 +3,7 @@
 Run deterministic test scripts in CI/CD pipelines without an LLM.
 
 !!! warning "Clicker Binary Required"
-    E2E tests require the WebPilot clicker binary, which is not yet publicly distributed. The examples below assume you have access to the clicker binary. See [Prerequisites](../getting-started/prerequisites.md) for details.
+    E2E tests require the W3Pilot clicker binary, which is not yet publicly distributed. The examples below assume you have access to the clicker binary. See [Prerequisites](../getting-started/prerequisites.md) for details.
 
 ## Overview
 
@@ -20,7 +20,7 @@ Run deterministic test scripts in CI/CD pipelines without an LLM.
 │                           CI/CD Pipeline                                 │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                          │
-│   git push  ──▶  CI runs  ──▶  webpilot run test.json  ──▶  Pass/Fail    │
+│   git push  ──▶  CI runs  ──▶  w3pilot run test.json  ──▶  Pass/Fail    │
 │                  headless         (no LLM needed)                        │
 │                                                                          │
 └─────────────────────────────────────────────────────────────────────────┘
@@ -66,17 +66,17 @@ jobs:
         run: |
           curl -L -o clicker "${{ github.event.inputs.clicker_url }}"
           chmod +x clicker
-          echo "WEBPILOT_CLICKER_PATH=$PWD/clicker" >> $GITHUB_ENV
+          echo "W3PILOT_CLICKER_PATH=$PWD/clicker" >> $GITHUB_ENV
 
-      - name: Install WebPilot CLI
-        run: go install github.com/agentplexus/webpilot/cmd/vibium@latest
+      - name: Install W3Pilot CLI
+        run: go install github.com/agentplexus/w3pilot/cmd/vibium@latest
 
       - name: Run E2E Tests
         env:
-          WEBPILOT_HEADLESS: "1"
+          W3PILOT_HEADLESS: "1"
         run: |
-          webpilot run tests/login.json
-          webpilot run tests/checkout.json
+          w3pilot run tests/login.json
+          w3pilot run tests/checkout.json
 ```
 
 !!! note "Manual Trigger"
@@ -102,17 +102,17 @@ jobs:
         run: |
           curl -L -o clicker "${{ github.event.inputs.clicker_url }}"
           chmod +x clicker
-          echo "WEBPILOT_CLICKER_PATH=$PWD/clicker" >> $GITHUB_ENV
+          echo "W3PILOT_CLICKER_PATH=$PWD/clicker" >> $GITHUB_ENV
 
       - name: Setup
-        run: go install github.com/agentplexus/webpilot/cmd/vibium@latest
+        run: go install github.com/agentplexus/w3pilot/cmd/vibium@latest
 
       - name: Run ${{ matrix.test }} tests
         env:
-          WEBPILOT_HEADLESS: "1"
+          W3PILOT_HEADLESS: "1"
         run: |
           for script in tests/${{ matrix.test }}/*.json; do
-            webpilot run "$script"
+            w3pilot run "$script"
           done
 ```
 
@@ -120,7 +120,7 @@ jobs:
 
 ```yaml
       - name: Run tests
-        run: webpilot run tests/e2e.json
+        run: w3pilot run tests/e2e.json
 
       - name: Upload screenshots on failure
         if: failure()
@@ -148,17 +148,17 @@ e2e:
 
   variables:
     CLICKER_URL: "$CLICKER_URL"  # Set in CI/CD variables
-    WEBPILOT_HEADLESS: "1"
+    W3PILOT_HEADLESS: "1"
 
   before_script:
     - curl -L -o clicker "$CLICKER_URL"
     - chmod +x clicker
-    - export WEBPILOT_CLICKER_PATH=$PWD/clicker
-    - go install github.com/agentplexus/webpilot/cmd/vibium@latest
+    - export W3PILOT_CLICKER_PATH=$PWD/clicker
+    - go install github.com/agentplexus/w3pilot/cmd/vibium@latest
 
   script:
-    - webpilot run tests/smoke.json
-    - webpilot run tests/auth.json
+    - w3pilot run tests/smoke.json
+    - w3pilot run tests/auth.json
 
   artifacts:
     when: on_failure
@@ -186,17 +186,17 @@ jobs:
           command: |
             curl -L -o clicker "$CLICKER_URL"
             chmod +x clicker
-            echo "export WEBPILOT_CLICKER_PATH=$PWD/clicker" >> $BASH_ENV
+            echo "export W3PILOT_CLICKER_PATH=$PWD/clicker" >> $BASH_ENV
       - run:
-          name: Install WebPilot CLI
-          command: go install github.com/agentplexus/webpilot/cmd/vibium@latest
+          name: Install W3Pilot CLI
+          command: go install github.com/agentplexus/w3pilot/cmd/vibium@latest
       - run:
           name: Run E2E Tests
           environment:
-            WEBPILOT_HEADLESS: "1"
+            W3PILOT_HEADLESS: "1"
           command: |
-            webpilot run tests/smoke.json
-            webpilot run tests/auth.json
+            w3pilot run tests/smoke.json
+            w3pilot run tests/auth.json
       - store_artifacts:
           path: screenshots
           destination: screenshots
@@ -220,7 +220,7 @@ pipeline {
     }
 
     environment {
-        WEBPILOT_HEADLESS = '1'
+        W3PILOT_HEADLESS = '1'
     }
 
     stages {
@@ -230,17 +230,17 @@ pipeline {
                     curl -L -o clicker "${CLICKER_URL}"
                     chmod +x clicker
                 '''
-                sh 'go install github.com/agentplexus/webpilot/cmd/vibium@latest'
+                sh 'go install github.com/agentplexus/w3pilot/cmd/vibium@latest'
             }
         }
 
         stage('E2E Tests') {
             environment {
-                WEBPILOT_CLICKER_PATH = "${WORKSPACE}/clicker"
+                W3PILOT_CLICKER_PATH = "${WORKSPACE}/clicker"
             }
             steps {
-                sh 'webpilot run tests/smoke.json'
-                sh 'webpilot run tests/auth.json'
+                sh 'w3pilot run tests/smoke.json'
+                sh 'w3pilot run tests/auth.json'
             }
         }
     }
@@ -274,16 +274,16 @@ steps:
   - script: |
       curl -L -o clicker "${{ parameters.clickerUrl }}"
       chmod +x clicker
-      echo "##vso[task.setvariable variable=WEBPILOT_CLICKER_PATH]$(pwd)/clicker"
+      echo "##vso[task.setvariable variable=W3PILOT_CLICKER_PATH]$(pwd)/clicker"
     displayName: 'Download Clicker'
 
-  - script: go install github.com/agentplexus/webpilot/cmd/vibium@latest
-    displayName: 'Install WebPilot CLI'
+  - script: go install github.com/agentplexus/w3pilot/cmd/vibium@latest
+    displayName: 'Install W3Pilot CLI'
 
   - script: |
-      export WEBPILOT_HEADLESS=1
-      webpilot run tests/smoke.json
-      webpilot run tests/auth.json
+      export W3PILOT_HEADLESS=1
+      w3pilot run tests/smoke.json
+      w3pilot run tests/auth.json
     displayName: 'Run E2E Tests'
 
   - task: PublishBuildArtifacts@1
@@ -323,20 +323,20 @@ tests/
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `WEBPILOT_HEADLESS` | Run headless | `false` |
-| `WEBPILOT_DEBUG` | Enable debug logs | `false` |
-| `WEBPILOT_CLICKER_PATH` | Path to clicker | Auto-detect |
-| `WEBPILOT_TIMEOUT` | Default timeout | `30s` |
+| `W3PILOT_HEADLESS` | Run headless | `false` |
+| `W3PILOT_DEBUG` | Enable debug logs | `false` |
+| `W3PILOT_CLICKER_PATH` | Path to clicker | Auto-detect |
+| `W3PILOT_TIMEOUT` | Default timeout | `30s` |
 
 ## Best Practices
 
 ### 1. Use Headless Mode
 
-Always set `WEBPILOT_HEADLESS=1` in CI:
+Always set `W3PILOT_HEADLESS=1` in CI:
 
 ```yaml
 env:
-  WEBPILOT_HEADLESS: "1"
+  W3PILOT_HEADLESS: "1"
 ```
 
 ### 2. Set Appropriate Timeouts
@@ -392,7 +392,7 @@ Use matrix strategies to run tests concurrently.
 
 ```yaml
 env:
-  WEBPILOT_DEBUG: "1"
+  W3PILOT_DEBUG: "1"
 ```
 
 ### Download Artifacts
@@ -404,7 +404,7 @@ Screenshots and logs uploaded as artifacts help debug failures.
 Reproduce CI failures locally:
 
 ```bash
-WEBPILOT_HEADLESS=1 webpilot run tests/failing-test.json
+W3PILOT_HEADLESS=1 w3pilot run tests/failing-test.json
 ```
 
 ## Accessibility Testing in CI/CD
@@ -431,14 +431,14 @@ jobs:
         run: |
           curl -L -o clicker "${{ github.event.inputs.clicker_url }}"
           chmod +x clicker
-          echo "WEBPILOT_CLICKER_PATH=$PWD/clicker" >> $GITHUB_ENV
+          echo "W3PILOT_CLICKER_PATH=$PWD/clicker" >> $GITHUB_ENV
 
       - name: Setup
         run: go install github.com/agentplexus/agent-a11y/cmd/agent-a11y@latest
 
       - name: Run WCAG 2.2 AA Evaluation
         env:
-          WEBPILOT_HEADLESS: "1"
+          W3PILOT_HEADLESS: "1"
         run: |
           agent-a11y vpat https://staging.example.com \
             --format json --output wcag-results.json

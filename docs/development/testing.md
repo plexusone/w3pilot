@@ -10,7 +10,7 @@ go test -v ./...
 
 ## Integration Tests
 
-Integration tests require the WebPilot clicker binary.
+Integration tests require the W3Pilot clicker binary.
 
 !!! warning "Clicker Required"
     The clicker binary is not yet publicly distributed. See [Prerequisites](../getting-started/prerequisites.md) for details.
@@ -19,7 +19,7 @@ Integration tests require the WebPilot clicker binary.
 
 ```bash
 # Set path to clicker binary
-export WEBPILOT_CLICKER_PATH=/path/to/clicker
+export W3PILOT_CLICKER_PATH=/path/to/clicker
 ```
 
 ### Running
@@ -29,7 +29,7 @@ export WEBPILOT_CLICKER_PATH=/path/to/clicker
 go test -tags=integration -v ./integration/...
 
 # Headless mode (for CI)
-WEBPILOT_HEADLESS=1 go test -tags=integration -v ./integration/...
+W3PILOT_HEADLESS=1 go test -tags=integration -v ./integration/...
 
 # Specific tests
 go test -tags=integration -v ./integration/... -run TestExampleCom
@@ -59,7 +59,7 @@ go test -v ./mcp/... -count=1
 go test -v ./script/...
 
 # Run example scripts
-webpilot run examples/basic.json --headless
+w3pilot run examples/basic.json --headless
 ```
 
 ## Linting
@@ -120,7 +120,7 @@ func TestElementClick(t *testing.T) {
 func TestExampleComNavigation(t *testing.T) {
     ctx := context.Background()
 
-    pilot, err := webpilot.LaunchHeadless(ctx)
+    pilot, err := w3pilot.LaunchHeadless(ctx)
     require.NoError(t, err)
     defer pilot.Quit(ctx)
 

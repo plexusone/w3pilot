@@ -10,14 +10,14 @@ import (
     "fmt"
     "log"
 
-github.com/plexusone/webpilot
+github.com/plexusone/w3pilot
 )
 
 func main() {
     ctx := context.Background()
 
     // Launch browser
-    pilot, err := webpilot.Launch(ctx)
+    pilot, err := w3pilot.Launch(ctx)
     if err != nil {
         log.Fatal(err)
     }
@@ -53,7 +53,7 @@ func main() {
 Start the server:
 
 ```bash
-webpilot mcp --headless
+w3pilot mcp --headless
 ```
 
 Configure in Claude Desktop (`~/Library/Application Support/Claude/claude_desktop_config.json`):
@@ -61,8 +61,8 @@ Configure in Claude Desktop (`~/Library/Application Support/Claude/claude_deskto
 ```json
 {
   "mcpServers": {
-    "webpilot": {
-      "command": "webpilot",
+    "w3pilot": {
+      "command": "w3pilot",
       "args": ["mcp", "--headless"]
     }
   }
@@ -77,20 +77,20 @@ Interactive browser control:
 
 ```bash
 # Launch browser
-webpilot launch
+w3pilot launch
 
 # Navigate
-webpilot go https://example.com
+w3pilot go https://example.com
 
 # Interact
-webpilot fill "#search" "hello world"
-webpilot click "#submit"
+w3pilot fill "#search" "hello world"
+w3pilot click "#submit"
 
 # Capture
-webpilot screenshot result.png
+w3pilot screenshot result.png
 
 # Cleanup
-webpilot quit
+w3pilot quit
 ```
 
 ## Script Runner
@@ -111,5 +111,5 @@ Create `test.json`:
 Run:
 
 ```bash
-webpilot run test.json
+w3pilot run test.json
 ```

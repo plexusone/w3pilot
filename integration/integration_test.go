@@ -24,11 +24,12 @@ func TestMain(m *testing.M) {
 
 // browserTest is a helper for running browser tests.
 type browserTest struct {
-	t        *testing.T
-	pilot    *w3pilot.Pilot
-	ctx      context.Context
-	cancel   context.CancelFunc
-	headless bool
+	t         *testing.T
+	pilot     *w3pilot.Pilot
+	ctx       context.Context
+	cancel    context.CancelFunc
+	headless  bool
+	cleanedUp bool
 }
 
 // newBrowserTest creates a new browser test helper.
@@ -48,23 +49,40 @@ func newBrowserTest(t *testing.T) *browserTest {
 		t.Fatalf("Failed to launch browser: %v", err)
 	}
 
-	return &browserTest{
+	bt := &browserTest{
 		t:        t,
 		pilot:    pilot,
 		ctx:      ctx,
 		cancel:   cancel,
 		headless: headless,
 	}
+
+	// Register cleanup to run automatically when test ends (including on panic/failure)
+	t.Cleanup(bt.cleanup)
+
+	return bt
 }
 
 // cleanup closes the browser and cancels the context.
+// This function is idempotent - safe to call multiple times.
 func (bt *browserTest) cleanup() {
+	if bt.cleanedUp {
+		return
+	}
+	bt.cleanedUp = true
+
+	// Cancel the test context first
+	bt.cancel()
+
 	if bt.pilot != nil {
-		if err := bt.pilot.Quit(bt.ctx); err != nil {
+		// Use a fresh context for cleanup since the test context may be timed out
+		cleanupCtx, cleanupCancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cleanupCancel()
+
+		if err := bt.pilot.Quit(cleanupCtx); err != nil {
 			bt.t.Logf("Warning: failed to quit browser: %v", err)
 		}
 	}
-	bt.cancel()
 }
 
 // go navigates to a URL.

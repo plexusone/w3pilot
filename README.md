@@ -1,4 +1,4 @@
-# WebPilot
+# W3Pilot
 
 [![Go CI][go-ci-svg]][go-ci-url]
 [![Go Lint][go-lint-svg]][go-lint-url]
@@ -8,22 +8,22 @@
 [![Visualization][viz-svg]][viz-url]
 [![License][license-svg]][license-url]
 
- [go-ci-svg]: https://github.com/plexusone/webpilot/actions/workflows/go-ci.yaml/badge.svg?branch=main
- [go-ci-url]: https://github.com/plexusone/webpilot/actions/workflows/go-ci.yaml
- [go-lint-svg]: https://github.com/plexusone/webpilot/actions/workflows/go-lint.yaml/badge.svg?branch=main
- [go-lint-url]: https://github.com/plexusone/webpilot/actions/workflows/go-lint.yaml
- [go-sast-svg]: https://github.com/plexusone/webpilot/actions/workflows/go-sast-codeql.yaml/badge.svg?branch=main
- [go-sast-url]: https://github.com/plexusone/webpilot/actions/workflows/go-sast-codeql.yaml
- [goreport-svg]: https://goreportcard.com/badge/github.com/plexusone/webpilot
- [goreport-url]: https://goreportcard.com/report/github.com/plexusone/webpilot
- [docs-godoc-svg]: https://pkg.go.dev/badge/github.com/plexusone/webpilot
- [docs-godoc-url]: https://pkg.go.dev/github.com/plexusone/webpilot
+ [go-ci-svg]: https://github.com/plexusone/w3pilot/actions/workflows/go-ci.yaml/badge.svg?branch=main
+ [go-ci-url]: https://github.com/plexusone/w3pilot/actions/workflows/go-ci.yaml
+ [go-lint-svg]: https://github.com/plexusone/w3pilot/actions/workflows/go-lint.yaml/badge.svg?branch=main
+ [go-lint-url]: https://github.com/plexusone/w3pilot/actions/workflows/go-lint.yaml
+ [go-sast-svg]: https://github.com/plexusone/w3pilot/actions/workflows/go-sast-codeql.yaml/badge.svg?branch=main
+ [go-sast-url]: https://github.com/plexusone/w3pilot/actions/workflows/go-sast-codeql.yaml
+ [goreport-svg]: https://goreportcard.com/badge/github.com/plexusone/w3pilot
+ [goreport-url]: https://goreportcard.com/report/github.com/plexusone/w3pilot
+ [docs-godoc-svg]: https://pkg.go.dev/badge/github.com/plexusone/w3pilot
+ [docs-godoc-url]: https://pkg.go.dev/github.com/plexusone/w3pilot
  [viz-svg]: https://img.shields.io/badge/visualizaton-Go-blue.svg
- [viz-url]: https://mango-dune-07a8b7110.1.azurestaticapps.net/?repo=plexusone%2Fwebpilot
- [loc-svg]: https://tokei.rs/b1/github/plexusone/webpilot
- [repo-url]: https://github.com/plexusone/webpilot
+ [viz-url]: https://mango-dune-07a8b7110.1.azurestaticapps.net/?repo=plexusone%2Fw3pilot
+ [loc-svg]: https://tokei.rs/b1/github/plexusone/w3pilot
+ [repo-url]: https://github.com/plexusone/w3pilot
  [license-svg]: https://img.shields.io/badge/license-MIT-blue.svg
- [license-url]: https://github.com/plexusone/webpilot/blob/master/LICENSE
+ [license-url]: https://github.com/plexusone/w3pilot/blob/master/LICENSE
 
 Go browser automation library using WebDriver BiDi for real-time bidirectional communication with browsers, ideal for AI-assisted automation.
 
@@ -41,40 +41,49 @@ This project provides:
 
 ## Architecture
 
-WebPilot uses a **dual-protocol architecture** connecting to a single Chrome browser via both WebDriver BiDi (through VibiumDev clicker) and Chrome DevTools Protocol (CDP):
+W3Pilot uses a **dual-protocol architecture** connecting to a single Chrome browser via both WebDriver BiDi and Chrome DevTools Protocol (CDP):
 
 ```
-┌────────────────────────────────────────────────────────────────┐
-│                         webpilot                               │
-├─────────────┬─────────────┬─────────────┬──────────────────────┤
-│  Go Client  │ MCP Server  │    CLI      │   Script Runner      │
-│    SDK      │ (159 tools) │  (webpilot) │   (webpilot run)     │
-├─────────────┴─────────────┴─────────────┴──────────────────────┤
-│                       Pilot Core                               │
-│     ┌─────────────────────┐    ┌─────────────────────┐         │
-│     │    BiDi Client      │    │     CDP Client      │         │
-│     │  (page automation)  │    │ (profiling/network) │         │
-│     └──────────┬──────────┘    └──────────┬──────────┘         │
-│                │                          │                    │
-├────────────────┼──────────────────────────┼────────────────────┤
-│                ▼                          ▼                    │
-│         VibiumDev Clicker          Chrome DevTools             │
-│         (WebDriver BiDi)           (CDP WebSocket)             │
-├────────────────────────────────────────────────────────────────┤
-│                    Chrome / Chromium                           │
-└────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│                           Applications                       │
+├───────────────┬───────────────┬──────────────────────────────┤
+│    w3pilot    │  w3pilot-mcp  │       Your Go App            │
+│     (CLI)     │ (MCP Server)  │     import "w3pilot"         │
+├───────────────┴───────────────┴──────────────────────────────┤
+│                                                              │
+│                        W3Pilot Go SDK                        │
+│                 github.com/plexusone/w3pilot                 │
+│                                                              │
+│  ┌────────────────────────┐  ┌────────────────────────────┐  │
+│  │      BiDi Client       │  │       CDP Client           │  │
+│  │   (page automation)    │  │   (profiling/debugging)    │  │
+│  │                        │  │                            │  │
+│  │ • Navigation           │  │ • Heap snapshots           │  │
+│  │ • Element interaction  │  │ • Network emulation        │  │
+│  │ • Screenshots          │  │ • CPU throttling           │  │
+│  │ • Tracing              │  │ • Code coverage            │  │
+│  │ • Accessibility        │  │ • Console debugging        │  │
+│  └───────────┬────────────┘  └─────────────┬──────────────┘  │
+│              │                             │                 │
+├──────────────┼─────────────────────────────┼─────────────────┤
+│              ▼                             ▼                 │
+│       WebDriver BiDi                Chrome DevTools          │
+│       (stdio pipe)                  (CDP WebSocket)          │
+├──────────────────────────────────────────────────────────────┤
+│                        Chrome / Chromium                     │
+└──────────────────────────────────────────────────────────────┘
 ```
 
 ### Why Dual-Protocol?
 
-WebPilot combines two complementary protocols for complete browser control:
+W3Pilot combines two complementary protocols for complete browser control:
 
 | Protocol | Purpose | Strengths |
 |----------|---------|-----------|
 | **WebDriver BiDi** | Automation & Testing | Semantic selectors, real-time events, cross-browser potential, future-proof standard |
 | **Chrome DevTools Protocol** | Inspection & Profiling | Heap profiling, network bodies, CPU/network emulation, coverage analysis |
 
-**BiDi (via VibiumDev clicker)** excels at:
+**BiDi Client** excels at:
 
 - Page automation (navigation, clicks, typing)
 - Semantic element finding (by role, label, text, testid)
@@ -82,7 +91,7 @@ WebPilot combines two complementary protocols for complete browser control:
 - Tracing and session recording
 - Human-in-the-loop workflows (CAPTCHA, SSO)
 
-**CDP (direct connection)** excels at:
+**CDP Client** excels at:
 
 - Memory profiling (heap snapshots)
 - Network response body capture
@@ -95,7 +104,7 @@ Both protocols connect to the **same Chrome browser instance**, allowing you to 
 ## Installation
 
 ```bash
-go get github.com/plexusone/webpilot
+go get github.com/plexusone/w3pilot
 ```
 
 ## Quick Start
@@ -109,14 +118,14 @@ import (
     "context"
     "log"
 
-    "github.com/plexusone/webpilot"
+    "github.com/plexusone/w3pilot"
 )
 
 func main() {
     ctx := context.Background()
 
     // Launch browser
-    pilot, err := webpilot.Launch(ctx)
+    pilot, err := w3pilot.Launch(ctx)
     if err != nil {
         log.Fatal(err)
     }
@@ -135,7 +144,7 @@ func main() {
 Start the MCP server for AI assistant integration:
 
 ```bash
-webpilot mcp --headless
+w3pilot mcp --headless
 ```
 
 Configure in Claude Desktop (`claude_desktop_config.json`):
@@ -143,8 +152,8 @@ Configure in Claude Desktop (`claude_desktop_config.json`):
 ```json
 {
   "mcpServers": {
-    "webpilot": {
-      "command": "webpilot",
+    "w3pilot": {
+      "command": "w3pilot",
       "args": ["mcp", "--headless"]
     }
   }
@@ -155,12 +164,12 @@ Configure in Claude Desktop (`claude_desktop_config.json`):
 
 ```bash
 # Launch browser and run commands
-webpilot launch --headless
-webpilot go https://example.com
-webpilot fill "#email" "user@example.com"
-webpilot click "#submit"
-webpilot screenshot result.png
-webpilot quit
+w3pilot launch --headless
+w3pilot go https://example.com
+w3pilot fill "#email" "user@example.com"
+w3pilot click "#submit"
+w3pilot screenshot result.png
+w3pilot quit
 ```
 
 ### Script Runner
@@ -168,7 +177,7 @@ webpilot quit
 Execute deterministic test scripts:
 
 ```bash
-webpilot run test.json
+w3pilot run test.json
 ```
 
 Script format (JSON or YAML):
@@ -218,7 +227,7 @@ Script format (JSON or YAML):
 | Feature | Description |
 |---------|-------------|
 | **MCP Server** | 159 tools across 20 namespaces for AI-assisted automation |
-| **CLI** | `webpilot` command with subcommands |
+| **CLI** | `w3pilot` command with subcommands |
 | **Script Runner** | Execute JSON/YAML test scripts |
 | **Session Recording** | Capture MCP actions as replayable scripts |
 | **JSON Schema** | Validated script format |
@@ -226,7 +235,7 @@ Script format (JSON or YAML):
 
 ## MCP Server Tools
 
-The MCP server provides **159 tools across 20 namespaces**. Export the full list as JSON with `webpilot mcp --list-tools`.
+The MCP server provides **159 tools across 20 namespaces**. Export the full list as JSON with `w3pilot mcp --list-tools`.
 
 **Namespaces:**
 
@@ -270,18 +279,18 @@ Convert natural language test plans into deterministic scripts:
 2. LLM executes via MCP with `record_start`
 3. LLM explores, finds selectors, handles edge cases
 4. Export with `record_export` to get JSON
-5. Run deterministically with `webpilot run`
+5. Run deterministically with `w3pilot run`
 
 ## API Reference
 
-See [pkg.go.dev](https://pkg.go.dev/github.com/plexusone/webpilot) for full API documentation.
+See [pkg.go.dev](https://pkg.go.dev/github.com/plexusone/w3pilot) for full API documentation.
 
 ### Key Types
 
 ```go
 // Launch browser
-pilot, err := webpilot.Launch(ctx)
-pilot, err := webpilot.LaunchHeadless(ctx)
+pilot, err := w3pilot.Launch(ctx)
+pilot, err := w3pilot.LaunchHeadless(ctx)
 
 // Navigation
 pilot.Go(ctx, url)
@@ -314,37 +323,37 @@ Find elements by accessibility attributes instead of brittle CSS selectors. This
 
 ```go
 // Find by ARIA role and text content
-elem, err := pilot.Find(ctx, "", &webpilot.FindOptions{
+elem, err := pilot.Find(ctx, "", &w3pilot.FindOptions{
     Role: "button",
     Text: "Submit",
 })
 
 // Find by label (for form inputs)
-elem, err := pilot.Find(ctx, "", &webpilot.FindOptions{
+elem, err := pilot.Find(ctx, "", &w3pilot.FindOptions{
     Label: "Email address",
 })
 
 // Find by placeholder
-elem, err := pilot.Find(ctx, "", &webpilot.FindOptions{
+elem, err := pilot.Find(ctx, "", &w3pilot.FindOptions{
     Placeholder: "Enter your email",
 })
 
 // Find by data-testid (recommended for testing)
-elem, err := pilot.Find(ctx, "", &webpilot.FindOptions{
+elem, err := pilot.Find(ctx, "", &w3pilot.FindOptions{
     TestID: "login-button",
 })
 
 // Combine CSS selector with semantic filtering
-elem, err := pilot.Find(ctx, "form", &webpilot.FindOptions{
+elem, err := pilot.Find(ctx, "form", &w3pilot.FindOptions{
     Role: "textbox",
     Label: "Password",
 })
 
 // Find all buttons
-buttons, err := pilot.FindAll(ctx, "", &webpilot.FindOptions{Role: "button"})
+buttons, err := pilot.FindAll(ctx, "", &w3pilot.FindOptions{Role: "button"})
 
 // Find element near another element
-elem, err := pilot.Find(ctx, "", &webpilot.FindOptions{
+elem, err := pilot.Find(ctx, "", &w3pilot.FindOptions{
     Role: "button",
     Near: "#username-input",
 })
@@ -407,10 +416,10 @@ err := pilot.AddInitScript(ctx, `
 
 ```bash
 # Inject scripts when launching
-webpilot mcp --init-script=./mock-api.js --init-script=./test-helpers.js
+w3pilot mcp --init-script=./mock-api.js --init-script=./test-helpers.js
 
 # Or with the standalone binary
-webpilot-mcp -init-script=./mock-api.js
+w3pilot-mcp -init-script=./mock-api.js
 ```
 
 ### MCP Tool Usage
@@ -434,7 +443,7 @@ jsonBytes, _ := json.Marshal(state)
 os.WriteFile("auth-state.json", jsonBytes, 0600)
 
 // Restore from file
-var savedState webpilot.StorageState
+var savedState w3pilot.StorageState
 json.Unmarshal(jsonBytes, &savedState)
 err := pilot.SetStorageState(ctx, &savedState)
 
@@ -464,7 +473,7 @@ Record browser actions with screenshots and DOM snapshots for debugging and test
 ```go
 // Start tracing
 tracing := pilot.Tracing()
-err := tracing.Start(ctx, &webpilot.TracingStartOptions{
+err := tracing.Start(ctx, &w3pilot.TracingStartOptions{
     Screenshots: true,
     Snapshots:   true,
     Title:       "Login Flow Test",
@@ -492,7 +501,7 @@ os.WriteFile("trace.zip", data, 0600)
 
 ## CDP Features (Chrome DevTools Protocol)
 
-WebPilot provides direct CDP access for advanced profiling and emulation that isn't available through WebDriver BiDi.
+W3Pilot provides direct CDP access for advanced profiling and emulation that isn't available through WebDriver BiDi.
 
 ### Heap Snapshots
 
@@ -511,7 +520,7 @@ fmt.Printf("Snapshot: %s (%d bytes)\n", snapshot.Path, snapshot.Size)
 Simulate various network conditions:
 
 ```go
-import "github.com/plexusone/webpilot/cdp"
+import "github.com/plexusone/w3pilot/cdp"
 
 // Throttle to Slow 3G
 err := pilot.EmulateNetwork(ctx, cdp.NetworkSlow3G)
@@ -536,7 +545,7 @@ err := pilot.ClearNetworkEmulation(ctx)
 Simulate slower CPUs for performance testing:
 
 ```go
-import "github.com/plexusone/webpilot/cdp"
+import "github.com/plexusone/w3pilot/cdp"
 
 // 4x CPU slowdown (mid-tier mobile)
 err := pilot.EmulateCPU(ctx, cdp.CPU4xSlowdown)
@@ -578,7 +587,7 @@ WEBPILOT_HEADLESS=1 go test -tags=integration -v ./integration/...
 ## Debug Logging
 
 ```bash
-WEBPILOT_DEBUG=1 webpilot mcp
+WEBPILOT_DEBUG=1 w3pilot mcp
 ```
 
 ## Related Projects

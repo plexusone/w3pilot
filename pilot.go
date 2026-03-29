@@ -81,8 +81,13 @@ func (b *browserLauncher) launchPipe(ctx context.Context, opts *LaunchOptions) (
 	client := NewBiDiClient(transport)
 
 	pilot := &Pilot{
-		client:        client,
-		pipeTransport: transport,
+		client:          client,
+		pipeTransport:   transport,
+		browsingContext: transport.BrowsingContext(), // Use captured context
+	}
+
+	if pilot.browsingContext != "" {
+		debugLog(ctx, "browsing context captured", "context", pilot.browsingContext)
 	}
 
 	connectCDP(ctx, pilot)

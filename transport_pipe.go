@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"os"
 	"os/exec"
 	"sync"
 	"sync/atomic"
@@ -14,19 +15,20 @@ import (
 
 // pipeTransport implements BiDiTransport using stdin/stdout pipes to clicker.
 type pipeTransport struct {
-	cmd       *exec.Cmd
-	stdin     io.WriteCloser
-	stdout    *bufio.Reader
-	stderr    io.ReadCloser
-	nextID    atomic.Int64
-	pending   map[int64]chan *BiDiResponse
-	pendingMu sync.RWMutex
-	handlers  map[string][]EventHandler
-	handlerMu sync.RWMutex
-	closed    bool
-	closedMu  sync.RWMutex
-	closeCh   chan struct{}
-	writeMu   sync.Mutex // Serialize writes to stdin
+	cmd             *exec.Cmd
+	stdin           io.WriteCloser
+	stdout          *bufio.Reader
+	stderr          io.ReadCloser
+	nextID          atomic.Int64
+	pending         map[int64]chan *BiDiResponse
+	pendingMu       sync.RWMutex
+	handlers        map[string][]EventHandler
+	handlerMu       sync.RWMutex
+	closed          bool
+	closedMu        sync.RWMutex
+	closeCh         chan struct{}
+	writeMu         sync.Mutex // Serialize writes to stdin
+	browsingContext string     // Captured from contextCreated event
 }
 
 // PipeOptions configures the pipe transport.
@@ -74,8 +76,10 @@ func (t *pipeTransport) Start(ctx context.Context, opts *PipeOptions) error {
 		args = append(args, "--headless")
 	}
 
-	// Create command
-	t.cmd = exec.CommandContext(ctx, clickerPath, args...)
+	// Create command WITHOUT CommandContext to prevent process termination
+	// when the request context is cancelled. The clicker process should live
+	// beyond the initial launch request. We manage its lifecycle via Close().
+	t.cmd = exec.Command(clickerPath, args...)
 
 	// Set up pipes
 	var err error
@@ -120,8 +124,19 @@ func (t *pipeTransport) Start(ctx context.Context, opts *PipeOptions) error {
 }
 
 // waitForReady waits for the vibium:lifecycle.ready event.
+// It also captures the browsingContext from the contextCreated event.
 func (t *pipeTransport) waitForReady(ctx context.Context, timeout time.Duration) error {
 	readyCh := make(chan struct{}, 1)
+
+	// Capture browsingContext from contextCreated event (sent before lifecycle.ready)
+	t.OnEvent("browsingContext.contextCreated", func(event *BiDiEvent) {
+		var params struct {
+			Context string `json:"context"`
+		}
+		if err := json.Unmarshal(event.Params, &params); err == nil && params.Context != "" {
+			t.browsingContext = params.Context
+		}
+	})
 
 	t.OnEvent("vibium:lifecycle.ready", func(event *BiDiEvent) {
 		select {
@@ -140,13 +155,20 @@ func (t *pipeTransport) waitForReady(ctx context.Context, timeout time.Duration)
 	}
 }
 
-// readStderr reads and discards stderr (could log in debug mode).
+// BrowsingContext returns the captured browsing context ID.
+func (t *pipeTransport) BrowsingContext() string {
+	return t.browsingContext
+}
+
+// readStderr reads stderr and logs it when W3PILOT_DEBUG is enabled.
+// Previously this was discarded, making clicker errors invisible.
 func (t *pipeTransport) readStderr() {
-	buf := make([]byte, 4096)
-	for {
-		_, err := t.stderr.Read(buf)
-		if err != nil {
-			return
+	debug := Debug()
+	scanner := bufio.NewScanner(t.stderr)
+	for scanner.Scan() {
+		if debug {
+			// Log clicker stderr to our stderr for debugging
+			fmt.Fprintf(os.Stderr, "[clicker] %s\n", scanner.Text())
 		}
 	}
 }

@@ -45,7 +45,7 @@ W3Pilot uses a **dual-protocol architecture** connecting to a single Chrome brow
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│                           Applications                       │
+│                          Applications                        │
 ├───────────────┬───────────────┬──────────────────────────────┤
 │    w3pilot    │  w3pilot-mcp  │       Your Go App            │
 │     (CLI)     │ (MCP Server)  │     import "w3pilot"         │
@@ -70,7 +70,7 @@ W3Pilot uses a **dual-protocol architecture** connecting to a single Chrome brow
 │       WebDriver BiDi                Chrome DevTools          │
 │       (stdio pipe)                  (CDP WebSocket)          │
 ├──────────────────────────────────────────────────────────────┤
-│                        Chrome / Chromium                     │
+│                       Chrome / Chromium                      │
 └──────────────────────────────────────────────────────────────┘
 ```
 

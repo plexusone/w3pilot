@@ -24,24 +24,34 @@ W3Pilot is a browser automation library built for AI agents. It uses a **dual-pr
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                         w3pilot                                │
-├─────────────┬─────────────┬─────────────┬──────────────────────┤
-│  Go Client  │ MCP Server  │    CLI      │   Script Runner      │
-│    SDK      │ (159 tools) │  (w3pilot) │   (w3pilot run)     │
-├─────────────┴─────────────┴─────────────┴──────────────────────┤
-│                       Pilot Core                               │
-│     ┌─────────────────────┐    ┌─────────────────────┐         │
-│     │    BiDi Client      │    │     CDP Client      │         │
-│     │  (page automation)  │    │ (profiling/network) │         │
-│     └──────────┬──────────┘    └──────────┬──────────┘         │
-├────────────────┼──────────────────────────┼────────────────────┤
-│                ▼                          ▼                    │
-│         VibiumDev Clicker          Chrome DevTools             │
-│         (WebDriver BiDi)           (CDP WebSocket)             │
-├─────────────────────────────────────────────────────────────────┤
-│                    Chrome / Chromium                           │
-└─────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│                          Applications                        │
+├───────────────┬───────────────┬──────────────────────────────┤
+│    w3pilot    │  w3pilot-mcp  │       Your Go App            │
+│     (CLI)     │ (MCP Server)  │     import "w3pilot"         │
+├───────────────┴───────────────┴──────────────────────────────┤
+│                                                              │
+│                        W3Pilot Go SDK                        │
+│                 github.com/plexusone/w3pilot                 │
+│                                                              │
+│  ┌────────────────────────┐  ┌────────────────────────────┐  │
+│  │      BiDi Client       │  │       CDP Client           │  │
+│  │   (page automation)    │  │   (profiling/debugging)    │  │
+│  │                        │  │                            │  │
+│  │ • Navigation           │  │ • Heap snapshots           │  │
+│  │ • Element interaction  │  │ • Network emulation        │  │
+│  │ • Screenshots          │  │ • CPU throttling           │  │
+│  │ • Tracing              │  │ • Code coverage            │  │
+│  │ • Accessibility        │  │ • Console debugging        │  │
+│  └───────────┬────────────┘  └─────────────┬──────────────┘  │
+│              │                             │                 │
+├──────────────┼─────────────────────────────┼─────────────────┤
+│              ▼                             ▼                 │
+│       WebDriver BiDi                Chrome DevTools          │
+│       (stdio pipe)                  (CDP WebSocket)          │
+├──────────────────────────────────────────────────────────────┤
+│                       Chrome / Chromium                      │
+└──────────────────────────────────────────────────────────────┘
 ```
 
 ## Why Dual-Protocol?

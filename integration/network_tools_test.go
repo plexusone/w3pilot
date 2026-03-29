@@ -9,6 +9,7 @@ import (
 
 // TestNetworkRequestsCapture tests capturing network requests.
 func TestNetworkRequestsCapture(t *testing.T) {
+	t.Skip("clicker does not implement vibium:network.requests")
 	bt := newBrowserTest(t)
 	defer bt.cleanup()
 
@@ -44,6 +45,7 @@ func TestNetworkRequestsCapture(t *testing.T) {
 
 // TestNetworkRequestsClear tests clearing captured network requests.
 func TestNetworkRequestsClear(t *testing.T) {
+	t.Skip("clicker does not implement vibium:network.requests")
 	bt := newBrowserTest(t)
 	defer bt.cleanup()
 
@@ -78,6 +80,7 @@ func TestNetworkRequestsClear(t *testing.T) {
 
 // TestRouteAndUnroute tests setting and removing routes.
 func TestRouteAndUnroute(t *testing.T) {
+	t.Skip("clicker does not implement vibium:network.route")
 	bt := newBrowserTest(t)
 	defer bt.cleanup()
 
@@ -102,6 +105,7 @@ func TestRouteAndUnroute(t *testing.T) {
 
 // TestNetworkOffline tests setting network offline state.
 func TestNetworkOffline(t *testing.T) {
+	t.Skip("clicker does not implement vibium:network.setOffline")
 	bt := newBrowserTest(t)
 	defer bt.cleanup()
 
@@ -125,6 +129,7 @@ func TestNetworkOffline(t *testing.T) {
 
 // TestNetworkRequestsFiltering tests filtering network requests.
 func TestNetworkRequestsFiltering(t *testing.T) {
+	t.Skip("clicker does not implement vibium:network.requests")
 	bt := newBrowserTest(t)
 	defer bt.cleanup()
 

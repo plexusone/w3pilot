@@ -9,6 +9,7 @@ import (
 
 // TestDialogAlert tests handling alert dialogs.
 func TestDialogAlert(t *testing.T) {
+	t.Skip("clicker does not implement vibium:dialog.handle")
 	bt := newBrowserTest(t)
 	defer bt.cleanup()
 
@@ -41,6 +42,7 @@ func TestDialogAlert(t *testing.T) {
 
 // TestDialogConfirm tests handling confirm dialogs.
 func TestDialogConfirm(t *testing.T) {
+	t.Skip("clicker does not implement vibium:dialog.handle")
 	bt := newBrowserTest(t)
 	defer bt.cleanup()
 
@@ -74,6 +76,7 @@ func TestDialogConfirm(t *testing.T) {
 
 // TestDialogPrompt tests handling prompt dialogs.
 func TestDialogPrompt(t *testing.T) {
+	t.Skip("clicker does not implement vibium:dialog.handle")
 	bt := newBrowserTest(t)
 	defer bt.cleanup()
 

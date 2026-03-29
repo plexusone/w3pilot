@@ -119,7 +119,7 @@ func TestPilotFind_SendsVibiumPageFind(t *testing.T) {
 // TestPilotFindAll_SendsVibiumPageFindAll verifies that FindAll sends vibium:page.findAll.
 func TestPilotFindAll_SendsVibiumPageFindAll(t *testing.T) {
 	mock := newMockTransport()
-	mock.setResponse(json.RawMessage(`[]`))
+	mock.setResponse(json.RawMessage(`{"elements": [], "count": 0}`))
 
 	client := NewBiDiClient(mock)
 	pilot := &Pilot{

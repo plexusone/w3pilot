@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/plexusone/w3pilot/cdp"
@@ -438,16 +439,21 @@ func (p *Pilot) FindAll(ctx context.Context, selector string, opts *FindOptions)
 	}
 
 	// Parse the response containing element data
-	var items []struct {
-		Index    int         `json:"index"`
-		Selector string      `json:"selector"`
-		Tag      string      `json:"tag"`
-		Text     string      `json:"text"`
-		Box      BoundingBox `json:"box"`
+	// Response format: {"elements": [...], "count": N}
+	var resp struct {
+		Elements []struct {
+			Index    int         `json:"index"`
+			Selector string      `json:"selector"`
+			Tag      string      `json:"tag"`
+			Text     string      `json:"text"`
+			Box      BoundingBox `json:"box"`
+		} `json:"elements"`
+		Count int `json:"count"`
 	}
-	if err := json.Unmarshal(result, &items); err != nil {
+	if err := json.Unmarshal(result, &resp); err != nil {
 		return nil, fmt.Errorf("failed to parse elements: %w", err)
 	}
+	items := resp.Elements
 
 	elements := make([]*Element, len(items))
 	for i, item := range items {
@@ -488,8 +494,32 @@ func (p *Pilot) Evaluate(ctx context.Context, script string) (interface{}, error
 		return nil, err
 	}
 
-	// Wrap script in arrow function
-	wrappedScript := fmt.Sprintf("() => { %s }", script)
+	// Wrap script in arrow function.
+	// If script has return/let/const/var/if/for/while/try/throw statements, use block syntax.
+	// Otherwise use expression syntax so simple expressions return their value.
+	var wrappedScript string
+	trimmed := strings.TrimSpace(script)
+	if strings.HasPrefix(trimmed, "return ") ||
+		strings.HasPrefix(trimmed, "let ") ||
+		strings.HasPrefix(trimmed, "const ") ||
+		strings.HasPrefix(trimmed, "var ") ||
+		strings.HasPrefix(trimmed, "if ") ||
+		strings.HasPrefix(trimmed, "if(") ||
+		strings.HasPrefix(trimmed, "for ") ||
+		strings.HasPrefix(trimmed, "for(") ||
+		strings.HasPrefix(trimmed, "while ") ||
+		strings.HasPrefix(trimmed, "while(") ||
+		strings.HasPrefix(trimmed, "try ") ||
+		strings.HasPrefix(trimmed, "try{") ||
+		strings.HasPrefix(trimmed, "throw ") ||
+		strings.HasPrefix(trimmed, "{") ||
+		strings.Contains(trimmed, ";") {
+		// Statement(s): use block syntax
+		wrappedScript = fmt.Sprintf("() => { %s }", script)
+	} else {
+		// Expression: use expression syntax for implicit return
+		wrappedScript = fmt.Sprintf("() => (%s)", script)
+	}
 
 	params := map[string]interface{}{
 		"functionDeclaration": wrappedScript,

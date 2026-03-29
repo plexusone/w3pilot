@@ -10,13 +10,9 @@
       
       
       
-        <link rel="canonical" href="https://plexusone.github.io/w3pilot/getting-started/installation/">
+        <link rel="canonical" href="https://plexusone.github.io/w3pilot/enhancement-requests/EHRQ_emulation-presets/">
       
       
-        <link rel="prev" href="../..">
-      
-      
-        <link rel="next" href="../quickstart/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -24,7 +20,7 @@
     
     
       
-        <title>Installation - W3Pilot</title>
+        <title>Enhancement Request: Network and CPU Emulation Presets - W3Pilot</title>
       
     
     
@@ -76,7 +72,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#installation" class="md-skip">
+        <a href="#enhancement-request-network-and-cpu-emulation-presets" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +108,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Installation
+              Enhancement Request: Network and CPU Emulation Presets
             
           </span>
         </div>
@@ -277,8 +273,6 @@
       
   
   
-    
-  
   
   
     
@@ -291,11 +285,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
@@ -311,7 +307,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Getting Started
@@ -322,32 +318,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Installation
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../getting-started/installation/" class="md-nav__link">
         
   
   
@@ -358,86 +332,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#go-client-sdk" class="md-nav__link">
-    <span class="md-ellipsis">
-      Go Client SDK
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#cli-tool" class="md-nav__link">
-    <span class="md-ellipsis">
-      CLI Tool
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    <span class="md-ellipsis">
-      Prerequisites
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Prerequisites">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#w3pilot-clicker-binary" class="md-nav__link">
-    <span class="md-ellipsis">
-      W3Pilot Clicker Binary
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#environment-variables" class="md-nav__link">
-    <span class="md-ellipsis">
-      Environment Variables
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#verify-installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      Verify Installation
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -450,7 +344,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../quickstart/" class="md-nav__link">
+      <a href="../../getting-started/quickstart/" class="md-nav__link">
         
   
   
@@ -473,7 +367,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../prerequisites/" class="md-nav__link">
+      <a href="../../getting-started/prerequisites/" class="md-nav__link">
         
   
   
@@ -1381,46 +1275,145 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#go-client-sdk" class="md-nav__link">
+  <a href="#summary" class="md-nav__link">
     <span class="md-ellipsis">
-      Go Client SDK
+      Summary
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#cli-tool" class="md-nav__link">
+  <a href="#motivation" class="md-nav__link">
     <span class="md-ellipsis">
-      CLI Tool
+      Motivation
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
+  <a href="#current-state" class="md-nav__link">
     <span class="md-ellipsis">
-      Prerequisites
+      Current State
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Prerequisites">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proposed-commands" class="md-nav__link">
+    <span class="md-ellipsis">
+      Proposed Commands
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Proposed Commands">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#w3pilot-clicker-binary" class="md-nav__link">
+  <a href="#1-network-emulation" class="md-nav__link">
     <span class="md-ellipsis">
-      W3Pilot Clicker Binary
+      1. Network Emulation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Network Emulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#request-preset" class="md-nav__link">
+    <span class="md-ellipsis">
+      Request (Preset)
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#environment-variables" class="md-nav__link">
+  <a href="#request-custom" class="md-nav__link">
     <span class="md-ellipsis">
-      Environment Variables
+      Request (Custom)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#presets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Presets
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-cpu-emulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. CPU Emulation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. CPU Emulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#request" class="md-nav__link">
+    <span class="md-ellipsis">
+      Request
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rate-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rate Values
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cdp-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      CDP Implementation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CDP Implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#network-throttling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Network Throttling
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cpu-throttling" class="md-nav__link">
+    <span class="md-ellipsis">
+      CPU Throttling
     </span>
   </a>
   
@@ -1432,9 +1425,27 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#verify-installation" class="md-nav__link">
+  <a href="#use-cases" class="md-nav__link">
     <span class="md-ellipsis">
-      Verify Installation
+      Use Cases
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#w3pilot-integration" class="md-nav__link">
+    <span class="md-ellipsis">
+      W3Pilot Integration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      References
     </span>
   </a>
   
@@ -1459,60 +1470,191 @@
   
 
 
-<h1 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h1>
-<h2 id="go-client-sdk">Go Client SDK<a class="headerlink" href="#go-client-sdk" title="Permanent link">&para;</a></h2>
-<p>Install the Go module:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>go<span class="w"> </span>get<span class="w"> </span>github.com/grokify/w3pilot
+<h1 id="enhancement-request-network-and-cpu-emulation-presets">Enhancement Request: Network and CPU Emulation Presets<a class="headerlink" href="#enhancement-request-network-and-cpu-emulation-presets" title="Permanent link">&para;</a></h1>
+<p><strong>ID</strong>: EHRQ_emulation-presets
+<strong>Status</strong>: Proposed
+<strong>Priority</strong>: P1
+<strong>Target</strong>: VibiumDev/vibium (clicker)
+<strong>Date</strong>: 2026-03-24</p>
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>Add <code>vibium:emulate.network</code> and <code>vibium:emulate.cpu</code> commands for performance testing under constrained conditions.</p>
+<h2 id="motivation">Motivation<a class="headerlink" href="#motivation" title="Permanent link">&para;</a></h2>
+<p>Chrome DevTools MCP provides <code>emulate</code> tool which enables:</p>
+<ul>
+<li>Testing on slow networks (3G, 4G)</li>
+<li>Simulating mobile CPU performance</li>
+<li>Performance regression detection</li>
+<li>Real-world condition testing</li>
+</ul>
+<p>Essential for accessibility testing where users may have older devices or slow connections.</p>
+<h2 id="current-state">Current State<a class="headerlink" href="#current-state" title="Permanent link">&para;</a></h2>
+<p><strong>Available</strong>:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Media emulation only</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nx">pilot</span><span class="p">.</span><span class="nx">EmulateMedia</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">w3pilot</span><span class="p">.</span><span class="nx">EmulateMediaOptions</span><span class="p">{</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="nx">ColorScheme</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;dark&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nx">ReducedMotion</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;reduce&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">})</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1">// Offline mode</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="nx">pilot</span><span class="p">.</span><span class="nx">SetOffline</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span>
+</code></pre></div></p>
+<p><strong>Not available</strong>: Network throttling, CPU throttling.</p>
+<h2 id="proposed-commands">Proposed Commands<a class="headerlink" href="#proposed-commands" title="Permanent link">&para;</a></h2>
+<h3 id="1-network-emulation">1. Network Emulation<a class="headerlink" href="#1-network-emulation" title="Permanent link">&para;</a></h3>
+<h4 id="request-preset">Request (Preset)<a class="headerlink" href="#request-preset" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vibium:emulate.network&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">    </span><span class="nt">&quot;preset&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;slow-3g&quot;</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="p">}</span>
 </code></pre></div>
-<h2 id="cli-tool">CLI Tool<a class="headerlink" href="#cli-tool" title="Permanent link">&para;</a></h2>
-<p>Build and install the CLI:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>go<span class="w"> </span>install<span class="w"> </span>github.com/grokify/w3pilot/cmd/vibium@latest
+<h4 id="request-custom">Request (Custom)<a class="headerlink" href="#request-custom" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vibium:emulate.network&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">    </span><span class="nt">&quot;offline&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="nt">&quot;latency&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nt">&quot;downloadThroughput&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1500000</span><span class="p">,</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nt">&quot;uploadThroughput&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">750000</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="p">}</span>
 </code></pre></div>
-<p>Or build from source:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/grokify/w3pilot
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">cd</span><span class="w"> </span>w3pilot
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>go<span class="w"> </span>build<span class="w"> </span>-o<span class="w"> </span>vibium<span class="w"> </span>./cmd/vibium
-</code></pre></div>
-<h2 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h2>
-<h3 id="w3pilot-clicker-binary">W3Pilot Clicker Binary<a class="headerlink" href="#w3pilot-clicker-binary" title="Permanent link">&para;</a></h3>
-<p>The Go client requires the W3Pilot clicker binary. Install via npm:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>vibium
-</code></pre></div>
-<p>Or download from <a href="https://github.com/W3PilotDev/vibium/releases">W3Pilot releases</a>.</p>
-<h3 id="environment-variables">Environment Variables<a class="headerlink" href="#environment-variables" title="Permanent link">&para;</a></h3>
+<h4 id="presets">Presets<a class="headerlink" href="#presets" title="Permanent link">&para;</a></h4>
 <table>
 <thead>
 <tr>
-<th>Variable</th>
-<th>Description</th>
-<th>Default</th>
+<th>Preset</th>
+<th>Latency (ms)</th>
+<th>Download (bps)</th>
+<th>Upload (bps)</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>W3PILOT_CLICKER_PATH</code></td>
-<td>Path to clicker binary</td>
-<td>Auto-detected</td>
+<td><code>offline</code></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
 </tr>
 <tr>
-<td><code>W3PILOT_DEBUG</code></td>
-<td>Enable debug logging</td>
-<td><code>false</code></td>
+<td><code>slow-3g</code></td>
+<td>400</td>
+<td>400000</td>
+<td>400000</td>
 </tr>
 <tr>
-<td><code>W3PILOT_HEADLESS</code></td>
-<td>Run headless by default</td>
-<td><code>false</code></td>
+<td><code>fast-3g</code></td>
+<td>150</td>
+<td>1500000</td>
+<td>750000</td>
+</tr>
+<tr>
+<td><code>4g</code></td>
+<td>50</td>
+<td>4000000</td>
+<td>3000000</td>
+</tr>
+<tr>
+<td><code>wifi</code></td>
+<td>10</td>
+<td>30000000</td>
+<td>15000000</td>
 </tr>
 </tbody>
 </table>
-<h2 id="verify-installation">Verify Installation<a class="headerlink" href="#verify-installation" title="Permanent link">&para;</a></h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Check CLI</span>
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>vibium<span class="w"> </span>--help
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1"># Check clicker</span>
-<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>w3pilot<span class="w"> </span>mcp<span class="w"> </span>--help
+<h3 id="2-cpu-emulation">2. CPU Emulation<a class="headerlink" href="#2-cpu-emulation" title="Permanent link">&para;</a></h3>
+<h4 id="request">Request<a class="headerlink" href="#request" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="nt">&quot;method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vibium:emulate.cpu&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">&quot;params&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nt">&quot;rate&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="p">}</span>
 </code></pre></div>
+<h4 id="rate-values">Rate Values<a class="headerlink" href="#rate-values" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Rate</th>
+<th>Description</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>No throttling</td>
+<td>Baseline</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2x slowdown</td>
+<td>Fast mobile</td>
+</tr>
+<tr>
+<td>4</td>
+<td>4x slowdown</td>
+<td>Mid-tier mobile</td>
+</tr>
+<tr>
+<td>6</td>
+<td>6x slowdown</td>
+<td>Low-end mobile</td>
+</tr>
+</tbody>
+</table>
+<h2 id="cdp-implementation">CDP Implementation<a class="headerlink" href="#cdp-implementation" title="Permanent link">&para;</a></h2>
+<h3 id="network-throttling">Network Throttling<a class="headerlink" href="#network-throttling" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">cdp</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Network.emulateNetworkConditions&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nx">offline</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nx">latency</span><span class="o">:</span><span class="w"> </span><span class="mf">150</span><span class="p">,</span><span class="w">           </span><span class="c1">// ms</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nx">downloadThroughput</span><span class="o">:</span><span class="w"> </span><span class="mf">1500000</span><span class="p">,</span><span class="w">  </span><span class="c1">// bytes/sec</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nx">uploadThroughput</span><span class="o">:</span><span class="w"> </span><span class="mf">750000</span><span class="p">,</span><span class="w">     </span><span class="c1">// bytes/sec</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nx">connectionType</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;cellular3g&#39;</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="p">});</span>
+</code></pre></div>
+<h3 id="cpu-throttling">CPU Throttling<a class="headerlink" href="#cpu-throttling" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">cdp</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="s1">&#39;Emulation.setCPUThrottlingRate&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nx">rate</span><span class="o">:</span><span class="w"> </span><span class="mf">4</span><span class="w">  </span><span class="c1">// 4x slowdown</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="p">});</span>
+</code></pre></div>
+<h2 id="use-cases">Use Cases<a class="headerlink" href="#use-cases" title="Permanent link">&para;</a></h2>
+<ol>
+<li><strong>Mobile testing</strong>: Simulate mobile network and CPU</li>
+<li><strong>Performance budgets</strong>: Verify load times under constraints</li>
+<li><strong>Accessibility</strong>: Test for users with slow connections</li>
+<li><strong>CI/CD</strong>: Automated performance regression testing</li>
+</ol>
+<h2 id="w3pilot-integration">W3Pilot Integration<a class="headerlink" href="#w3pilot-integration" title="Permanent link">&para;</a></h2>
+<p>Once available in clicker:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">// SDK - Network</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">pilot</span><span class="p">.</span><span class="nx">EmulateNetwork</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">w3pilot</span><span class="p">.</span><span class="nx">NetworkPresetSlow3G</span><span class="p">)</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1">// or</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">pilot</span><span class="p">.</span><span class="nx">EmulateNetwork</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="nx">w3pilot</span><span class="p">.</span><span class="nx">NetworkConditions</span><span class="p">{</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nx">Latency</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="p">,</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nx">DownloadThroughput</span><span class="p">:</span><span class="w"> </span><span class="mi">1500000</span><span class="p">,</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="p">})</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="c1">// SDK - CPU</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="nx">err</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">pilot</span><span class="p">.</span><span class="nx">EmulateCPU</span><span class="p">(</span><span class="nx">ctx</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="c1">// 4x slowdown</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="c1">// MCP Tools</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="c1">// tool: emulate_network</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="c1">// params: { preset?: string, latency?: number, download?: number, upload?: number }</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="c1">// tool: emulate_cpu</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="c1">// params: { rate: number }</span>
+</code></pre></div>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://chromedevtools.github.io/devtools-protocol/tot/Network/#method-emulateNetworkConditions">CDP Network.emulateNetworkConditions</a></li>
+<li><a href="https://chromedevtools.github.io/devtools-protocol/tot/Emulation/#method-setCPUThrottlingRate">CDP Emulation.setCPUThrottlingRate</a></li>
+<li><a href="https://github.com/anthropics/chrome-devtools-mcp">Chrome DevTools MCP - emulate</a></li>
+</ul>
 
 
 

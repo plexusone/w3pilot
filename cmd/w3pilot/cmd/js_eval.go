@@ -12,6 +12,11 @@ import (
 
 var jsEvalTimeout time.Duration
 
+// JSEvalResult represents the result of JavaScript evaluation.
+type JSEvalResult struct {
+	Result interface{} `json:"result"`
+}
+
 var jsEvalCmd = &cobra.Command{
 	Use:   "eval <javascript>",
 	Short: "Execute JavaScript",
@@ -20,7 +25,8 @@ var jsEvalCmd = &cobra.Command{
 Examples:
   w3pilot js eval "document.title"
   w3pilot js eval "document.querySelectorAll('a').length"
-  w3pilot js eval "window.location.href"`,
+  w3pilot js eval "window.location.href"
+  w3pilot js eval "document.title" --format json`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		script := args[0]
@@ -35,20 +41,21 @@ Examples:
 			return fmt.Errorf("eval failed: %w", err)
 		}
 
-		// Pretty print result
-		if result == nil {
-			fmt.Println("undefined")
-		} else if s, ok := result.(string); ok {
-			fmt.Println(s)
-		} else {
-			jsonBytes, err := json.MarshalIndent(result, "", "  ")
-			if err != nil {
-				fmt.Printf("%v\n", result)
-			} else {
-				fmt.Println(string(jsonBytes))
+		Output(JSEvalResult{Result: result}, func(data interface{}) string {
+			r := data.(JSEvalResult).Result
+			// Pretty print result for text mode
+			if r == nil {
+				return "undefined"
 			}
-		}
-
+			if s, ok := r.(string); ok {
+				return s
+			}
+			jsonBytes, err := json.MarshalIndent(r, "", "  ")
+			if err != nil {
+				return fmt.Sprintf("%v", r)
+			}
+			return string(jsonBytes)
+		})
 		return nil
 	},
 }

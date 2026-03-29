@@ -11,6 +11,12 @@ import (
 
 var elementTextTimeout time.Duration
 
+// ElementTextResult represents the result of getting element text.
+type ElementTextResult struct {
+	Selector string `json:"selector"`
+	Text     string `json:"text"`
+}
+
 var elementTextCmd = &cobra.Command{
 	Use:   "text <selector>",
 	Short: "Get element text content",
@@ -18,7 +24,8 @@ var elementTextCmd = &cobra.Command{
 
 Examples:
   w3pilot element text "#header"
-  w3pilot element text ".message"`,
+  w3pilot element text ".message"
+  w3pilot element text "#result" --format json`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		selector := args[0]
@@ -38,7 +45,9 @@ Examples:
 			return fmt.Errorf("failed to get text: %w", err)
 		}
 
-		fmt.Println(text)
+		Output(ElementTextResult{Selector: selector, Text: text}, func(data interface{}) string {
+			return data.(ElementTextResult).Text
+		})
 		return nil
 	},
 }

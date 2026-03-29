@@ -11,6 +11,12 @@ import (
 
 var elementVisibleTimeout time.Duration
 
+// ElementVisibleResult represents the result of checking element visibility.
+type ElementVisibleResult struct {
+	Selector string `json:"selector"`
+	Visible  bool   `json:"visible"`
+}
+
 var elementVisibleCmd = &cobra.Command{
 	Use:   "visible <selector>",
 	Short: "Check if element is visible",
@@ -18,7 +24,8 @@ var elementVisibleCmd = &cobra.Command{
 
 Examples:
   w3pilot element visible "#modal"
-  w3pilot element visible ".loading-spinner"`,
+  w3pilot element visible ".loading-spinner"
+  w3pilot element visible "#dialog" --format json`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		selector := args[0]
@@ -38,7 +45,9 @@ Examples:
 			return fmt.Errorf("failed to check visibility: %w", err)
 		}
 
-		fmt.Println(visible)
+		Output(ElementVisibleResult{Selector: selector, Visible: visible}, func(data interface{}) string {
+			return fmt.Sprintf("%v", data.(ElementVisibleResult).Visible)
+		})
 		return nil
 	},
 }

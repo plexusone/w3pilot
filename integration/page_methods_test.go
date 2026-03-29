@@ -145,8 +145,8 @@ func TestSetExtraHTTPHeaders(t *testing.T) {
 }
 
 // TestConsoleMessages tests console message capture.
+// Note: Uses CDP fallback since BiDi doesn't support vibium:console.messages.
 func TestConsoleMessages(t *testing.T) {
-	t.Skip("clicker does not implement vibium:console.messages")
 	bt := newBrowserTest(t)
 	defer bt.cleanup()
 
@@ -172,8 +172,8 @@ console.error('Test error');
 }
 
 // TestClearConsoleMessages tests clearing console messages.
+// Note: Uses CDP fallback since BiDi doesn't support vibium:console.clear.
 func TestClearConsoleMessages(t *testing.T) {
-	t.Skip("clicker does not implement vibium:console.clear")
 	bt := newBrowserTest(t)
 	defer bt.cleanup()
 

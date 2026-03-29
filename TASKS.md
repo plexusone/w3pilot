@@ -98,7 +98,7 @@ Element Verification Methods:
 - [x] `element_verify_test.go` - Unit tests for verification types
 
 **Remaining Work**:
-- [ ] `mcp/tools_testing.go` - Refactor to use SDK methods
+- [x] `mcp/tools_testing.go` - Refactored to use SDK methods
 - [ ] `cmd/w3pilot/cmd/test_*.go` - Add CLI commands using SDK
 
 ---

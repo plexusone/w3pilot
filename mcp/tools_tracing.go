@@ -1,5 +1,10 @@
 package mcp
 
+// TODO: Tracing tools require vibium:tracing.* commands which are not implemented in clicker.
+// CDP has Tracing.start/end but it's for performance tracing, not action recording.
+// Uncomment when clicker adds support for vibium:tracing.* commands.
+
+/*
 import (
 	"context"
 	"encoding/base64"
@@ -294,3 +299,4 @@ func (s *Server) handleStopTraceGroup(
 		Message: "Trace group stopped",
 	}, nil
 }
+*/

@@ -11,7 +11,8 @@ type BrowserContext struct {
 	client      *BiDiClient
 	clicker     *ClickerProcess
 	userContext string
-	tracing     *Tracing
+	// TODO: Tracing requires vibium:tracing.* commands which are not implemented in clicker.
+	// tracing     *Tracing
 }
 
 // NewPage creates a new page in this browser context.
@@ -143,6 +144,9 @@ func (c *BrowserContext) AddInitScript(ctx context.Context, script string) error
 	return err
 }
 
+// TODO: Tracing requires vibium:tracing.* commands which are not implemented in clicker.
+// Uncomment when clicker adds support.
+/*
 // Tracing returns the tracing controller for this context.
 func (c *BrowserContext) Tracing() *Tracing {
 	if c.tracing == nil {
@@ -153,6 +157,7 @@ func (c *BrowserContext) Tracing() *Tracing {
 	}
 	return c.tracing
 }
+*/
 
 // GrantPermissions grants the specified permissions.
 func (c *BrowserContext) GrantPermissions(ctx context.Context, permissions []string, origin string) error {

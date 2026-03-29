@@ -2530,6 +2530,9 @@ func (p *Pilot) BrowserVersion(ctx context.Context) (string, error) {
 	return resp.Version, nil
 }
 
+// TODO: Tracing requires vibium:tracing.* commands which are not implemented in clicker.
+// Uncomment when clicker adds support.
+/*
 // Tracing returns a tracing controller for the default browser context.
 // Use this to record traces for debugging and analysis.
 func (p *Pilot) Tracing() *Tracing {
@@ -2538,6 +2541,7 @@ func (p *Pilot) Tracing() *Tracing {
 		userContext: "", // Empty string uses the default user context
 	}
 }
+*/
 
 // AddInitScript adds a script that will be evaluated in every page before any page scripts.
 // This is useful for mocking APIs, injecting test helpers, or setting up authentication.

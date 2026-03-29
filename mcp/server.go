@@ -737,36 +737,39 @@ func (s *Server) registerTools() {
 	}, s.handleClearRecording)
 
 	// === Tracing ===
+	// TODO: Tracing tools require vibium:tracing.* commands which are not implemented in clicker.
+	// Uncomment when clicker adds support.
+	/*
+		mcp.AddTool(s.mcpServer, &mcp.Tool{
+			Name:        "trace_start",
+			Description: "Start trace recording with screenshots and DOM snapshots for debugging. The trace can be viewed with 'npx playwright show-trace <trace.zip>'.",
+		}, s.handleStartTrace)
 
-	mcp.AddTool(s.mcpServer, &mcp.Tool{
-		Name:        "trace_start",
-		Description: "Start trace recording with screenshots and DOM snapshots for debugging. The trace can be viewed with 'npx playwright show-trace <trace.zip>'.",
-	}, s.handleStartTrace)
+		mcp.AddTool(s.mcpServer, &mcp.Tool{
+			Name:        "trace_stop",
+			Description: "Stop trace recording and save or return the trace data as a ZIP file.",
+		}, s.handleStopTrace)
 
-	mcp.AddTool(s.mcpServer, &mcp.Tool{
-		Name:        "trace_stop",
-		Description: "Stop trace recording and save or return the trace data as a ZIP file.",
-	}, s.handleStopTrace)
+		mcp.AddTool(s.mcpServer, &mcp.Tool{
+			Name:        "trace_chunk_start",
+			Description: "Start a new trace chunk within an active trace. Useful for segmenting traces into logical sections.",
+		}, s.handleStartTraceChunk)
 
-	mcp.AddTool(s.mcpServer, &mcp.Tool{
-		Name:        "trace_chunk_start",
-		Description: "Start a new trace chunk within an active trace. Useful for segmenting traces into logical sections.",
-	}, s.handleStartTraceChunk)
+		mcp.AddTool(s.mcpServer, &mcp.Tool{
+			Name:        "trace_chunk_stop",
+			Description: "Stop the current trace chunk and optionally save it to a file.",
+		}, s.handleStopTraceChunk)
 
-	mcp.AddTool(s.mcpServer, &mcp.Tool{
-		Name:        "trace_chunk_stop",
-		Description: "Stop the current trace chunk and optionally save it to a file.",
-	}, s.handleStopTraceChunk)
+		mcp.AddTool(s.mcpServer, &mcp.Tool{
+			Name:        "trace_group_start",
+			Description: "Start a trace group for logical grouping of actions in the trace viewer.",
+		}, s.handleStartTraceGroup)
 
-	mcp.AddTool(s.mcpServer, &mcp.Tool{
-		Name:        "trace_group_start",
-		Description: "Start a trace group for logical grouping of actions in the trace viewer.",
-	}, s.handleStartTraceGroup)
-
-	mcp.AddTool(s.mcpServer, &mcp.Tool{
-		Name:        "trace_group_stop",
-		Description: "Stop the current trace group.",
-	}, s.handleStopTraceGroup)
+		mcp.AddTool(s.mcpServer, &mcp.Tool{
+			Name:        "trace_group_stop",
+			Description: "Stop the current trace group.",
+		}, s.handleStopTraceGroup)
+	*/
 
 	// === Video Recording ===
 

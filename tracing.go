@@ -1,5 +1,10 @@
 package w3pilot
 
+// TODO: Tracing requires vibium:tracing.* commands which are not implemented in clicker.
+// CDP has Tracing.start/end but it's for performance tracing, not action recording.
+// Uncomment when clicker adds support for vibium:tracing.* commands.
+
+/*
 import (
 	"context"
 	"encoding/base64"
@@ -183,3 +188,4 @@ func (t *Tracing) StopGroup(ctx context.Context) error {
 	_, err := t.client.Send(ctx, "vibium:tracing.stopGroup", params)
 	return err
 }
+*/

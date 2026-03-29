@@ -101,6 +101,43 @@ W3Pilot combines two complementary protocols for complete browser control:
 
 Both protocols connect to the **same Chrome browser instance**, allowing you to automate with BiDi while profiling with CDP simultaneously.
 
+## Prerequisites
+
+W3Pilot requires the **Clicker** binary, a WebDriver BiDi browser launcher from the [Vibium](https://github.com/anthropics/vibium) project.
+
+### Install Clicker
+
+**Option 1: Download from GitHub Releases**
+
+Download the latest release for your platform from [vibium/releases](https://github.com/anthropics/vibium/releases) and add it to your PATH.
+
+**Option 2: Build from Source**
+
+```bash
+git clone https://github.com/anthropics/vibium.git
+cd vibium/clicker
+go build -o clicker .
+mv clicker /usr/local/bin/  # or add to PATH
+```
+
+**Option 3: Set Environment Variable**
+
+If the binary is in a custom location:
+
+```bash
+export CLICKER_BIN_PATH=/path/to/clicker
+```
+
+### Verify Installation
+
+```bash
+clicker --version
+```
+
+### Browser Requirements
+
+Clicker automatically manages Chrome/Chromium. If Chrome is not installed, download it from [google.com/chrome](https://www.google.com/chrome/).
+
 ## Installation
 
 ```bash
@@ -163,13 +200,27 @@ Configure in Claude Desktop (`claude_desktop_config.json`):
 ### CLI Commands
 
 ```bash
-# Launch browser and run commands
-w3pilot launch --headless
-w3pilot go https://example.com
-w3pilot fill "#email" "user@example.com"
-w3pilot click "#submit"
-w3pilot screenshot result.png
-w3pilot quit
+# Browser lifecycle
+w3pilot browser launch --headless
+w3pilot browser quit
+
+# Page navigation and capture
+w3pilot page navigate https://example.com
+w3pilot page back
+w3pilot page screenshot result.png
+w3pilot page title
+
+# Element interactions
+w3pilot element fill "#email" "user@example.com"
+w3pilot element click "#submit"
+w3pilot element text "#result"
+
+# Wait for conditions
+w3pilot wait selector "#modal"
+w3pilot wait url "**/dashboard"
+
+# JavaScript execution
+w3pilot js eval "document.title"
 ```
 
 ### Script Runner
@@ -415,11 +466,11 @@ err := pilot.AddInitScript(ctx, `
 ### CLI Usage
 
 ```bash
-# Inject scripts when launching
-w3pilot mcp --init-script=./mock-api.js --init-script=./test-helpers.js
+# Inject scripts when launching browser
+w3pilot browser launch --init-script=./mock-api.js --init-script=./test-helpers.js
 
-# Or with the standalone binary
-w3pilot-mcp -init-script=./mock-api.js
+# Or with MCP server
+w3pilot mcp --init-script=./mock-api.js --init-script=./test-helpers.js
 ```
 
 ### MCP Tool Usage
@@ -581,13 +632,13 @@ go test -v ./...
 go test -tags=integration -v ./integration/...
 
 # Headless mode
-WEBPILOT_HEADLESS=1 go test -tags=integration -v ./integration/...
+W3PILOT_HEADLESS=1 go test -tags=integration -v ./integration/...
 ```
 
 ## Debug Logging
 
 ```bash
-WEBPILOT_DEBUG=1 w3pilot mcp
+W3PILOT_DEBUG=1 w3pilot mcp
 ```
 
 ## Related Projects

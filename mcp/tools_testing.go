@@ -2,12 +2,13 @@ package mcp
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"time"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 
-	vibium "github.com/plexusone/w3pilot"
+	w3pilot "github.com/plexusone/w3pilot"
 	"github.com/plexusone/w3pilot/mcp/report"
 )
 
@@ -27,7 +28,7 @@ type VerifyValueOutput struct {
 
 func (s *Server) handleVerifyValue(
 	ctx context.Context,
-	req *mcp.CallToolRequest,
+	_ *mcp.CallToolRequest,
 	input VerifyValueInput,
 ) (*mcp.CallToolResult, VerifyValueOutput, error) {
 	pilot, err := s.session.Pilot(ctx)
@@ -41,7 +42,7 @@ func (s *Server) handleVerifyValue(
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
 	start := time.Now()
-	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &w3pilot.FindOptions{Timeout: timeout})
 
 	result := report.StepResult{
 		ID:     s.session.NextStepID("verify_value"),
@@ -66,40 +67,43 @@ func (s *Server) handleVerifyValue(
 		return nil, VerifyValueOutput{}, fmt.Errorf("element not found: %s", input.Selector)
 	}
 
-	actual, err := elem.Value(ctx)
+	// Get actual value for reporting
+	actual, _ := elem.Value(ctx)
+
+	// Use SDK verification method
+	verifyErr := elem.VerifyValue(ctx, input.Expected)
 	result.DurationMS = time.Since(start).Milliseconds()
 
-	if err != nil {
+	if verifyErr != nil {
+		var vErr *w3pilot.VerificationError
+		if errors.As(verifyErr, &vErr) {
+			result.Status = report.StatusNoGo
+			result.Severity = report.SeverityCritical
+			result.Error = &report.StepError{
+				Type:    vErr.Type,
+				Message: vErr.Message,
+			}
+			result.Context = s.session.CaptureContext(ctx)
+			result.Screenshot = s.session.CaptureScreenshot(ctx)
+			s.session.RecordStep(result)
+
+			return nil, VerifyValueOutput{
+				Passed:  false,
+				Actual:  actual,
+				Message: vErr.Message,
+			}, nil
+		}
+		// Non-verification error (e.g., get value failed)
 		result.Status = report.StatusNoGo
 		result.Severity = report.SeverityCritical
 		result.Error = &report.StepError{
 			Type:     "GetValueError",
-			Message:  err.Error(),
+			Message:  verifyErr.Error(),
 			Selector: input.Selector,
 		}
 		result.Screenshot = s.session.CaptureScreenshot(ctx)
 		s.session.RecordStep(result)
-		return nil, VerifyValueOutput{}, fmt.Errorf("get value failed: %w", err)
-	}
-
-	passed := actual == input.Expected
-
-	if !passed {
-		result.Status = report.StatusNoGo
-		result.Severity = report.SeverityCritical
-		result.Error = &report.StepError{
-			Type:    "VerifyValueFailed",
-			Message: fmt.Sprintf("Expected %q but got %q", input.Expected, actual),
-		}
-		result.Context = s.session.CaptureContext(ctx)
-		result.Screenshot = s.session.CaptureScreenshot(ctx)
-		s.session.RecordStep(result)
-
-		return nil, VerifyValueOutput{
-			Passed:  false,
-			Actual:  actual,
-			Message: fmt.Sprintf("Value mismatch: expected %q but got %q", input.Expected, actual),
-		}, nil
+		return nil, VerifyValueOutput{}, verifyErr
 	}
 
 	result.Status = report.StatusGo
@@ -131,7 +135,7 @@ type VerifyListVisibleOutput struct {
 
 func (s *Server) handleVerifyListVisible(
 	ctx context.Context,
-	req *mcp.CallToolRequest,
+	_ *mcp.CallToolRequest,
 	input VerifyListVisibleInput,
 ) (*mcp.CallToolResult, VerifyListVisibleOutput, error) {
 	pilot, err := s.session.Pilot(ctx)
@@ -151,33 +155,19 @@ func (s *Server) handleVerifyListVisible(
 		Args:   map[string]any{"items": input.Items, "selector": input.Selector},
 	}
 
-	// Build script to check for each item's visibility
+	// Use SDK AssertText for each item
 	var found []string
 	var missing []string
 
 	for _, item := range input.Items {
-		var script string
-		if input.Selector != "" {
-			script = fmt.Sprintf(`
-				(function() {
-					const el = document.querySelector(%q);
-					return el && el.textContent.includes(%q);
-				})()
-			`, input.Selector, item)
-		} else {
-			script = fmt.Sprintf(`document.body.textContent.includes(%q)`, item)
+		opts := &w3pilot.AssertOptions{
+			Selector: input.Selector,
 		}
-
-		evalResult, err := pilot.Evaluate(ctx, script)
+		err := pilot.AssertText(ctx, item, opts)
 		if err != nil {
 			missing = append(missing, item)
-			continue
-		}
-
-		if visible, ok := evalResult.(bool); ok && visible {
-			found = append(found, item)
 		} else {
-			missing = append(missing, item)
+			found = append(found, item)
 		}
 	}
 
@@ -233,7 +223,7 @@ type GenerateLocatorOutput struct {
 
 func (s *Server) handleGenerateLocator(
 	ctx context.Context,
-	req *mcp.CallToolRequest,
+	_ *mcp.CallToolRequest,
 	input GenerateLocatorInput,
 ) (*mcp.CallToolResult, GenerateLocatorOutput, error) {
 	pilot, err := s.session.Pilot(ctx)
@@ -250,157 +240,19 @@ func (s *Server) handleGenerateLocator(
 		input.Strategy = "css"
 	}
 
-	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	// Use SDK GenerateLocator method
+	locatorInfo, err := pilot.GenerateLocator(ctx, input.Selector, &w3pilot.GenerateLocatorOptions{
+		Strategy: input.Strategy,
+		Timeout:  timeout,
+	})
 	if err != nil {
-		return nil, GenerateLocatorOutput{}, fmt.Errorf("element not found: %s", input.Selector)
-	}
-
-	metadata := make(map[string]string)
-	var locator string
-
-	switch input.Strategy {
-	case "css":
-		// Generate a unique CSS selector
-		script := `
-			(function(selector) {
-				const el = document.querySelector(selector);
-				if (!el) return null;
-
-				// Try to generate a unique selector
-				// Priority: id > data-testid > class combination > tag with index
-
-				if (el.id) {
-					return '#' + CSS.escape(el.id);
-				}
-
-				if (el.dataset.testid) {
-					return '[data-testid="' + el.dataset.testid + '"]';
-				}
-
-				// Generate path from element
-				let path = [];
-				let current = el;
-				while (current && current.nodeType === Node.ELEMENT_NODE) {
-					let selector = current.tagName.toLowerCase();
-					if (current.id) {
-						selector = '#' + CSS.escape(current.id);
-						path.unshift(selector);
-						break;
-					}
-
-					let sibling = current;
-					let nth = 1;
-					while (sibling = sibling.previousElementSibling) {
-						if (sibling.tagName === current.tagName) nth++;
-					}
-
-					if (nth > 1 || current.nextElementSibling?.tagName === current.tagName) {
-						selector += ':nth-of-type(' + nth + ')';
-					}
-
-					path.unshift(selector);
-					current = current.parentElement;
-				}
-
-				return path.join(' > ');
-			})(%q)
-		`
-		result, err := pilot.Evaluate(ctx, fmt.Sprintf(script, input.Selector))
-		if err != nil {
-			return nil, GenerateLocatorOutput{}, fmt.Errorf("generate locator failed: %w", err)
-		}
-		if result != nil {
-			locator = fmt.Sprintf("%v", result)
-		} else {
-			locator = input.Selector
-		}
-
-	case "xpath":
-		// Generate XPath for the element
-		script := `
-			(function(selector) {
-				const el = document.querySelector(selector);
-				if (!el) return null;
-
-				if (el.id) {
-					return '//*[@id="' + el.id + '"]';
-				}
-
-				let path = [];
-				let current = el;
-				while (current && current.nodeType === Node.ELEMENT_NODE) {
-					let tag = current.tagName.toLowerCase();
-					let sibling = current;
-					let index = 1;
-					while (sibling = sibling.previousElementSibling) {
-						if (sibling.tagName.toLowerCase() === tag) index++;
-					}
-					path.unshift(tag + '[' + index + ']');
-					current = current.parentElement;
-				}
-
-				return '/' + path.join('/');
-			})(%q)
-		`
-		result, err := pilot.Evaluate(ctx, fmt.Sprintf(script, input.Selector))
-		if err != nil {
-			return nil, GenerateLocatorOutput{}, fmt.Errorf("generate locator failed: %w", err)
-		}
-		if result != nil {
-			locator = fmt.Sprintf("%v", result)
-		}
-
-	case "testid":
-		testID, err := elem.GetAttribute(ctx, "data-testid")
-		if err != nil {
-			return nil, GenerateLocatorOutput{}, fmt.Errorf("get testid failed: %w", err)
-		}
-		if testID == "" {
-			return nil, GenerateLocatorOutput{}, fmt.Errorf("element has no data-testid attribute")
-		}
-		locator = fmt.Sprintf("[data-testid=\"%s\"]", testID)
-		metadata["testid"] = testID
-
-	case "role":
-		role, err := elem.Role(ctx)
-		if err != nil {
-			return nil, GenerateLocatorOutput{}, fmt.Errorf("get role failed: %w", err)
-		}
-		if role == "" {
-			return nil, GenerateLocatorOutput{}, fmt.Errorf("element has no ARIA role")
-		}
-		label, _ := elem.Label(ctx)
-		if label != "" {
-			locator = fmt.Sprintf("role=%s[name=%q]", role, label)
-			metadata["label"] = label
-		} else {
-			locator = fmt.Sprintf("role=%s", role)
-		}
-		metadata["role"] = role
-
-	case "text":
-		text, err := elem.Text(ctx)
-		if err != nil {
-			return nil, GenerateLocatorOutput{}, fmt.Errorf("get text failed: %w", err)
-		}
-		if text == "" {
-			return nil, GenerateLocatorOutput{}, fmt.Errorf("element has no text content")
-		}
-		// Truncate long text
-		if len(text) > 50 {
-			text = text[:50]
-		}
-		locator = fmt.Sprintf("text=%q", text)
-		metadata["text"] = text
-
-	default:
-		return nil, GenerateLocatorOutput{}, fmt.Errorf("unknown strategy: %s", input.Strategy)
+		return nil, GenerateLocatorOutput{}, err
 	}
 
 	return nil, GenerateLocatorOutput{
-		Locator:  locator,
-		Strategy: input.Strategy,
-		Metadata: metadata,
+		Locator:  locatorInfo.Locator,
+		Strategy: locatorInfo.Strategy,
+		Metadata: locatorInfo.Metadata,
 	}, nil
 }
 
@@ -418,7 +270,7 @@ type WaitForSelectorOutput struct {
 
 func (s *Server) handleWaitForSelector(
 	ctx context.Context,
-	req *mcp.CallToolRequest,
+	_ *mcp.CallToolRequest,
 	input WaitForSelectorInput,
 ) (*mcp.CallToolResult, WaitForSelectorOutput, error) {
 	pilot, err := s.session.Pilot(ctx)
@@ -438,7 +290,7 @@ func (s *Server) handleWaitForSelector(
 	// Find the element first (for attached/visible states) or wait for condition
 	switch input.State {
 	case "attached", "visible":
-		elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+		elem, err := pilot.Find(ctx, input.Selector, &w3pilot.FindOptions{Timeout: timeout})
 		if err != nil {
 			return nil, WaitForSelectorOutput{}, fmt.Errorf("wait for selector failed: %w", err)
 		}
@@ -485,7 +337,7 @@ type VerifyTextOutput struct {
 
 func (s *Server) handleVerifyText(
 	ctx context.Context,
-	req *mcp.CallToolRequest,
+	_ *mcp.CallToolRequest,
 	input VerifyTextInput,
 ) (*mcp.CallToolResult, VerifyTextOutput, error) {
 	pilot, err := s.session.Pilot(ctx)
@@ -498,33 +350,27 @@ func (s *Server) handleVerifyText(
 	}
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
-	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &w3pilot.FindOptions{Timeout: timeout})
 	if err != nil {
 		return nil, VerifyTextOutput{}, fmt.Errorf("element not found: %s", input.Selector)
 	}
 
-	actual, err := elem.Text(ctx)
-	if err != nil {
-		return nil, VerifyTextOutput{}, fmt.Errorf("get text failed: %w", err)
-	}
+	// Get actual text for reporting
+	actual, _ := elem.Text(ctx)
 
-	var passed bool
-	if input.Exact {
-		passed = actual == input.Expected
-	} else {
-		passed = contains(actual, input.Expected)
-	}
+	// Use SDK VerifyText method
+	verifyErr := elem.VerifyText(ctx, input.Expected, &w3pilot.VerifyTextOptions{Exact: input.Exact})
 
-	if !passed {
-		matchType := "contain"
-		if input.Exact {
-			matchType = "equal"
+	if verifyErr != nil {
+		var vErr *w3pilot.VerificationError
+		if errors.As(verifyErr, &vErr) {
+			return nil, VerifyTextOutput{
+				Passed:  false,
+				Actual:  actual,
+				Message: vErr.Message,
+			}, nil
 		}
-		return nil, VerifyTextOutput{
-			Passed:  false,
-			Actual:  actual,
-			Message: fmt.Sprintf("Text does not %s expected: got %q, expected %q", matchType, actual, input.Expected),
-		}, nil
+		return nil, VerifyTextOutput{}, verifyErr
 	}
 
 	return nil, VerifyTextOutput{
@@ -532,20 +378,6 @@ func (s *Server) handleVerifyText(
 		Actual:  actual,
 		Message: fmt.Sprintf("Text matches: %q", actual),
 	}, nil
-}
-
-// contains checks if s contains substr (case-sensitive)
-func contains(s, substr string) bool {
-	return len(substr) == 0 || (len(s) >= len(substr) && searchString(s, substr))
-}
-
-func searchString(s, substr string) bool {
-	for i := 0; i <= len(s)-len(substr); i++ {
-		if s[i:i+len(substr)] == substr {
-			return true
-		}
-	}
-	return false
 }
 
 // VerifyVisible tool - verifies element is visible
@@ -562,14 +394,45 @@ type VerifyVisibleOutput struct {
 
 func (s *Server) handleVerifyVisible(
 	ctx context.Context,
-	req *mcp.CallToolRequest,
+	_ *mcp.CallToolRequest,
 	input VerifyVisibleInput,
 ) (*mcp.CallToolResult, VerifyVisibleOutput, error) {
-	passed, msg, err := s.verifyElementState(ctx, input.Selector, input.TimeoutMS, "visible")
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
-		return nil, VerifyVisibleOutput{}, err
+		return nil, VerifyVisibleOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
-	return nil, VerifyVisibleOutput{Passed: passed, Message: msg}, nil
+
+	if input.TimeoutMS == 0 {
+		input.TimeoutMS = 5000
+	}
+	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
+
+	elem, err := pilot.Find(ctx, input.Selector, &w3pilot.FindOptions{Timeout: timeout})
+	if err != nil {
+		return nil, VerifyVisibleOutput{
+			Passed:  false,
+			Message: fmt.Sprintf("Element not found: %s", input.Selector),
+		}, nil
+	}
+
+	// Use SDK VerifyVisible method
+	verifyErr := elem.VerifyVisible(ctx)
+
+	if verifyErr != nil {
+		var vErr *w3pilot.VerificationError
+		if errors.As(verifyErr, &vErr) {
+			return nil, VerifyVisibleOutput{
+				Passed:  false,
+				Message: vErr.Message,
+			}, nil
+		}
+		return nil, VerifyVisibleOutput{}, verifyErr
+	}
+
+	return nil, VerifyVisibleOutput{
+		Passed:  true,
+		Message: fmt.Sprintf("Element is visible: %s", input.Selector),
+	}, nil
 }
 
 // VerifyEnabled tool - verifies element is enabled
@@ -586,74 +449,45 @@ type VerifyEnabledOutput struct {
 
 func (s *Server) handleVerifyEnabled(
 	ctx context.Context,
-	req *mcp.CallToolRequest,
+	_ *mcp.CallToolRequest,
 	input VerifyEnabledInput,
 ) (*mcp.CallToolResult, VerifyEnabledOutput, error) {
-	passed, msg, err := s.verifyElementState(ctx, input.Selector, input.TimeoutMS, "enabled")
-	if err != nil {
-		return nil, VerifyEnabledOutput{}, err
-	}
-	return nil, VerifyEnabledOutput{Passed: passed, Message: msg}, nil
-}
-
-// verifyElementState is a helper that verifies an element's state (visible, hidden, enabled, disabled)
-func (s *Server) verifyElementState(ctx context.Context, selector string, timeoutMS int, state string) (bool, string, error) {
 	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
-		return false, "", fmt.Errorf("browser not available: %w", err)
+		return nil, VerifyEnabledOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
 
-	if timeoutMS == 0 {
-		timeoutMS = 5000
+	if input.TimeoutMS == 0 {
+		input.TimeoutMS = 5000
 	}
-	timeout := time.Duration(timeoutMS) * time.Millisecond
+	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
-	elem, err := pilot.Find(ctx, selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &w3pilot.FindOptions{Timeout: timeout})
 	if err != nil {
-		// For hidden state, element not found could be valid
-		if state == "hidden" {
-			return true, fmt.Sprintf("Element is hidden (not found): %s", selector), nil
+		return nil, VerifyEnabledOutput{
+			Passed:  false,
+			Message: fmt.Sprintf("Element not found: %s", input.Selector),
+		}, nil
+	}
+
+	// Use SDK VerifyEnabled method
+	verifyErr := elem.VerifyEnabled(ctx)
+
+	if verifyErr != nil {
+		var vErr *w3pilot.VerificationError
+		if errors.As(verifyErr, &vErr) {
+			return nil, VerifyEnabledOutput{
+				Passed:  false,
+				Message: vErr.Message,
+			}, nil
 		}
-		return false, fmt.Sprintf("Element not found: %s", selector), nil
+		return nil, VerifyEnabledOutput{}, verifyErr
 	}
 
-	var checkResult bool
-	var checkErr error
-	var expectTrue bool = true // Whether we expect the check to return true
-
-	switch state {
-	case "visible":
-		checkResult, checkErr = elem.IsVisible(ctx)
-	case "hidden":
-		checkResult, checkErr = elem.IsVisible(ctx)
-		expectTrue = false // For hidden, we expect IsVisible to return false
-	case "enabled":
-		checkResult, checkErr = elem.IsEnabled(ctx)
-	case "disabled":
-		checkResult, checkErr = elem.IsEnabled(ctx)
-		expectTrue = false // For disabled, we expect IsEnabled to return false
-	default:
-		return false, "", fmt.Errorf("unknown state: %s", state)
-	}
-
-	if checkErr != nil {
-		return false, "", fmt.Errorf("check %s failed: %w", state, checkErr)
-	}
-
-	// Determine pass/fail based on expected state
-	passed := checkResult == expectTrue
-
-	if !passed {
-		oppositeState := map[string]string{
-			"visible":  "hidden",
-			"hidden":   "visible",
-			"enabled":  "disabled",
-			"disabled": "enabled",
-		}
-		return false, fmt.Sprintf("Element is %s, expected %s: %s", oppositeState[state], state, selector), nil
-	}
-
-	return true, fmt.Sprintf("Element is %s: %s", state, selector), nil
+	return nil, VerifyEnabledOutput{
+		Passed:  true,
+		Message: fmt.Sprintf("Element is enabled: %s", input.Selector),
+	}, nil
 }
 
 // VerifyHidden tool - verifies element is hidden
@@ -670,14 +504,46 @@ type VerifyHiddenOutput struct {
 
 func (s *Server) handleVerifyHidden(
 	ctx context.Context,
-	req *mcp.CallToolRequest,
+	_ *mcp.CallToolRequest,
 	input VerifyHiddenInput,
 ) (*mcp.CallToolResult, VerifyHiddenOutput, error) {
-	passed, msg, err := s.verifyElementState(ctx, input.Selector, input.TimeoutMS, "hidden")
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
-		return nil, VerifyHiddenOutput{}, err
+		return nil, VerifyHiddenOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
-	return nil, VerifyHiddenOutput{Passed: passed, Message: msg}, nil
+
+	if input.TimeoutMS == 0 {
+		input.TimeoutMS = 5000
+	}
+	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
+
+	elem, err := pilot.Find(ctx, input.Selector, &w3pilot.FindOptions{Timeout: timeout})
+	if err != nil {
+		// Element not found is valid for "hidden" verification
+		return nil, VerifyHiddenOutput{
+			Passed:  true,
+			Message: fmt.Sprintf("Element is hidden (not found): %s", input.Selector),
+		}, nil
+	}
+
+	// Use SDK VerifyHidden method
+	verifyErr := elem.VerifyHidden(ctx)
+
+	if verifyErr != nil {
+		var vErr *w3pilot.VerificationError
+		if errors.As(verifyErr, &vErr) {
+			return nil, VerifyHiddenOutput{
+				Passed:  false,
+				Message: vErr.Message,
+			}, nil
+		}
+		return nil, VerifyHiddenOutput{}, verifyErr
+	}
+
+	return nil, VerifyHiddenOutput{
+		Passed:  true,
+		Message: fmt.Sprintf("Element is hidden: %s", input.Selector),
+	}, nil
 }
 
 // VerifyDisabled tool - verifies element is disabled
@@ -694,14 +560,45 @@ type VerifyDisabledOutput struct {
 
 func (s *Server) handleVerifyDisabled(
 	ctx context.Context,
-	req *mcp.CallToolRequest,
+	_ *mcp.CallToolRequest,
 	input VerifyDisabledInput,
 ) (*mcp.CallToolResult, VerifyDisabledOutput, error) {
-	passed, msg, err := s.verifyElementState(ctx, input.Selector, input.TimeoutMS, "disabled")
+	pilot, err := s.session.Pilot(ctx)
 	if err != nil {
-		return nil, VerifyDisabledOutput{}, err
+		return nil, VerifyDisabledOutput{}, fmt.Errorf("browser not available: %w", err)
 	}
-	return nil, VerifyDisabledOutput{Passed: passed, Message: msg}, nil
+
+	if input.TimeoutMS == 0 {
+		input.TimeoutMS = 5000
+	}
+	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
+
+	elem, err := pilot.Find(ctx, input.Selector, &w3pilot.FindOptions{Timeout: timeout})
+	if err != nil {
+		return nil, VerifyDisabledOutput{
+			Passed:  false,
+			Message: fmt.Sprintf("Element not found: %s", input.Selector),
+		}, nil
+	}
+
+	// Use SDK VerifyDisabled method
+	verifyErr := elem.VerifyDisabled(ctx)
+
+	if verifyErr != nil {
+		var vErr *w3pilot.VerificationError
+		if errors.As(verifyErr, &vErr) {
+			return nil, VerifyDisabledOutput{
+				Passed:  false,
+				Message: vErr.Message,
+			}, nil
+		}
+		return nil, VerifyDisabledOutput{}, verifyErr
+	}
+
+	return nil, VerifyDisabledOutput{
+		Passed:  true,
+		Message: fmt.Sprintf("Element is disabled: %s", input.Selector),
+	}, nil
 }
 
 // VerifyChecked tool - verifies checkbox/radio is checked
@@ -720,7 +617,7 @@ type VerifyCheckedOutput struct {
 
 func (s *Server) handleVerifyChecked(
 	ctx context.Context,
-	req *mcp.CallToolRequest,
+	_ *mcp.CallToolRequest,
 	input VerifyCheckedInput,
 ) (*mcp.CallToolResult, VerifyCheckedOutput, error) {
 	pilot, err := s.session.Pilot(ctx)
@@ -733,12 +630,7 @@ func (s *Server) handleVerifyChecked(
 	}
 	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
 
-	// Default to expecting checked=true if not specified
-	// Note: JSON unmarshaling will set Checked to false if not provided,
-	// so we check if this is the first call by looking at the raw input
-	expectedChecked := input.Checked
-
-	elem, err := pilot.Find(ctx, input.Selector, &vibium.FindOptions{Timeout: timeout})
+	elem, err := pilot.Find(ctx, input.Selector, &w3pilot.FindOptions{Timeout: timeout})
 	if err != nil {
 		return nil, VerifyCheckedOutput{
 			Passed:  false,
@@ -746,19 +638,27 @@ func (s *Server) handleVerifyChecked(
 		}, nil
 	}
 
-	actualChecked, err := elem.IsChecked(ctx)
-	if err != nil {
-		return nil, VerifyCheckedOutput{}, fmt.Errorf("check checked state failed: %w", err)
+	// Get actual checked state for reporting
+	actualChecked, _ := elem.IsChecked(ctx)
+
+	// Use SDK VerifyChecked or VerifyUnchecked based on expected state
+	var verifyErr error
+	if input.Checked {
+		verifyErr = elem.VerifyChecked(ctx)
+	} else {
+		verifyErr = elem.VerifyUnchecked(ctx)
 	}
 
-	passed := actualChecked == expectedChecked
-
-	if !passed {
-		return nil, VerifyCheckedOutput{
-			Passed:  false,
-			Checked: actualChecked,
-			Message: fmt.Sprintf("Element checked state is %v, expected %v", actualChecked, expectedChecked),
-		}, nil
+	if verifyErr != nil {
+		var vErr *w3pilot.VerificationError
+		if errors.As(verifyErr, &vErr) {
+			return nil, VerifyCheckedOutput{
+				Passed:  false,
+				Checked: actualChecked,
+				Message: vErr.Message,
+			}, nil
+		}
+		return nil, VerifyCheckedOutput{}, verifyErr
 	}
 
 	return nil, VerifyCheckedOutput{

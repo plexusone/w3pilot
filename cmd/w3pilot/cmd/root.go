@@ -11,6 +11,7 @@ var (
 	// Global flags
 	sessionFile string
 	verbose     bool
+	// outputFormat is defined in output.go
 )
 
 // rootCmd represents the base command
@@ -61,6 +62,7 @@ func Execute() error {
 func init() {
 	rootCmd.PersistentFlags().StringVar(&sessionFile, "session", "", "Session file path (default: ~/.w3pilot/session.json)")
 	rootCmd.PersistentFlags().BoolVarP(&verbose, "verbose", "v", false, "Verbose output")
+	rootCmd.PersistentFlags().StringVarP(&outputFormat, "format", "o", "text", "Output format: text, json")
 }
 
 // getSessionPath returns the session file path

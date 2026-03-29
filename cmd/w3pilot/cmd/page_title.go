@@ -11,13 +11,19 @@ import (
 
 var pageTitleTimeout time.Duration
 
+// TitleResult represents the result of getting the page title.
+type TitleResult struct {
+	Title string `json:"title"`
+}
+
 var pageTitleCmd = &cobra.Command{
 	Use:   "title",
 	Short: "Get the page title",
 	Long: `Get the title of the current page.
 
 Examples:
-  w3pilot page title`,
+  w3pilot page title
+  w3pilot page title --format json`,
 	Args: cobra.NoArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		ctx, cancel := context.WithTimeout(context.Background(), pageTitleTimeout)
@@ -30,7 +36,9 @@ Examples:
 			return fmt.Errorf("failed to get title: %w", err)
 		}
 
-		fmt.Println(title)
+		Output(TitleResult{Title: title}, func(data interface{}) string {
+			return data.(TitleResult).Title
+		})
 		return nil
 	},
 }

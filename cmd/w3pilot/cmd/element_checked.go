@@ -11,6 +11,12 @@ import (
 
 var elementCheckedTimeout time.Duration
 
+// ElementCheckedResult represents the result of checking checkbox/radio state.
+type ElementCheckedResult struct {
+	Selector string `json:"selector"`
+	Checked  bool   `json:"checked"`
+}
+
 var elementCheckedCmd = &cobra.Command{
 	Use:   "checked <selector>",
 	Short: "Check if checkbox/radio is checked",
@@ -18,7 +24,8 @@ var elementCheckedCmd = &cobra.Command{
 
 Examples:
   w3pilot element checked "#agree"
-  w3pilot element checked "input[type='checkbox']"`,
+  w3pilot element checked "input[type='checkbox']"
+  w3pilot element checked "#terms" --format json`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		selector := args[0]
@@ -38,7 +45,9 @@ Examples:
 			return fmt.Errorf("failed to check state: %w", err)
 		}
 
-		fmt.Println(checked)
+		Output(ElementCheckedResult{Selector: selector, Checked: checked}, func(data interface{}) string {
+			return fmt.Sprintf("%v", data.(ElementCheckedResult).Checked)
+		})
 		return nil
 	},
 }

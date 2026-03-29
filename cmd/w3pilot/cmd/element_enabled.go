@@ -11,6 +11,12 @@ import (
 
 var elementEnabledTimeout time.Duration
 
+// ElementEnabledResult represents the result of checking element enabled state.
+type ElementEnabledResult struct {
+	Selector string `json:"selector"`
+	Enabled  bool   `json:"enabled"`
+}
+
 var elementEnabledCmd = &cobra.Command{
 	Use:   "enabled <selector>",
 	Short: "Check if element is enabled",
@@ -18,7 +24,8 @@ var elementEnabledCmd = &cobra.Command{
 
 Examples:
   w3pilot element enabled "#submit"
-  w3pilot element enabled "button.next"`,
+  w3pilot element enabled "button.next"
+  w3pilot element enabled "#btn" --format json`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		selector := args[0]
@@ -38,7 +45,9 @@ Examples:
 			return fmt.Errorf("failed to check enabled state: %w", err)
 		}
 
-		fmt.Println(enabled)
+		Output(ElementEnabledResult{Selector: selector, Enabled: enabled}, func(data interface{}) string {
+			return fmt.Sprintf("%v", data.(ElementEnabledResult).Enabled)
+		})
 		return nil
 	},
 }

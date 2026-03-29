@@ -60,25 +60,11 @@ jobs:
           go-version-file: go.mod
           cache: true
 
-      - name: Install Chrome Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libnss3 \
-            libnspr4 \
-            libatk1.0-0 \
-            libatk-bridge2.0-0 \
-            libcups2 \
-            libdrm2 \
-            libxkbcommon0 \
-            libxcomposite1 \
-            libxdamage1 \
-            libxfixes3 \
-            libxrandr2 \
-            libgbm1 \
-            libasound2t64 \
-            libpango-1.0-0 \
-            libcairo2
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+        id: setup-chrome
 
       - name: Install Clicker Binary
         run: |
@@ -88,22 +74,22 @@ jobs:
           go build -o $HOME/go/bin/clicker .
           rm -rf /tmp/vibium
 
-      - name: Cache Browser
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/vibium
-          key: vibium-browser-${{ runner.os }}
-
-      - name: Ensure Browser Installed
+      - name: Verify Chrome
         run: |
-          clicker install
-          clicker paths
+          echo "Chrome path: ${{ steps.setup-chrome.outputs.chrome-path }}"
+          ${{ steps.setup-chrome.outputs.chrome-path }} --version
+        env:
+          CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
 
       - name: Run Smoke Tests
         run: go test -tags=integration -v -timeout=2m ./integration/... -run 'TestSmoke'
+        env:
+          CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
 
       - name: Run Full Integration Tests
         run: go test -tags=integration -v -timeout=10m ./integration/...
+        env:
+          CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
 
       - name: Upload Screenshots on Failure
         if: failure()

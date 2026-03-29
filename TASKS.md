@@ -22,13 +22,24 @@ Reference: [Feature Comparison](docs/reference/comparison.md)
 
 **Use Case**: AI assistant + human working together - the AI uses MCP tools while the human can also interact with the browser and use CLI commands interactively.
 
-**Proposed Solution**:
+**Implementation Status**:
 
+SDK Session Package (completed):
+- [x] `session/types.go` - Session info, config, status types
+- [x] `session/persistence.go` - Session file I/O (Save, Load, Clear, Exists)
+- [x] `session/manager.go` - SessionManager with LaunchIfNeeded, Reconnect, Detach, Close
+- [x] Unit tests for session package
+
+Core SDK Support (completed):
+- [x] `w3pilot.Connect(ctx, wsURL)` - Connect to existing clicker instance
+- [x] `Pilot.Clicker()` - Access clicker process info
+- [x] `ClickerProcess.Process()` - Access underlying os.Process
+
+CLI Commands (TODO):
 - [ ] `w3pilot session start` - Launch browser and keep session alive
 - [ ] `w3pilot session attach` - Attach to existing session
 - [ ] `w3pilot session detach` - Detach without closing browser
 - [ ] `w3pilot session stop` - Close browser and end session
-- [ ] Session file stores connection info (`~/.w3pilot/session.json`)
 - [ ] All CLI commands check for active session before launching new browser
 - [ ] `w3pilot run --keep-alive` flag to keep browser open after script
 

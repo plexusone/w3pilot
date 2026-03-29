@@ -10,6 +10,7 @@ import (
 // TestTheInternet tests functionality against the-internet.herokuapp.com.
 // This site provides various UI patterns for testing.
 func TestTheInternet(t *testing.T) {
+	t.Skip("depends on external service the-internet.herokuapp.com which may timeout")
 	bt := newBrowserTest(t)
 	defer bt.cleanup()
 

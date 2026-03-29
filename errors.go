@@ -3,6 +3,7 @@ package w3pilot
 import (
 	"errors"
 	"fmt"
+	"strings"
 )
 
 var (
@@ -105,4 +106,26 @@ func (e *BiDiError) Error() string {
 		return fmt.Sprintf("%s: %s", e.ErrorType, e.Message)
 	}
 	return e.ErrorType
+}
+
+// IsUnsupportedCommand returns true if the error indicates the command is not
+// supported by the backend (e.g., clicker doesn't implement a vibium: command).
+// This is used internally to trigger fallback to CDP.
+func IsUnsupportedCommand(err error) bool {
+	if err == nil {
+		return false
+	}
+	var bidiErr *BiDiError
+	if errors.As(err, &bidiErr) {
+		// Check for common "unknown command" error patterns
+		switch bidiErr.ErrorType {
+		case "unknown command", "unknown method", "invalid method", "not implemented":
+			return true
+		}
+	}
+	// Also check error message for common patterns (case-insensitive)
+	errMsg := strings.ToLower(err.Error())
+	return strings.Contains(errMsg, "unknown command") ||
+		strings.Contains(errMsg, "unknown method") ||
+		strings.Contains(errMsg, "not implemented")
 }

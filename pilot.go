@@ -1703,11 +1703,14 @@ func (p *Pilot) ListRoutes(ctx context.Context) ([]RouteInfo, error) {
 }
 
 // SetOffline sets the browser's offline mode.
+// Tries BiDi first, falls back to CDP if BiDi doesn't support this command.
+// For fine-grained network control (latency, bandwidth), use EmulateNetwork() instead.
 func (p *Pilot) SetOffline(ctx context.Context, offline bool) error {
 	if p.closed {
 		return ErrConnectionClosed
 	}
 
+	// Try BiDi first
 	browsingCtx, err := p.getContext(ctx)
 	if err != nil {
 		return err
@@ -1719,6 +1722,21 @@ func (p *Pilot) SetOffline(ctx context.Context, offline bool) error {
 	}
 
 	_, err = p.client.Send(ctx, "vibium:network.setOffline", params)
+	if err == nil {
+		return nil
+	}
+
+	// If BiDi doesn't support this command, fall back to CDP
+	if IsUnsupportedCommand(err) {
+		if !p.HasCDP() {
+			return fmt.Errorf("SetOffline: BiDi not supported and CDP not available")
+		}
+		if offline {
+			return p.EmulateNetwork(ctx, cdp.NetworkOffline)
+		}
+		return p.ClearNetworkEmulation(ctx)
+	}
+
 	return err
 }
 
@@ -2288,6 +2306,7 @@ func (p *Pilot) ConsoleMessages(ctx context.Context, level string) ([]ConsoleMes
 		return nil, ErrConnectionClosed
 	}
 
+	// Try BiDi first
 	browsingCtx, err := p.getContext(ctx)
 	if err != nil {
 		return nil, err
@@ -2302,26 +2321,54 @@ func (p *Pilot) ConsoleMessages(ctx context.Context, level string) ([]ConsoleMes
 	}
 
 	result, err := p.client.Send(ctx, "vibium:console.messages", params)
-	if err != nil {
-		return nil, err
+	if err == nil {
+		var resp struct {
+			Messages []ConsoleMessage `json:"messages"`
+		}
+		if err := json.Unmarshal(result, &resp); err != nil {
+			return nil, err
+		}
+		return resp.Messages, nil
 	}
 
-	var resp struct {
-		Messages []ConsoleMessage `json:"messages"`
-	}
-	if err := json.Unmarshal(result, &resp); err != nil {
-		return nil, err
+	// If BiDi doesn't support this command, fall back to CDP
+	if IsUnsupportedCommand(err) {
+		if !p.HasCDP() {
+			return nil, fmt.Errorf("ConsoleMessages: BiDi not supported and CDP not available")
+		}
+		// Ensure console debugger is enabled
+		if p.consoleDebugger == nil {
+			if err := p.EnableConsoleDebugger(ctx); err != nil {
+				return nil, fmt.Errorf("ConsoleMessages: failed to enable console debugger: %w", err)
+			}
+		}
+		// Get entries from CDP and convert to ConsoleMessage format
+		entries := p.ConsoleEntries()
+		messages := make([]ConsoleMessage, 0, len(entries))
+		for _, e := range entries {
+			// Filter by level if specified
+			if level != "" && string(e.Type) != level {
+				continue
+			}
+			messages = append(messages, ConsoleMessage{
+				Type: string(e.Type),
+				Text: e.Text,
+			})
+		}
+		return messages, nil
 	}
 
-	return resp.Messages, nil
+	return nil, err
 }
 
 // ClearConsoleMessages clears the buffered console messages.
+// Tries BiDi first, falls back to CDP if BiDi doesn't support this command.
 func (p *Pilot) ClearConsoleMessages(ctx context.Context) error {
 	if p.closed {
 		return ErrConnectionClosed
 	}
 
+	// Try BiDi first
 	browsingCtx, err := p.getContext(ctx)
 	if err != nil {
 		return err
@@ -2332,6 +2379,18 @@ func (p *Pilot) ClearConsoleMessages(ctx context.Context) error {
 	}
 
 	_, err = p.client.Send(ctx, "vibium:console.clear", params)
+	if err == nil {
+		return nil
+	}
+
+	// If BiDi doesn't support this command, fall back to CDP
+	if IsUnsupportedCommand(err) {
+		if p.consoleDebugger != nil {
+			p.consoleDebugger.Clear()
+		}
+		return nil
+	}
+
 	return err
 }
 

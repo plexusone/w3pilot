@@ -907,6 +907,52 @@ func (s *Server) registerTools() {
 		Name:        "disable_console_debugger",
 		Description: "Stop capturing console messages with stack traces.",
 	}, s.handleDisableConsoleDebugger)
+
+	// === AI Agent Ergonomics ===
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "page_inspect",
+		Description: "Inspect page elements to discover buttons, links, inputs, selects, headings, and images. Designed for AI agents to understand page structure.",
+	}, s.handlePageInspect)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "test_validate_selectors",
+		Description: "Validate CSS selectors before use. Returns whether elements exist, are visible, enabled, and suggests alternatives if not found.",
+	}, s.handleValidateSelectors)
+
+	// === Workflow Recipes ===
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "workflow_login",
+		Description: "Automated login workflow: fill username and password fields, click submit, wait for success indicator (selector or URL pattern).",
+	}, s.handleWorkflowLogin)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "workflow_extract_table",
+		Description: "Extract HTML table data to structured JSON. Returns headers, rows as arrays, and rows as objects keyed by header names.",
+	}, s.handleWorkflowExtractTable)
+
+	// === Named State Snapshots ===
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "state_save",
+		Description: "Save browser state (cookies, localStorage, sessionStorage) to a named snapshot file.",
+	}, s.handleStateSave)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "state_load",
+		Description: "Load browser state from a named snapshot file. Restores cookies, localStorage, and sessionStorage.",
+	}, s.handleStateLoad)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "state_list",
+		Description: "List all saved state snapshots with their names, creation dates, and sizes.",
+	}, s.handleStateList)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "state_delete",
+		Description: "Delete a saved state snapshot by name.",
+	}, s.handleStateDelete)
 }
 
 // Run starts the MCP server.

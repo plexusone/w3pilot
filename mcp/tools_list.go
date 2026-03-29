@@ -61,6 +61,7 @@ var toolDefinitions = []struct {
 			{Name: "page_bring_to_front", Description: "Activate the page."},
 			{Name: "page_emulate_media", Description: "Emulate CSS media features (colorScheme, reducedMotion, forcedColors, contrast)."},
 			{Name: "page_set_geolocation", Description: "Set the browser's geolocation."},
+			{Name: "page_inspect", Description: "Inspect page elements to discover buttons, links, inputs, and other interactive elements. Designed for AI agents."},
 		},
 	},
 	{
@@ -239,6 +240,7 @@ var toolDefinitions = []struct {
 			{Name: "test_get_report", Description: "Get test execution report."},
 			{Name: "test_reset", Description: "Clear test results."},
 			{Name: "test_set_target", Description: "Set test target description."},
+			{Name: "test_validate_selectors", Description: "Validate CSS selectors before use. Returns whether elements exist, are visible, and suggests alternatives if not found."},
 		},
 	},
 	{
@@ -264,6 +266,22 @@ var toolDefinitions = []struct {
 		category: "config",
 		tools: []ToolInfo{
 			{Name: "config_get", Description: "Get the resolved MCP server configuration."},
+		},
+	},
+	{
+		category: "workflow",
+		tools: []ToolInfo{
+			{Name: "workflow_login", Description: "Automated login workflow: fill credentials, submit form, wait for success indicator."},
+			{Name: "workflow_extract_table", Description: "Extract HTML table data to structured JSON with headers and rows."},
+		},
+	},
+	{
+		category: "state",
+		tools: []ToolInfo{
+			{Name: "state_save", Description: "Save browser state (cookies, localStorage, sessionStorage) to a named snapshot."},
+			{Name: "state_load", Description: "Load browser state from a named snapshot."},
+			{Name: "state_list", Description: "List all saved state snapshots."},
+			{Name: "state_delete", Description: "Delete a saved state snapshot."},
 		},
 	},
 	{

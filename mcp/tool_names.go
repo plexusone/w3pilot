@@ -266,6 +266,22 @@ var ToolNames = struct {
 
 	// CDP - Network
 	CDPGetResponseBody string
+
+	// Page - Inspection
+	PageInspect string
+
+	// Test - Validation
+	TestValidateSelectors string
+
+	// Workflow
+	WorkflowLogin        string
+	WorkflowExtractTable string
+
+	// State
+	StateSave   string
+	StateLoad   string
+	StateList   string
+	StateDelete string
 }{
 	// Browser
 	BrowserLaunch: "browser_launch",
@@ -491,4 +507,20 @@ var ToolNames = struct {
 
 	// CDP - Network
 	CDPGetResponseBody: "cdp_get_response_body",
+
+	// Page - Inspection
+	PageInspect: "page_inspect",
+
+	// Test - Validation
+	TestValidateSelectors: "test_validate_selectors",
+
+	// Workflow
+	WorkflowLogin:        "workflow_login",
+	WorkflowExtractTable: "workflow_extract_table",
+
+	// State
+	StateSave:   "state_save",
+	StateLoad:   "state_load",
+	StateList:   "state_list",
+	StateDelete: "state_delete",
 }

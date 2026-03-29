@@ -104,8 +104,8 @@ func TestRouteAndUnroute(t *testing.T) {
 }
 
 // TestNetworkOffline tests setting network offline state.
+// Note: Uses CDP fallback since BiDi doesn't support vibium:network.setOffline.
 func TestNetworkOffline(t *testing.T) {
-	t.Skip("clicker does not implement vibium:network.setOffline")
 	bt := newBrowserTest(t)
 	defer bt.cleanup()
 

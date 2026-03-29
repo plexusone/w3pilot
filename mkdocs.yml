@@ -46,6 +46,7 @@ nav:
     - Prerequisites: getting-started/prerequisites.md
   - User Guide:
     - Go Client SDK: guide/sdk.md
+    - AI Agent Ergonomics: guide/ai-agents.md
     - MCP Server: guide/mcp-server.md
     - CDP Features: guide/cdp.md
     - Human-in-the-Loop: guide/hitl.md
@@ -68,6 +69,7 @@ nav:
     - Testing: development/testing.md
     - Changelog: development/changelog.md
   - Releases:
+    - v0.6.0: releases/v0.6.0.md
     - v0.5.0: releases/v0.5.0.md
     - v0.4.0: releases/v0.4.0.md
     - v0.3.0: releases/v0.3.0.md

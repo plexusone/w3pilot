@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"strings"
 	"time"
 )
@@ -976,6 +977,186 @@ func (e *Element) Highlight(ctx context.Context, opts *HighlightOptions) error {
 
 	_, err := e.client.Send(ctx, "vibium:element.highlight", params)
 	return err
+}
+
+// VerificationError is returned when a verification fails.
+type VerificationError struct {
+	Type     string `json:"type"`
+	Message  string `json:"message"`
+	Selector string `json:"selector,omitempty"`
+	Expected string `json:"expected,omitempty"`
+	Actual   string `json:"actual,omitempty"`
+}
+
+func (e *VerificationError) Error() string {
+	return e.Message
+}
+
+// VerifyTextOptions configures text verification.
+type VerifyTextOptions struct {
+	// Exact requires an exact match instead of contains.
+	Exact bool
+}
+
+// VerifyValue verifies that the element's value matches the expected value.
+func (e *Element) VerifyValue(ctx context.Context, expected string) error {
+	actual, err := e.Value(ctx)
+	if err != nil {
+		return fmt.Errorf("get value failed: %w", err)
+	}
+
+	if actual != expected {
+		return &VerificationError{
+			Type:     "VerifyValueFailed",
+			Message:  fmt.Sprintf("value mismatch: expected %q, got %q", expected, actual),
+			Selector: e.selector,
+			Expected: expected,
+			Actual:   actual,
+		}
+	}
+
+	return nil
+}
+
+// VerifyText verifies that the element's text matches the expected value.
+// By default, it checks if the text contains the expected value.
+// Set opts.Exact = true to require an exact match.
+func (e *Element) VerifyText(ctx context.Context, expected string, opts *VerifyTextOptions) error {
+	actual, err := e.Text(ctx)
+	if err != nil {
+		return fmt.Errorf("get text failed: %w", err)
+	}
+
+	var matched bool
+	if opts != nil && opts.Exact {
+		matched = actual == expected
+	} else {
+		matched = strings.Contains(actual, expected)
+	}
+
+	if !matched {
+		matchType := "contain"
+		if opts != nil && opts.Exact {
+			matchType = "equal"
+		}
+		return &VerificationError{
+			Type:     "VerifyTextFailed",
+			Message:  fmt.Sprintf("text does not %s expected: got %q, expected %q", matchType, actual, expected),
+			Selector: e.selector,
+			Expected: expected,
+			Actual:   actual,
+		}
+	}
+
+	return nil
+}
+
+// VerifyVisible verifies that the element is visible.
+func (e *Element) VerifyVisible(ctx context.Context) error {
+	visible, err := e.IsVisible(ctx)
+	if err != nil {
+		return fmt.Errorf("check visibility failed: %w", err)
+	}
+
+	if !visible {
+		return &VerificationError{
+			Type:     "VerifyVisibleFailed",
+			Message:  fmt.Sprintf("element is hidden, expected visible: %s", e.selector),
+			Selector: e.selector,
+		}
+	}
+
+	return nil
+}
+
+// VerifyHidden verifies that the element is hidden.
+func (e *Element) VerifyHidden(ctx context.Context) error {
+	visible, err := e.IsVisible(ctx)
+	if err != nil {
+		return fmt.Errorf("check visibility failed: %w", err)
+	}
+
+	if visible {
+		return &VerificationError{
+			Type:     "VerifyHiddenFailed",
+			Message:  fmt.Sprintf("element is visible, expected hidden: %s", e.selector),
+			Selector: e.selector,
+		}
+	}
+
+	return nil
+}
+
+// VerifyEnabled verifies that the element is enabled.
+func (e *Element) VerifyEnabled(ctx context.Context) error {
+	enabled, err := e.IsEnabled(ctx)
+	if err != nil {
+		return fmt.Errorf("check enabled state failed: %w", err)
+	}
+
+	if !enabled {
+		return &VerificationError{
+			Type:     "VerifyEnabledFailed",
+			Message:  fmt.Sprintf("element is disabled, expected enabled: %s", e.selector),
+			Selector: e.selector,
+		}
+	}
+
+	return nil
+}
+
+// VerifyDisabled verifies that the element is disabled.
+func (e *Element) VerifyDisabled(ctx context.Context) error {
+	enabled, err := e.IsEnabled(ctx)
+	if err != nil {
+		return fmt.Errorf("check enabled state failed: %w", err)
+	}
+
+	if enabled {
+		return &VerificationError{
+			Type:     "VerifyDisabledFailed",
+			Message:  fmt.Sprintf("element is enabled, expected disabled: %s", e.selector),
+			Selector: e.selector,
+		}
+	}
+
+	return nil
+}
+
+// VerifyChecked verifies that the checkbox/radio element is checked.
+func (e *Element) VerifyChecked(ctx context.Context) error {
+	checked, err := e.IsChecked(ctx)
+	if err != nil {
+		return fmt.Errorf("check checked state failed: %w", err)
+	}
+
+	if !checked {
+		return &VerificationError{
+			Type:     "VerifyCheckedFailed",
+			Message:  fmt.Sprintf("element is unchecked, expected checked: %s", e.selector),
+			Selector: e.selector,
+		}
+	}
+
+	return nil
+}
+
+// VerifyUnchecked verifies that the checkbox/radio element is unchecked.
+func (e *Element) VerifyUnchecked(ctx context.Context) error {
+	checked, err := e.IsChecked(ctx)
+	if err != nil {
+		return fmt.Errorf("check checked state failed: %w", err)
+	}
+
+	if checked {
+		return &VerificationError{
+			Type:     "VerifyUncheckedFailed",
+			Message:  fmt.Sprintf("element is checked, expected unchecked: %s", e.selector),
+			Selector: e.selector,
+		}
+	}
+
+	return nil
 }
 
 // decodeBase64 decodes a base64 string to bytes.

@@ -548,11 +548,23 @@ func (p *Pilot) Evaluate(ctx context.Context, script string) (interface{}, error
 	}
 
 	// Wrap script in arrow function.
-	// If script has return/let/const/var/if/for/while/try/throw statements, use block syntax.
-	// Otherwise use expression syntax so simple expressions return their value.
+	// Determine whether to use block syntax or expression syntax:
+	// - IIFEs (start with '(' and end with ')') always use expression syntax
+	//   to preserve their return value, even if they contain semicolons internally
+	// - Scripts with statements (return/let/const/var/if/for/while/try/throw)
+	//   or semicolons use block syntax
+	// - Simple expressions use expression syntax for implicit return
 	var wrappedScript string
 	trimmed := strings.TrimSpace(script)
-	if strings.HasPrefix(trimmed, "return ") ||
+
+	// Check if script is an IIFE: starts with '(' and ends with ')'
+	// This handles: (function(){})(), (() => {})(), (async () => {})(), etc.
+	isIIFE := strings.HasPrefix(trimmed, "(") && strings.HasSuffix(trimmed, ")")
+
+	if isIIFE {
+		// IIFEs are expressions - use expression syntax to capture return value
+		wrappedScript = fmt.Sprintf("() => (%s)", script)
+	} else if strings.HasPrefix(trimmed, "return ") ||
 		strings.HasPrefix(trimmed, "let ") ||
 		strings.HasPrefix(trimmed, "const ") ||
 		strings.HasPrefix(trimmed, "var ") ||

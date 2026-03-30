@@ -1,6 +1,6 @@
 # MCP Server
 
-The MCP (Model Context Protocol) server provides 80+ browser automation tools for AI assistants like Claude.
+The MCP (Model Context Protocol) server provides **169 browser automation tools across 24 namespaces** for AI assistants like Claude.
 
 ## Installation
 
@@ -12,10 +12,10 @@ The MCP server can be run two ways:
    go install github.com/plexusone/w3pilot/cmd/w3pilot-mcp@latest
    ```
 
-2. **Via the vibium CLI**:
+2. **Via the w3pilot CLI**:
 
    ```bash
-   go install github.com/plexusone/w3pilot/cmd/vibium@latest
+   go install github.com/plexusone/w3pilot/cmd/w3pilot@latest
    ```
 
 ## Starting the Server
@@ -84,13 +84,13 @@ Add to your Claude Code MCP settings:
 Or use the CLI command:
 
 ```bash
-claude mcp add vibium w3pilot-mcp -- -headless=false
+claude mcp add w3pilot w3pilot-mcp -- -headless=false
 ```
 
 ### Kiro CLI
 
 ```bash
-kiro-cli mcp add --name vibium --command w3pilot-mcp --args "-headless=false"
+kiro-cli mcp add --name w3pilot --command w3pilot-mcp --args "-headless=false"
 ```
 
 ### Cursor
@@ -135,9 +135,10 @@ For any MCP-compatible client, use:
 | Option | Default | Description |
 |--------|---------|-------------|
 | `-headless` | `true` | Run browser without GUI |
-| `-project` | `"vibium-tests"` | Project name for reports |
+| `-project` | `"w3pilot-tests"` | Project name for reports |
 | `-timeout` | `30s` | Default timeout for operations |
 | `-init-script` | | JavaScript file to inject before page scripts (repeatable) |
+| `--list-tools` | | Export all tools as JSON and exit |
 
 ### Init Scripts
 
@@ -163,6 +164,8 @@ Use cases:
 
 ## Tool Categories
 
+See [MCP Tools Reference](../reference/mcp-tools.md) for complete documentation.
+
 ### Browser Management
 
 | Tool | Description |
@@ -174,112 +177,159 @@ Use cases:
 
 | Tool | Description |
 |------|-------------|
-| `navigate` | Go to URL |
-| `back` | Navigate back |
-| `forward` | Navigate forward |
-| `reload` | Reload page |
+| `page_navigate` | Go to URL |
+| `page_go_back` | Navigate back |
+| `page_go_forward` | Navigate forward |
+| `page_reload` | Reload page |
+| `page_scroll` | Scroll page or element |
 
 ### Element Interactions
 
 | Tool | Description |
 |------|-------------|
-| `click` | Click element |
-| `dblclick` | Double-click element |
-| `type` | Type text (append) |
-| `fill` | Fill input (replace) |
-| `clear` | Clear input |
-| `press` | Press key |
-| `hover` | Hover over element |
-| `focus` | Focus element |
+| `element_click` | Click element |
+| `element_double_click` | Double-click element |
+| `element_type` | Type text (append) |
+| `element_fill` | Fill input (replace) |
+| `element_clear` | Clear input |
+| `element_press` | Press key on element |
+| `element_hover` | Hover over element |
+| `element_focus` | Focus element |
 
 ### Form Controls
 
 | Tool | Description |
 |------|-------------|
-| `check` | Check checkbox |
-| `uncheck` | Uncheck checkbox |
-| `select_option` | Select dropdown option |
-| `set_files` | Set file input |
+| `element_check` | Check checkbox |
+| `element_uncheck` | Uncheck checkbox |
+| `element_select` | Select dropdown option |
+| `element_set_files` | Set file input |
 
 ### Element State
 
 | Tool | Description |
 |------|-------------|
-| `get_text` | Get element text |
-| `get_value` | Get input value |
-| `get_attribute` | Get attribute |
-| `is_visible` | Check visibility |
-| `is_enabled` | Check enabled state |
-| `is_checked` | Check checkbox state |
+| `element_get_text` | Get element text |
+| `element_get_value` | Get input value |
+| `element_get_attribute` | Get attribute |
+| `element_is_visible` | Check visibility |
+| `element_is_enabled` | Check enabled state |
+| `element_is_checked` | Check checkbox state |
 
 ### Page State
 
 | Tool | Description |
 |------|-------------|
-| `get_title` | Get page title |
-| `get_url` | Get current URL |
-| `get_content` | Get page HTML |
-| `screenshot` | Capture screenshot |
-| `pdf` | Generate PDF |
+| `page_get_title` | Get page title |
+| `page_get_url` | Get current URL |
+| `page_get_content` | Get page HTML |
+| `page_screenshot` | Capture screenshot |
+| `page_pdf` | Generate PDF |
+| `page_inspect` | Discover interactive elements |
+
+### JavaScript
+
+| Tool | Description |
+|------|-------------|
+| `js_evaluate` | Execute JavaScript (with optional `max_result_size` for truncation) |
+| `js_add_script` | Inject script tag |
+| `js_add_style` | Inject CSS |
+| `js_init_script` | Add init script for all navigations |
+
+### HTTP Requests
+
+| Tool | Description |
+|------|-------------|
+| `http_request` | Make authenticated HTTP request in browser context |
+
+### Batch Execution
+
+| Tool | Description |
+|------|-------------|
+| `batch_execute` | Execute multiple tools in a single call |
 
 ### Waiting
 
 | Tool | Description |
 |------|-------------|
-| `wait_until` | Wait for element state |
+| `wait_for_selector` | Wait for element |
+| `wait_for_state` | Wait for element state |
 | `wait_for_url` | Wait for URL pattern |
 | `wait_for_load` | Wait for load state |
+| `wait_for_text` | Wait for text on page |
 
 ### Human-in-the-Loop
 
 | Tool | Description |
 |------|-------------|
-| `pause_for_human` | Pause for human action (SSO, CAPTCHA) |
-| `get_storage_state` | Export session (cookies + localStorage) |
-| `set_storage_state` | Restore saved session |
+| `human_pause` | Pause for human action (SSO, CAPTCHA) |
+
+### State Management
+
+| Tool | Description |
+|------|-------------|
+| `state_save` | Save browser state to named snapshot |
+| `state_load` | Restore browser state from snapshot |
+| `state_list` | List saved state snapshots |
+| `state_delete` | Delete a state snapshot |
+
+### Storage
+
+| Tool | Description |
+|------|-------------|
+| `storage_get_state` | Export session (cookies + localStorage) |
+| `storage_set_state` | Restore saved session |
+| `storage_get_cookies` | Get cookies |
+| `storage_set_cookies` | Set cookies |
+| `storage_local_get` | Get localStorage item |
+| `storage_local_set` | Set localStorage item |
 
 ### Input Controllers
 
 | Tool | Description |
 |------|-------------|
-| `keyboard_press` | Press key |
-| `keyboard_type` | Type text |
-| `mouse_click` | Click at coordinates |
-| `mouse_move` | Move mouse |
+| `input_keyboard_press` | Press key |
+| `input_keyboard_type` | Type text |
+| `input_mouse_click` | Click at coordinates |
+| `input_mouse_move` | Move mouse |
 
 ### Script Recording
 
 | Tool | Description |
 |------|-------------|
-| `start_recording` | Begin recording |
-| `stop_recording` | End recording |
-| `export_script` | Export as JSON |
-| `recording_status` | Check status |
+| `record_start` | Begin recording |
+| `record_stop` | End recording |
+| `record_export` | Export as JSON |
+| `record_get_status` | Check status |
 
 ### Tracing
 
 | Tool | Description |
 |------|-------------|
-| `start_trace` | Start trace with screenshots/snapshots |
-| `stop_trace` | Stop and save/return trace ZIP |
-| `start_trace_chunk` | Start a trace segment |
-| `stop_trace_chunk` | Stop trace segment |
-| `start_trace_group` | Group actions logically |
-| `stop_trace_group` | End action group |
+| `trace_start` | Start trace with screenshots/snapshots |
+| `trace_stop` | Stop and save/return trace ZIP |
+| `trace_chunk_start` | Start a trace segment |
+| `trace_chunk_stop` | Stop trace segment |
+| `trace_group_start` | Group actions logically |
+| `trace_group_stop` | End action group |
 
-### Init Scripts
-
-| Tool | Description |
-|------|-------------|
-| `add_init_script` | Inject JS before page scripts |
-
-### Assertions
+### Testing
 
 | Tool | Description |
 |------|-------------|
-| `assert_text` | Assert text exists |
-| `assert_element` | Assert element exists |
-| `assert_url` | Assert URL matches |
+| `test_assert_text` | Assert text exists |
+| `test_assert_element` | Assert element exists |
+| `test_assert_url` | Assert URL matches |
+| `test_verify_value` | Verify input value |
+| `test_verify_visible` | Verify element visible |
+| `test_generate_locator` | Generate robust locator |
+
+### Workflow Automation
+
+| Tool | Description |
+|------|-------------|
+| `workflow_login` | Automated login with verification |
+| `workflow_extract_table` | Extract table data to JSON |
 
 ## Example Conversation
 
@@ -289,21 +339,57 @@ Use cases:
 
 ```
 [Calls browser_launch]
-[Calls navigate with url="https://example.com"]
-[Calls click with selector="a"]
+[Calls page_navigate with url="https://example.com"]
+[Calls element_click with selector="a"]
 ```
 
 Done! I've navigated to example.com and clicked the link.
+
+## Batch Execution Example
+
+Reduce round-trip latency by batching multiple operations:
+
+```json
+{
+  "tool": "batch_execute",
+  "arguments": {
+    "steps": [
+      {"tool": "page_navigate", "args": {"url": "https://example.com/login"}},
+      {"tool": "element_fill", "args": {"selector": "#username", "value": "user"}},
+      {"tool": "element_fill", "args": {"selector": "#password", "value": "pass"}},
+      {"tool": "element_click", "args": {"selector": "#login"}},
+      {"tool": "wait_for_selector", "args": {"selector": "#dashboard"}}
+    ]
+  }
+}
+```
+
+## HTTP Request Example
+
+Make authenticated requests using the browser's session:
+
+```json
+{
+  "tool": "http_request",
+  "arguments": {
+    "url": "https://api.example.com/data",
+    "method": "POST",
+    "content_type": "application/json",
+    "body": "{\"key\": \"value\"}",
+    "max_body_length": 4096
+  }
+}
+```
 
 ## Session Recording
 
 Record your actions for deterministic replay:
 
 ```
-[Calls start_recording with name="Example Test"]
-[Calls navigate with url="https://example.com"]
-[Calls click with selector="a"]
-[Calls export_script]
+[Calls record_start with name="Example Test"]
+[Calls page_navigate with url="https://example.com"]
+[Calls element_click with selector="a"]
+[Calls record_export]
 ```
 
 The exported JSON can be run with `w3pilot run`.

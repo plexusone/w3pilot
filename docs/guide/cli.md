@@ -1,28 +1,29 @@
 # CLI Reference
 
-The `vibium` CLI provides command-line browser automation.
+The `w3pilot` CLI provides command-line browser automation.
 
 ## Installation
 
 ```bash
-go install github.com/grokify/w3pilot/cmd/vibium@latest
+go install github.com/plexusone/w3pilot/cmd/w3pilot@latest
 ```
 
 ## Global Flags
 
 | Flag | Description |
 |------|-------------|
-| `--session` | Session file path (default: `~/.vibium/session.json`) |
+| `--session` | Session file path (default: `~/.w3pilot/session.json`) |
+| `-o, --format` | Output format: `text` or `json` |
 | `-v, --verbose` | Verbose output |
 
 ## Commands
 
-### launch
+### browser launch
 
 Launch a browser instance.
 
 ```bash
-w3pilot launch [flags]
+w3pilot browser launch [flags]
 ```
 
 **Flags:**
@@ -34,15 +35,23 @@ w3pilot launch [flags]
 **Example:**
 
 ```bash
-w3pilot launch --headless
+w3pilot browser launch --headless
 ```
 
-### go
+### browser quit
+
+Close the browser.
+
+```bash
+w3pilot browser quit
+```
+
+### page navigate
 
 Navigate to a URL.
 
 ```bash
-w3pilot go <url> [flags]
+w3pilot page navigate <url> [flags]
 ```
 
 **Flags:**
@@ -54,15 +63,15 @@ w3pilot go <url> [flags]
 **Example:**
 
 ```bash
-w3pilot go https://example.com
+w3pilot page navigate https://example.com
 ```
 
-### click
+### element click
 
 Click an element.
 
 ```bash
-w3pilot click <selector> [flags]
+w3pilot element click <selector> [flags]
 ```
 
 **Flags:**
@@ -74,44 +83,44 @@ w3pilot click <selector> [flags]
 **Example:**
 
 ```bash
-w3pilot click "#submit"
-w3pilot click "button.login"
+w3pilot element click "#submit"
+w3pilot element click "button.login"
 ```
 
-### type
+### element type
 
 Type text into an element (appends).
 
 ```bash
-vibium type <selector> <text> [flags]
+w3pilot element type <selector> <text> [flags]
 ```
 
 **Example:**
 
 ```bash
-vibium type "#search" "hello world"
+w3pilot element type "#search" "hello world"
 ```
 
-### fill
+### element fill
 
 Fill an input (replaces existing content).
 
 ```bash
-w3pilot fill <selector> <text> [flags]
+w3pilot element fill <selector> <text> [flags]
 ```
 
 **Example:**
 
 ```bash
-w3pilot fill "#email" "user@example.com"
+w3pilot element fill "#email" "user@example.com"
 ```
 
-### screenshot
+### page screenshot
 
 Capture a screenshot.
 
 ```bash
-w3pilot screenshot <filename> [flags]
+w3pilot page screenshot <filename> [flags]
 ```
 
 **Flags:**
@@ -124,31 +133,23 @@ w3pilot screenshot <filename> [flags]
 **Example:**
 
 ```bash
-w3pilot screenshot page.png
-w3pilot screenshot button.png --selector "#submit"
+w3pilot page screenshot page.png
+w3pilot page screenshot button.png --selector "#submit"
 ```
 
-### eval
+### js eval
 
 Execute JavaScript.
 
 ```bash
-vibium eval <javascript> [flags]
+w3pilot js eval <javascript> [flags]
 ```
 
 **Example:**
 
 ```bash
-vibium eval "document.title"
-vibium eval "document.querySelectorAll('a').length"
-```
-
-### quit
-
-Close the browser.
-
-```bash
-w3pilot quit
+w3pilot js eval "document.title"
+w3pilot js eval "document.querySelectorAll('a').length"
 ```
 
 ### mcp
@@ -166,6 +167,7 @@ w3pilot mcp [flags]
 | `--headless` | Run headless |
 | `--timeout` | Default timeout |
 | `--project` | Project name for reports |
+| `--list-tools` | List all tools as JSON |
 
 ### run
 
@@ -189,16 +191,76 @@ w3pilot run test.yaml
 w3pilot run login.json --headless
 ```
 
-## Session Management
+### test commands
 
-The CLI maintains session state in `~/.vibium/session.json`. This allows running commands across multiple invocations:
+Assertions and verifications for testing.
 
 ```bash
-w3pilot launch
-w3pilot go https://example.com
+# Assertions
+w3pilot test assert-text "Welcome"
+w3pilot test assert-element "#login"
+w3pilot test assert-url "**/dashboard"
+
+# Verifications
+w3pilot test verify-value "#email" "user@example.com"
+w3pilot test verify-text ".heading" "Welcome"
+w3pilot test verify-visible "#modal"
+w3pilot test verify-enabled "#submit"
+w3pilot test verify-checked "#agree"
+
+# Locator generation
+w3pilot test generate-locator "#submit" --strategy xpath
+```
+
+### state commands
+
+Named state snapshots for saving/restoring browser state.
+
+```bash
+# Save current state
+w3pilot state save login-session
+
+# List saved states
+w3pilot state list
+
+# Load a state
+w3pilot state load login-session
+
+# Delete a state
+w3pilot state delete login-session
+```
+
+### page inspect
+
+Discover interactive elements on the page.
+
+```bash
+w3pilot page inspect [flags]
+```
+
+**Flags:**
+
+| Flag | Description |
+|------|-------------|
+| `--type` | Element types: buttons, links, inputs, selects, headings, images |
+
+**Example:**
+
+```bash
+w3pilot page inspect
+w3pilot page inspect --type buttons
+```
+
+## Session Management
+
+The CLI maintains session state in `~/.w3pilot/session.json`. This allows running commands across multiple invocations:
+
+```bash
+w3pilot browser launch
+w3pilot page navigate https://example.com
 # ... later ...
-w3pilot screenshot result.png
-w3pilot quit
+w3pilot page screenshot result.png
+w3pilot browser quit
 ```
 
 ## Examples
@@ -206,23 +268,42 @@ w3pilot quit
 ### Login Flow
 
 ```bash
-w3pilot launch --headless
-w3pilot go https://example.com/login
-w3pilot fill "#email" "user@example.com"
-w3pilot fill "#password" "secret123"
-w3pilot click "#submit"
-w3pilot screenshot dashboard.png
-w3pilot quit
+w3pilot browser launch --headless
+w3pilot page navigate https://example.com/login
+w3pilot element fill "#email" "user@example.com"
+w3pilot element fill "#password" "secret123"
+w3pilot element click "#submit"
+w3pilot page screenshot dashboard.png
+w3pilot browser quit
 ```
 
 ### Form Automation
 
 ```bash
-w3pilot launch
-w3pilot go https://example.com/form
-w3pilot fill "#name" "John Doe"
-w3pilot fill "#email" "john@example.com"
-w3pilot click "input[type='checkbox']"
-w3pilot click "#submit"
-w3pilot quit
+w3pilot browser launch
+w3pilot page navigate https://example.com/form
+w3pilot element fill "#name" "John Doe"
+w3pilot element fill "#email" "john@example.com"
+w3pilot element click "input[type='checkbox']"
+w3pilot element click "#submit"
+w3pilot browser quit
+```
+
+### State Management
+
+```bash
+# First session: login and save state
+w3pilot browser launch
+w3pilot page navigate https://example.com/login
+w3pilot element fill "#email" "user@example.com"
+w3pilot element fill "#password" "secret123"
+w3pilot element click "#submit"
+w3pilot state save logged-in
+w3pilot browser quit
+
+# Later session: restore state
+w3pilot browser launch
+w3pilot state load logged-in
+w3pilot page navigate https://example.com/dashboard
+# Already logged in!
 ```

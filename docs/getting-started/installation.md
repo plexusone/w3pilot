@@ -5,7 +5,7 @@
 Install the Go module:
 
 ```bash
-go get github.com/grokify/w3pilot
+go get github.com/plexusone/w3pilot
 ```
 
 ## CLI Tool
@@ -13,28 +13,36 @@ go get github.com/grokify/w3pilot
 Build and install the CLI:
 
 ```bash
-go install github.com/grokify/w3pilot/cmd/vibium@latest
+go install github.com/plexusone/w3pilot/cmd/w3pilot@latest
 ```
 
 Or build from source:
 
 ```bash
-git clone https://github.com/grokify/w3pilot
+git clone https://github.com/plexusone/w3pilot
 cd w3pilot
-go build -o vibium ./cmd/vibium
+go build -o w3pilot ./cmd/w3pilot
+```
+
+## MCP Server
+
+Install the standalone MCP server:
+
+```bash
+go install github.com/plexusone/w3pilot/cmd/w3pilot-mcp@latest
 ```
 
 ## Prerequisites
 
-### W3Pilot Clicker Binary
+### VibiumDev Clicker Binary
 
-The Go client requires the W3Pilot clicker binary. Install via npm:
+W3Pilot requires the VibiumDev clicker binary for WebDriver BiDi communication. Download from [VibiumDev releases](https://github.com/VibiumDev/vibium/releases).
+
+Alternatively, set the path manually:
 
 ```bash
-npm install -g vibium
+export W3PILOT_CLICKER_PATH=/path/to/clicker
 ```
-
-Or download from [W3Pilot releases](https://github.com/W3PilotDev/vibium/releases).
 
 ### Environment Variables
 
@@ -48,8 +56,11 @@ Or download from [W3Pilot releases](https://github.com/W3PilotDev/vibium/release
 
 ```bash
 # Check CLI
-vibium --help
+w3pilot --help
 
-# Check clicker
-w3pilot mcp --help
+# Check MCP server
+w3pilot-mcp --list-tools | head -5
+
+# Launch browser
+w3pilot browser launch
 ```

@@ -14,6 +14,159 @@ Reference: [Feature Comparison](docs/reference/comparison.md)
 
 ## Open Tasks
 
+### P0 - General Enhancements (MCP Server)
+
+Enhancement requests from real-world usage. These improve reliability and ergonomics for all MCP users.
+
+Reference: [Enhancement Request](docs/enhancement-requests/mcp-enhancements-2026-03-29.md)
+
+#### 1. `js_evaluate` should await async IIFEs
+
+**Priority**: High
+**Category**: Bug fix
+
+**Problem**: `js_evaluate` returns `null` when the script is an async IIFE:
+
+```javascript
+// Returns null
+(async () => {
+  const resp = await fetch('/api/test', {credentials: 'include'});
+  return {status: resp.status};
+})()
+```
+
+**Root Cause**: The script gets wrapped as `() => ((async () => {...})())`. Although `awaitPromise: true` is set, the outer arrow function may return before the inner async resolves.
+
+**Implementation Plan**:
+
+- [x] Detect async IIFE pattern in `Pilot.Evaluate()` (`pilot.go`)
+- [x] For IIFEs (start with `(`, end with `)`), use expression syntax to preserve return value
+- [x] Add integration tests for async/sync IIFE evaluation
+
+**Files affected**: `pilot.go`, `integration/evaluate_test.go`
+
+**Status**: Completed 2026-03-29
+
+---
+
+#### 2. Fix `state_save`/`state_load` compatibility
+
+**Priority**: Medium
+**Category**: Bug fix
+
+**Problem**: `state_save` fails with `Unknown command 'vibium:context.storageState'` when using browsers not launched through w3pilot's standard flow.
+
+**Root Cause**: `vibium:context.storageState` is a Vibium-specific extension to WebDriver BiDi, not available in all browser configurations.
+
+**Implementation Plan**:
+
+- [x] Add fallback in `BrowserContext.StorageState()` (`context.go`)
+- [x] When `vibium:context.storageState` fails, use manual collection:
+  - [x] Get cookies via `storage.getCookies` (standard BiDi)
+  - [x] Get localStorage via `Evaluate()` with JavaScript (in `Pilot.StorageState()`)
+  - [x] Get sessionStorage via `Evaluate()` (already done in `pilot.StorageState`)
+- [ ] Add integration test for fallback path
+- [ ] Document which browser configurations support native vs fallback
+
+**Files affected**: `context.go`, `pilot.go`
+
+**Status**: Core implementation completed 2026-03-29
+
+---
+
+#### 3. Add `http_request` MCP tool
+
+**Priority**: High
+**Category**: New feature
+
+**Problem**: Making authenticated HTTP requests requires verbose `js_evaluate` + `fetch()` + `.then()` chains with manual promise handling and response truncation.
+
+**Implementation Plan**:
+
+- [x] Define `HTTPRequestInput` struct in `mcp/tools_http.go`
+- [x] Define `HTTPRequestOutput` struct
+- [x] Implement `handleHTTPRequest()` using `Evaluate()` with pre-built fetch script
+- [x] Auto-include credentials from browser context
+- [x] Handle response truncation
+- [x] Register tool as `http_request` in `server.go`
+- [x] Add to `tools_list.go` and `tool_names.go`
+- [ ] Add SDK method `Pilot.HTTPRequest()` for programmatic use
+- [ ] Add unit and integration tests
+- [ ] Add CLI command `w3pilot http request`
+
+**Files affected**: `mcp/tools_http.go` (new), `mcp/server.go`, `mcp/tools_list.go`, `mcp/tool_names.go`
+
+**Status**: MCP tool completed 2026-03-29
+
+---
+
+#### 4. Add result truncation to `js_evaluate`
+
+**Priority**: Medium
+**Category**: Enhancement
+
+**Problem**: Large results from `js_evaluate` can overwhelm MCP response channels. Users manually truncate with `.substring(0, N)`.
+
+**Implementation Plan**:
+
+- [x] Add `MaxResultSize` field to `EvaluateInput` (`mcp/tools.go`)
+- [x] In `handleEvaluate()`, truncate serialized result if exceeds limit
+- [x] Add `Truncated bool` field to `EvaluateOutput`
+- [x] Append `[truncated]` indicator to truncated string results
+- [ ] Add tests for truncation behavior
+
+**Files affected**: `mcp/tools.go`
+
+**Status**: Completed 2026-03-29
+
+---
+
+#### 5. Add `js_evaluate_async` MCP tool (optional)
+
+**Priority**: Low (only if #1 proves difficult)
+**Category**: New feature
+
+**Problem**: If fixing async handling in `js_evaluate` is complex, provide explicit async tool.
+
+**Status**: Not needed - #1 was fixed by detecting IIFEs and using expression syntax.
+
+---
+
+#### 6. Batch tool execution
+
+**Priority**: Low
+**Category**: Enhancement
+
+**Problem**: Multi-step workflows (navigate → screenshot → evaluate → screenshot) require separate MCP round-trips.
+
+**Implementation Plan**:
+
+- [x] Define `BatchExecuteInput` struct with Steps array
+- [x] Define `BatchExecuteOutput` with results array
+- [x] Implement `handleBatchExecute()` that calls tools sequentially
+- [x] Handle partial failures (return results up to failure point via `stop_on_error`/`continue_on_error`)
+- [x] Register as `batch_execute` tool
+- [x] Add to `tools_list.go` and `tool_names.go`
+- [ ] Add tests
+
+**Supported batch operations**:
+- Navigation: `page_navigate`, `page_go_back`, `page_go_forward`, `page_reload`
+- Page info: `page_get_title`, `page_get_url`, `page_screenshot`
+- Elements: `element_click`, `element_fill`, `element_type`, `element_get_text`
+- JavaScript: `js_evaluate`
+- Waiting: `wait_for_selector`, `wait_for_load`
+- HTTP: `http_request`
+
+**Files affected**: `mcp/tools_batch.go` (new), `mcp/server.go`, `mcp/tools_list.go`, `mcp/tool_names.go`
+
+**Status**: Completed 2026-03-29
+
+**Files affected**: `mcp/tools_batch.go` (new), `mcp/server.go`
+
+**Note**: Lower priority since MCP clients can parallelize tool calls. Current 1-3s latency is acceptable.
+
+---
+
 ### P0 - Critical
 
 #### Live Session Mode for CLI

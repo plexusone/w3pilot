@@ -129,6 +129,18 @@ var toolDefinitions = []struct {
 		},
 	},
 	{
+		category: "http",
+		tools: []ToolInfo{
+			{Name: "http_request", Description: "Make an HTTP request from the browser context with automatic credential inclusion."},
+		},
+	},
+	{
+		category: "batch",
+		tools: []ToolInfo{
+			{Name: "batch_execute", Description: "Execute multiple tools sequentially in a single call."},
+		},
+	},
+	{
 		category: "wait",
 		tools: []ToolInfo{
 			{Name: "wait_for_state", Description: "Wait for an element to reach a state (visible, hidden, attached, detached)."},

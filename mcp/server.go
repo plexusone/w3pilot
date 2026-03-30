@@ -327,6 +327,20 @@ func (s *Server) registerTools() {
 		Description: "Inject CSS into the page.",
 	}, s.handleAddStyle)
 
+	// === HTTP Requests ===
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "http_request",
+		Description: "Make an HTTP request from the browser context with automatic credential inclusion. Returns status, headers, and body.",
+	}, s.handleHTTPRequest)
+
+	// === Batch Execution ===
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "batch_execute",
+		Description: "Execute multiple tools sequentially in a single call. Reduces round-trip latency for multi-step workflows.",
+	}, s.handleBatchExecute)
+
 	// === Waiting ===
 
 	mcp.AddTool(s.mcpServer, &mcp.Tool{

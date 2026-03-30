@@ -126,6 +126,12 @@ var ToolNames = struct {
 	JSAddStyle   string
 	JSInitScript string
 
+	// HTTP
+	HTTPRequest string
+
+	// Batch
+	BatchExecute string
+
 	// Wait
 	WaitForState    string
 	WaitForURL      string
@@ -366,6 +372,12 @@ var ToolNames = struct {
 	JSAddScript:  "js_add_script",
 	JSAddStyle:   "js_add_style",
 	JSInitScript: "js_init_script",
+
+	// HTTP
+	HTTPRequest: "http_request",
+
+	// Batch
+	BatchExecute: "batch_execute",
 
 	// Wait
 	WaitForState:    "wait_for_state",

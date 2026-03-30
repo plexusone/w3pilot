@@ -10,3 +10,6 @@ main.zipsite/
 # Built binaries
 w3pilot
 w3pilot-mcp
+
+# MkDocs build output
+site/

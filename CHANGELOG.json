@@ -46,7 +46,8 @@
         { "description": "Capture `browsingContext` from `contextCreated` event during pipe transport startup", "commit": "447bb95" },
         { "description": "Log clicker stderr when `W3PILOT_DEBUG=1` for improved debugging", "commit": "447bb95" },
         { "description": "IIFE detection in `Evaluate()` to preserve async return values from `(async () => {...})()` patterns", "commit": "2bcc3a8" },
-        { "description": "State operations fallback to standard BiDi commands when vibium-specific commands unavailable", "commit": "340d2f5" }
+        { "description": "State operations fallback to standard BiDi commands when vibium-specific commands unavailable", "commit": "340d2f5" },
+        { "description": "BiDi remote value deserialization - objects now properly return as Go maps instead of raw `[[key, {type, value}]...]` format", "commit": "8630412" }
       ],
       "changed": [
         { "description": "MCP testing tools refactored to use SDK assertion/verification methods", "commit": "e1d774d" },

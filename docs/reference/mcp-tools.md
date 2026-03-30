@@ -1,6 +1,6 @@
 # MCP Tools Reference
 
-Complete reference for all **159 MCP tools across 20 namespaces**.
+Complete reference for all **161 MCP tools across 21 namespaces**.
 
 ## Naming Convention
 
@@ -16,6 +16,7 @@ All tool names follow the pattern: `{namespace}_{verb}_{target}`
 | Namespace | Purpose | Count |
 |-----------|---------|------:|
 | `accessibility_` | Accessibility tree | 1 |
+| `batch_` | Multi-step batch execution | 1 |
 | `browser_` | Browser lifecycle | 2 |
 | `cdp_` | Chrome DevTools Protocol | 20 |
 | `config_` | Configuration | 1 |
@@ -23,6 +24,7 @@ All tool names follow the pattern: `{namespace}_{verb}_{target}`
 | `dialog_` | Dialog handling | 2 |
 | `element_` | Element interactions and state | 33 |
 | `frame_` | Frame selection | 2 |
+| `http_` | HTTP requests in browser context | 1 |
 | `human_` | Human-in-the-loop | 1 |
 | `input_` | Low-level keyboard/mouse/touch | 12 |
 | `js_` | JavaScript execution | 4 |
@@ -62,7 +64,7 @@ The JSON format follows the MCP protocol structure:
   "categories": {
     "Category Name": 5
   },
-  "total": 159
+  "total": 161
 }
 ```
 
@@ -465,12 +467,14 @@ Execute JavaScript.
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `script` | string | ✅ | JavaScript code |
+| `max_result_size` | integer | | Truncate result to this many characters (0 = no truncation) |
 
 **Output:**
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `result` | any | Evaluation result |
+| `truncated` | boolean | Whether result was truncated |
 
 ### element_evaluate
 
@@ -483,6 +487,94 @@ Inject JavaScript.
 ### js_add_style
 
 Inject CSS.
+
+## HTTP Requests
+
+### http_request
+
+Make HTTP requests in the browser context with session cookies.
+
+**Input:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `url` | string | ✅ | Target URL |
+| `method` | string | | HTTP method (default: GET) |
+| `headers` | object | | Request headers |
+| `body` | string | | Request body for POST/PUT/PATCH |
+| `content_type` | string | | Content-Type header |
+| `max_body_length` | integer | | Truncate response body (default: 8192) |
+
+**Output:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `status` | integer | HTTP status code |
+| `statusText` | string | HTTP status text |
+| `headers` | object | Response headers |
+| `body` | string | Response body |
+| `truncated` | boolean | Whether body was truncated |
+| `url` | string | Final URL (after redirects) |
+
+## Batch Execution
+
+### batch_execute
+
+Execute multiple operations in a single MCP call to reduce round-trip latency.
+
+**Input:**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `steps` | array | ✅ | Array of tool steps to execute |
+| `stop_on_error` | boolean | | Stop on first error (default: true) |
+| `continue_on_error` | boolean | | Continue even if steps fail |
+
+Each step object:
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `tool` | string | ✅ | Tool name to execute |
+| `args` | object | | Arguments for the tool |
+
+**Output:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `results` | array | Results for each step |
+| `total_steps` | integer | Total steps in batch |
+| `success_count` | integer | Successful steps |
+| `failure_count` | integer | Failed steps |
+| `stopped_early` | boolean | Whether stopped before completion |
+| `total_duration_ms` | integer | Total execution time |
+
+**Supported Tools:**
+
+| Category | Tools |
+|----------|-------|
+| Navigation | `page_navigate`, `page_go_back`, `page_go_forward`, `page_reload` |
+| Page Info | `page_get_title`, `page_get_url`, `page_screenshot` |
+| Elements | `element_click`, `element_fill`, `element_type`, `element_get_text` |
+| JavaScript | `js_evaluate` |
+| Waiting | `wait_for_selector`, `wait_for_load` |
+| HTTP | `http_request` |
+
+**Example:**
+
+```json
+{
+  "tool": "batch_execute",
+  "arguments": {
+    "steps": [
+      {"tool": "page_navigate", "args": {"url": "https://example.com/login"}},
+      {"tool": "element_fill", "args": {"selector": "#username", "value": "user"}},
+      {"tool": "element_fill", "args": {"selector": "#password", "value": "pass"}},
+      {"tool": "element_click", "args": {"selector": "#login"}},
+      {"tool": "wait_for_selector", "args": {"selector": "#dashboard"}}
+    ]
+  }
+}
+```
 
 ## Waiting
 

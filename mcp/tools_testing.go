@@ -380,6 +380,64 @@ func (s *Server) handleVerifyText(
 	}, nil
 }
 
+// verifyStateResult holds the result of a state verification.
+type verifyStateResult struct {
+	Passed  bool
+	Message string
+}
+
+// elementVerifyFn is a function that verifies an element state.
+type elementVerifyFn func(ctx context.Context, elem *w3pilot.Element) error
+
+// verifyElementState is a helper that runs element state verification.
+// It reduces duplication across verify-visible, verify-enabled, verify-hidden, verify-disabled handlers.
+func (s *Server) verifyElementState(
+	ctx context.Context,
+	selector string,
+	timeoutMS int,
+	verifyFn elementVerifyFn,
+	successMsg string,
+	notFoundPassesAs string, // if non-empty, element not found is treated as pass with this message
+) (verifyStateResult, error) {
+	pilot, err := s.session.Pilot(ctx)
+	if err != nil {
+		return verifyStateResult{}, fmt.Errorf("browser not available: %w", err)
+	}
+
+	if timeoutMS == 0 {
+		timeoutMS = 5000
+	}
+	timeout := time.Duration(timeoutMS) * time.Millisecond
+
+	elem, err := pilot.Find(ctx, selector, &w3pilot.FindOptions{Timeout: timeout})
+	if err != nil {
+		if notFoundPassesAs != "" {
+			return verifyStateResult{
+				Passed:  true,
+				Message: fmt.Sprintf(notFoundPassesAs, selector),
+			}, nil
+		}
+		return verifyStateResult{
+			Passed:  false,
+			Message: fmt.Sprintf("Element not found: %s", selector),
+		}, nil
+	}
+
+	verifyErr := verifyFn(ctx, elem)
+	if verifyErr != nil {
+		var vErr *w3pilot.VerificationError
+		if errors.As(verifyErr, &vErr) {
+			return verifyStateResult{Passed: false, Message: vErr.Message}, nil
+		}
+		return verifyStateResult{}, verifyErr
+	}
+
+	return verifyStateResult{
+		Passed:  true,
+		Message: fmt.Sprintf(successMsg, selector),
+	}, nil
+}
+
 // VerifyVisible tool - verifies element is visible
 
 type VerifyVisibleInput struct {
@@ -397,42 +455,13 @@ func (s *Server) handleVerifyVisible(
 	_ *mcp.CallToolRequest,
 	input VerifyVisibleInput,
 ) (*mcp.CallToolResult, VerifyVisibleOutput, error) {
-	pilot, err := s.session.Pilot(ctx)
+	result, err := s.verifyElementState(ctx, input.Selector, input.TimeoutMS,
+		func(ctx context.Context, elem *w3pilot.Element) error { return elem.VerifyVisible(ctx) },
+		"Element is visible: %s", "")
 	if err != nil {
-		return nil, VerifyVisibleOutput{}, fmt.Errorf("browser not available: %w", err)
+		return nil, VerifyVisibleOutput{}, err
 	}
-
-	if input.TimeoutMS == 0 {
-		input.TimeoutMS = 5000
-	}
-	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
-
-	elem, err := pilot.Find(ctx, input.Selector, &w3pilot.FindOptions{Timeout: timeout})
-	if err != nil {
-		return nil, VerifyVisibleOutput{
-			Passed:  false,
-			Message: fmt.Sprintf("Element not found: %s", input.Selector),
-		}, nil
-	}
-
-	// Use SDK VerifyVisible method
-	verifyErr := elem.VerifyVisible(ctx)
-
-	if verifyErr != nil {
-		var vErr *w3pilot.VerificationError
-		if errors.As(verifyErr, &vErr) {
-			return nil, VerifyVisibleOutput{
-				Passed:  false,
-				Message: vErr.Message,
-			}, nil
-		}
-		return nil, VerifyVisibleOutput{}, verifyErr
-	}
-
-	return nil, VerifyVisibleOutput{
-		Passed:  true,
-		Message: fmt.Sprintf("Element is visible: %s", input.Selector),
-	}, nil
+	return nil, VerifyVisibleOutput{Passed: result.Passed, Message: result.Message}, nil
 }
 
 // VerifyEnabled tool - verifies element is enabled
@@ -452,42 +481,13 @@ func (s *Server) handleVerifyEnabled(
 	_ *mcp.CallToolRequest,
 	input VerifyEnabledInput,
 ) (*mcp.CallToolResult, VerifyEnabledOutput, error) {
-	pilot, err := s.session.Pilot(ctx)
+	result, err := s.verifyElementState(ctx, input.Selector, input.TimeoutMS,
+		func(ctx context.Context, elem *w3pilot.Element) error { return elem.VerifyEnabled(ctx) },
+		"Element is enabled: %s", "")
 	if err != nil {
-		return nil, VerifyEnabledOutput{}, fmt.Errorf("browser not available: %w", err)
+		return nil, VerifyEnabledOutput{}, err
 	}
-
-	if input.TimeoutMS == 0 {
-		input.TimeoutMS = 5000
-	}
-	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
-
-	elem, err := pilot.Find(ctx, input.Selector, &w3pilot.FindOptions{Timeout: timeout})
-	if err != nil {
-		return nil, VerifyEnabledOutput{
-			Passed:  false,
-			Message: fmt.Sprintf("Element not found: %s", input.Selector),
-		}, nil
-	}
-
-	// Use SDK VerifyEnabled method
-	verifyErr := elem.VerifyEnabled(ctx)
-
-	if verifyErr != nil {
-		var vErr *w3pilot.VerificationError
-		if errors.As(verifyErr, &vErr) {
-			return nil, VerifyEnabledOutput{
-				Passed:  false,
-				Message: vErr.Message,
-			}, nil
-		}
-		return nil, VerifyEnabledOutput{}, verifyErr
-	}
-
-	return nil, VerifyEnabledOutput{
-		Passed:  true,
-		Message: fmt.Sprintf("Element is enabled: %s", input.Selector),
-	}, nil
+	return nil, VerifyEnabledOutput{Passed: result.Passed, Message: result.Message}, nil
 }
 
 // VerifyHidden tool - verifies element is hidden
@@ -507,43 +507,13 @@ func (s *Server) handleVerifyHidden(
 	_ *mcp.CallToolRequest,
 	input VerifyHiddenInput,
 ) (*mcp.CallToolResult, VerifyHiddenOutput, error) {
-	pilot, err := s.session.Pilot(ctx)
+	result, err := s.verifyElementState(ctx, input.Selector, input.TimeoutMS,
+		func(ctx context.Context, elem *w3pilot.Element) error { return elem.VerifyHidden(ctx) },
+		"Element is hidden: %s", "Element is hidden (not found): %s")
 	if err != nil {
-		return nil, VerifyHiddenOutput{}, fmt.Errorf("browser not available: %w", err)
+		return nil, VerifyHiddenOutput{}, err
 	}
-
-	if input.TimeoutMS == 0 {
-		input.TimeoutMS = 5000
-	}
-	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
-
-	elem, err := pilot.Find(ctx, input.Selector, &w3pilot.FindOptions{Timeout: timeout})
-	if err != nil {
-		// Element not found is valid for "hidden" verification
-		return nil, VerifyHiddenOutput{
-			Passed:  true,
-			Message: fmt.Sprintf("Element is hidden (not found): %s", input.Selector),
-		}, nil
-	}
-
-	// Use SDK VerifyHidden method
-	verifyErr := elem.VerifyHidden(ctx)
-
-	if verifyErr != nil {
-		var vErr *w3pilot.VerificationError
-		if errors.As(verifyErr, &vErr) {
-			return nil, VerifyHiddenOutput{
-				Passed:  false,
-				Message: vErr.Message,
-			}, nil
-		}
-		return nil, VerifyHiddenOutput{}, verifyErr
-	}
-
-	return nil, VerifyHiddenOutput{
-		Passed:  true,
-		Message: fmt.Sprintf("Element is hidden: %s", input.Selector),
-	}, nil
+	return nil, VerifyHiddenOutput{Passed: result.Passed, Message: result.Message}, nil
 }
 
 // VerifyDisabled tool - verifies element is disabled
@@ -563,42 +533,13 @@ func (s *Server) handleVerifyDisabled(
 	_ *mcp.CallToolRequest,
 	input VerifyDisabledInput,
 ) (*mcp.CallToolResult, VerifyDisabledOutput, error) {
-	pilot, err := s.session.Pilot(ctx)
+	result, err := s.verifyElementState(ctx, input.Selector, input.TimeoutMS,
+		func(ctx context.Context, elem *w3pilot.Element) error { return elem.VerifyDisabled(ctx) },
+		"Element is disabled: %s", "")
 	if err != nil {
-		return nil, VerifyDisabledOutput{}, fmt.Errorf("browser not available: %w", err)
+		return nil, VerifyDisabledOutput{}, err
 	}
-
-	if input.TimeoutMS == 0 {
-		input.TimeoutMS = 5000
-	}
-	timeout := time.Duration(input.TimeoutMS) * time.Millisecond
-
-	elem, err := pilot.Find(ctx, input.Selector, &w3pilot.FindOptions{Timeout: timeout})
-	if err != nil {
-		return nil, VerifyDisabledOutput{
-			Passed:  false,
-			Message: fmt.Sprintf("Element not found: %s", input.Selector),
-		}, nil
-	}
-
-	// Use SDK VerifyDisabled method
-	verifyErr := elem.VerifyDisabled(ctx)
-
-	if verifyErr != nil {
-		var vErr *w3pilot.VerificationError
-		if errors.As(verifyErr, &vErr) {
-			return nil, VerifyDisabledOutput{
-				Passed:  false,
-				Message: vErr.Message,
-			}, nil
-		}
-		return nil, VerifyDisabledOutput{}, verifyErr
-	}
-
-	return nil, VerifyDisabledOutput{
-		Passed:  true,
-		Message: fmt.Sprintf("Element is disabled: %s", input.Selector),
-	}, nil
+	return nil, VerifyDisabledOutput{Passed: result.Passed, Message: result.Message}, nil
 }
 
 // VerifyChecked tool - verifies checkbox/radio is checked

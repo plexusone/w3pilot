@@ -23,6 +23,61 @@ type VerifyResult struct {
 	Actual  string `json:"actual,omitempty"`
 }
 
+// elementVerifyFunc is a function that verifies an element state.
+type elementVerifyFunc func(ctx context.Context, elem *w3pilot.Element) error
+
+// runElementVerify is a helper that runs element state verification commands.
+// It reduces duplication across verify-visible, verify-enabled, verify-checked, etc.
+func runElementVerify(
+	selector string,
+	verifyFn elementVerifyFunc,
+	successMsg string,
+	notFoundPassesAs string, // if non-empty, element not found is treated as pass with this message
+) error {
+	ctx, cancel := context.WithTimeout(context.Background(), verifyTimeout)
+	defer cancel()
+
+	pilot := mustGetVibe(ctx)
+
+	elem, err := pilot.Find(ctx, selector, &w3pilot.FindOptions{Timeout: verifyTimeout})
+	if err != nil {
+		if notFoundPassesAs != "" {
+			result := VerifyResult{
+				Passed:  true,
+				Message: fmt.Sprintf(notFoundPassesAs, selector),
+			}
+			outputVerifyResult(result)
+			return nil
+		}
+		result := VerifyResult{
+			Passed:  false,
+			Message: fmt.Sprintf("Element not found: %s", selector),
+		}
+		outputVerifyResult(result)
+		return fmt.Errorf("verification failed")
+	}
+
+	verifyErr := verifyFn(ctx, elem)
+
+	result := VerifyResult{Passed: verifyErr == nil}
+	if verifyErr != nil {
+		var vErr *w3pilot.VerificationError
+		if errors.As(verifyErr, &vErr) {
+			result.Message = vErr.Message
+		} else {
+			result.Message = verifyErr.Error()
+		}
+	} else {
+		result.Message = fmt.Sprintf(successMsg, selector)
+	}
+
+	outputVerifyResult(result)
+	if !result.Passed {
+		return fmt.Errorf("verification failed")
+	}
+	return nil
+}
+
 // verifyValueCmd verifies an input element's value
 var verifyValueCmd = &cobra.Command{
 	Use:   "verify-value <selector> <expected>",
@@ -141,42 +196,9 @@ Examples:
   w3pilot test verify-visible ".success-message"`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		selector := args[0]
-
-		ctx, cancel := context.WithTimeout(context.Background(), verifyTimeout)
-		defer cancel()
-
-		pilot := mustGetVibe(ctx)
-
-		elem, err := pilot.Find(ctx, selector, &w3pilot.FindOptions{Timeout: verifyTimeout})
-		if err != nil {
-			result := VerifyResult{
-				Passed:  false,
-				Message: fmt.Sprintf("Element not found: %s", selector),
-			}
-			outputVerifyResult(result)
-			return fmt.Errorf("verification failed")
-		}
-
-		verifyErr := elem.VerifyVisible(ctx)
-
-		result := VerifyResult{Passed: verifyErr == nil}
-		if verifyErr != nil {
-			var vErr *w3pilot.VerificationError
-			if errors.As(verifyErr, &vErr) {
-				result.Message = vErr.Message
-			} else {
-				result.Message = verifyErr.Error()
-			}
-		} else {
-			result.Message = fmt.Sprintf("Element is visible: %s", selector)
-		}
-
-		outputVerifyResult(result)
-		if !result.Passed {
-			return fmt.Errorf("verification failed")
-		}
-		return nil
+		return runElementVerify(args[0],
+			func(ctx context.Context, elem *w3pilot.Element) error { return elem.VerifyVisible(ctx) },
+			"Element is visible: %s", "")
 	},
 }
 
@@ -192,43 +214,9 @@ Examples:
   w3pilot test verify-hidden ".error-message"`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		selector := args[0]
-
-		ctx, cancel := context.WithTimeout(context.Background(), verifyTimeout)
-		defer cancel()
-
-		pilot := mustGetVibe(ctx)
-
-		elem, err := pilot.Find(ctx, selector, &w3pilot.FindOptions{Timeout: verifyTimeout})
-		if err != nil {
-			// Element not found is valid for hidden verification
-			result := VerifyResult{
-				Passed:  true,
-				Message: fmt.Sprintf("Element is hidden (not found): %s", selector),
-			}
-			outputVerifyResult(result)
-			return nil
-		}
-
-		verifyErr := elem.VerifyHidden(ctx)
-
-		result := VerifyResult{Passed: verifyErr == nil}
-		if verifyErr != nil {
-			var vErr *w3pilot.VerificationError
-			if errors.As(verifyErr, &vErr) {
-				result.Message = vErr.Message
-			} else {
-				result.Message = verifyErr.Error()
-			}
-		} else {
-			result.Message = fmt.Sprintf("Element is hidden: %s", selector)
-		}
-
-		outputVerifyResult(result)
-		if !result.Passed {
-			return fmt.Errorf("verification failed")
-		}
-		return nil
+		return runElementVerify(args[0],
+			func(ctx context.Context, elem *w3pilot.Element) error { return elem.VerifyHidden(ctx) },
+			"Element is hidden: %s", "Element is hidden (not found): %s")
 	},
 }
 
@@ -243,42 +231,9 @@ Examples:
   w3pilot test verify-enabled "button[type=submit]"`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		selector := args[0]
-
-		ctx, cancel := context.WithTimeout(context.Background(), verifyTimeout)
-		defer cancel()
-
-		pilot := mustGetVibe(ctx)
-
-		elem, err := pilot.Find(ctx, selector, &w3pilot.FindOptions{Timeout: verifyTimeout})
-		if err != nil {
-			result := VerifyResult{
-				Passed:  false,
-				Message: fmt.Sprintf("Element not found: %s", selector),
-			}
-			outputVerifyResult(result)
-			return fmt.Errorf("verification failed")
-		}
-
-		verifyErr := elem.VerifyEnabled(ctx)
-
-		result := VerifyResult{Passed: verifyErr == nil}
-		if verifyErr != nil {
-			var vErr *w3pilot.VerificationError
-			if errors.As(verifyErr, &vErr) {
-				result.Message = vErr.Message
-			} else {
-				result.Message = verifyErr.Error()
-			}
-		} else {
-			result.Message = fmt.Sprintf("Element is enabled: %s", selector)
-		}
-
-		outputVerifyResult(result)
-		if !result.Passed {
-			return fmt.Errorf("verification failed")
-		}
-		return nil
+		return runElementVerify(args[0],
+			func(ctx context.Context, elem *w3pilot.Element) error { return elem.VerifyEnabled(ctx) },
+			"Element is enabled: %s", "")
 	},
 }
 
@@ -293,42 +248,9 @@ Examples:
   w3pilot test verify-disabled "input[name=readonly-field]"`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		selector := args[0]
-
-		ctx, cancel := context.WithTimeout(context.Background(), verifyTimeout)
-		defer cancel()
-
-		pilot := mustGetVibe(ctx)
-
-		elem, err := pilot.Find(ctx, selector, &w3pilot.FindOptions{Timeout: verifyTimeout})
-		if err != nil {
-			result := VerifyResult{
-				Passed:  false,
-				Message: fmt.Sprintf("Element not found: %s", selector),
-			}
-			outputVerifyResult(result)
-			return fmt.Errorf("verification failed")
-		}
-
-		verifyErr := elem.VerifyDisabled(ctx)
-
-		result := VerifyResult{Passed: verifyErr == nil}
-		if verifyErr != nil {
-			var vErr *w3pilot.VerificationError
-			if errors.As(verifyErr, &vErr) {
-				result.Message = vErr.Message
-			} else {
-				result.Message = verifyErr.Error()
-			}
-		} else {
-			result.Message = fmt.Sprintf("Element is disabled: %s", selector)
-		}
-
-		outputVerifyResult(result)
-		if !result.Passed {
-			return fmt.Errorf("verification failed")
-		}
-		return nil
+		return runElementVerify(args[0],
+			func(ctx context.Context, elem *w3pilot.Element) error { return elem.VerifyDisabled(ctx) },
+			"Element is disabled: %s", "")
 	},
 }
 
@@ -343,42 +265,9 @@ Examples:
   w3pilot test verify-checked "input[name=newsletter]"`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		selector := args[0]
-
-		ctx, cancel := context.WithTimeout(context.Background(), verifyTimeout)
-		defer cancel()
-
-		pilot := mustGetVibe(ctx)
-
-		elem, err := pilot.Find(ctx, selector, &w3pilot.FindOptions{Timeout: verifyTimeout})
-		if err != nil {
-			result := VerifyResult{
-				Passed:  false,
-				Message: fmt.Sprintf("Element not found: %s", selector),
-			}
-			outputVerifyResult(result)
-			return fmt.Errorf("verification failed")
-		}
-
-		verifyErr := elem.VerifyChecked(ctx)
-
-		result := VerifyResult{Passed: verifyErr == nil}
-		if verifyErr != nil {
-			var vErr *w3pilot.VerificationError
-			if errors.As(verifyErr, &vErr) {
-				result.Message = vErr.Message
-			} else {
-				result.Message = verifyErr.Error()
-			}
-		} else {
-			result.Message = fmt.Sprintf("Element is checked: %s", selector)
-		}
-
-		outputVerifyResult(result)
-		if !result.Passed {
-			return fmt.Errorf("verification failed")
-		}
-		return nil
+		return runElementVerify(args[0],
+			func(ctx context.Context, elem *w3pilot.Element) error { return elem.VerifyChecked(ctx) },
+			"Element is checked: %s", "")
 	},
 }
 
@@ -393,42 +282,9 @@ Examples:
   w3pilot test verify-unchecked "input[name=newsletter]"`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		selector := args[0]
-
-		ctx, cancel := context.WithTimeout(context.Background(), verifyTimeout)
-		defer cancel()
-
-		pilot := mustGetVibe(ctx)
-
-		elem, err := pilot.Find(ctx, selector, &w3pilot.FindOptions{Timeout: verifyTimeout})
-		if err != nil {
-			result := VerifyResult{
-				Passed:  false,
-				Message: fmt.Sprintf("Element not found: %s", selector),
-			}
-			outputVerifyResult(result)
-			return fmt.Errorf("verification failed")
-		}
-
-		verifyErr := elem.VerifyUnchecked(ctx)
-
-		result := VerifyResult{Passed: verifyErr == nil}
-		if verifyErr != nil {
-			var vErr *w3pilot.VerificationError
-			if errors.As(verifyErr, &vErr) {
-				result.Message = vErr.Message
-			} else {
-				result.Message = verifyErr.Error()
-			}
-		} else {
-			result.Message = fmt.Sprintf("Element is unchecked: %s", selector)
-		}
-
-		outputVerifyResult(result)
-		if !result.Passed {
-			return fmt.Errorf("verification failed")
-		}
-		return nil
+		return runElementVerify(args[0],
+			func(ctx context.Context, elem *w3pilot.Element) error { return elem.VerifyUnchecked(ctx) },
+			"Element is unchecked: %s", "")
 	},
 }
 

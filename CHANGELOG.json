@@ -11,8 +11,10 @@
       "date": "2026-03-29",
       "highlights": [
         { "description": "Session management SDK for live browser sessions" },
-        { "description": "Browser reconnection support for persistent sessions" },
-        { "description": "Foundation for CLI live session mode" }
+        { "description": "SDK assertion and verification methods for testing" },
+        { "description": "CLI test commands with full MCP parity" },
+        { "description": "MCP batch execution and HTTP request tools for AI agents" },
+        { "description": "Critical MCP broken pipe bug fix" }
       ],
       "added": [
         { "description": "`session` package for shared browser session management", "commit": "66aeb81" },
@@ -21,15 +23,47 @@
         { "description": "`session.Config` type for session configuration options", "commit": "66aeb81" },
         { "description": "`w3pilot.Connect(ctx, wsURL)` function to connect to existing browser", "commit": "431116a" },
         { "description": "`Pilot.Clicker()` method to access clicker process info", "commit": "431116a" },
-        { "description": "`ClickerProcess.Process()` method to access underlying os.Process", "commit": "431116a" }
+        { "description": "`ClickerProcess.Process()` method to access underlying os.Process", "commit": "431116a" },
+        { "description": "`Pilot.AssertText()`, `Pilot.AssertElement()`, `Pilot.AssertURL()` assertion methods", "commit": "21fe2cf" },
+        { "description": "`Pilot.GenerateLocator()` for creating robust element locators", "commit": "21fe2cf" },
+        { "description": "`Element.VerifyValue()`, `Element.VerifyText()` verification methods", "commit": "21fe2cf" },
+        { "description": "`Element.VerifyVisible()`, `Element.VerifyHidden()` visibility verification", "commit": "21fe2cf" },
+        { "description": "`Element.VerifyEnabled()`, `Element.VerifyDisabled()` state verification", "commit": "21fe2cf" },
+        { "description": "`Element.VerifyChecked()`, `Element.VerifyUnchecked()` checkbox/radio verification", "commit": "21fe2cf" },
+        { "description": "`VerificationError` type with structured error context", "commit": "21fe2cf" },
+        { "description": "CLI `w3pilot test assert-text`, `assert-element`, `assert-url` commands", "commit": "9a4376f" },
+        { "description": "CLI `w3pilot test verify-value`, `verify-text` commands", "commit": "9a4376f" },
+        { "description": "CLI `w3pilot test verify-visible`, `verify-hidden` commands", "commit": "9a4376f" },
+        { "description": "CLI `w3pilot test verify-enabled`, `verify-disabled` commands", "commit": "9a4376f" },
+        { "description": "CLI `w3pilot test verify-checked`, `verify-unchecked` commands", "commit": "9a4376f" },
+        { "description": "CLI `w3pilot test generate-locator` command", "commit": "9a4376f" },
+        { "description": "`http_request` MCP tool for authenticated browser-context HTTP requests", "commit": "7392ed4" },
+        { "description": "`batch_execute` MCP tool for multi-step workflow execution with 15+ supported operations", "commit": "0205855" },
+        { "description": "`max_result_size` parameter to `js_evaluate` for result truncation", "commit": "60875c4" }
+      ],
+      "fixed": [
+        { "description": "MCP broken pipe after `browser_launch` - clicker process now persists beyond request context", "commit": "447bb95" },
+        { "description": "Capture `browsingContext` from `contextCreated` event during pipe transport startup", "commit": "447bb95" },
+        { "description": "Log clicker stderr when `W3PILOT_DEBUG=1` for improved debugging", "commit": "447bb95" },
+        { "description": "IIFE detection in `Evaluate()` to preserve async return values from `(async () => {...})()` patterns", "commit": "2bcc3a8" },
+        { "description": "State operations fallback to standard BiDi commands when vibium-specific commands unavailable", "commit": "340d2f5" }
+      ],
+      "changed": [
+        { "description": "MCP testing tools refactored to use SDK assertion/verification methods", "commit": "e1d774d" },
+        { "description": "Reduced code duplication in CLI test commands with `runElementVerify()` helper", "commit": "fca7fc0" },
+        { "description": "Reduced code duplication in MCP tools with `verifyElementState()` helper", "commit": "fca7fc0" }
       ],
       "documentation": [
-        { "description": "v0.8.0 release notes with session management guide" },
-        { "description": "Updated TASKS.md with live session mode progress", "commit": "61c74b7" }
+        { "description": "v0.8.0 release notes with session management and testing features", "commit": "c68912a" },
+        { "description": "Updated TASKS.md with live session mode and testing progress", "commit": "b4382f1" },
+        { "description": "Bug report documentation for pipe broken issue", "commit": "ee81ccc" },
+        { "description": "MCP enhancement requests documentation with implementation status", "commit": "d04aac7" }
       ],
       "tests": [
         { "description": "Unit tests for session persistence (Save, Load, Clear, Exists)", "commit": "66aeb81" },
-        { "description": "Unit tests for session manager configuration", "commit": "66aeb81" }
+        { "description": "Unit tests for session manager configuration", "commit": "66aeb81" },
+        { "description": "Unit tests for assertion and verification types", "commit": "21fe2cf" },
+        { "description": "Integration tests for IIFE evaluation with async return values", "commit": "2bcc3a8" }
       ]
     },
     {

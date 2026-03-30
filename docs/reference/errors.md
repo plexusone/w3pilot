@@ -3,7 +3,7 @@
 ## Sentinel Errors
 
 ```go
-import w3pilot "github.com/grokify/w3pilot"
+import w3pilot "github.com/plexusone/w3pilot"
 
 // Check specific error types
 if errors.Is(err, w3pilot.ErrElementNotFound) {

@@ -1,11 +1,11 @@
 # API Reference
 
-Full API documentation is available at [pkg.go.dev](https://pkg.go.dev/github.com/grokify/w3pilot).
+Full API documentation is available at [pkg.go.dev](https://pkg.go.dev/github.com/plexusone/w3pilot).
 
 ## Package Structure
 
 ```
-github.com/grokify/w3pilot
+github.com/plexusone/w3pilot
 ├── w3pilot.go       # Main Vibe type, browser control
 ├── element.go      # Element interactions
 ├── types.go        # Options and configuration
@@ -24,7 +24,7 @@ github.com/grokify/w3pilot
 ├── script/         # Script format
 │   ├── types.go
 │   └── schema.go
-└── cmd/vibium/     # CLI
+└── cmd/w3pilot/    # CLI
     └── cmd/
 ```
 
@@ -142,7 +142,7 @@ type ActionOptions struct {
 ## MCP Server
 
 ```go
-import "github.com/grokify/w3pilot/mcp"
+import "github.com/plexusone/w3pilot/mcp"
 
 type Config struct {
     Headless       bool
@@ -200,7 +200,7 @@ func (c *Client) ClearCPUThrottling(ctx context.Context) error
 ## Script Types
 
 ```go
-import "github.com/grokify/w3pilot/script"
+import "github.com/plexusone/w3pilot/script"
 
 type Script struct {
     Name        string

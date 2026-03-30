@@ -18,7 +18,7 @@
                                │
                                ▼
 ┌────────────────────────────────────────────────────────────────────┐
-│  mcp/  (github.com/grokify/w3pilot/mcp)                         │
+│  mcp/  (github.com/plexusone/w3pilot/mcp)                         │
 │                                                                    │
 │  ├── server.go      MCP protocol handling, tool dispatch          │
 │  ├── tools.go       Tool definitions and handlers                 │
@@ -33,7 +33,7 @@
                                │ imports
                                ▼
 ┌────────────────────────────────────────────────────────────────────┐
-│  vibium (github.com/grokify/w3pilot)  [PUBLIC API]              │
+│  vibium (github.com/plexusone/w3pilot)  [PUBLIC API]              │
 │                                                                    │
 │  w3pilot.go     Launch(ctx) / LaunchHeadless(ctx)                  │
 │  pilot.go       Vibe.Go() / Find() / Screenshot() / Evaluate()     │
@@ -117,7 +117,7 @@ w3pilot/
 ### go.mod
 
 ```go
-module github.com/grokify/w3pilot
+module github.com/plexusone/w3pilot
 
 go 1.22
 
@@ -956,7 +956,7 @@ import (
     "log"
     "os"
 
-    "github.com/grokify/w3pilot/mcp"
+    "github.com/plexusone/w3pilot/mcp"
 )
 
 func main() {

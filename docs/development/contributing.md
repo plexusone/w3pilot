@@ -4,7 +4,7 @@
 
 ```bash
 # Clone
-git clone https://github.com/grokify/w3pilot
+git clone https://github.com/plexusone/w3pilot
 cd w3pilot
 
 # Install dependencies
@@ -49,7 +49,7 @@ chore: maintenance
 ```
 w3pilot/
 ├── *.go              # Core client library
-├── cmd/vibium/       # CLI
+├── cmd/w3pilot/       # CLI
 ├── mcp/              # MCP server
 ├── script/           # Script format
 ├── integration/      # Integration tests
@@ -81,7 +81,7 @@ w3pilot/
 1. Add action to `script/types.go`
 2. Add to `AllActions()` function
 3. Regenerate schema: `go run ./cmd/genscriptschema > script/vibium-script.schema.json`
-4. Add handler in `cmd/vibium/cmd/run.go`
+4. Add handler in `cmd/w3pilot/cmd/run.go`
 5. Update `docs/guide/scripts.md`
 
 ## Regenerating Schema

@@ -3,6 +3,7 @@ package w3pilot
 import (
 	"context"
 	"encoding/json"
+	"strings"
 )
 
 // BrowserContext represents an isolated browser context (like an incognito window).
@@ -115,6 +116,10 @@ func (c *BrowserContext) DeleteCookie(ctx context.Context, name string, domain s
 }
 
 // StorageState returns the storage state including cookies and localStorage.
+// If the native vibium:context.storageState command is unavailable (e.g., when
+// connected to a browser not launched through w3pilot), falls back to collecting
+// cookies only via standard BiDi commands. localStorage will need to be collected
+// at the page level via Pilot.StorageState().
 func (c *BrowserContext) StorageState(ctx context.Context) (*StorageState, error) {
 	params := map[string]interface{}{
 		"userContext": c.userContext,
@@ -122,6 +127,10 @@ func (c *BrowserContext) StorageState(ctx context.Context) (*StorageState, error
 
 	result, err := c.client.Send(ctx, "vibium:context.storageState", params)
 	if err != nil {
+		// Check if this is an "Unknown command" error - fall back to manual collection
+		if isUnknownCommandError(err) {
+			return c.storageStateFallback(ctx)
+		}
 		return nil, err
 	}
 
@@ -131,6 +140,33 @@ func (c *BrowserContext) StorageState(ctx context.Context) (*StorageState, error
 	}
 
 	return &state, nil
+}
+
+// storageStateFallback collects storage state using standard BiDi commands.
+// This only retrieves cookies; localStorage must be collected at the page level.
+func (c *BrowserContext) storageStateFallback(ctx context.Context) (*StorageState, error) {
+	// Get cookies via standard BiDi command
+	cookies, err := c.Cookies(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &StorageState{
+		Cookies: cookies,
+		Origins: []StorageStateOrigin{}, // Empty - localStorage needs page access
+	}, nil
+}
+
+// isUnknownCommandError checks if an error indicates an unknown/unsupported command.
+func isUnknownCommandError(err error) bool {
+	if err == nil {
+		return false
+	}
+	errStr := err.Error()
+	return strings.Contains(errStr, "Unknown command") ||
+		strings.Contains(errStr, "unknown command") ||
+		strings.Contains(errStr, "not supported") ||
+		strings.Contains(errStr, "not implemented")
 }
 
 // AddInitScript adds a script that will be evaluated in every page created in this context.

@@ -2685,6 +2685,39 @@ func (p *Pilot) StorageState(ctx context.Context) (*StorageState, error) {
 		return state, nil
 	}
 
+	// If origins is empty (fallback case), collect localStorage via JavaScript
+	if len(state.Origins) == 0 {
+		localStorageScript := `
+			(function() {
+				const items = {};
+				for (let i = 0; i < localStorage.length; i++) {
+					const key = localStorage.key(i);
+					items[key] = localStorage.getItem(key);
+				}
+				return JSON.stringify({
+					origin: window.location.origin,
+					items: items
+				});
+			})()
+		`
+
+		localResult, localErr := p.Evaluate(ctx, localStorageScript)
+		if localErr == nil {
+			if resultStr, ok := localResult.(string); ok {
+				var localData struct {
+					Origin string            `json:"origin"`
+					Items  map[string]string `json:"items"`
+				}
+				if json.Unmarshal([]byte(resultStr), &localData) == nil && len(localData.Items) > 0 {
+					state.Origins = append(state.Origins, StorageStateOrigin{
+						Origin:       localData.Origin,
+						LocalStorage: localData.Items,
+					})
+				}
+			}
+		}
+	}
+
 	// Get sessionStorage via JavaScript
 	sessionStorageScript := `
 		(function() {

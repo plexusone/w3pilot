@@ -529,11 +529,13 @@ func (s *Server) handleGetURL(
 }
 
 type EvaluateInput struct {
-	Script string `json:"script" jsonschema:"JavaScript to execute,required"`
+	Script        string `json:"script" jsonschema:"JavaScript to execute,required"`
+	MaxResultSize int    `json:"max_result_size" jsonschema:"Maximum result size in characters (0=unlimited). If exceeded the result is truncated."`
 }
 
 type EvaluateOutput struct {
-	Result any `json:"result"`
+	Result    any  `json:"result"`
+	Truncated bool `json:"truncated,omitempty"`
 }
 
 func (s *Server) handleEvaluate(
@@ -575,7 +577,13 @@ func (s *Server) handleEvaluate(
 	// Record for script export
 	s.session.Recorder().RecordEval(input.Script)
 
-	return nil, EvaluateOutput{Result: result}, nil
+	// Apply result truncation if requested
+	output := EvaluateOutput{Result: result}
+	if input.MaxResultSize > 0 {
+		output = truncateEvaluateResult(result, input.MaxResultSize)
+	}
+
+	return nil, output, nil
 }
 
 type AssertTextInput struct {
@@ -801,4 +809,42 @@ func truncateString(s string, maxLen int) string {
 		return s
 	}
 	return s[:maxLen-3] + "..."
+}
+
+// truncateEvaluateResult applies size limits to evaluation results.
+// For string results, truncates directly. For other types, serializes to JSON
+// to check size and truncates the JSON representation if needed.
+func truncateEvaluateResult(result any, maxSize int) EvaluateOutput {
+	if result == nil {
+		return EvaluateOutput{Result: nil}
+	}
+
+	// Handle string results directly
+	if s, ok := result.(string); ok {
+		if len(s) > maxSize {
+			return EvaluateOutput{
+				Result:    s[:maxSize] + " [truncated]",
+				Truncated: true,
+			}
+		}
+		return EvaluateOutput{Result: s}
+	}
+
+	// For non-strings, check JSON serialized size
+	jsonBytes, err := json.Marshal(result)
+	if err != nil {
+		// If we can't serialize, just return as-is
+		return EvaluateOutput{Result: result}
+	}
+
+	if len(jsonBytes) > maxSize {
+		// Truncate the JSON representation
+		truncatedJSON := string(jsonBytes[:maxSize]) + " [truncated]"
+		return EvaluateOutput{
+			Result:    truncatedJSON,
+			Truncated: true,
+		}
+	}
+
+	return EvaluateOutput{Result: result}
 }

@@ -536,6 +536,122 @@ func (p *Pilot) MustFind(ctx context.Context, selector string) *Element {
 	return elem
 }
 
+// deserializeBiDiValue converts a BiDi remote value to a Go value.
+// BiDi returns objects as [[key, {type, value}], ...] and arrays as [{type, value}, ...]
+// This function recursively converts these to Go maps and slices.
+func deserializeBiDiValue(typ string, value interface{}) interface{} {
+	switch typ {
+	case "undefined", "null":
+		return nil
+	case "string", "number", "boolean":
+		return value
+	case "bigint":
+		// Return bigint as string representation
+		return value
+	case "array":
+		// Array value is []interface{} where each element is a remote value {type, value}
+		arr, ok := value.([]interface{})
+		if !ok {
+			return value
+		}
+		result := make([]interface{}, 0, len(arr))
+		for _, item := range arr {
+			itemMap, ok := item.(map[string]interface{})
+			if !ok {
+				result = append(result, item)
+				continue
+			}
+			itemType, _ := itemMap["type"].(string)
+			itemValue := itemMap["value"]
+			result = append(result, deserializeBiDiValue(itemType, itemValue))
+		}
+		return result
+	case "object":
+		// Object value is [[key, {type, value}], ...] pairs
+		pairs, ok := value.([]interface{})
+		if !ok {
+			return value
+		}
+		result := make(map[string]interface{})
+		for _, pair := range pairs {
+			pairArr, ok := pair.([]interface{})
+			if !ok || len(pairArr) != 2 {
+				continue
+			}
+			key, ok := pairArr[0].(string)
+			if !ok {
+				continue
+			}
+			valueMap, ok := pairArr[1].(map[string]interface{})
+			if !ok {
+				result[key] = pairArr[1]
+				continue
+			}
+			valueType, _ := valueMap["type"].(string)
+			valueVal := valueMap["value"]
+			result[key] = deserializeBiDiValue(valueType, valueVal)
+		}
+		return result
+	case "map":
+		// Map is similar to object but with potential non-string keys
+		pairs, ok := value.([]interface{})
+		if !ok {
+			return value
+		}
+		result := make(map[string]interface{})
+		for _, pair := range pairs {
+			pairArr, ok := pair.([]interface{})
+			if !ok || len(pairArr) != 2 {
+				continue
+			}
+			// Key could be a remote value too
+			keyStr := fmt.Sprintf("%v", pairArr[0])
+			valueMap, ok := pairArr[1].(map[string]interface{})
+			if !ok {
+				result[keyStr] = pairArr[1]
+				continue
+			}
+			valueType, _ := valueMap["type"].(string)
+			valueVal := valueMap["value"]
+			result[keyStr] = deserializeBiDiValue(valueType, valueVal)
+		}
+		return result
+	case "set":
+		// Set is an array of remote values
+		arr, ok := value.([]interface{})
+		if !ok {
+			return value
+		}
+		result := make([]interface{}, 0, len(arr))
+		for _, item := range arr {
+			itemMap, ok := item.(map[string]interface{})
+			if !ok {
+				result = append(result, item)
+				continue
+			}
+			itemType, _ := itemMap["type"].(string)
+			itemValue := itemMap["value"]
+			result = append(result, deserializeBiDiValue(itemType, itemValue))
+		}
+		return result
+	case "date":
+		// Date is returned as ISO string
+		return value
+	case "regexp":
+		// RegExp has pattern and flags
+		if m, ok := value.(map[string]interface{}); ok {
+			pattern, _ := m["pattern"].(string)
+			flags, _ := m["flags"].(string)
+			return fmt.Sprintf("/%s/%s", pattern, flags)
+		}
+		return value
+	default:
+		// For function, symbol, weakmap, weakset, error, node, window, etc.
+		// Return the raw value or nil
+		return value
+	}
+}
+
 // Evaluate executes JavaScript in the page context and returns the result.
 func (p *Pilot) Evaluate(ctx context.Context, script string) (interface{}, error) {
 	if p.closed {
@@ -609,7 +725,8 @@ func (p *Pilot) Evaluate(ctx context.Context, script string) (interface{}, error
 		return nil, err
 	}
 
-	return resp.Result.Value, nil
+	// Deserialize BiDi remote value to Go value
+	return deserializeBiDiValue(resp.Result.Type, resp.Result.Value), nil
 }
 
 // Title returns the page title.

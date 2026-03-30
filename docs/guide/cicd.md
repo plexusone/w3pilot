@@ -69,7 +69,7 @@ jobs:
           echo "W3PILOT_CLICKER_PATH=$PWD/clicker" >> $GITHUB_ENV
 
       - name: Install W3Pilot CLI
-        run: go install github.com/agentplexus/w3pilot/cmd/vibium@latest
+        run: go install github.com/plexusone/w3pilot/cmd/w3pilot@latest
 
       - name: Run E2E Tests
         env:
@@ -105,7 +105,7 @@ jobs:
           echo "W3PILOT_CLICKER_PATH=$PWD/clicker" >> $GITHUB_ENV
 
       - name: Setup
-        run: go install github.com/agentplexus/w3pilot/cmd/vibium@latest
+        run: go install github.com/plexusone/w3pilot/cmd/w3pilot@latest
 
       - name: Run ${{ matrix.test }} tests
         env:
@@ -154,7 +154,7 @@ e2e:
     - curl -L -o clicker "$CLICKER_URL"
     - chmod +x clicker
     - export W3PILOT_CLICKER_PATH=$PWD/clicker
-    - go install github.com/agentplexus/w3pilot/cmd/vibium@latest
+    - go install github.com/plexusone/w3pilot/cmd/w3pilot@latest
 
   script:
     - w3pilot run tests/smoke.json
@@ -189,7 +189,7 @@ jobs:
             echo "export W3PILOT_CLICKER_PATH=$PWD/clicker" >> $BASH_ENV
       - run:
           name: Install W3Pilot CLI
-          command: go install github.com/agentplexus/w3pilot/cmd/vibium@latest
+          command: go install github.com/plexusone/w3pilot/cmd/w3pilot@latest
       - run:
           name: Run E2E Tests
           environment:
@@ -230,7 +230,7 @@ pipeline {
                     curl -L -o clicker "${CLICKER_URL}"
                     chmod +x clicker
                 '''
-                sh 'go install github.com/agentplexus/w3pilot/cmd/vibium@latest'
+                sh 'go install github.com/plexusone/w3pilot/cmd/w3pilot@latest'
             }
         }
 
@@ -277,7 +277,7 @@ steps:
       echo "##vso[task.setvariable variable=W3PILOT_CLICKER_PATH]$(pwd)/clicker"
     displayName: 'Download Clicker'
 
-  - script: go install github.com/agentplexus/w3pilot/cmd/vibium@latest
+  - script: go install github.com/plexusone/w3pilot/cmd/w3pilot@latest
     displayName: 'Install W3Pilot CLI'
 
   - script: |

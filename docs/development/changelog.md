@@ -42,5 +42,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Error types
 - Integration tests
 
-[Unreleased]: https://github.com/grokify/w3pilot/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/grokify/w3pilot/releases/tag/v0.1.0
+[Unreleased]: https://github.com/plexusone/w3pilot/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/plexusone/w3pilot/releases/tag/v0.1.0

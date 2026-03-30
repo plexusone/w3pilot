@@ -11,7 +11,7 @@ script/vibium-script.schema.json
 ## Schema URL
 
 ```
-https://github.com/grokify/w3pilot/script/vibium-script.schema.json
+https://github.com/plexusone/w3pilot/script/vibium-script.schema.json
 ```
 
 ## Top-Level Fields

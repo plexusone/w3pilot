@@ -2,142 +2,142 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://plexusone.github.io/w3pilot/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/architecture/overview/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/architecture/prd/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/architecture/trd/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/bugs/BUG_pipe-broken-after-launch/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/development/changelog/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/development/contributing/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/development/testing/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/enhancement-requests/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/enhancement-requests/mcp-enhancements-2026-03-29/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/getting-started/installation/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/getting-started/prerequisites/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/getting-started/quickstart/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/guide/ai-agents/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/guide/cdp/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/guide/cicd/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/guide/cli/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/guide/hitl/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/guide/mcp-server/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/guide/recording/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/guide/scripts/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/guide/sdk/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/reference/api/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/reference/comparison/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/reference/errors/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/reference/mcp-tools/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/reference/script-schema/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/releases/v0.1.0/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/releases/v0.2.0/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/releases/v0.3.0/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/releases/v0.4.0/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/releases/v0.5.0/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/releases/v0.6.0/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/releases/v0.7.0/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
     <url>
          <loc>https://plexusone.github.io/w3pilot/releases/v0.8.0/</loc>
-         <lastmod>2026-03-30</lastmod>
+         <lastmod>2026-04-05</lastmod>
     </url>
 </urlset>

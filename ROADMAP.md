@@ -1,6 +1,6 @@
 # Roadmap
 
-This document outlines planned features and improvements for the Vibium Go Client SDK.
+This document outlines planned features and improvements for w3pilot.
 
 ## v0.2.0 - Enhanced Element Interaction
 
@@ -81,6 +81,38 @@ This document outlines planned features and improvements for the Vibium Go Clien
 
 - [ ] `StartTracing()` - Start performance trace
 - [ ] `StopTracing()` - Stop and export trace
+
+## v0.6.0 - Source Mapping & Framework Detection
+
+These features enable agentic tools (like agent-a11y) to map DOM findings to source code.
+
+### Source Map Integration
+
+- [ ] `LoadSourceMaps(dir)` - Load source maps from directory
+- [ ] `GetSourceLocation(selector)` - Map DOM element to source file:line
+- [ ] `SetSourceMapURL(url)` - Load source maps from dev server
+- [ ] Support for Webpack, Vite, esbuild source map formats
+
+### Framework Detection
+
+- [ ] `DetectFramework()` - Detect React, Vue, Svelte, Angular from page
+- [ ] `GetReactComponent(selector)` - Get React component name for element
+- [ ] `GetVueComponent(selector)` - Get Vue component name for element
+- [ ] `GetDevToolsData(selector)` - Extract component info from browser devtools
+
+### Element Fingerprinting
+
+- [ ] `GetElementFingerprint(selector)` - Generate stable ID for element
+- [ ] `FindByFingerprint(fingerprint)` - Locate element by fingerprint
+- [ ] `CompareElements(before, after)` - Compare element state across audits
+
+### Use Cases
+
+| Feature | Consumer | Purpose |
+|---------|----------|---------|
+| Source mapping | agent-a11y | Map a11y findings to source files for coding agents |
+| Framework detection | agent-a11y | Generate framework-specific fix code |
+| Element fingerprinting | agent-a11y | Track findings across before/after audits |
 
 ## Infrastructure
 

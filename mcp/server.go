@@ -4,6 +4,8 @@ import (
 	"context"
 
 	"github.com/modelcontextprotocol/go-sdk/mcp"
+
+	vibium "github.com/plexusone/w3pilot"
 )
 
 // Server is the W3Pilot MCP server.
@@ -11,6 +13,7 @@ type Server struct {
 	session   *Session
 	mcpServer *mcp.Server
 	config    Config
+	refs      *vibium.RefStore
 }
 
 // NewServer creates a new MCP server.
@@ -23,6 +26,7 @@ func NewServer(config Config) *Server {
 			Project:        config.Project,
 			InitScripts:    config.InitScripts,
 		}),
+		refs: vibium.NewRefStore(),
 	}
 
 	s.mcpServer = mcp.NewServer(
@@ -35,6 +39,26 @@ func NewServer(config Config) *Server {
 
 	s.registerTools()
 	return s
+}
+
+// StoreRefs stores element refs from page mapping.
+func (s *Server) StoreRefs(refs []vibium.ElementRef) {
+	s.refs.Store(refs)
+}
+
+// GetRef retrieves an element ref by reference string (e.g., "@e1").
+func (s *Server) GetRef(ref string) (vibium.ElementRef, bool) {
+	return s.refs.Get(ref)
+}
+
+// ResolveRef resolves an element reference or returns the selector as-is.
+func (s *Server) ResolveRef(selectorOrRef string) (string, error) {
+	return s.refs.ResolveRef(selectorOrRef)
+}
+
+// ClearRefs clears all stored element refs.
+func (s *Server) ClearRefs() {
+	s.refs.Clear()
 }
 
 // registerTools registers all MCP tools.
@@ -970,6 +994,65 @@ func (s *Server) registerTools() {
 		Name:        "state_delete",
 		Description: "Delete a saved state snapshot by name.",
 	}, s.handleStateDelete)
+
+	// === Element Mapping (@refs) ===
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "page_map",
+		Description: "Map interactive elements on the page to human-friendly references (@e1, @e2, etc.). These refs can be used in place of CSS selectors in subsequent commands. Essential for AI agents to identify clickable elements.",
+	}, s.handlePageMap)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "page_map_get",
+		Description: "Get details about a specific element reference (e.g., @e1). Returns the element's selector, tag, role, text, and other attributes.",
+	}, s.handlePageMapGet)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "page_map_clear",
+		Description: "Clear all stored element references. Call page_map again to refresh.",
+	}, s.handlePageMapClear)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "page_map_diff",
+		Description: "Compare current page elements against previously mapped elements. Detects added, removed, and moved elements. Useful for detecting page changes after actions.",
+	}, s.handlePageMapDiff)
+
+	// === Clock Manipulation ===
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "clock_install",
+		Description: "Install fake timers in the browser. Replaces Date, setTimeout, setInterval, etc. Call this before other clock operations.",
+	}, s.handleClockInstall)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "clock_set_time",
+		Description: "Set a fixed time that will be returned by Date.now() and new Date(). Useful for testing time-dependent UI.",
+	}, s.handleClockSetTime)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "clock_fast_forward",
+		Description: "Advance time by milliseconds WITHOUT firing pending timers. Use clock_run_for to also fire timers.",
+	}, s.handleClockFastForward)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "clock_run_for",
+		Description: "Advance time by milliseconds AND fire all pending timers (setTimeout, setInterval). Simulates real time passage.",
+	}, s.handleClockRunFor)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "clock_pause_at",
+		Description: "Pause time at a specific timestamp. Time will not advance until clock_resume is called.",
+	}, s.handleClockPauseAt)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "clock_resume",
+		Description: "Resume time from a paused state. Time will start advancing normally.",
+	}, s.handleClockResume)
+
+	mcp.AddTool(s.mcpServer, &mcp.Tool{
+		Name:        "clock_set_timezone",
+		Description: "Set the browser's timezone. Use IANA timezone names like 'America/New_York' or 'Asia/Tokyo'.",
+	}, s.handleClockSetTimezone)
 }
 
 // Run starts the MCP server.

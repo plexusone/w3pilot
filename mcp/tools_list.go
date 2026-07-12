@@ -62,6 +62,10 @@ var toolDefinitions = []struct {
 			{Name: "page_emulate_media", Description: "Emulate CSS media features (colorScheme, reducedMotion, forcedColors, contrast)."},
 			{Name: "page_set_geolocation", Description: "Set the browser's geolocation."},
 			{Name: "page_inspect", Description: "Inspect page elements to discover buttons, links, inputs, and other interactive elements. Designed for AI agents."},
+			{Name: "page_map", Description: "Map interactive elements to human-friendly refs (@e1, @e2, etc.) for use in subsequent commands."},
+			{Name: "page_map_get", Description: "Get details about a specific element reference (@e1, @e2, etc.)."},
+			{Name: "page_map_clear", Description: "Clear all stored element references."},
+			{Name: "page_map_diff", Description: "Compare current elements against previous mapping to detect changes."},
 		},
 	},
 	{
@@ -294,6 +298,18 @@ var toolDefinitions = []struct {
 			{Name: "state_load", Description: "Load browser state from a named snapshot."},
 			{Name: "state_list", Description: "List all saved state snapshots."},
 			{Name: "state_delete", Description: "Delete a saved state snapshot."},
+		},
+	},
+	{
+		category: "clock",
+		tools: []ToolInfo{
+			{Name: "clock_install", Description: "Install fake timers (Date, setTimeout, setInterval, etc.)."},
+			{Name: "clock_set_time", Description: "Set a fixed time for Date.now() and new Date()."},
+			{Name: "clock_fast_forward", Description: "Advance time without firing timers."},
+			{Name: "clock_run_for", Description: "Advance time and fire pending timers."},
+			{Name: "clock_pause_at", Description: "Pause time at a specific timestamp."},
+			{Name: "clock_resume", Description: "Resume time from paused state."},
+			{Name: "clock_set_timezone", Description: "Set browser timezone."},
 		},
 	},
 	{

@@ -14,15 +14,22 @@ var elementClickTimeout time.Duration
 var elementClickCmd = &cobra.Command{
 	Use:   "click <selector>",
 	Short: "Click an element",
-	Long: `Click an element identified by CSS selector.
+	Long: `Click an element identified by CSS selector or element ref (@e1, @e2, etc.).
 
 Examples:
   w3pilot element click "#submit"
   w3pilot element click "button.login"
-  w3pilot element click "[data-testid='submit-btn']"`,
+  w3pilot element click "[data-testid='submit-btn']"
+  w3pilot element click @e1   # Use ref from 'w3pilot map'`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		selector := args[0]
+		selectorOrRef := args[0]
+
+		// Resolve @ref to selector if needed
+		selector, err := resolveRef(selectorOrRef)
+		if err != nil {
+			return err
+		}
 
 		ctx, cancel := context.WithTimeout(context.Background(), elementClickTimeout)
 		defer cancel()
@@ -38,7 +45,7 @@ Examples:
 			return fmt.Errorf("click failed: %w", err)
 		}
 
-		fmt.Printf("Clicked: %s\n", selector)
+		fmt.Printf("Clicked: %s\n", selectorOrRef)
 		return nil
 	},
 }

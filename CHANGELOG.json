@@ -7,6 +7,52 @@
   "maintainers": ["plexusone"],
   "releases": [
     {
+      "version": "v0.9.0",
+      "date": "2026-07-12",
+      "highlights": [
+        { "description": "Element mapping (@refs) for AI agents - human-friendly element references" },
+        { "description": "Clock manipulation MCP tools for testing time-dependent functionality" },
+        { "description": "Diff mapping to detect page changes after actions" },
+        { "description": "11 new MCP tools bringing total to 180 across 25 namespaces" }
+      ],
+      "added": [
+        { "description": "`MapElements()` SDK method to scan page for interactive elements", "commit": "ccd8fd8" },
+        { "description": "`ElementRef` type with ref, tag, role, text, label, placeholder, selector", "commit": "ccd8fd8" },
+        { "description": "`DiffRefs()` function to compare element mappings and detect changes", "commit": "ccd8fd8" },
+        { "description": "`RefStore` for thread-safe ref storage and resolution", "commit": "ccd8fd8" },
+        { "description": "`IsRef()` helper to validate @e<n> pattern", "commit": "ccd8fd8" },
+        { "description": "`page_map` MCP tool to map interactive elements to @refs", "commit": "9f5e5e0" },
+        { "description": "`page_map_get` MCP tool to get details about a specific ref", "commit": "9f5e5e0" },
+        { "description": "`page_map_clear` MCP tool to clear stored refs", "commit": "9f5e5e0" },
+        { "description": "`page_map_diff` MCP tool to compare current vs previous mapping", "commit": "9f5e5e0" },
+        { "description": "`clock_install` MCP tool to install fake timers", "commit": "9700710" },
+        { "description": "`clock_set_time` MCP tool to set fixed time", "commit": "9700710" },
+        { "description": "`clock_fast_forward` MCP tool to advance time without firing timers", "commit": "9700710" },
+        { "description": "`clock_run_for` MCP tool to advance time and fire timers", "commit": "9700710" },
+        { "description": "`clock_pause_at` MCP tool to pause time at timestamp", "commit": "9700710" },
+        { "description": "`clock_resume` MCP tool to resume from paused state", "commit": "9700710" },
+        { "description": "`clock_set_timezone` MCP tool to set browser timezone", "commit": "9700710" },
+        { "description": "CLI `w3pilot map` command to map interactive elements", "commit": "cf1465d" },
+        { "description": "CLI `w3pilot map list` to list stored refs", "commit": "cf1465d" },
+        { "description": "CLI `w3pilot map get @e1` to get ref details", "commit": "cf1465d" },
+        { "description": "CLI `w3pilot map clear` to clear refs", "commit": "cf1465d" },
+        { "description": "CLI `w3pilot map diff` to compare page changes", "commit": "cf1465d" },
+        { "description": "@ref resolution in `w3pilot click` and `w3pilot fill` commands", "commit": "9f42e86" }
+      ],
+      "documentation": [
+        { "description": "v0.9.0 roadmap for Vibium feature parity", "commit": "58d5621" },
+        { "description": "v0.9.0 release notes", "commit": "" }
+      ],
+      "tests": [
+        { "description": "Unit tests for DiffRefs with no changes, added, removed, changed scenarios", "commit": "5ca5c86" },
+        { "description": "Unit tests for RefStore (Store, Get, ResolveRef, Clear)", "commit": "5ca5c86" },
+        { "description": "Unit tests for element fingerprinting and IsRef validation", "commit": "5ca5c86" }
+      ],
+      "infrastructure": [
+        { "description": "Fix gitignore to scope binary patterns to root only", "commit": "aa9f1b9" }
+      ]
+    },
+    {
       "version": "v0.8.0",
       "date": "2026-03-30",
       "highlights": [

@@ -34,7 +34,7 @@ This project provides:
 | Component | Description |
 |-----------|-------------|
 | **Go Client SDK** | Programmatic browser control |
-| **MCP Server** | 169 tools across 24 namespaces for AI assistants |
+| **MCP Server** | 180 tools across 25 namespaces for AI assistants |
 | **CLI** | Command-line browser automation |
 | **Script Runner** | Deterministic test execution |
 | **Session Recording** | Capture actions as replayable scripts |
@@ -324,7 +324,7 @@ Script format (JSON or YAML):
 
 ## MCP Server Tools
 
-The MCP server provides **169 tools across 24 namespaces**. Export the full list as JSON with `w3pilot mcp --list-tools`.
+The MCP server provides **180 tools across 25 namespaces**. Export the full list as JSON with `w3pilot mcp --list-tools`.
 
 **Namespaces:**
 
@@ -334,6 +334,7 @@ The MCP server provides **169 tools across 24 namespaces**. Export the full list
 | `batch_` | 1 | `batch_execute` |
 | `browser_` | 2 | `browser_launch`, `browser_quit` |
 | `cdp_` | 20 | `cdp_take_heap_snapshot`, `cdp_run_lighthouse`, `cdp_start_coverage` |
+| `clock_` | 7 | `clock_install`, `clock_set_time`, `clock_run_for` |
 | `config_` | 1 | `config_get` |
 | `console_` | 2 | `console_get_messages`, `console_clear` |
 | `dialog_` | 2 | `dialog_handle`, `dialog_get` |
@@ -344,7 +345,7 @@ The MCP server provides **169 tools across 24 namespaces**. Export the full list
 | `input_` | 12 | `input_keyboard_press`, `input_mouse_click`, `input_touch_tap` |
 | `js_` | 4 | `js_evaluate`, `js_add_script`, `js_add_style`, `js_init_script` |
 | `network_` | 6 | `network_get_requests`, `network_route`, `network_set_offline` |
-| `page_` | 20 | `page_navigate`, `page_go_back`, `page_screenshot`, `page_inspect` |
+| `page_` | 24 | `page_navigate`, `page_go_back`, `page_screenshot`, `page_map` |
 | `record_` | 5 | `record_start`, `record_stop`, `record_export` |
 | `state_` | 4 | `state_save`, `state_load`, `state_list`, `state_delete` |
 | `storage_` | 17 | `storage_get_cookies`, `storage_local_get`, `storage_session_set` |

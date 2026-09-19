@@ -38,6 +38,30 @@ This project provides:
 | **CLI** | Command-line browser automation |
 | **Script Runner** | Deterministic test execution |
 | **Session Recording** | Capture actions as replayable scripts |
+| **Page Capture** | Normalized page evidence (screenshot, HTML, structure) with SPA-aware settling — see [`pagecapture`](pagecapture) |
+
+## Page capture
+
+The `pagecapture` subpackage captures normalized, reusable evidence about a page
+— rendered HTML, a full-page screenshot, visible text, and structural signals
+(title, language, links, headings) — for consumers such as accessibility
+evaluation, functional/journey testing, and i18n checks. It is **SPA-aware**:
+its default settle strategy polls the DOM until it stops changing *and* holds
+real content (with a minimum-settle floor), rather than relying on the `load`
+event or network idle, which client-rendered apps never reliably reach.
+
+```go
+import "github.com/plexusone/w3pilot/pagecapture"
+
+// Single page (launches its own headless browser):
+ev, _ := pagecapture.CaptureURL(ctx, "https://example.com", pagecapture.DefaultOptions())
+
+// Reuse an existing Pilot; or capture the already-loaded page without navigating:
+ev := pagecapture.CaptureCurrent(ctx, pilot, url, true /* screenshot */)
+
+// Breadth-first same-host crawl:
+site, _ := pagecapture.CaptureSite(ctx, pilot, startURL, pagecapture.DefaultCrawlOptions())
+```
 
 ## Architecture
 

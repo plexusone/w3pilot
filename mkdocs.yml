@@ -58,6 +58,7 @@ nav:
     - CLI Reference: guide/cli.md
     - Script Runner: guide/scripts.md
     - Session Recording: guide/recording.md
+    - Page Capture: guide/page-capture.md
     - CI/CD Integration: guide/cicd.md
   - Reference:
     - API Reference: reference/api.md

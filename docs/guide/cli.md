@@ -66,6 +66,36 @@ w3pilot page navigate <url> [flags]
 w3pilot page navigate https://example.com
 ```
 
+### fetch
+
+Fetch a page's rendered text or HTML in one shot — launch, navigate, wait, and
+extract — without managing a session by hand.
+
+```bash
+w3pilot fetch <url> [flags]
+```
+
+**Flags:**
+
+| Flag | Description |
+|------|-------------|
+| `--html` | Output rendered HTML instead of visible text |
+| `-s, --selector` | Restrict extraction to a CSS selector |
+| `-O, --output` | Write result to a file instead of stdout |
+| `-w, --wait` | Load state to wait for: `load` (default), `domcontentloaded`, `networkidle` |
+| `--delay` | Settle delay after load before extracting (e.g. `5s`), for SPAs/interstitials |
+| `--headless` | Run the browser headless (default: true) |
+| `--timeout` | Total fetch timeout (default: 45s) |
+
+**Example:**
+
+```bash
+w3pilot fetch https://example.com                        # visible text
+w3pilot fetch https://example.com --html                 # full rendered HTML
+w3pilot fetch https://spa.example.com --wait networkidle  # wait for network to settle
+w3pilot fetch https://example.com --format json          # {url,title,content}
+```
+
 ### element click
 
 Click an element.

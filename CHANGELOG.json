@@ -4,399 +4,1132 @@
   "repository": "https://github.com/plexusone/w3pilot",
   "versioning": "semver",
   "commitConvention": "conventional",
-  "maintainers": ["plexusone"],
+  "maintainers": [
+    "plexusone"
+  ],
   "releases": [
+    {
+      "version": "v0.10.0",
+      "date": "2026-09-20",
+      "highlights": [
+        {
+          "description": "New pagecapture subpackage: reusable, SPA-aware page evidence (screenshot, rendered HTML, visible text, structure)"
+        },
+        {
+          "description": "New `fetch` CLI command: one-shot page fetch, like curl for JavaScript-rendered pages"
+        }
+      ],
+      "added": [
+        {
+          "description": "`pagecapture` subpackage capturing normalized page evidence (rendered HTML, full-page screenshot, visible text, title/language/links/headings) via a w3pilot session",
+          "commit": "f443584"
+        },
+        {
+          "description": "`pagecapture` SPA-aware settling (SettleDOMStable): polls the DOM until stable with a minimum-settle floor rather than waiting on the load event or network idle",
+          "commit": "f443584"
+        },
+        {
+          "description": "`pagecapture` functions Capture, CaptureCurrent (no re-navigation), CaptureURL, and CaptureSite (same-host crawl)",
+          "commit": "f443584"
+        },
+        {
+          "description": "`w3pilot fetch <url>` CLI command: launch, navigate, wait, and print rendered text or HTML in one shot; supports --html, --selector, --output, --wait, --delay, and JSON output",
+          "commit": "8655db8"
+        }
+      ],
+      "changed": [
+        {
+          "description": "Bump github.com/modelcontextprotocol/go-sdk from 1.6.1 to 1.8.0",
+          "commit": "b900ad5"
+        },
+        {
+          "description": "Bump actions/setup-go from 6 to 7",
+          "commit": "479ab41"
+        }
+      ],
+      "documentation": [
+        {
+          "description": "Page Capture guide and README section for the pagecapture subpackage",
+          "commit": "1b739ab"
+        },
+        {
+          "description": "Repo CLAUDE.md covering build/test, pagecapture, and the SPA-aware settle rationale",
+          "commit": "1b739ab"
+        },
+        {
+          "description": "v0.10.0 release notes and fetch command CLI reference",
+          "commit": "3bce11d"
+        }
+      ]
+    },
     {
       "version": "v0.9.0",
       "date": "2026-07-12",
       "highlights": [
-        { "description": "Element mapping (@refs) for AI agents - human-friendly element references" },
-        { "description": "Clock manipulation MCP tools for testing time-dependent functionality" },
-        { "description": "Diff mapping to detect page changes after actions" },
-        { "description": "11 new MCP tools bringing total to 180 across 25 namespaces" }
+        {
+          "description": "Element mapping (@refs) for AI agents - human-friendly element references"
+        },
+        {
+          "description": "Clock manipulation MCP tools for testing time-dependent functionality"
+        },
+        {
+          "description": "Diff mapping to detect page changes after actions"
+        },
+        {
+          "description": "11 new MCP tools bringing total to 180 across 25 namespaces"
+        }
       ],
       "added": [
-        { "description": "`MapElements()` SDK method to scan page for interactive elements", "commit": "ccd8fd8" },
-        { "description": "`ElementRef` type with ref, tag, role, text, label, placeholder, selector", "commit": "ccd8fd8" },
-        { "description": "`DiffRefs()` function to compare element mappings and detect changes", "commit": "ccd8fd8" },
-        { "description": "`RefStore` for thread-safe ref storage and resolution", "commit": "ccd8fd8" },
-        { "description": "`IsRef()` helper to validate @e<n> pattern", "commit": "ccd8fd8" },
-        { "description": "`page_map` MCP tool to map interactive elements to @refs", "commit": "9f5e5e0" },
-        { "description": "`page_map_get` MCP tool to get details about a specific ref", "commit": "9f5e5e0" },
-        { "description": "`page_map_clear` MCP tool to clear stored refs", "commit": "9f5e5e0" },
-        { "description": "`page_map_diff` MCP tool to compare current vs previous mapping", "commit": "9f5e5e0" },
-        { "description": "`clock_install` MCP tool to install fake timers", "commit": "9700710" },
-        { "description": "`clock_set_time` MCP tool to set fixed time", "commit": "9700710" },
-        { "description": "`clock_fast_forward` MCP tool to advance time without firing timers", "commit": "9700710" },
-        { "description": "`clock_run_for` MCP tool to advance time and fire timers", "commit": "9700710" },
-        { "description": "`clock_pause_at` MCP tool to pause time at timestamp", "commit": "9700710" },
-        { "description": "`clock_resume` MCP tool to resume from paused state", "commit": "9700710" },
-        { "description": "`clock_set_timezone` MCP tool to set browser timezone", "commit": "9700710" },
-        { "description": "CLI `w3pilot map` command to map interactive elements", "commit": "cf1465d" },
-        { "description": "CLI `w3pilot map list` to list stored refs", "commit": "cf1465d" },
-        { "description": "CLI `w3pilot map get @e1` to get ref details", "commit": "cf1465d" },
-        { "description": "CLI `w3pilot map clear` to clear refs", "commit": "cf1465d" },
-        { "description": "CLI `w3pilot map diff` to compare page changes", "commit": "cf1465d" },
-        { "description": "@ref resolution in `w3pilot click` and `w3pilot fill` commands", "commit": "9f42e86" }
+        {
+          "description": "`MapElements()` SDK method to scan page for interactive elements",
+          "commit": "ccd8fd8"
+        },
+        {
+          "description": "`ElementRef` type with ref, tag, role, text, label, placeholder, selector",
+          "commit": "ccd8fd8"
+        },
+        {
+          "description": "`DiffRefs()` function to compare element mappings and detect changes",
+          "commit": "ccd8fd8"
+        },
+        {
+          "description": "`RefStore` for thread-safe ref storage and resolution",
+          "commit": "ccd8fd8"
+        },
+        {
+          "description": "`IsRef()` helper to validate @e<n> pattern",
+          "commit": "ccd8fd8"
+        },
+        {
+          "description": "`page_map` MCP tool to map interactive elements to @refs",
+          "commit": "9f5e5e0"
+        },
+        {
+          "description": "`page_map_get` MCP tool to get details about a specific ref",
+          "commit": "9f5e5e0"
+        },
+        {
+          "description": "`page_map_clear` MCP tool to clear stored refs",
+          "commit": "9f5e5e0"
+        },
+        {
+          "description": "`page_map_diff` MCP tool to compare current vs previous mapping",
+          "commit": "9f5e5e0"
+        },
+        {
+          "description": "`clock_install` MCP tool to install fake timers",
+          "commit": "9700710"
+        },
+        {
+          "description": "`clock_set_time` MCP tool to set fixed time",
+          "commit": "9700710"
+        },
+        {
+          "description": "`clock_fast_forward` MCP tool to advance time without firing timers",
+          "commit": "9700710"
+        },
+        {
+          "description": "`clock_run_for` MCP tool to advance time and fire timers",
+          "commit": "9700710"
+        },
+        {
+          "description": "`clock_pause_at` MCP tool to pause time at timestamp",
+          "commit": "9700710"
+        },
+        {
+          "description": "`clock_resume` MCP tool to resume from paused state",
+          "commit": "9700710"
+        },
+        {
+          "description": "`clock_set_timezone` MCP tool to set browser timezone",
+          "commit": "9700710"
+        },
+        {
+          "description": "CLI `w3pilot map` command to map interactive elements",
+          "commit": "cf1465d"
+        },
+        {
+          "description": "CLI `w3pilot map list` to list stored refs",
+          "commit": "cf1465d"
+        },
+        {
+          "description": "CLI `w3pilot map get @e1` to get ref details",
+          "commit": "cf1465d"
+        },
+        {
+          "description": "CLI `w3pilot map clear` to clear refs",
+          "commit": "cf1465d"
+        },
+        {
+          "description": "CLI `w3pilot map diff` to compare page changes",
+          "commit": "cf1465d"
+        },
+        {
+          "description": "@ref resolution in `w3pilot click` and `w3pilot fill` commands",
+          "commit": "9f42e86"
+        }
       ],
       "documentation": [
-        { "description": "v0.9.0 roadmap for Vibium feature parity", "commit": "58d5621" },
-        { "description": "v0.9.0 release notes", "commit": "" }
+        {
+          "description": "v0.9.0 roadmap for Vibium feature parity",
+          "commit": "58d5621"
+        },
+        {
+          "description": "v0.9.0 release notes",
+          "commit": ""
+        }
       ],
       "tests": [
-        { "description": "Unit tests for DiffRefs with no changes, added, removed, changed scenarios", "commit": "5ca5c86" },
-        { "description": "Unit tests for RefStore (Store, Get, ResolveRef, Clear)", "commit": "5ca5c86" },
-        { "description": "Unit tests for element fingerprinting and IsRef validation", "commit": "5ca5c86" }
+        {
+          "description": "Unit tests for DiffRefs with no changes, added, removed, changed scenarios",
+          "commit": "5ca5c86"
+        },
+        {
+          "description": "Unit tests for RefStore (Store, Get, ResolveRef, Clear)",
+          "commit": "5ca5c86"
+        },
+        {
+          "description": "Unit tests for element fingerprinting and IsRef validation",
+          "commit": "5ca5c86"
+        }
       ],
       "infrastructure": [
-        { "description": "Fix gitignore to scope binary patterns to root only", "commit": "aa9f1b9" }
+        {
+          "description": "Fix gitignore to scope binary patterns to root only",
+          "commit": "aa9f1b9"
+        }
       ]
     },
     {
       "version": "v0.8.0",
       "date": "2026-03-30",
       "highlights": [
-        { "description": "Session management SDK for live browser sessions" },
-        { "description": "SDK assertion and verification methods for testing" },
-        { "description": "CLI test commands with full MCP parity" },
-        { "description": "MCP batch execution and HTTP request tools for AI agents" },
-        { "description": "Critical MCP broken pipe bug fix" }
+        {
+          "description": "Session management SDK for live browser sessions"
+        },
+        {
+          "description": "SDK assertion and verification methods for testing"
+        },
+        {
+          "description": "CLI test commands with full MCP parity"
+        },
+        {
+          "description": "MCP batch execution and HTTP request tools for AI agents"
+        },
+        {
+          "description": "Critical MCP broken pipe bug fix"
+        }
       ],
       "added": [
-        { "description": "`session` package for shared browser session management", "commit": "66aeb81" },
-        { "description": "`session.Manager` with `LaunchIfNeeded()`, `Reconnect()`, `Detach()`, `Close()` methods", "commit": "66aeb81" },
-        { "description": "`session.Info` type for persisting session data to `~/.w3pilot/session.json`", "commit": "66aeb81" },
-        { "description": "`session.Config` type for session configuration options", "commit": "66aeb81" },
-        { "description": "`w3pilot.Connect(ctx, wsURL)` function to connect to existing browser", "commit": "431116a" },
-        { "description": "`Pilot.Clicker()` method to access clicker process info", "commit": "431116a" },
-        { "description": "`ClickerProcess.Process()` method to access underlying os.Process", "commit": "431116a" },
-        { "description": "`Pilot.AssertText()`, `Pilot.AssertElement()`, `Pilot.AssertURL()` assertion methods", "commit": "21fe2cf" },
-        { "description": "`Pilot.GenerateLocator()` for creating robust element locators", "commit": "21fe2cf" },
-        { "description": "`Element.VerifyValue()`, `Element.VerifyText()` verification methods", "commit": "21fe2cf" },
-        { "description": "`Element.VerifyVisible()`, `Element.VerifyHidden()` visibility verification", "commit": "21fe2cf" },
-        { "description": "`Element.VerifyEnabled()`, `Element.VerifyDisabled()` state verification", "commit": "21fe2cf" },
-        { "description": "`Element.VerifyChecked()`, `Element.VerifyUnchecked()` checkbox/radio verification", "commit": "21fe2cf" },
-        { "description": "`VerificationError` type with structured error context", "commit": "21fe2cf" },
-        { "description": "CLI `w3pilot test assert-text`, `assert-element`, `assert-url` commands", "commit": "9a4376f" },
-        { "description": "CLI `w3pilot test verify-value`, `verify-text` commands", "commit": "9a4376f" },
-        { "description": "CLI `w3pilot test verify-visible`, `verify-hidden` commands", "commit": "9a4376f" },
-        { "description": "CLI `w3pilot test verify-enabled`, `verify-disabled` commands", "commit": "9a4376f" },
-        { "description": "CLI `w3pilot test verify-checked`, `verify-unchecked` commands", "commit": "9a4376f" },
-        { "description": "CLI `w3pilot test generate-locator` command", "commit": "9a4376f" },
-        { "description": "`http_request` MCP tool for authenticated browser-context HTTP requests", "commit": "7392ed4" },
-        { "description": "`batch_execute` MCP tool for multi-step workflow execution with 15+ supported operations", "commit": "0205855" },
-        { "description": "`max_result_size` parameter to `js_evaluate` for result truncation", "commit": "60875c4" }
+        {
+          "description": "`session` package for shared browser session management",
+          "commit": "66aeb81"
+        },
+        {
+          "description": "`session.Manager` with `LaunchIfNeeded()`, `Reconnect()`, `Detach()`, `Close()` methods",
+          "commit": "66aeb81"
+        },
+        {
+          "description": "`session.Info` type for persisting session data to `~/.w3pilot/session.json`",
+          "commit": "66aeb81"
+        },
+        {
+          "description": "`session.Config` type for session configuration options",
+          "commit": "66aeb81"
+        },
+        {
+          "description": "`w3pilot.Connect(ctx, wsURL)` function to connect to existing browser",
+          "commit": "431116a"
+        },
+        {
+          "description": "`Pilot.Clicker()` method to access clicker process info",
+          "commit": "431116a"
+        },
+        {
+          "description": "`ClickerProcess.Process()` method to access underlying os.Process",
+          "commit": "431116a"
+        },
+        {
+          "description": "`Pilot.AssertText()`, `Pilot.AssertElement()`, `Pilot.AssertURL()` assertion methods",
+          "commit": "21fe2cf"
+        },
+        {
+          "description": "`Pilot.GenerateLocator()` for creating robust element locators",
+          "commit": "21fe2cf"
+        },
+        {
+          "description": "`Element.VerifyValue()`, `Element.VerifyText()` verification methods",
+          "commit": "21fe2cf"
+        },
+        {
+          "description": "`Element.VerifyVisible()`, `Element.VerifyHidden()` visibility verification",
+          "commit": "21fe2cf"
+        },
+        {
+          "description": "`Element.VerifyEnabled()`, `Element.VerifyDisabled()` state verification",
+          "commit": "21fe2cf"
+        },
+        {
+          "description": "`Element.VerifyChecked()`, `Element.VerifyUnchecked()` checkbox/radio verification",
+          "commit": "21fe2cf"
+        },
+        {
+          "description": "`VerificationError` type with structured error context",
+          "commit": "21fe2cf"
+        },
+        {
+          "description": "CLI `w3pilot test assert-text`, `assert-element`, `assert-url` commands",
+          "commit": "9a4376f"
+        },
+        {
+          "description": "CLI `w3pilot test verify-value`, `verify-text` commands",
+          "commit": "9a4376f"
+        },
+        {
+          "description": "CLI `w3pilot test verify-visible`, `verify-hidden` commands",
+          "commit": "9a4376f"
+        },
+        {
+          "description": "CLI `w3pilot test verify-enabled`, `verify-disabled` commands",
+          "commit": "9a4376f"
+        },
+        {
+          "description": "CLI `w3pilot test verify-checked`, `verify-unchecked` commands",
+          "commit": "9a4376f"
+        },
+        {
+          "description": "CLI `w3pilot test generate-locator` command",
+          "commit": "9a4376f"
+        },
+        {
+          "description": "`http_request` MCP tool for authenticated browser-context HTTP requests",
+          "commit": "7392ed4"
+        },
+        {
+          "description": "`batch_execute` MCP tool for multi-step workflow execution with 15+ supported operations",
+          "commit": "0205855"
+        },
+        {
+          "description": "`max_result_size` parameter to `js_evaluate` for result truncation",
+          "commit": "60875c4"
+        }
       ],
       "fixed": [
-        { "description": "MCP broken pipe after `browser_launch` - clicker process now persists beyond request context", "commit": "447bb95" },
-        { "description": "Capture `browsingContext` from `contextCreated` event during pipe transport startup", "commit": "447bb95" },
-        { "description": "Log clicker stderr when `W3PILOT_DEBUG=1` for improved debugging", "commit": "447bb95" },
-        { "description": "IIFE detection in `Evaluate()` to preserve async return values from `(async () => {...})()` patterns", "commit": "2bcc3a8" },
-        { "description": "State operations fallback to standard BiDi commands when vibium-specific commands unavailable", "commit": "340d2f5" },
-        { "description": "BiDi remote value deserialization - objects now properly return as Go maps instead of raw `[[key, {type, value}]...]` format", "commit": "8630412" }
+        {
+          "description": "MCP broken pipe after `browser_launch` - clicker process now persists beyond request context",
+          "commit": "447bb95"
+        },
+        {
+          "description": "Capture `browsingContext` from `contextCreated` event during pipe transport startup",
+          "commit": "447bb95"
+        },
+        {
+          "description": "Log clicker stderr when `W3PILOT_DEBUG=1` for improved debugging",
+          "commit": "447bb95"
+        },
+        {
+          "description": "IIFE detection in `Evaluate()` to preserve async return values from `(async () => {...})()` patterns",
+          "commit": "2bcc3a8"
+        },
+        {
+          "description": "State operations fallback to standard BiDi commands when vibium-specific commands unavailable",
+          "commit": "340d2f5"
+        },
+        {
+          "description": "BiDi remote value deserialization - objects now properly return as Go maps instead of raw `[[key, {type, value}]...]` format",
+          "commit": "8630412"
+        }
       ],
       "changed": [
-        { "description": "MCP testing tools refactored to use SDK assertion/verification methods", "commit": "e1d774d" },
-        { "description": "Reduced code duplication in CLI test commands with `runElementVerify()` helper", "commit": "fca7fc0" },
-        { "description": "Reduced code duplication in MCP tools with `verifyElementState()` helper", "commit": "fca7fc0" }
+        {
+          "description": "MCP testing tools refactored to use SDK assertion/verification methods",
+          "commit": "e1d774d"
+        },
+        {
+          "description": "Reduced code duplication in CLI test commands with `runElementVerify()` helper",
+          "commit": "fca7fc0"
+        },
+        {
+          "description": "Reduced code duplication in MCP tools with `verifyElementState()` helper",
+          "commit": "fca7fc0"
+        }
       ],
       "documentation": [
-        { "description": "v0.8.0 release notes with session management and testing features", "commit": "c68912a" },
-        { "description": "Updated TASKS.md with live session mode and testing progress", "commit": "b4382f1" },
-        { "description": "Bug report documentation for pipe broken issue", "commit": "ee81ccc" },
-        { "description": "MCP enhancement requests documentation with implementation status", "commit": "d04aac7" }
+        {
+          "description": "v0.8.0 release notes with session management and testing features",
+          "commit": "c68912a"
+        },
+        {
+          "description": "Updated TASKS.md with live session mode and testing progress",
+          "commit": "b4382f1"
+        },
+        {
+          "description": "Bug report documentation for pipe broken issue",
+          "commit": "ee81ccc"
+        },
+        {
+          "description": "MCP enhancement requests documentation with implementation status",
+          "commit": "d04aac7"
+        }
       ],
       "tests": [
-        { "description": "Unit tests for session persistence (Save, Load, Clear, Exists)", "commit": "66aeb81" },
-        { "description": "Unit tests for session manager configuration", "commit": "66aeb81" },
-        { "description": "Unit tests for assertion and verification types", "commit": "21fe2cf" },
-        { "description": "Integration tests for IIFE evaluation with async return values", "commit": "2bcc3a8" }
+        {
+          "description": "Unit tests for session persistence (Save, Load, Clear, Exists)",
+          "commit": "66aeb81"
+        },
+        {
+          "description": "Unit tests for session manager configuration",
+          "commit": "66aeb81"
+        },
+        {
+          "description": "Unit tests for assertion and verification types",
+          "commit": "21fe2cf"
+        },
+        {
+          "description": "Integration tests for IIFE evaluation with async return values",
+          "commit": "2bcc3a8"
+        }
       ]
     },
     {
       "version": "v0.7.0",
       "date": "2026-03-29",
       "highlights": [
-        { "description": "Protocol-agnostic SDK with BiDi-first, CDP-fallback architecture" },
-        { "description": "Automatic protocol selection for maximum compatibility" },
-        { "description": "Fixed BiDi command names for dialog and headers" }
+        {
+          "description": "Protocol-agnostic SDK with BiDi-first, CDP-fallback architecture"
+        },
+        {
+          "description": "Automatic protocol selection for maximum compatibility"
+        },
+        {
+          "description": "Fixed BiDi command names for dialog and headers"
+        }
       ],
       "added": [
-        { "description": "`IsUnsupportedCommand()` helper function for detecting unsupported BiDi commands", "commit": "8aaa295" },
-        { "description": "Protocol-agnostic `SetOffline()` with CDP fallback via network emulation", "commit": "8aaa295" },
-        { "description": "Protocol-agnostic `ConsoleMessages()` with CDP fallback via console debugger", "commit": "8aaa295" },
-        { "description": "Protocol-agnostic `ClearConsoleMessages()` with CDP fallback via console debugger", "commit": "8aaa295" }
+        {
+          "description": "`IsUnsupportedCommand()` helper function for detecting unsupported BiDi commands",
+          "commit": "8aaa295"
+        },
+        {
+          "description": "Protocol-agnostic `SetOffline()` with CDP fallback via network emulation",
+          "commit": "8aaa295"
+        },
+        {
+          "description": "Protocol-agnostic `ConsoleMessages()` with CDP fallback via console debugger",
+          "commit": "8aaa295"
+        },
+        {
+          "description": "Protocol-agnostic `ClearConsoleMessages()` with CDP fallback via console debugger",
+          "commit": "8aaa295"
+        }
       ],
       "fixed": [
-        { "description": "`HandleDialog()` now uses `vibium:dialog.accept`/`vibium:dialog.dismiss` instead of `vibium:dialog.handle`", "commit": "e292854" },
-        { "description": "`SetExtraHTTPHeaders()` now uses `vibium:page.setHeaders` instead of `vibium:network.setHeaders`", "commit": "e292854" },
-        { "description": "Integration test cleanup now uses fresh context to prevent Chrome process leaks", "commit": "cf4d7d6" },
-        { "description": "Test cleanup registered via `t.Cleanup()` for automatic handling on test end/panic", "commit": "cf4d7d6" }
+        {
+          "description": "`HandleDialog()` now uses `vibium:dialog.accept`/`vibium:dialog.dismiss` instead of `vibium:dialog.handle`",
+          "commit": "e292854"
+        },
+        {
+          "description": "`SetExtraHTTPHeaders()` now uses `vibium:page.setHeaders` instead of `vibium:network.setHeaders`",
+          "commit": "e292854"
+        },
+        {
+          "description": "Integration test cleanup now uses fresh context to prevent Chrome process leaks",
+          "commit": "cf4d7d6"
+        },
+        {
+          "description": "Test cleanup registered via `t.Cleanup()` for automatic handling on test end/panic",
+          "commit": "cf4d7d6"
+        }
       ],
       "deprecated": [
-        { "description": "Tracing functionality commented out pending clicker support for `vibium:tracing.*` commands", "commit": "f5ce625" },
-        { "description": "`StorageState()` limited pending clicker support for `vibium:context.storageState`" }
+        {
+          "description": "Tracing functionality commented out pending clicker support for `vibium:tracing.*` commands",
+          "commit": "f5ce625"
+        },
+        {
+          "description": "`StorageState()` limited pending clicker support for `vibium:context.storageState`"
+        }
       ],
       "documentation": [
-        { "description": "Protocol-agnostic SDK documentation in README and architecture docs", "commit": "3600f69" },
-        { "description": "Updated CDP guide with protocol-agnostic methods section", "commit": "3600f69" },
-        { "description": "v0.7.0 release notes" }
+        {
+          "description": "Protocol-agnostic SDK documentation in README and architecture docs",
+          "commit": "3600f69"
+        },
+        {
+          "description": "Updated CDP guide with protocol-agnostic methods section",
+          "commit": "3600f69"
+        },
+        {
+          "description": "v0.7.0 release notes"
+        }
       ],
       "tests": [
-        { "description": "Re-enabled integration tests for CDP-backed features (SetOffline, ConsoleMessages)", "commit": "8c70acd" },
-        { "description": "Skipped tests for unimplemented features (tracing, storageState) and external services", "commit": "8a01866" }
+        {
+          "description": "Re-enabled integration tests for CDP-backed features (SetOffline, ConsoleMessages)",
+          "commit": "8c70acd"
+        },
+        {
+          "description": "Skipped tests for unimplemented features (tracing, storageState) and external services",
+          "commit": "8a01866"
+        }
       ]
     },
     {
       "version": "v0.6.0",
       "date": "2026-03-28",
       "highlights": [
-        { "description": "AI Agent Ergonomics features for improved agent-browser interaction" },
-        { "description": "Page inspection to discover interactive elements without prior knowledge" },
-        { "description": "Selector validation with suggestions for alternatives" },
-        { "description": "High-level workflow recipes for login and table extraction" },
-        { "description": "Named state snapshots for saving and restoring browser state" }
+        {
+          "description": "AI Agent Ergonomics features for improved agent-browser interaction"
+        },
+        {
+          "description": "Page inspection to discover interactive elements without prior knowledge"
+        },
+        {
+          "description": "Selector validation with suggestions for alternatives"
+        },
+        {
+          "description": "High-level workflow recipes for login and table extraction"
+        },
+        {
+          "description": "Named state snapshots for saving and restoring browser state"
+        }
       ],
       "added": [
-        { "description": "`Pilot.Inspect()` method to discover buttons, links, inputs, selects, headings, and images on a page" },
-        { "description": "`Pilot.ValidateSelectors()` and `Pilot.ValidateSelector()` methods to verify selectors before use" },
-        { "description": "`Pilot.Login()` workflow for automated login with credentials and success verification" },
-        { "description": "`Pilot.ExtractTable()` workflow to extract HTML table data to structured JSON" },
-        { "description": "`state.Manager` for saving and loading named state snapshots to `~/.w3pilot/states/`" },
-        { "description": "`page_inspect` MCP tool for AI agents to discover page elements" },
-        { "description": "`test_validate_selectors` MCP tool for validating CSS selectors with suggestions" },
-        { "description": "`workflow_login` MCP tool for automated login workflow" },
-        { "description": "`workflow_extract_table` MCP tool for extracting table data" },
-        { "description": "`state_save`, `state_load`, `state_list`, `state_delete` MCP tools for named state management" },
-        { "description": "`w3pilot page inspect` CLI command for page inspection" },
-        { "description": "`w3pilot test validate-selectors` CLI command for selector validation" },
-        { "description": "`w3pilot state save/load/list/delete` CLI commands for state management" },
-        { "description": "`--format` / `-o` global CLI flag for JSON output mode" },
-        { "description": "`PageContext` struct added to error types for enhanced error context" },
-        { "description": "`Suggestions` field added to `ElementNotFoundError` and `TimeoutError`" }
+        {
+          "description": "`Pilot.Inspect()` method to discover buttons, links, inputs, selects, headings, and images on a page"
+        },
+        {
+          "description": "`Pilot.ValidateSelectors()` and `Pilot.ValidateSelector()` methods to verify selectors before use"
+        },
+        {
+          "description": "`Pilot.Login()` workflow for automated login with credentials and success verification"
+        },
+        {
+          "description": "`Pilot.ExtractTable()` workflow to extract HTML table data to structured JSON"
+        },
+        {
+          "description": "`state.Manager` for saving and loading named state snapshots to `~/.w3pilot/states/`"
+        },
+        {
+          "description": "`page_inspect` MCP tool for AI agents to discover page elements"
+        },
+        {
+          "description": "`test_validate_selectors` MCP tool for validating CSS selectors with suggestions"
+        },
+        {
+          "description": "`workflow_login` MCP tool for automated login workflow"
+        },
+        {
+          "description": "`workflow_extract_table` MCP tool for extracting table data"
+        },
+        {
+          "description": "`state_save`, `state_load`, `state_list`, `state_delete` MCP tools for named state management"
+        },
+        {
+          "description": "`w3pilot page inspect` CLI command for page inspection"
+        },
+        {
+          "description": "`w3pilot test validate-selectors` CLI command for selector validation"
+        },
+        {
+          "description": "`w3pilot state save/load/list/delete` CLI commands for state management"
+        },
+        {
+          "description": "`--format` / `-o` global CLI flag for JSON output mode"
+        },
+        {
+          "description": "`PageContext` struct added to error types for enhanced error context"
+        },
+        {
+          "description": "`Suggestions` field added to `ElementNotFoundError` and `TimeoutError`"
+        }
       ],
       "documentation": [
-        { "description": "AI Agent Ergonomics guide with inspection, validation, workflows, and state management" },
-        { "description": "v0.6.0 release notes" },
-        { "description": "Updated MCP tools reference with new tools" }
+        {
+          "description": "AI Agent Ergonomics guide with inspection, validation, workflows, and state management"
+        },
+        {
+          "description": "v0.6.0 release notes"
+        },
+        {
+          "description": "Updated MCP tools reference with new tools"
+        }
       ]
     },
     {
       "version": "v0.5.0",
       "date": "2026-03-23",
       "highlights": [
-        { "description": "Project renamed from vibium-go to w3pilot with new module path and CLI" },
-        { "description": "Native Chrome launcher replaces external clicker dependency" },
-        { "description": "Video recording and WebSocket monitoring support" },
-        { "description": "Page event listeners and accessibility snapshot" }
+        {
+          "description": "Project renamed from vibium-go to w3pilot with new module path and CLI"
+        },
+        {
+          "description": "Native Chrome launcher replaces external clicker dependency"
+        },
+        {
+          "description": "Video recording and WebSocket monitoring support"
+        },
+        {
+          "description": "Page event listeners and accessibility snapshot"
+        }
       ],
       "breaking": [
-        { "description": "Module path changed from `github.com/plexusone/vibium-go` to `github.com/plexusone/w3pilot`", "commit": "3e7b47d" },
-        { "description": "Package renamed from `vibium` to `w3pilot`", "commit": "3e7b47d" },
-        { "description": "Core type renamed from `*Vibe` to `*Pilot`", "commit": "3e7b47d" },
-        { "description": "CLI renamed from `vibium` to `w3pilot`, `vibium-mcp` to `w3pilot-mcp`, `vibium-rpa` to `w3pilot-rpa`", "commit": "3422023" },
-        { "description": "Environment variables renamed from `VIBIUM_*` to `W3PILOT_*` (DEBUG, HEADLESS, SKIP_BROWSER_DOWNLOAD)", "commit": "658103b" }
+        {
+          "description": "Module path changed from `github.com/plexusone/vibium-go` to `github.com/plexusone/w3pilot`",
+          "commit": "3e7b47d"
+        },
+        {
+          "description": "Package renamed from `vibium` to `w3pilot`",
+          "commit": "3e7b47d"
+        },
+        {
+          "description": "Core type renamed from `*Vibe` to `*Pilot`",
+          "commit": "3e7b47d"
+        },
+        {
+          "description": "CLI renamed from `vibium` to `w3pilot`, `vibium-mcp` to `w3pilot-mcp`, `vibium-rpa` to `w3pilot-rpa`",
+          "commit": "3422023"
+        },
+        {
+          "description": "Environment variables renamed from `VIBIUM_*` to `W3PILOT_*` (DEBUG, HEADLESS, SKIP_BROWSER_DOWNLOAD)",
+          "commit": "658103b"
+        }
       ],
       "added": [
-        { "description": "Native Chrome launcher - browser is now bundled and auto-installed, removing need for external clicker binary", "commit": "27c4ce3" },
-        { "description": "`Pilot.StartVideo()` and `Pilot.StopVideo()` for video recording of browser sessions", "commit": "27bf163" },
-        { "description": "`Pilot.OnWebSocket()` for monitoring WebSocket connections opened by the page", "commit": "3583311" },
-        { "description": "Page event listeners: `OnConsole()`, `OnPageError()`, `OnRequest()`, `OnResponse()`, `OnDialog()`", "commit": "484d6c9" },
-        { "description": "Event listener infrastructure with `OnEvent()` method on BiDi client", "commit": "250882f" },
-        { "description": "`delete_cookie` MCP tool", "commit": "ff8c1f0" },
-        { "description": "`wait_for_text` MCP tool", "commit": "ff8c1f0" },
-        { "description": "`accessibility_snapshot` MCP tool", "commit": "ff8c1f0" },
-        { "description": "Frame selection MCP tools: `list_frames`, `select_frame`", "commit": "b45550b" },
-        { "description": "State verification MCP tools: `get_state`, `verify_state`", "commit": "b45550b" },
-        { "description": "Assertion MCP tools: `assert_text`, `assert_element`, `assert_url`, `assert_title`", "commit": "736f41d" },
-        { "description": "Waiting MCP tools: `wait_for_element`, `wait_for_text`, `wait_for_url`", "commit": "736f41d" },
-        { "description": "Low-priority SDK methods for parity with JS/Python clients", "commit": "25bb45e" }
+        {
+          "description": "Native Chrome launcher - browser is now bundled and auto-installed, removing need for external clicker binary",
+          "commit": "27c4ce3"
+        },
+        {
+          "description": "`Pilot.StartVideo()` and `Pilot.StopVideo()` for video recording of browser sessions",
+          "commit": "27bf163"
+        },
+        {
+          "description": "`Pilot.OnWebSocket()` for monitoring WebSocket connections opened by the page",
+          "commit": "3583311"
+        },
+        {
+          "description": "Page event listeners: `OnConsole()`, `OnPageError()`, `OnRequest()`, `OnResponse()`, `OnDialog()`",
+          "commit": "484d6c9"
+        },
+        {
+          "description": "Event listener infrastructure with `OnEvent()` method on BiDi client",
+          "commit": "250882f"
+        },
+        {
+          "description": "`delete_cookie` MCP tool",
+          "commit": "ff8c1f0"
+        },
+        {
+          "description": "`wait_for_text` MCP tool",
+          "commit": "ff8c1f0"
+        },
+        {
+          "description": "`accessibility_snapshot` MCP tool",
+          "commit": "ff8c1f0"
+        },
+        {
+          "description": "Frame selection MCP tools: `list_frames`, `select_frame`",
+          "commit": "b45550b"
+        },
+        {
+          "description": "State verification MCP tools: `get_state`, `verify_state`",
+          "commit": "b45550b"
+        },
+        {
+          "description": "Assertion MCP tools: `assert_text`, `assert_element`, `assert_url`, `assert_title`",
+          "commit": "736f41d"
+        },
+        {
+          "description": "Waiting MCP tools: `wait_for_element`, `wait_for_text`, `wait_for_url`",
+          "commit": "736f41d"
+        },
+        {
+          "description": "Low-priority SDK methods for parity with JS/Python clients",
+          "commit": "25bb45e"
+        }
       ],
       "fixed": [
-        { "description": "Writable file handle closed without error handling (code scanning alert)", "commit": "8294c13" }
+        {
+          "description": "Writable file handle closed without error handling (code scanning alert)",
+          "commit": "8294c13"
+        }
       ],
       "tests": [
-        { "description": "Integration tests for verification operations", "commit": "922cb94" },
-        { "description": "Integration tests for MCP tools and page methods", "commit": "06a0742" }
+        {
+          "description": "Integration tests for verification operations",
+          "commit": "922cb94"
+        },
+        {
+          "description": "Integration tests for MCP tools and page methods",
+          "commit": "06a0742"
+        }
       ],
       "documentation": [
-        { "description": "VibiumDev vs w3pilot feature comparison", "commit": "418a547" },
-        { "description": "Consolidated comparison documentation with Playwright MCP", "commit": "155da81" },
-        { "description": "Updated all documentation for w3pilot rename", "commit": "3cef949" },
-        { "description": "Updated references from clicker to Chrome native launcher", "commit": "a33e96c" }
+        {
+          "description": "VibiumDev vs w3pilot feature comparison",
+          "commit": "418a547"
+        },
+        {
+          "description": "Consolidated comparison documentation with Playwright MCP",
+          "commit": "155da81"
+        },
+        {
+          "description": "Updated all documentation for w3pilot rename",
+          "commit": "3cef949"
+        },
+        {
+          "description": "Updated references from clicker to Chrome native launcher",
+          "commit": "a33e96c"
+        }
       ],
       "infrastructure": [
-        { "description": "Update CI/CD workflows for w3pilot rename", "commit": "9c562e4" },
-        { "description": "Update cache directories from `vibium` to `w3pilot`", "commit": "658103b" },
-        { "description": "Update MCP server name from `vibium-mcp` to `w3pilot-mcp`", "commit": "658103b" }
+        {
+          "description": "Update CI/CD workflows for w3pilot rename",
+          "commit": "9c562e4"
+        },
+        {
+          "description": "Update cache directories from `vibium` to `w3pilot`",
+          "commit": "658103b"
+        },
+        {
+          "description": "Update MCP server name from `vibium-mcp` to `w3pilot-mcp`",
+          "commit": "658103b"
+        }
       ]
     },
     {
       "version": "v0.4.0",
       "date": "2026-03-21",
       "highlights": [
-        { "description": "Semantic selectors for AI-native element finding by accessibility attributes" },
-        { "description": "Full storage state management with sessionStorage support" },
-        { "description": "Init scripts for pre-page JavaScript injection" },
-        { "description": "25+ new MCP tools for dialogs, network, storage, tabs, and tracing" }
+        {
+          "description": "Semantic selectors for AI-native element finding by accessibility attributes"
+        },
+        {
+          "description": "Full storage state management with sessionStorage support"
+        },
+        {
+          "description": "Init scripts for pre-page JavaScript injection"
+        },
+        {
+          "description": "25+ new MCP tools for dialogs, network, storage, tabs, and tracing"
+        }
       ],
       "added": [
-        { "description": "Semantic selectors: find elements by `role`, `text`, `label`, `placeholder`, `testid`, `alt`, `title`, `xpath`, and `near`", "commit": "131bef9" },
-        { "description": "`Vibe.Find()` and `Vibe.FindAll()` now accept `FindOptions` for semantic filtering", "commit": "131bef9" },
-        { "description": "`Element.Find()` and `Element.FindAll()` for scoped semantic search within parent elements", "commit": "131bef9" },
-        { "description": "MCP tools (`click`, `type`, `fill`, `press`) support semantic selector parameters", "commit": "131bef9" },
-        { "description": "`Vibe.AddInitScript()` to inject JavaScript before page scripts on every navigation", "commit": "b7bb6df" },
-        { "description": "`add_init_script` MCP tool for runtime script injection", "commit": "b7bb6df" },
-        { "description": "`--init-script` CLI flag for `vibium launch` and `vibium mcp` commands", "commit": "b7bb6df" },
-        { "description": "`Vibe.StorageState()` now captures sessionStorage in addition to cookies and localStorage", "commit": "d24d54c" },
-        { "description": "`Vibe.SetStorageState()` restores complete browser state including sessionStorage", "commit": "d24d54c" },
-        { "description": "`Vibe.ClearStorage()` clears all storage types (cookies, localStorage, sessionStorage)", "commit": "d24d54c" },
-        { "description": "`clear_storage` MCP tool to clear all browser storage", "commit": "d24d54c" },
-        { "description": "MCP tracing tools: `start_trace`, `stop_trace`, `start_trace_chunk`, `stop_trace_chunk`, `start_trace_group`, `stop_trace_group`", "commit": "abf0ed8" },
-        { "description": "MCP dialog tools: `handle_dialog`, `get_dialog`", "commit": "f2ffad9" },
-        { "description": "MCP network tools: `get_network_requests`, `clear_network_requests`, `route`, `unroute`, `route_list`, `network_state_set`", "commit": "f2ffad9" },
-        { "description": "MCP localStorage tools: `localstorage_get`, `localstorage_set`, `localstorage_list`, `localstorage_delete`, `localstorage_clear`", "commit": "f2ffad9" },
-        { "description": "MCP sessionStorage tools: `sessionstorage_get`, `sessionstorage_set`, `sessionstorage_list`, `sessionstorage_delete`, `sessionstorage_clear`", "commit": "f2ffad9" },
-        { "description": "MCP tab tools: `list_tabs`, `select_tab`, `close_tab`", "commit": "f2ffad9" },
-        { "description": "MCP testing tools: `verify_value`, `verify_list_visible`, `generate_locator`, `fill_form`", "commit": "f2ffad9" }
+        {
+          "description": "Semantic selectors: find elements by `role`, `text`, `label`, `placeholder`, `testid`, `alt`, `title`, `xpath`, and `near`",
+          "commit": "131bef9"
+        },
+        {
+          "description": "`Vibe.Find()` and `Vibe.FindAll()` now accept `FindOptions` for semantic filtering",
+          "commit": "131bef9"
+        },
+        {
+          "description": "`Element.Find()` and `Element.FindAll()` for scoped semantic search within parent elements",
+          "commit": "131bef9"
+        },
+        {
+          "description": "MCP tools (`click`, `type`, `fill`, `press`) support semantic selector parameters",
+          "commit": "131bef9"
+        },
+        {
+          "description": "`Vibe.AddInitScript()` to inject JavaScript before page scripts on every navigation",
+          "commit": "b7bb6df"
+        },
+        {
+          "description": "`add_init_script` MCP tool for runtime script injection",
+          "commit": "b7bb6df"
+        },
+        {
+          "description": "`--init-script` CLI flag for `vibium launch` and `vibium mcp` commands",
+          "commit": "b7bb6df"
+        },
+        {
+          "description": "`Vibe.StorageState()` now captures sessionStorage in addition to cookies and localStorage",
+          "commit": "d24d54c"
+        },
+        {
+          "description": "`Vibe.SetStorageState()` restores complete browser state including sessionStorage",
+          "commit": "d24d54c"
+        },
+        {
+          "description": "`Vibe.ClearStorage()` clears all storage types (cookies, localStorage, sessionStorage)",
+          "commit": "d24d54c"
+        },
+        {
+          "description": "`clear_storage` MCP tool to clear all browser storage",
+          "commit": "d24d54c"
+        },
+        {
+          "description": "MCP tracing tools: `start_trace`, `stop_trace`, `start_trace_chunk`, `stop_trace_chunk`, `start_trace_group`, `stop_trace_group`",
+          "commit": "abf0ed8"
+        },
+        {
+          "description": "MCP dialog tools: `handle_dialog`, `get_dialog`",
+          "commit": "f2ffad9"
+        },
+        {
+          "description": "MCP network tools: `get_network_requests`, `clear_network_requests`, `route`, `unroute`, `route_list`, `network_state_set`",
+          "commit": "f2ffad9"
+        },
+        {
+          "description": "MCP localStorage tools: `localstorage_get`, `localstorage_set`, `localstorage_list`, `localstorage_delete`, `localstorage_clear`",
+          "commit": "f2ffad9"
+        },
+        {
+          "description": "MCP sessionStorage tools: `sessionstorage_get`, `sessionstorage_set`, `sessionstorage_list`, `sessionstorage_delete`, `sessionstorage_clear`",
+          "commit": "f2ffad9"
+        },
+        {
+          "description": "MCP tab tools: `list_tabs`, `select_tab`, `close_tab`",
+          "commit": "f2ffad9"
+        },
+        {
+          "description": "MCP testing tools: `verify_value`, `verify_list_visible`, `generate_locator`, `fill_form`",
+          "commit": "f2ffad9"
+        }
       ],
       "fixed": [
-        { "description": "Browser connection drops in MCP server by using `exec.Command` instead of `exec.CommandContext` for clicker process lifetime", "commit": "78f3e4a" }
+        {
+          "description": "Browser connection drops in MCP server by using `exec.Command` instead of `exec.CommandContext` for clicker process lifetime",
+          "commit": "78f3e4a"
+        }
       ],
       "tests": [
-        { "description": "Integration tests for semantic selectors covering all selector types and scoped search", "commit": "4c1b714" },
-        { "description": "Integration tests for tracing with chunks and groups", "commit": "4c1b714" },
-        { "description": "Integration tests for storage state round-trip and sessionStorage", "commit": "4c1b714" },
-        { "description": "Integration tests for init scripts with API mocking", "commit": "4c1b714" }
+        {
+          "description": "Integration tests for semantic selectors covering all selector types and scoped search",
+          "commit": "4c1b714"
+        },
+        {
+          "description": "Integration tests for tracing with chunks and groups",
+          "commit": "4c1b714"
+        },
+        {
+          "description": "Integration tests for storage state round-trip and sessionStorage",
+          "commit": "4c1b714"
+        },
+        {
+          "description": "Integration tests for init scripts with API mocking",
+          "commit": "4c1b714"
+        }
       ],
       "documentation": [
-        { "description": "Semantic selectors section in README and SDK guide with examples", "commit": "7bb3f09" },
-        { "description": "Init scripts, storage state, and tracing sections in README", "commit": "8847012" },
-        { "description": "MCP tools reference with all new tools documented", "commit": "7bb3f09" },
-        { "description": "Feature comparison table with JS/Python clients", "commit": "7bb3f09" }
+        {
+          "description": "Semantic selectors section in README and SDK guide with examples",
+          "commit": "7bb3f09"
+        },
+        {
+          "description": "Init scripts, storage state, and tracing sections in README",
+          "commit": "8847012"
+        },
+        {
+          "description": "MCP tools reference with all new tools documented",
+          "commit": "7bb3f09"
+        },
+        {
+          "description": "Feature comparison table with JS/Python clients",
+          "commit": "7bb3f09"
+        }
       ],
       "infrastructure": [
-        { "description": "TASKS.md for tracking feature parity with JS/Python clients", "commit": "24d5cdf" },
-        { "description": "Update Go module dependencies", "commit": "124cca1" }
+        {
+          "description": "TASKS.md for tracking feature parity with JS/Python clients",
+          "commit": "24d5cdf"
+        },
+        {
+          "description": "Update Go module dependencies",
+          "commit": "124cca1"
+        }
       ]
     },
     {
       "version": "v0.3.0",
       "date": "2026-03-16",
       "highlights": [
-        { "description": "Human-in-the-Loop (HITL) support for SSO login, CAPTCHA, and 2FA workflows" }
+        {
+          "description": "Human-in-the-Loop (HITL) support for SSO login, CAPTCHA, and 2FA workflows"
+        }
       ],
       "added": [
-        { "description": "`pause_for_human` MCP tool to pause automation with visual overlay for human intervention", "commit": "2b7c2fc" },
-        { "description": "`set_storage_state` MCP tool to restore saved session (cookies + localStorage)", "commit": "2b7c2fc" }
+        {
+          "description": "`pause_for_human` MCP tool to pause automation with visual overlay for human intervention",
+          "commit": "2b7c2fc"
+        },
+        {
+          "description": "`set_storage_state` MCP tool to restore saved session (cookies + localStorage)",
+          "commit": "2b7c2fc"
+        }
       ],
       "fixed": [
-        { "description": "Handle file close errors in RPA file activity", "commit": "50a496a" },
-        { "description": "Remove unreachable statement in vibium-mcp main", "commit": "0f9602a" }
+        {
+          "description": "Handle file close errors in RPA file activity",
+          "commit": "50a496a"
+        },
+        {
+          "description": "Remove unreachable statement in vibium-mcp main",
+          "commit": "0f9602a"
+        }
       ],
       "documentation": [
-        { "description": "Add Human-in-the-Loop guide with workflow diagrams and examples", "commit": "2100cf9" },
-        { "description": "Update MCP server docs with HITL tools table", "commit": "2100cf9" },
-        { "description": "Update README shields", "commit": "dd1ed49" }
+        {
+          "description": "Add Human-in-the-Loop guide with workflow diagrams and examples",
+          "commit": "2100cf9"
+        },
+        {
+          "description": "Update MCP server docs with HITL tools table",
+          "commit": "2100cf9"
+        },
+        {
+          "description": "Update README shields",
+          "commit": "dd1ed49"
+        }
       ],
       "infrastructure": [
-        { "description": "Bump `github.com/modelcontextprotocol/go-sdk` from 1.4.0 to 1.4.1", "commit": "5a9afc4" },
-        { "description": "Bump `actions/checkout` from 4 to 6", "commit": "0b2047a" },
-        { "description": "Bump `actions/setup-go` from 5 to 6", "commit": "f0ddc69" },
-        { "description": "Bump `actions/upload-artifact` from 4 to 7", "commit": "1bde2c5" },
-        { "description": "Update Go module dependencies", "commit": "3f305d4" }
+        {
+          "description": "Bump `github.com/modelcontextprotocol/go-sdk` from 1.4.0 to 1.4.1",
+          "commit": "5a9afc4"
+        },
+        {
+          "description": "Bump `actions/checkout` from 4 to 6",
+          "commit": "0b2047a"
+        },
+        {
+          "description": "Bump `actions/setup-go` from 5 to 6",
+          "commit": "f0ddc69"
+        },
+        {
+          "description": "Bump `actions/upload-artifact` from 4 to 7",
+          "commit": "1bde2c5"
+        },
+        {
+          "description": "Update Go module dependencies",
+          "commit": "3f305d4"
+        }
       ]
     },
     {
       "version": "v0.2.1",
       "date": "2026-02-28",
       "highlights": [
-        { "description": "Complete migration to `plexusone` GitHub organization" }
+        {
+          "description": "Complete migration to `plexusone` GitHub organization"
+        }
       ],
       "fixed": [
-        { "description": "Update all Go imports from `agentplexus` to `plexusone` organization", "commit": "13c030b" },
-        { "description": "Fix gofmt formatting issues", "commit": "d6be948" }
+        {
+          "description": "Update all Go imports from `agentplexus` to `plexusone` organization",
+          "commit": "13c030b"
+        },
+        {
+          "description": "Fix gofmt formatting issues",
+          "commit": "d6be948"
+        }
       ],
       "infrastructure": [
-        { "description": "Migrate CI/CD to organization-level reusable workflows from `plexusone/.github`", "commit": "1eeff28" },
-        { "description": "Update CHANGELOG, README, go.mod, and mkdocs.yml for plexusone organization", "commit": "f15b18f" }
+        {
+          "description": "Migrate CI/CD to organization-level reusable workflows from `plexusone/.github`",
+          "commit": "1eeff28"
+        },
+        {
+          "description": "Update CHANGELOG, README, go.mod, and mkdocs.yml for plexusone organization",
+          "commit": "f15b18f"
+        }
       ]
     },
     {
       "version": "v0.2.0",
       "date": "2026-02-28",
       "highlights": [
-        { "description": "RPA workflow engine for YAML-based browser automation scripts" },
-        { "description": "Repository migration from `grokify/vibium-go` to `plexusone/vibium-go`" },
-        { "description": "Code quality improvements and lint fixes" }
+        {
+          "description": "RPA workflow engine for YAML-based browser automation scripts"
+        },
+        {
+          "description": "Repository migration from `grokify/vibium-go` to `plexusone/vibium-go`"
+        },
+        {
+          "description": "Code quality improvements and lint fixes"
+        }
       ],
       "added": [
-        { "description": "RPA workflow engine with YAML script execution, variable interpolation, and conditional logic", "commit": "99bb6f2" },
-        { "description": "Activity registry with browser, element, form, and data activities", "commit": "99bb6f2" },
-        { "description": "`vibium-rpa` CLI for running and validating RPA workflows", "commit": "99bb6f2" }
+        {
+          "description": "RPA workflow engine with YAML script execution, variable interpolation, and conditional logic",
+          "commit": "99bb6f2"
+        },
+        {
+          "description": "Activity registry with browser, element, form, and data activities",
+          "commit": "99bb6f2"
+        },
+        {
+          "description": "`vibium-rpa` CLI for running and validating RPA workflows",
+          "commit": "99bb6f2"
+        }
       ],
       "breaking": [
-        { "description": "Module path changed from `github.com/grokify/vibium-go` to `github.com/plexusone/vibium-go`", "commit": "99bb6f2" }
+        {
+          "description": "Module path changed from `github.com/grokify/vibium-go` to `github.com/plexusone/vibium-go`",
+          "commit": "99bb6f2"
+        }
       ],
       "changed": [
-        { "description": "Reduced duplication in MCP element handlers with `elementOp` helper function", "commit": "42d1066" }
+        {
+          "description": "Reduced duplication in MCP element handlers with `elementOp` helper function",
+          "commit": "42d1066"
+        }
       ],
       "fixed": [
-        { "description": "Handle unchecked errors in RPA executor for browser cleanup and error handler steps", "commit": "d173bec" },
-        { "description": "Tighten file permissions from 0644 to 0600 for security (gosec G306)", "commit": "01b295b" },
-        { "description": "Fix gofmt formatting in RPA types", "commit": "bc60e9d" }
+        {
+          "description": "Handle unchecked errors in RPA executor for browser cleanup and error handler steps",
+          "commit": "d173bec"
+        },
+        {
+          "description": "Tighten file permissions from 0644 to 0600 for security (gosec G306)",
+          "commit": "01b295b"
+        },
+        {
+          "description": "Fix gofmt formatting in RPA types",
+          "commit": "bc60e9d"
+        }
       ],
       "documentation": [
-        { "description": "Add release notes for v0.2.0 and reorganize releases into `docs/releases/`", "commit": "be818e6" },
-        { "description": "Update documentation for clicker availability and repo migration", "commit": "0d4fdc5" },
-        { "description": "Update README diagram", "commit": "00b65f0" }
+        {
+          "description": "Add release notes for v0.2.0 and reorganize releases into `docs/releases/`",
+          "commit": "be818e6"
+        },
+        {
+          "description": "Update documentation for clicker availability and repo migration",
+          "commit": "0d4fdc5"
+        },
+        {
+          "description": "Update README diagram",
+          "commit": "00b65f0"
+        }
       ],
       "infrastructure": [
-        { "description": "Make E2E tests manual until clicker binary is distributed", "commit": "43aff3a" },
-        { "description": "Suppress false positive lint warnings with nolint directives", "commit": "1924385" },
-        { "description": "Fix various golangci-lint issues", "commit": "df9373f" }
+        {
+          "description": "Make E2E tests manual until clicker binary is distributed",
+          "commit": "43aff3a"
+        },
+        {
+          "description": "Suppress false positive lint warnings with nolint directives",
+          "commit": "1924385"
+        },
+        {
+          "description": "Fix various golangci-lint issues",
+          "commit": "df9373f"
+        }
       ]
     },
     {
       "version": "v0.1.0",
       "date": "2026-01-31",
       "highlights": [
-        { "description": "Go client for Vibium browser automation platform with full feature parity with JavaScript and Python clients" }
+        {
+          "description": "Go client for Vibium browser automation platform with full feature parity with JavaScript and Python clients"
+        }
       ],
       "added": [
-        { "description": "Core types: `BoundingBox`, `ElementInfo`, `LaunchOptions`, `FindOptions`, `ActionOptions`", "commit": "e6ba8d0" },
-        { "description": "Custom error types: `ConnectionError`, `TimeoutError`, `ElementNotFoundError`, `BrowserCrashedError`, `BiDiError`", "commit": "e6ba8d0" },
-        { "description": "BiDi WebSocket client for browser communication", "commit": "4f73d02" },
-        { "description": "Clicker process management with binary discovery via `VIBIUM_CLICKER_PATH`, PATH, and cache directory", "commit": "3f36cf0" },
-        { "description": "`Element` type with `Click()`, `Type()`, `Text()`, `GetAttribute()`, `BoundingBox()`, `Center()`, `WaitFor()` methods", "commit": "b33b123" },
-        { "description": "`Vibe` browser control with `Launch()`, `Go()`, `Screenshot()`, `Find()`, `Evaluate()`, `Quit()` methods", "commit": "b33b123" },
-        { "description": "Debug logging with `slog` via `VIBIUM_DEBUG` environment variable", "commit": "48598c6" },
-        { "description": "Navigation methods: `Reload()`, `Back()`, `Forward()`, `WaitForNavigation()`", "commit": "91ad5be" },
-        { "description": "`FindAll()` method for finding multiple elements by CSS selector", "commit": "91ad5be" }
+        {
+          "description": "Core types: `BoundingBox`, `ElementInfo`, `LaunchOptions`, `FindOptions`, `ActionOptions`",
+          "commit": "e6ba8d0"
+        },
+        {
+          "description": "Custom error types: `ConnectionError`, `TimeoutError`, `ElementNotFoundError`, `BrowserCrashedError`, `BiDiError`",
+          "commit": "e6ba8d0"
+        },
+        {
+          "description": "BiDi WebSocket client for browser communication",
+          "commit": "4f73d02"
+        },
+        {
+          "description": "Clicker process management with binary discovery via `VIBIUM_CLICKER_PATH`, PATH, and cache directory",
+          "commit": "3f36cf0"
+        },
+        {
+          "description": "`Element` type with `Click()`, `Type()`, `Text()`, `GetAttribute()`, `BoundingBox()`, `Center()`, `WaitFor()` methods",
+          "commit": "b33b123"
+        },
+        {
+          "description": "`Vibe` browser control with `Launch()`, `Go()`, `Screenshot()`, `Find()`, `Evaluate()`, `Quit()` methods",
+          "commit": "b33b123"
+        },
+        {
+          "description": "Debug logging with `slog` via `VIBIUM_DEBUG` environment variable",
+          "commit": "48598c6"
+        },
+        {
+          "description": "Navigation methods: `Reload()`, `Back()`, `Forward()`, `WaitForNavigation()`",
+          "commit": "91ad5be"
+        },
+        {
+          "description": "`FindAll()` method for finding multiple elements by CSS selector",
+          "commit": "91ad5be"
+        }
       ],
       "changed": [
-        { "description": "Environment variable renamed from `HEADLESS` to `VIBIUM_HEADLESS` for consistency", "commit": "a404d5e" }
+        {
+          "description": "Environment variable renamed from `HEADLESS` to `VIBIUM_HEADLESS` for consistency",
+          "commit": "a404d5e"
+        }
       ],
       "fixed": [
-        { "description": "Format `bidi.go` with gofmt and tighten file permissions to 0600", "commit": "f60f34f" },
-        { "description": "`FindAll` parsing to handle BiDi array serialization by returning JSON from JavaScript", "commit": "a839387" },
-        { "description": "Relaxed test assertions for example.com content changes", "commit": "a839387" }
+        {
+          "description": "Format `bidi.go` with gofmt and tighten file permissions to 0600",
+          "commit": "f60f34f"
+        },
+        {
+          "description": "`FindAll` parsing to handle BiDi array serialization by returning JSON from JavaScript",
+          "commit": "a839387"
+        },
+        {
+          "description": "Relaxed test assertions for example.com content changes",
+          "commit": "a839387"
+        }
       ],
       "tests": [
-        { "description": "Example tests with testable examples for documentation", "commit": "5c4aeac" },
-        { "description": "Integration tests for `example.com` with page title, element finding, screenshots, and JavaScript evaluation", "commit": "3f184e8" },
-        { "description": "Integration tests for `the-internet.herokuapp.com` with dynamic elements, inputs, checkboxes, dropdowns, and navigation", "commit": "3f184e8" }
+        {
+          "description": "Example tests with testable examples for documentation",
+          "commit": "5c4aeac"
+        },
+        {
+          "description": "Integration tests for `example.com` with page title, element finding, screenshots, and JavaScript evaluation",
+          "commit": "3f184e8"
+        },
+        {
+          "description": "Integration tests for `the-internet.herokuapp.com` with dynamic elements, inputs, checkboxes, dropdowns, and navigation",
+          "commit": "3f184e8"
+        }
       ],
       "documentation": [
-        { "description": "Package documentation with godoc comments", "commit": "8236d7e" },
-        { "description": "README with feature parity table, installation, quick start, and API reference", "commit": "8236d7e" },
-        { "description": "Documentation for debug logging, navigation methods, and `FindAll`", "commit": "91fd20f" },
-        { "description": "Testing section with unit and integration test instructions", "commit": "84388af" },
-        { "description": "Repository badges for build status, lint, Go Report Card, and license", "commit": "df0b67c" }
+        {
+          "description": "Package documentation with godoc comments",
+          "commit": "8236d7e"
+        },
+        {
+          "description": "README with feature parity table, installation, quick start, and API reference",
+          "commit": "8236d7e"
+        },
+        {
+          "description": "Documentation for debug logging, navigation methods, and `FindAll`",
+          "commit": "91fd20f"
+        },
+        {
+          "description": "Testing section with unit and integration test instructions",
+          "commit": "84388af"
+        },
+        {
+          "description": "Repository badges for build status, lint, Go Report Card, and license",
+          "commit": "df0b67c"
+        }
       ],
       "infrastructure": [
-        { "description": "Go module files (`go.mod`, `go.sum`)", "commit": "cb7a6f9" },
-        { "description": "Project configuration files", "commit": "1e66b00" }
+        {
+          "description": "Go module files (`go.mod`, `go.sum`)",
+          "commit": "cb7a6f9"
+        },
+        {
+          "description": "Project configuration files",
+          "commit": "1e66b00"
+        }
       ]
     }
   ]

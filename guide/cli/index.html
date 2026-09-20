@@ -761,6 +761,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#fetch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fetch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#element-click" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1616,6 +1627,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../releases/v0.10.0/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    v0.10.0
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../releases/v0.9.0/" class="md-nav__link">
         
   
@@ -1962,6 +2001,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#fetch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fetch
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#element-click" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2234,9 +2284,59 @@
 <p><strong>Example:</strong></p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>navigate<span class="w"> </span>https://example.com
 </code></pre></div>
+<h3 id="fetch">fetch<a class="headerlink" href="#fetch" title="Permanent link">&para;</a></h3>
+<p>Fetch a page's rendered text or HTML in one shot — launch, navigate, wait, and
+extract — without managing a session by hand.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>w3pilot<span class="w"> </span>fetch<span class="w"> </span>&lt;url&gt;<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span>
+</code></pre></div>
+<p><strong>Flags:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--html</code></td>
+<td>Output rendered HTML instead of visible text</td>
+</tr>
+<tr>
+<td><code>-s, --selector</code></td>
+<td>Restrict extraction to a CSS selector</td>
+</tr>
+<tr>
+<td><code>-O, --output</code></td>
+<td>Write result to a file instead of stdout</td>
+</tr>
+<tr>
+<td><code>-w, --wait</code></td>
+<td>Load state to wait for: <code>load</code> (default), <code>domcontentloaded</code>, <code>networkidle</code></td>
+</tr>
+<tr>
+<td><code>--delay</code></td>
+<td>Settle delay after load before extracting (e.g. <code>5s</code>), for SPAs/interstitials</td>
+</tr>
+<tr>
+<td><code>--headless</code></td>
+<td>Run the browser headless (default: true)</td>
+</tr>
+<tr>
+<td><code>--timeout</code></td>
+<td>Total fetch timeout (default: 45s)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>w3pilot<span class="w"> </span>fetch<span class="w"> </span>https://example.com<span class="w">                        </span><span class="c1"># visible text</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>w3pilot<span class="w"> </span>fetch<span class="w"> </span>https://example.com<span class="w"> </span>--html<span class="w">                 </span><span class="c1"># full rendered HTML</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>w3pilot<span class="w"> </span>fetch<span class="w"> </span>https://spa.example.com<span class="w"> </span>--wait<span class="w"> </span>networkidle<span class="w">  </span><span class="c1"># wait for network to settle</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>w3pilot<span class="w"> </span>fetch<span class="w"> </span>https://example.com<span class="w"> </span>--format<span class="w"> </span>json<span class="w">          </span><span class="c1"># {url,title,content}</span>
+</code></pre></div>
 <h3 id="element-click">element click<a class="headerlink" href="#element-click" title="Permanent link">&para;</a></h3>
 <p>Click an element.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>click<span class="w"> </span>&lt;selector&gt;<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>click<span class="w"> </span>&lt;selector&gt;<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span>
 </code></pre></div>
 <p><strong>Flags:</strong></p>
 <table>
@@ -2254,26 +2354,26 @@
 </tbody>
 </table>
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>click<span class="w"> </span><span class="s2">&quot;#submit&quot;</span>
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>click<span class="w"> </span><span class="s2">&quot;button.login&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>click<span class="w"> </span><span class="s2">&quot;#submit&quot;</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>click<span class="w"> </span><span class="s2">&quot;button.login&quot;</span>
 </code></pre></div>
 <h3 id="element-type">element type<a class="headerlink" href="#element-type" title="Permanent link">&para;</a></h3>
 <p>Type text into an element (appends).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>w3pilot<span class="w"> </span>element<span class="w"> </span><span class="nb">type</span><span class="w"> </span>&lt;selector&gt;<span class="w"> </span>&lt;text&gt;<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>w3pilot<span class="w"> </span>element<span class="w"> </span><span class="nb">type</span><span class="w"> </span>&lt;selector&gt;<span class="w"> </span>&lt;text&gt;<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span>
 </code></pre></div>
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>w3pilot<span class="w"> </span>element<span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="s2">&quot;#search&quot;</span><span class="w"> </span><span class="s2">&quot;hello world&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>w3pilot<span class="w"> </span>element<span class="w"> </span><span class="nb">type</span><span class="w"> </span><span class="s2">&quot;#search&quot;</span><span class="w"> </span><span class="s2">&quot;hello world&quot;</span>
 </code></pre></div>
 <h3 id="element-fill">element fill<a class="headerlink" href="#element-fill" title="Permanent link">&para;</a></h3>
 <p>Fill an input (replaces existing content).</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>fill<span class="w"> </span>&lt;selector&gt;<span class="w"> </span>&lt;text&gt;<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>fill<span class="w"> </span>&lt;selector&gt;<span class="w"> </span>&lt;text&gt;<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span>
 </code></pre></div>
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>fill<span class="w"> </span><span class="s2">&quot;#email&quot;</span><span class="w"> </span><span class="s2">&quot;user@example.com&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>fill<span class="w"> </span><span class="s2">&quot;#email&quot;</span><span class="w"> </span><span class="s2">&quot;user@example.com&quot;</span>
 </code></pre></div>
 <h3 id="page-screenshot">page screenshot<a class="headerlink" href="#page-screenshot" title="Permanent link">&para;</a></h3>
 <p>Capture a screenshot.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>screenshot<span class="w"> </span>&lt;filename&gt;<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>screenshot<span class="w"> </span>&lt;filename&gt;<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span>
 </code></pre></div>
 <p><strong>Flags:</strong></p>
 <table>
@@ -2295,20 +2395,20 @@
 </tbody>
 </table>
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>screenshot<span class="w"> </span>page.png
-<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>screenshot<span class="w"> </span>button.png<span class="w"> </span>--selector<span class="w"> </span><span class="s2">&quot;#submit&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>screenshot<span class="w"> </span>page.png
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>screenshot<span class="w"> </span>button.png<span class="w"> </span>--selector<span class="w"> </span><span class="s2">&quot;#submit&quot;</span>
 </code></pre></div>
 <h3 id="js-eval">js eval<a class="headerlink" href="#js-eval" title="Permanent link">&para;</a></h3>
 <p>Execute JavaScript.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>w3pilot<span class="w"> </span>js<span class="w"> </span><span class="nb">eval</span><span class="w"> </span>&lt;javascript&gt;<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>w3pilot<span class="w"> </span>js<span class="w"> </span><span class="nb">eval</span><span class="w"> </span>&lt;javascript&gt;<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span>
 </code></pre></div>
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>w3pilot<span class="w"> </span>js<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;document.title&quot;</span>
-<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>w3pilot<span class="w"> </span>js<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;document.querySelectorAll(&#39;a&#39;).length&quot;</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>w3pilot<span class="w"> </span>js<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;document.title&quot;</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>w3pilot<span class="w"> </span>js<span class="w"> </span><span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;document.querySelectorAll(&#39;a&#39;).length&quot;</span>
 </code></pre></div>
 <h3 id="mcp">mcp<a class="headerlink" href="#mcp" title="Permanent link">&para;</a></h3>
 <p>Start MCP server.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>w3pilot<span class="w"> </span>mcp<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>w3pilot<span class="w"> </span>mcp<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span>
 </code></pre></div>
 <p><strong>Flags:</strong></p>
 <table>
@@ -2339,7 +2439,7 @@
 </table>
 <h3 id="run">run<a class="headerlink" href="#run" title="Permanent link">&para;</a></h3>
 <p>Run a YAML/JSON script.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>w3pilot<span class="w"> </span>run<span class="w"> </span>&lt;script&gt;<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>w3pilot<span class="w"> </span>run<span class="w"> </span>&lt;script&gt;<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span>
 </code></pre></div>
 <p><strong>Flags:</strong></p>
 <table>
@@ -2361,43 +2461,43 @@
 </tbody>
 </table>
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>w3pilot<span class="w"> </span>run<span class="w"> </span>test.yaml
-<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>w3pilot<span class="w"> </span>run<span class="w"> </span>login.json<span class="w"> </span>--headless
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>w3pilot<span class="w"> </span>run<span class="w"> </span>test.yaml
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>w3pilot<span class="w"> </span>run<span class="w"> </span>login.json<span class="w"> </span>--headless
 </code></pre></div>
 <h3 id="test-commands">test commands<a class="headerlink" href="#test-commands" title="Permanent link">&para;</a></h3>
 <p>Assertions and verifications for testing.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Assertions</span>
-<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>w3pilot<span class="w"> </span><span class="nb">test</span><span class="w"> </span>assert-text<span class="w"> </span><span class="s2">&quot;Welcome&quot;</span>
-<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>w3pilot<span class="w"> </span><span class="nb">test</span><span class="w"> </span>assert-element<span class="w"> </span><span class="s2">&quot;#login&quot;</span>
-<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>w3pilot<span class="w"> </span><span class="nb">test</span><span class="w"> </span>assert-url<span class="w"> </span><span class="s2">&quot;**/dashboard&quot;</span>
-<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>
-<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="c1"># Verifications</span>
-<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>w3pilot<span class="w"> </span><span class="nb">test</span><span class="w"> </span>verify-value<span class="w"> </span><span class="s2">&quot;#email&quot;</span><span class="w"> </span><span class="s2">&quot;user@example.com&quot;</span>
-<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a>w3pilot<span class="w"> </span><span class="nb">test</span><span class="w"> </span>verify-text<span class="w"> </span><span class="s2">&quot;.heading&quot;</span><span class="w"> </span><span class="s2">&quot;Welcome&quot;</span>
-<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>w3pilot<span class="w"> </span><span class="nb">test</span><span class="w"> </span>verify-visible<span class="w"> </span><span class="s2">&quot;#modal&quot;</span>
-<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a>w3pilot<span class="w"> </span><span class="nb">test</span><span class="w"> </span>verify-enabled<span class="w"> </span><span class="s2">&quot;#submit&quot;</span>
-<a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a>w3pilot<span class="w"> </span><span class="nb">test</span><span class="w"> </span>verify-checked<span class="w"> </span><span class="s2">&quot;#agree&quot;</span>
-<a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a>
-<a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="c1"># Locator generation</span>
-<a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>w3pilot<span class="w"> </span><span class="nb">test</span><span class="w"> </span>generate-locator<span class="w"> </span><span class="s2">&quot;#submit&quot;</span><span class="w"> </span>--strategy<span class="w"> </span>xpath
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># Assertions</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>w3pilot<span class="w"> </span><span class="nb">test</span><span class="w"> </span>assert-text<span class="w"> </span><span class="s2">&quot;Welcome&quot;</span>
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>w3pilot<span class="w"> </span><span class="nb">test</span><span class="w"> </span>assert-element<span class="w"> </span><span class="s2">&quot;#login&quot;</span>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>w3pilot<span class="w"> </span><span class="nb">test</span><span class="w"> </span>assert-url<span class="w"> </span><span class="s2">&quot;**/dashboard&quot;</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>
+<a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="c1"># Verifications</span>
+<a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>w3pilot<span class="w"> </span><span class="nb">test</span><span class="w"> </span>verify-value<span class="w"> </span><span class="s2">&quot;#email&quot;</span><span class="w"> </span><span class="s2">&quot;user@example.com&quot;</span>
+<a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a>w3pilot<span class="w"> </span><span class="nb">test</span><span class="w"> </span>verify-text<span class="w"> </span><span class="s2">&quot;.heading&quot;</span><span class="w"> </span><span class="s2">&quot;Welcome&quot;</span>
+<a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a>w3pilot<span class="w"> </span><span class="nb">test</span><span class="w"> </span>verify-visible<span class="w"> </span><span class="s2">&quot;#modal&quot;</span>
+<a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>w3pilot<span class="w"> </span><span class="nb">test</span><span class="w"> </span>verify-enabled<span class="w"> </span><span class="s2">&quot;#submit&quot;</span>
+<a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a>w3pilot<span class="w"> </span><span class="nb">test</span><span class="w"> </span>verify-checked<span class="w"> </span><span class="s2">&quot;#agree&quot;</span>
+<a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>
+<a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="c1"># Locator generation</span>
+<a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a>w3pilot<span class="w"> </span><span class="nb">test</span><span class="w"> </span>generate-locator<span class="w"> </span><span class="s2">&quot;#submit&quot;</span><span class="w"> </span>--strategy<span class="w"> </span>xpath
 </code></pre></div>
 <h3 id="state-commands">state commands<a class="headerlink" href="#state-commands" title="Permanent link">&para;</a></h3>
 <p>Named state snapshots for saving/restoring browser state.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># Save current state</span>
-<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>w3pilot<span class="w"> </span>state<span class="w"> </span>save<span class="w"> </span>login-session
-<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>
-<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="c1"># List saved states</span>
-<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>w3pilot<span class="w"> </span>state<span class="w"> </span>list
-<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>
-<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="c1"># Load a state</span>
-<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a>w3pilot<span class="w"> </span>state<span class="w"> </span>load<span class="w"> </span>login-session
-<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a>
-<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="c1"># Delete a state</span>
-<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a>w3pilot<span class="w"> </span>state<span class="w"> </span>delete<span class="w"> </span>login-session
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># Save current state</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>w3pilot<span class="w"> </span>state<span class="w"> </span>save<span class="w"> </span>login-session
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="c1"># List saved states</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>w3pilot<span class="w"> </span>state<span class="w"> </span>list
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="c1"># Load a state</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a>w3pilot<span class="w"> </span>state<span class="w"> </span>load<span class="w"> </span>login-session
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="c1"># Delete a state</span>
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a>w3pilot<span class="w"> </span>state<span class="w"> </span>delete<span class="w"> </span>login-session
 </code></pre></div>
 <h3 id="page-inspect">page inspect<a class="headerlink" href="#page-inspect" title="Permanent link">&para;</a></h3>
 <p>Discover interactive elements on the page.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>inspect<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>inspect<span class="w"> </span><span class="o">[</span>flags<span class="o">]</span>
 </code></pre></div>
 <p><strong>Flags:</strong></p>
 <table>
@@ -2415,51 +2515,51 @@
 </tbody>
 </table>
 <p><strong>Example:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>inspect
-<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>inspect<span class="w"> </span>--type<span class="w"> </span>buttons
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>inspect
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>inspect<span class="w"> </span>--type<span class="w"> </span>buttons
 </code></pre></div>
 <h2 id="session-management">Session Management<a class="headerlink" href="#session-management" title="Permanent link">&para;</a></h2>
 <p>The CLI maintains session state in <code>~/.w3pilot/session.json</code>. This allows running commands across multiple invocations:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>w3pilot<span class="w"> </span>browser<span class="w"> </span>launch
-<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>navigate<span class="w"> </span>https://example.com
-<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="c1"># ... later ...</span>
-<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>screenshot<span class="w"> </span>result.png
-<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>w3pilot<span class="w"> </span>browser<span class="w"> </span>quit
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>w3pilot<span class="w"> </span>browser<span class="w"> </span>launch
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>navigate<span class="w"> </span>https://example.com
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="c1"># ... later ...</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>screenshot<span class="w"> </span>result.png
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>w3pilot<span class="w"> </span>browser<span class="w"> </span>quit
 </code></pre></div>
 <h2 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h2>
 <h3 id="login-flow">Login Flow<a class="headerlink" href="#login-flow" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>w3pilot<span class="w"> </span>browser<span class="w"> </span>launch<span class="w"> </span>--headless
-<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>navigate<span class="w"> </span>https://example.com/login
-<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>fill<span class="w"> </span><span class="s2">&quot;#email&quot;</span><span class="w"> </span><span class="s2">&quot;user@example.com&quot;</span>
-<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>fill<span class="w"> </span><span class="s2">&quot;#password&quot;</span><span class="w"> </span><span class="s2">&quot;secret123&quot;</span>
-<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>click<span class="w"> </span><span class="s2">&quot;#submit&quot;</span>
-<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>screenshot<span class="w"> </span>dashboard.png
-<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>w3pilot<span class="w"> </span>browser<span class="w"> </span>quit
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>w3pilot<span class="w"> </span>browser<span class="w"> </span>launch<span class="w"> </span>--headless
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>navigate<span class="w"> </span>https://example.com/login
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>fill<span class="w"> </span><span class="s2">&quot;#email&quot;</span><span class="w"> </span><span class="s2">&quot;user@example.com&quot;</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>fill<span class="w"> </span><span class="s2">&quot;#password&quot;</span><span class="w"> </span><span class="s2">&quot;secret123&quot;</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>click<span class="w"> </span><span class="s2">&quot;#submit&quot;</span>
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>screenshot<span class="w"> </span>dashboard.png
+<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>w3pilot<span class="w"> </span>browser<span class="w"> </span>quit
 </code></pre></div>
 <h3 id="form-automation">Form Automation<a class="headerlink" href="#form-automation" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>w3pilot<span class="w"> </span>browser<span class="w"> </span>launch
-<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>navigate<span class="w"> </span>https://example.com/form
-<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>fill<span class="w"> </span><span class="s2">&quot;#name&quot;</span><span class="w"> </span><span class="s2">&quot;John Doe&quot;</span>
-<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>fill<span class="w"> </span><span class="s2">&quot;#email&quot;</span><span class="w"> </span><span class="s2">&quot;john@example.com&quot;</span>
-<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>click<span class="w"> </span><span class="s2">&quot;input[type=&#39;checkbox&#39;]&quot;</span>
-<a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>click<span class="w"> </span><span class="s2">&quot;#submit&quot;</span>
-<a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>w3pilot<span class="w"> </span>browser<span class="w"> </span>quit
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>w3pilot<span class="w"> </span>browser<span class="w"> </span>launch
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>navigate<span class="w"> </span>https://example.com/form
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>fill<span class="w"> </span><span class="s2">&quot;#name&quot;</span><span class="w"> </span><span class="s2">&quot;John Doe&quot;</span>
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>fill<span class="w"> </span><span class="s2">&quot;#email&quot;</span><span class="w"> </span><span class="s2">&quot;john@example.com&quot;</span>
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>click<span class="w"> </span><span class="s2">&quot;input[type=&#39;checkbox&#39;]&quot;</span>
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>click<span class="w"> </span><span class="s2">&quot;#submit&quot;</span>
+<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a>w3pilot<span class="w"> </span>browser<span class="w"> </span>quit
 </code></pre></div>
 <h3 id="state-management">State Management<a class="headerlink" href="#state-management" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="c1"># First session: login and save state</span>
-<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>w3pilot<span class="w"> </span>browser<span class="w"> </span>launch
-<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>navigate<span class="w"> </span>https://example.com/login
-<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>fill<span class="w"> </span><span class="s2">&quot;#email&quot;</span><span class="w"> </span><span class="s2">&quot;user@example.com&quot;</span>
-<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>fill<span class="w"> </span><span class="s2">&quot;#password&quot;</span><span class="w"> </span><span class="s2">&quot;secret123&quot;</span>
-<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>click<span class="w"> </span><span class="s2">&quot;#submit&quot;</span>
-<a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a>w3pilot<span class="w"> </span>state<span class="w"> </span>save<span class="w"> </span>logged-in
-<a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>w3pilot<span class="w"> </span>browser<span class="w"> </span>quit
-<a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a>
-<a id="__codelineno-26-10" name="__codelineno-26-10" href="#__codelineno-26-10"></a><span class="c1"># Later session: restore state</span>
-<a id="__codelineno-26-11" name="__codelineno-26-11" href="#__codelineno-26-11"></a>w3pilot<span class="w"> </span>browser<span class="w"> </span>launch
-<a id="__codelineno-26-12" name="__codelineno-26-12" href="#__codelineno-26-12"></a>w3pilot<span class="w"> </span>state<span class="w"> </span>load<span class="w"> </span>logged-in
-<a id="__codelineno-26-13" name="__codelineno-26-13" href="#__codelineno-26-13"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>navigate<span class="w"> </span>https://example.com/dashboard
-<a id="__codelineno-26-14" name="__codelineno-26-14" href="#__codelineno-26-14"></a><span class="c1"># Already logged in!</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="c1"># First session: login and save state</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>w3pilot<span class="w"> </span>browser<span class="w"> </span>launch
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>navigate<span class="w"> </span>https://example.com/login
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>fill<span class="w"> </span><span class="s2">&quot;#email&quot;</span><span class="w"> </span><span class="s2">&quot;user@example.com&quot;</span>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>fill<span class="w"> </span><span class="s2">&quot;#password&quot;</span><span class="w"> </span><span class="s2">&quot;secret123&quot;</span>
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>w3pilot<span class="w"> </span>element<span class="w"> </span>click<span class="w"> </span><span class="s2">&quot;#submit&quot;</span>
+<a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a>w3pilot<span class="w"> </span>state<span class="w"> </span>save<span class="w"> </span>logged-in
+<a id="__codelineno-28-8" name="__codelineno-28-8" href="#__codelineno-28-8"></a>w3pilot<span class="w"> </span>browser<span class="w"> </span>quit
+<a id="__codelineno-28-9" name="__codelineno-28-9" href="#__codelineno-28-9"></a>
+<a id="__codelineno-28-10" name="__codelineno-28-10" href="#__codelineno-28-10"></a><span class="c1"># Later session: restore state</span>
+<a id="__codelineno-28-11" name="__codelineno-28-11" href="#__codelineno-28-11"></a>w3pilot<span class="w"> </span>browser<span class="w"> </span>launch
+<a id="__codelineno-28-12" name="__codelineno-28-12" href="#__codelineno-28-12"></a>w3pilot<span class="w"> </span>state<span class="w"> </span>load<span class="w"> </span>logged-in
+<a id="__codelineno-28-13" name="__codelineno-28-13" href="#__codelineno-28-13"></a>w3pilot<span class="w"> </span>page<span class="w"> </span>navigate<span class="w"> </span>https://example.com/dashboard
+<a id="__codelineno-28-14" name="__codelineno-28-14" href="#__codelineno-28-14"></a><span class="c1"># Already logged in!</span>
 </code></pre></div>
 
 

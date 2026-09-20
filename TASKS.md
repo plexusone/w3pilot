@@ -968,7 +968,7 @@ Per-context initialization scripts that run before page scripts.
 
 - All Vibium/Playwright parity tasks complete as of v0.5.0
 - Chrome DevTools MCP analysis added 2026-03-24 (see P0-P3 tasks above)
-- Reference: `/Users/johnwang/go/src/github.com/ChromeDevTools/chrome-devtools-mcp`
+- Reference: `github.com/ChromeDevTools/chrome-devtools-mcp`
 - Goal: W3Pilot as superset of VibiumCLI-MCP, Playwright MCP, and Chrome DevTools MCP
 
 ## Implementation Approach (2026-03-24)
